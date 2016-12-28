@@ -2,6 +2,9 @@ var express       = require('express'),
     app           = express(),
     Student       = require('../models/student.model')
 
+var key = '99u9d9h23h9fas9ah832hr'
+var encryptor = require('simple-encryptor')(key)
+
 exports.getIndex = function(req, res){
   res.json({
     "Status":"OK",
@@ -10,6 +13,7 @@ exports.getIndex = function(req, res){
 }
 
 exports.addStudent = function(req, res){
+
   var text, str
   function makeid(str){
   	text = str
@@ -19,13 +23,17 @@ exports.addStudent = function(req, res){
     }
     return (text)
   }
+
   let link  = makeid('398hhces8dh8shd8ah')
   let link2 = makeid('8hasa9hsd8hfdh3294')
+
+  let encrypted = encryptor.encrypt(req.body.password)
+  // var decrypted = encryptor.decrypt(encrypted)
 
   var std                 = new Student()
   std.nim                 = req.body.nim
   std.email               = req.body.email
-  std.password            = req.body.password
+  std.password            = encrypted
   std.has_resetpass       = false
   std.is_active           = false
   std.activation_link     = link
@@ -44,7 +52,11 @@ exports.addStudent = function(req, res){
           res.send(err)
         }
         else {
-          res.send({message:"Student created"})
+          res.json({
+            "Status":"OK",
+            "Message":"Student created",
+            "Crypted": encrypted
+          })
         }
       })
     }
