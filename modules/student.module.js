@@ -13,6 +13,7 @@ app.use(session({
 }));
 
 var key       = '99u9d9h23h9fas9ah832hr'
+var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 var baseurl   = 'http://localhost:3500/api/v1/student/'
 var encryptor = require('simple-encryptor')(key)
 
@@ -30,7 +31,6 @@ exports.addStudent = function(req, res){
   var text, str
   function makeid(str){
   	text = str
-    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
     for(var i=0; i<20; i++){
     	text += possible.charAt(Math.floor(Math.random() * possible.length))
     }
@@ -55,6 +55,7 @@ exports.addStudent = function(req, res){
   std.inactive_password   = ""
   std.activation_link     = link
   std.passwordreset_link  = link2
+  std.profile             = ""
 
   Student.findOne({nim: std.nim}, function(err, exist){
     if(exist){
@@ -178,7 +179,6 @@ exports.requestPasswordChange = function(req, res){
           var text, str
           function makeid(){
           	text = ''
-            var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
             for(var i=0; i<10; i++){
             	text += possible.charAt(Math.floor(Math.random() * possible.length))
             }
@@ -228,7 +228,8 @@ exports.activatePasswordChange = function(req, res){
           encrypted   = encryptor.encrypt(newPass)
       console.log('new pass : ', newPass)
       Student.update({nim: nimToReset}, {$set: {
-        password: encrypted
+        password: encrypted,
+        has_resetpass: true
       },
     }, function(err, success){
       if(success){
@@ -264,3 +265,45 @@ exports.stdLogout = function(req, res){
     "Message":"Logged out"
   })
 }
+
+exports.updateProfile = function(req, res){
+  let params = req.params.nim,
+      nim    = req.session.student
+  Student.findOne({nim: params}, function(err, success){
+    if(success){
+      Student.update({nim: nim}, {$set: {
+        profile: {
+          "first_name": req.body.first_name,
+          "last_name": req.body.last_name,
+          "gender": req.body.gender,
+          "birthday": req.body.birthday,
+          "address": req.body.address
+        }
+      },
+    }, function(err, succeed){
+      if(succeed){
+        console.log('success update profile')
+        res.json({
+          "Status":"OK",
+          "Message":"Profile updated"
+        })
+      } else {
+        console.log('error updating profile', err)
+        res.json({
+          "Status":"Error",
+          "Message":"Error updated profile"
+        })
+      }
+    }
+  )
+    } else {
+      console.log('cannot find student')
+      res.json({
+        "Status":"Error",
+        "Message":"Student not found"
+      })
+    }
+  })
+}
+
+exports.router = module;

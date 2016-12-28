@@ -1,7 +1,7 @@
 {
   "student": [
     {
-      "endpoint"      : "api/v1/student",
+      "endpoint"      : "api/v1/student/register",
       "method"        : "POST",
       "purpose"       : "create a single student",
       "type"          : "profile",

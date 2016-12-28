@@ -12,7 +12,8 @@ var studentSchema = new Schema ({
   activation_link: String,
   passwordreset_link: String,
   has_resetpass: Boolean,
-  inactive_password: String
+  inactive_password: String,
+  profile: String
 })
 
 module.exports = mongoose.model('Student', studentSchema)

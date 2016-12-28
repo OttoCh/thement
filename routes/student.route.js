@@ -28,7 +28,9 @@ function isLoggedIn(req,res,next){
       next();
     }
   }
-router.use(isLoggedIn)
+//router.use(isLoggedIn)
+
+router.put('/:nim', student.updateProfile)
 
 router.get('/test', function(req, res){
   res.send('test login')
