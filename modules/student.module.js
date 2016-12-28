@@ -16,7 +16,6 @@ var key = '99u9d9h23h9fas9ah832hr'
 var encryptor = require('simple-encryptor')(key)
 
 exports.getIndex = function(req, res){
-  console.log(req.session.student)
   res.json({
     "Status":"OK",
     "Message":"api/v1/student"

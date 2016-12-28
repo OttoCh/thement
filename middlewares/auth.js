@@ -5,23 +5,12 @@ var express       = require('express'),
 
 // still hardcode, need to generate
 var tokenValid = 'tokenFisikaITB'
-var text, str
-function makeid(str){
-	text = str;
-  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-  for(var i=0; i<10; i++){
-  	text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return console.log(text);
-}
 
 module.exports = function(req, res, next){
   var token   = req.headers['x-access-key']
   if (token == tokenValid) {
     try {
       next()
-      makeid('fisikaITB')
     } catch (err) {
       res.status(500);
       res.json({
