@@ -48,6 +48,8 @@ exports.addStudent = function(req, res){
   std.nim                 = req.body.nim
   std.email               = req.body.email
   std.password            = encrypted
+  std.registered          = new Date
+  std.last_login          = ""
   std.has_resetpass       = false
   std.is_active           = false
   std.inactive_password   = ""
@@ -69,8 +71,7 @@ exports.addStudent = function(req, res){
         else {
           res.json({
             "Status":"OK",
-            "Message":"Student created",
-            "Crypted": encrypted
+            "Message":"Student created"
           })
         }
       })
@@ -123,11 +124,22 @@ exports.stdLogin = function(req, res){
         if(pass == decrypted){
           let nim = found.nim
           req.session.student = nim.toString()
-          console.log('Logged in as ', req.session.student)
-          res.json({
-            "Status":"OK",
-            "Message":"Logged in as " + nim
-          })
+          Student.update({nim: nim}, {$set: {
+            last_login: new Date
+          },
+        }, function(err, success){
+          if(success){
+            console.log('Logged in as ', req.session.student)
+            res.json({
+              "Status":"OK",
+              "Message":"Logged in as " + nim,
+              "Last login": new Date
+            })
+          } else {
+            console.log('error update last_login')
+          }
+        }
+      )
         } else {
           console.log('password wrong')
           res.json({
@@ -179,6 +191,7 @@ exports.requestPasswordChange = function(req, res){
             }, function(err, success){
               if(success){
                 console.log('inactive_pass : ', inactive_pass)
+                // TODO: send via email
                 res.json({
                   "Status":"OK",
                   "Message":"NIM & email match. Reset link : " + url,
@@ -207,7 +220,40 @@ exports.requestPasswordChange = function(req, res){
 }
 
 exports.activatePasswordChange = function(req, res){
-
+  let link = req.params.link
+  Student.findOne({passwordreset_link: link}, function(err, found){
+    if(found){
+      let nimToReset  = found.nim,
+          newPass     = found.inactive_password,
+          encrypted   = encryptor.encrypt(newPass)
+      console.log('new pass : ', newPass)
+      Student.update({nim: nimToReset}, {$set: {
+        password: encrypted
+      },
+    }, function(err, success){
+      if(success){
+        console.log('success reset password, new password : ', encrypted)
+        res.json({
+          "Status":"OK",
+          "Message":"Succeed reset password. New password : " + encrypted
+        })
+      } else {
+        console.log('failed to reset password, reason : ', err)
+        res.json({
+          "Status":"Error",
+          "Message":"Failed to reset password"
+        })
+      }
+    }
+  )
+    } else {
+      console.log('reset password link incorrect')
+      res.json({
+        "Status":"Error",
+        "Message":"Reset password link incorrect"
+      })
+    }
+  })
 }
 
 exports.stdLogout = function(req, res){
