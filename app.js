@@ -8,7 +8,6 @@ var express         = require('express'),
 
 app.use(methodOverride('X-HTTP-Method-Override'));
 
-// load routes
 var student         = require('./routes/student.route')
 var index           = require('./routes/index.route')
 
