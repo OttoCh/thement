@@ -28,7 +28,8 @@ exports.addStudent = function(req, res){
   let link2 = makeid('8hasa9hsd8hfdh3294')
 
   let encrypted = encryptor.encrypt(req.body.password)
-  // var decrypted = encryptor.decrypt(encrypted)
+
+  // TODO : NIM should be started by 102*
 
   var std                 = new Student()
   std.nim                 = req.body.nim
@@ -64,7 +65,6 @@ exports.addStudent = function(req, res){
 }
 
 exports.activateStudent = function(req, res){
-  console.log('this is activation_link : ', req.params.link)
   var link = req.params.link
   Student.findOne({activation_link: link}, function(err, found){
     if(found){
@@ -93,6 +93,44 @@ exports.activateStudent = function(req, res){
       res.send({
         "Status":"Error",
         "Message":"activation_link not found"
+      })
+    }
+  })
+}
+
+exports.stdLogin = function(req, res){
+  let nim   = req.body.nim,
+      pass  = req.body.password
+  Student.findOne({nim: nim}, function(err, found){
+    if(found){
+      if (found.is_active == true){
+        console.log('check for decrypting')
+        let decrypted = encryptor.decrypt(found.password)
+        if(pass == decrypted){
+          console.log('logged in. session stored')
+          res.json({
+            "Status":"OK",
+            "Message":"Logged in"
+          })
+        } else {
+          console.log('password wrong')
+          res.json({
+            "Status":"Error",
+            "Message":"Wrong password"
+          })
+        }
+      } else {
+        console.log('Student not activated')
+        res.json({
+          "Status":"Error",
+          "Message":"Student not activated. Please activate your account first"
+        })
+      }
+    } else {
+      console.log('NIM not found')
+      res.json({
+        "Status":"Error",
+        "Message":"Student not found"
       })
     }
   })

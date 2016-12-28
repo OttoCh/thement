@@ -1,12 +1,11 @@
 var express         = require('express'),
     session         = require('express-session'),
     MongoStore      = require('connect-mongo')(session),
-    mongoose        = require('mongoose'),
     methodOverride  = require('method-override'),
+    mongoose        = require('mongoose'),
     cookieParser    = require('cookie-parser'),
     bodyParser      = require('body-parser'),
     http            = require('http'),
-    port         		= 3500;
     app             = express()
 
 mongoose.connect('mongodb://127.0.0.1:27017/tugasakhir')
@@ -23,5 +22,5 @@ var index           = require('./routes/index.route')
 app.use('/', index)
 app.use('/api/v1/student', student)
 
-app.listen(port)
-console.log('Thement running at ', port)
+app.listen(3500)
+console.log('Thement running at 3500')
