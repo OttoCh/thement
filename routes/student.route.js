@@ -10,5 +10,6 @@ router.use(function(req, res, next){
 
 router.get('/', student.getIndex)
 router.post('/', student.addStudent)
+router.get('/activation/:link', student.activateStudent)
 
 module.exports = router
