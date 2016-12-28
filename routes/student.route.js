@@ -8,15 +8,6 @@ router.use(function(req, res, next){
   next()
 })
 
-function isLoggedIn(req,res,next){
-    if(!req.session.student){
-      console.log('unauthorized access!')
-      res.send('unauthorized access! please login first')
-    } else {
-      next();
-    }
-  }
-
 router.get('/', student.getIndex)
 
 router.post('/', student.addStudent)
@@ -27,6 +18,16 @@ router.post('/resetpassword', student.requestPasswordChange)
 router.post('/resetpassword/:link', student.activatePasswordChange)
 router.get('/activation/:link', student.activateStudent)
 
+
+// TODO: isLoggedIn still buggy
+function isLoggedIn(req,res,next){
+    if(!req.session.student){
+      console.log('unauthorized access!')
+      res.send('unauthorized access! please login first')
+    } else {
+      next();
+    }
+  }
 router.use(isLoggedIn)
 
 router.get('/test', function(req, res){
