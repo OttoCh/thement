@@ -156,10 +156,36 @@ exports.requestPasswordChange = function(req, res){
     if(found){
       console.log('user is : ' + found.nim + ' email : ' + found.email)
       let url = baseurl + 'resetpassword/' + found.passwordreset_link
-      res.json({
-        "Status":"OK",
-        "Message":"NIM & email match. Reset link : " + url
-      })
+      let nimToReset = found.nim
+
+      // TODO: make it to middleware
+      var text, str
+      function makeid(str){
+      	text = str
+        var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+        for(var i=0; i<5; i++){
+        	text += possible.charAt(Math.floor(Math.random() * possible.length))
+        }
+        return (text)
+      }
+      let inactive_pass = makeid('8y32hu')
+
+          Student.update({nim: nimToReset}, {$set: {
+            inactive_password : inactive_pass
+          },
+        }, function(err, success){
+          if(success){
+            console.log('inactive_pass : ', inactive_pass)
+            res.json({
+              "Status":"OK",
+              "Message":"NIM & email match. Reset link : " + url,
+              "Inactive Password": inactive_pass
+            })
+          } else {
+            console.log('error creating inactive_password')
+          }
+        }
+      )
     } else {
       console.log('NIM / email not found')
       res.json({
