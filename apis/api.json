@@ -5,6 +5,7 @@
       "method"        : "POST",
       "purpose"       : "create a single student",
       "type"          : "profile",
+      "status"        : true,
       "headers"       : {
         "content-type":"application/json"
       },

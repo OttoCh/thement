@@ -6,7 +6,7 @@ var express         = require('express'),
     cookieParser    = require('cookie-parser'),
     bodyParser      = require('body-parser'),
     http            = require('http'),
-    port         		= process.env.PORT || 3500;
+    port         		= 3500;
     app             = express()
 
 mongoose.connect('mongodb://127.0.0.1:27017/tugasakhir')
