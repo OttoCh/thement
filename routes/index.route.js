@@ -4,7 +4,8 @@ var express   = require('express'),
 router.get('/', function(req, res){
   res.json({
     "Status":"OK",
-    "Message":"Homepage"
+    "Message":"Homepage",
+    "Session":req.session.fullname
   })
 })
 

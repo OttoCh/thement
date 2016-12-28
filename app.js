@@ -16,6 +16,8 @@ app.use(bodyParser.json())
 app.use(cookieParser())
 app.use(methodOverride('X-HTTP-Method-Override'))
 
+app.use(session({resave: true, saveUninitialized: true, secret: '8sayfh3ruh2893hr', cookie: { maxAge: 60000 }}));
+
 var student         = require('./routes/student.route')
 var index           = require('./routes/index.route')
 

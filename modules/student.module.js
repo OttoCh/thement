@@ -1,6 +1,9 @@
 var express       = require('express'),
-    app           = express(),
-    Student       = require('../models/student.model')
+    session       = require('express-session'),
+    MongoStore    = require('connect-mongo')(session),
+    mongoose      = require('mongoose')
+    Student       = require('../models/student.model'),
+    app           = express()
 
 var key = '99u9d9h23h9fas9ah832hr'
 var encryptor = require('simple-encryptor')(key)
@@ -107,7 +110,8 @@ exports.stdLogin = function(req, res){
         console.log('check for decrypting')
         let decrypted = encryptor.decrypt(found.password)
         if(pass == decrypted){
-          console.log('logged in. session stored')
+          req.session.student = found.nim
+          console.log('Logged in as ', req.session.student)
           res.json({
             "Status":"OK",
             "Message":"Logged in"
@@ -134,4 +138,8 @@ exports.stdLogin = function(req, res){
       })
     }
   })
+}
+
+exports.stdLogout = function(req, res){
+  console.log('logout')
 }
