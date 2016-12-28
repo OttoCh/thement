@@ -9,5 +9,6 @@ router.use(function(req, res, next){
 })
 
 router.get('/', student.getIndex)
+router.post('/', student.addStudent)
 
 module.exports = router
