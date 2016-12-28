@@ -6,6 +6,7 @@ var express         = require('express'),
     port         		= process.env.PORT || 3500;
     app             = express()
 
+app.all('/api/v1/*', [require('./middlewares/auth')])
 app.use(methodOverride('X-HTTP-Method-Override'));
 
 var student         = require('./routes/student.route')
