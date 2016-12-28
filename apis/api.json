@@ -1,0 +1,413 @@
+{
+  "student": [
+    {
+      "endpoint"      : "api/v1/student",
+      "method"        : "POST",
+      "purpose"       : "create a single student",
+      "type"          : "profile",
+      "headers"       : {
+        "content-type":"application/json"
+      },
+      "body"          : {
+        "username"    : "string",
+        "email"       : "string",
+        "nim"         : "int"
+      },
+      "response"      : {
+        "status"      :"OK",
+        "message"     :"student created"
+      }
+    },
+
+    {
+      "endpoint"      :"api/v1/students",
+      "method"        :"GET",
+      "purpose"       : "retrieve all students",
+      "type"          : "profile",
+      "response"      : {
+        "status"      : "OK",
+        "data"        : "all students"
+      }
+    },
+
+    {
+      "endpoint"      : "api/v1/student/:nim",
+      "method"        : "GET",
+      "purpose"       : "retrieve all students",
+      "type"          : "profile",
+      "response"      : {
+        "status"      : "OK",
+        "data"        : "student with certain nim"
+      }
+    },
+
+    {
+      "endpoint"      : "api/v1/student/:nim",
+      "method"        : "PUT",
+      "purpose"       : "update single user by nim",
+      "type"          : "profile",
+      "headers"       : {
+        "content-type":"application/json"
+      },
+      "body"          : {
+        "username"    : "string",
+        "email"       : "string"
+      },
+      "response"      : {
+        "status"      : "OK",
+        "message"     : "student updated"
+      }
+    },
+
+    {
+      "endpoint"      : "api/v1/student/:nim",
+      "method"        : "DELETE",
+      "purpose"       : "delete a student by nim",
+      "type"          : "profile",
+      "response"      : {
+        "status"      : "OK",
+        "message"     : "student deleted"
+      }
+    },
+
+    {
+      "endpoint"      : "api/v1/student/login",
+      "method"        : "POST",
+      "purpose"       : "student log in",
+      "type"          : "session",
+      "response"      : {
+        "status"      : "OK",
+        "message"     : "logged in"
+      }
+    },
+
+    {
+      "endpoint"      : "api/v1/student/logout",
+      "method"        : "POST",
+      "purpose"       : "student log out",
+      "type"          : "session",
+      "response"      : {
+        "status"      : "OK",
+        "message"     : "logged out"
+      }
+    },
+
+    {
+      "endpoint"      : "api/v1/student/choose/lecturer/:username",
+      "method"        : "POST",
+      "purpose"       : "select a lecturer by username",
+      "type"          : "choosing-system",
+      "response"      : {
+        "status"      : "OK",
+        "message"     : "submitted"
+      }
+    },
+
+    {
+      "endpoint"      : "api/v1/student/choose/approval/:nim",
+      "method"        : "GET",
+      "purpose"       : "retrieve approval's status",
+      "type"          : "choosing-system",
+      "response"      : {
+        "status"      : "OK",
+        "lecturer-elected": "lecturer's name",
+        "approval": "none/pending/approved"
+      }
+    },
+
+    {
+      "endpoint"      : "api/v1/student/report",
+      "method"        : "POST",
+      "purpose"       : "create a progress report",
+      "type"          : "report",
+      "headers"       : {
+        "content-type": "application/json"
+      },
+      "body"          : {
+        "title"       : "string",
+        "message"     : "string",
+        "attachment"  : "file"
+      },
+      "response"      : {
+        "status"      : "OK",
+        "message"     : "progress report created"
+      }
+    },
+
+    {
+      "endpoint"      : "api/v1/student/reports",
+      "method"        : "GET",
+      "purpose"       : "retrieve all reports",
+      "type"          : "report",
+      "response"      : {
+        "status"      : "OK",
+        "report"      : [
+          {
+            "id"      : "report's id",
+            "title"   : "title goes here",
+            "message" : "message goes here too",
+            "file"    : "url"
+          }
+        ]
+      }
+    },
+
+    {
+      "endpoint"      : "api/v1/student/report/:id",
+      "method"        : "GET",
+      "purpose"       : "retrieve specific report by id",
+      "type"          : "report",
+      "response"      : {
+        "status"      : "OK",
+        "data"        : {
+          "id"        : "report_id",
+          "title"     : "report_title",
+          "message"   : "report_message",
+          "file"      : "report_file"
+        }
+      }
+    },
+
+    {
+      "endpoint"      : "api/v1/student/report/:id",
+      "method"        : "PUT",
+      "purpose"       : "edit latest report",
+      "type"          : "report",
+      "header"        : {
+        "content-type": "application/json"
+      },
+      "body"          : {
+        "title"       : "report_title",
+        "message"     : "report_message",
+        "file"        : "report_file"
+      }
+    },
+
+    {
+      "endpoint"      : "api/v1/student/report/:id/file",
+      "method"        : "POST",
+      "purpose"       : "add report file",
+      "type"          : "report",
+      "header"        : {
+        "content-type": "application/json"
+      },
+      "body"          : {
+        "id"          : "report_id",
+        "filename"    : "report_filename",
+        "url"         : "report_fileurl"
+      }
+    }
+
+    {
+      "endpoint"      : "api/v1/student/broadcasts",
+      "method"        : "GET",
+      "purpose"       : "retrieve all brodcasted messages",
+      "type"          : "broadcast",
+      "response"      : {
+        "status"      : "OK",
+        "data"        : [{
+          "id"          : "broadcast_message_id",
+          "title"       : "broadcast_message_title",
+          "body"        : "broadcast_message_body"
+        }]
+      }
+    },
+
+    {
+      "endpoint"      : "api/v1/student/broadcast/:id",
+      "method"        : "GET",
+      "purpose"       : "retrieve specific broadcast message by id",
+      "type"          : "broadcast",
+      "response"      : {
+        "status"      : "OK",
+        "data"        : {
+          "id"          : "broadcast_message_id",
+          "title"       : "broadcast_message_title",
+          "body"        : "broadcast_message_body"
+        }
+      }
+    },
+
+    {
+      "endpoint"      : "api/v1/student/inbox/messages",
+      "method"        : "GET",
+      "purpose"       : "retrieve all incoming messages",
+      "type"          : "message",
+      "response"      : {
+        "status"      : "OK",
+        "data"        : [{
+          "id"        : "message_id",
+          "sender"    : "message_sender",
+          "date"      : "message_sent",
+          "title"     : "message_title",
+          "body"      : "message_body"
+        }]
+      }
+    },
+
+    {
+      "endpoint"      : "api/v1/student/inbox/message/:id",
+      "method"        : "GET",
+      "purpose"       : "retrieve single message by id",
+      "type"          : "message",
+      "response"      : {
+        "status"      : "OK",
+        "data"        : {
+          "id"        : "message_id",
+          "sender"    : "message_sender",
+          "date"      : "message_sent",
+          "title"     : "message_title",
+          "body"      : "message_body"
+        }
+      }
+    },
+
+    {
+      "endpoint"      : "api/v1/student/inbox/message/:id",
+      "method"        : "DELETE",
+      "purpose"       : "delete single message by id",
+      "type"          : "message",
+      "response"      : {
+        "status"      : "OK",
+        "message"     : "message deleted"
+      }
+    }
+
+    {
+      "endpoint"      : "api/v1/student/outbox/messages",
+      "method"        : "GET",
+      "purpose"       : "retrieve all outcoming messages",
+      "type"          : "message",
+      "response"      : [{
+        "id"          : "message_id",
+        "receiver"    : "message_receiver",
+        "date"        : "message_sent",
+        "title"       : "message_title",
+        "body"        : "message_body"
+      }]
+    },
+
+    {
+      "endpoint"      : "api/v1/student/outbox/message/:id",
+      "method"        : "GET",
+      "purpose"       : "retrieve single outcoming message by id",
+      "type"          : "message",
+      "response"      : {
+        "id"          : "message_id",
+        "receiver"    : "message_receiver",
+        "date"        : "message_sent",
+        "title"       : "message_title",
+        "body"        : "message_body"
+      }
+    },
+
+    {
+      "endpoint"      : "api/v1/student/outbox/message",
+      "method"        : "POST",
+      "purpose"       : "send a single message",
+      "type"          : "message",
+      "headers"       : {
+        "content-type": "application/json"
+      },
+      "body"          : {
+        "id"          : "message_id",
+        "receiver"    : "message_receiver",
+        "date"        : "message_sent",
+        "title"       : "message_title",
+        "body"        : "message_body"
+      },
+      "response"      : {
+        "status"      : "OK",
+        "message"     : "message sent"
+      }
+    },
+
+    {
+      "endpoint"      : "api/v1/student/outbox/message/:id",
+      "method"        : "DELETE",
+      "purpose"       : "delete single outcoming message by id",
+      "type"          : "message",
+      "response"      : {
+        "status"      : "OK",
+        "message"     : "message deleted"
+      }
+    }
+  ],
+
+
+  "lecturer":[
+    {
+      "endpoint"      : "api/v1/lecturer",
+      "method"        : "POST",
+      "purpose"       : "create a single lecturer",
+      "headers"       : {
+        "content-type":"application/json"
+      },
+      "body"          : {
+        "username"    : "string",
+        "email"       : "string"
+      },
+      "response"      : {
+        "status"      :"OK",
+        "message"     :"lecturer created"
+      }
+    },
+
+    {
+      "endpoint"      :"api/v1/lecturers",
+      "method"        :"retrieve",
+      "purpose"       : "retrieve all lecturers",
+      "response"      : {
+        "status"      : "OK",
+        "data"        : "all lecturers"
+      }
+    },
+
+    {
+      "endpoint"      : "api/v1/lecturer/:username",
+      "method"        : "retrieve",
+      "purpose"       : "retrieve lecturer by username",
+      "response"      : {
+        "status"      : "OK",
+        "data"        : "lecturer with certain nim"
+      }
+    },
+
+    {
+      "endpoint"      : "api/v1/lecturer/:username",
+      "method"        : "PUT",
+      "purpose"       : "update single lecturer by username",
+      "headers"       : {
+        "content-type":"application/json"
+      },
+      "body"          : {
+        "username"    : "string",
+        "email"       : "string"
+      },
+      "response"      : {
+        "status"      : "OK",
+        "message"     : "lecturer updated"
+      }
+    },
+
+    {
+      "endpoint"      : "api/v1/lecturer/:nim",
+      "method"        : "DELETE",
+      "purpose"       : "delete a lecturer by username",
+      "response"      : {
+        "status"      : "OK",
+        "message"     : "lecturer deleted"
+      }
+    },
+  ],
+
+  "kaprodi"           : [
+
+  ],
+
+  "admin"             : [
+
+  ],
+
+
+}
