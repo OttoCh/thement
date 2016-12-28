@@ -9,9 +9,11 @@ router.use(function(req, res, next){
 })
 
 router.get('/', student.getIndex)
+
 router.post('/', student.addStudent)
 router.post('/login', student.stdLogin)
 router.post('/logout', student.stdLogout)
+
 router.get('/activation/:link', student.activateStudent)
 
 module.exports = router

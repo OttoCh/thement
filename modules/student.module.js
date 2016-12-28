@@ -5,10 +5,18 @@ var express       = require('express'),
     Student       = require('../models/student.model'),
     app           = express()
 
+app.use(session({
+  resave: true,
+  saveUninitialized: true,
+  secret: '8sayfh3ruh2893hr',
+  cookie: { maxAge: 60000 }
+}));
+
 var key = '99u9d9h23h9fas9ah832hr'
 var encryptor = require('simple-encryptor')(key)
 
 exports.getIndex = function(req, res){
+  console.log(req.session.student)
   res.json({
     "Status":"OK",
     "Message":"api/v1/student"
@@ -110,11 +118,12 @@ exports.stdLogin = function(req, res){
         console.log('check for decrypting')
         let decrypted = encryptor.decrypt(found.password)
         if(pass == decrypted){
-          req.session.student = found.nim
+          let nim = found.nim
+          req.session.student = nim.toString()
           console.log('Logged in as ', req.session.student)
           res.json({
             "Status":"OK",
-            "Message":"Logged in"
+            "Message":"Logged in as " + nim
           })
         } else {
           console.log('password wrong')
@@ -141,5 +150,10 @@ exports.stdLogin = function(req, res){
 }
 
 exports.stdLogout = function(req, res){
-  console.log('logout')
+  delete req.session.student
+  console.log('logged out')
+  res.json({
+    "Status":"OK",
+    "Message":"Logged out"
+  })
 }
