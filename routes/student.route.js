@@ -23,6 +23,8 @@ router.post('/', student.addStudent)
 router.post('/login', student.stdLogin)
 router.post('/logout', student.stdLogout)
 
+router.post('/resetpassword', student.requestPasswordChange)
+router.post('/resetpassword/:link', student.activatePasswordChange)
 router.get('/activation/:link', student.activateStudent)
 
 router.use(isLoggedIn)

@@ -12,7 +12,8 @@ app.use(session({
   cookie: { maxAge: 60000 }
 }));
 
-var key = '99u9d9h23h9fas9ah832hr'
+var key       = '99u9d9h23h9fas9ah832hr'
+var baseurl   = 'http://localhost:3500/api/v1/student/'
 var encryptor = require('simple-encryptor')(key)
 
 exports.getIndex = function(req, res){
@@ -146,6 +147,31 @@ exports.stdLogin = function(req, res){
       })
     }
   })
+}
+
+exports.requestPasswordChange = function(req, res){
+  let nim   = req.body.nim,
+      email = req.body.email
+  Student.findOne({$and : [{nim: nim}, {email: email}]}, function(err, found){
+    if(found){
+      console.log('user is : ' + found.nim + ' email : ' + found.email)
+      let url = baseurl + 'resetpassword/' + found.passwordreset_link
+      res.json({
+        "Status":"OK",
+        "Message":"NIM & email match. Reset link : " + url
+      })
+    } else {
+      console.log('NIM / email not found')
+      res.json({
+        "Status":"Error",
+        "Message":"NIM / email not found"
+      })
+    }
+  })
+}
+
+exports.activatePasswordChange = function(req, res){
+
 }
 
 exports.stdLogout = function(req, res){
