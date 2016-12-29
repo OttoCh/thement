@@ -11,6 +11,7 @@ var express         = require('express'),
 mongoose.connect('mongodb://127.0.0.1:27017/tugasakhir')
 
 app.all('/api/v1/*', [require('./middlewares/auth')])
+
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.use(cookieParser())
