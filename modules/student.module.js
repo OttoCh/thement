@@ -19,10 +19,14 @@ var encryptor = require('simple-encryptor')(key)
 
 exports.getIndex = function(req, res){
   console.log("Session : ", req.session.student)
-  res.json({
-    "Status":"OK",
-    "Message":"api/v1/student",
-    "Session": req.session.student
+  res.format({
+    json: function(){
+
+    },
+    html: function(){
+      let caption = "Student"
+      res.render('student/login', {title:"Student login", caption:caption})
+    }
   })
 }
 

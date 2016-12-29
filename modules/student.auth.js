@@ -26,10 +26,17 @@ exports.stdLogin = function(req, res){
         }, function(err, success){
           if(success){
             console.log('Logged in as ', req.session.student)
-            res.json({
-              "Status":"OK",
-              "Message":"Logged in as " + nim,
-              "Last login": new Date
+            res.format({
+              json: function(){
+                res.json({
+                  "Status":"OK",
+                  "Message":"Logged in as " + nim,
+                  "Last login": new Date
+                })
+              },
+              html: function(){
+                res.render('student/home', {title: "Dashboard ", nim:nim})
+              }
             })
           } else {
             console.log('error update last_login')
