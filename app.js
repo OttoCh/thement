@@ -1,8 +1,10 @@
 var express         = require('express'),
+    redis           = require('redis'),
     session         = require('express-session'),
-    MongoStore      = require('connect-mongo')(session),
+    redisStore      = require('connect-redis')(session),
     methodOverride  = require('method-override'),
     mongoose        = require('mongoose'),
+    client          = redis.createClient(),
     cookieParser    = require('cookie-parser'),
     bodyParser      = require('body-parser'),
     http            = require('http'),
@@ -12,19 +14,17 @@ mongoose.connect('mongodb://127.0.0.1:27017/tugasakhir')
 
 app.all('/api/v1/*', [require('./middlewares/auth')])
 
+app.use(session({
+  secret: 'idf032nasd',
+  store: new redisStore({host: 'localhost', port: 6379, client:client, ttl: 260}),
+  saveUninitialized: false,
+  resave: false
+}))
+
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.use(cookieParser())
 app.use(methodOverride('X-HTTP-Method-Override'))
-
-app.use(session({
-  secret: 'faeb4453e5d14fe6f6d04637f78077c76c73d1b4a98us8h2',
-  proxy: true,
-  resave: true,
-  saveUninitialized: true,
-  store: new MongoStore({ url: 'mongodb://localhost:27017/tugasakhir'})
-  })
-);
 
 var student         = require('./routes/student.route')
 var admin           = require('./routes/admin.route')

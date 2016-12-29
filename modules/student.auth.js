@@ -1,5 +1,5 @@
-var key       = '99u9d9h23h9fas9ah832hr'
-var encryptor = require('simple-encryptor')(key)
+var key           = '99u9d9h23h9fas9ah832hr'
+var encryptor     = require('simple-encryptor')(key)
 var Student       = require('../models/student.model')
 
 exports.stdLogin = function(req, res){
@@ -19,7 +19,7 @@ exports.stdLogin = function(req, res){
         let decrypted = encryptor.decrypt(found.password)
         if(pass == decrypted){
           let nim = found.nim
-          req.session.student = nim.toString()
+          req.session.student = nim
           Student.update({nim: nim}, {$set: {
             last_login: new Date
           },
@@ -61,10 +61,14 @@ exports.stdLogin = function(req, res){
 }
 
 exports.stdLogout = function(req, res){
-  delete req.session.student
-  console.log('logged out')
-  res.json({
-    "Status":"OK",
-    "Message":"Logged out"
-  })
+  req.session.destroy(function(err){
+    if(err){
+        console.log(err);
+    } else {
+        res.json({
+          "Status":true,
+          "Message":"Logged out"
+        })
+    }
+  });
 }
