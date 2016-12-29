@@ -6,6 +6,7 @@ var express       = require('express'),
     app           = express()
 
 /* TODO:
+  [ ] Function        : Beautify way to fetch data from mongodb
   [ ] Authentication  : user credentials
   [ ] Authorization   : user role, accesses
 */
