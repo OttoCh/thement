@@ -8,6 +8,7 @@ var express         = require('express'),
     cookieParser    = require('cookie-parser'),
     bodyParser      = require('body-parser'),
     http            = require('http'),
+    morgan          = require('morgan'),
     app             = express()
 
 mongoose.connect('mongodb://127.0.0.1:27017/tugasakhir')
@@ -25,6 +26,7 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.use(cookieParser())
 app.use(methodOverride('X-HTTP-Method-Override'))
+app.use(morgan('dev'))
 
 var student         = require('./routes/student.route')
 var admin           = require('./routes/admin.route')
