@@ -8,7 +8,8 @@ var express       = require('express'),
 /* TODO:
   [ ] Function        : Beautify way to fetch data from mongodb
   [ ] Authentication  : user credentials
-  [ ] Authorization   : user role, accesses
+  [ ] Authorization   : user role, access level
+  [ ] StatusCode      : each message in json should include statusCode
 */
 
 var key       = '99u9d9h23h9fas9ah832hr'
