@@ -13,7 +13,13 @@ var studentSchema = new Schema ({
   passwordreset_link: String,
   has_resetpass: Boolean,
   inactive_password: String,
-  profile: String
+  profile: {
+    first_name: String,
+    last_name: String,
+    gender: String,
+    birthday: String,
+    address: String
+  }
 })
 
 module.exports = mongoose.model('Student', studentSchema)

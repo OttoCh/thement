@@ -53,7 +53,11 @@ exports.addStudent = function(req, res){
   std.inactive_password   = ""
   std.activation_link     = link
   std.passwordreset_link  = link2
-  std.profile             = ""
+  std.profile.first_name  = ""
+  std.profile.last_name   = ""
+  std.profile.gender      = ""
+  std.profile.address     = ""
+  std.profile.birthday    = ""
 
   Student.findOne({nim: std.nim}, function(err, exist){
     if(exist){
@@ -326,18 +330,15 @@ exports.stdLogout = function(req, res){
 }
 
 exports.updateProfile = function(req, res){
-  let params = req.params.nim,
-      nim    = req.session.student
-  Student.findOne({nim: params}, function(err, success){
+  let nimToUpdate = req.session.student
+  Student.findOne({nim: nimToUpdate}, function(err, success){
     if(success){
-      Student.update({nim: nim}, {$set: {
-        profile: {
-          "first_name": req.body.first_name,
-          "last_name": req.body.last_name,
-          "gender": req.body.gender,
-          "birthday": req.body.birthday,
-          "address": req.body.address
-        }
+      Student.update({nim: nimToUpdate}, {$set: {
+        'profile.first_name': req.body.first_name,
+        'profile.last_name': req.body.last_name,
+        'profile.gender': req.body.gender,
+        'profile.address': req.body.address,
+        'profile.birthday': req.body.birthday
       },
     }, function(err, succeed){
       if(succeed){

@@ -33,7 +33,7 @@ function isLoggedIn(req,res,next){
 router.use(isLoggedIn)
 
 router.put('/changepassword', student.changePassword)
-router.put('/:nim', student.updateProfile)
+router.post('/changeprofile', student.updateProfile)
 
 router.get('/test', function(req, res){
   res.send('test login')
