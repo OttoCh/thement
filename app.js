@@ -27,10 +27,12 @@ app.use(session({
 );
 
 var student         = require('./routes/student.route')
+var admin           = require('./routes/admin.route')
 var index           = require('./routes/index.route')
 
 app.use('/', index)
 app.use('/api/v1/student', student)
+app.use('/api/v1/admin', admin)
 
 app.listen(3500)
 console.log('Thement running at 3500')
