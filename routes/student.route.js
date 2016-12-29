@@ -14,8 +14,9 @@ router.get('/', student.getIndex)
 router.post('/register', student.addStudent)
 router.post('/login', student.stdLogin)
 router.post('/logout', student.stdLogout)
-
 router.post('/resetpassword', student.requestPasswordChange)
+router.post('/requestconfirmation', student.requestConfirmation)
+
 router.get('/resetpassword/:link', student.activatePasswordChange)
 router.get('/activation/:link', student.activateStudent)
 

@@ -116,6 +116,36 @@ exports.activateStudent = function(req, res){
   })
 }
 
+exports.requestConfirmation = function(req, res){
+  let nim   = req.body.nim,
+      email = req.body.email
+  if(nim !== '' && email !== ''){
+    Student.findOne({$and : [{nim: nim}, {email: email}]}, function(err, found){
+        if(found){
+          console.log('sending confirmation email')
+          // TODO: sending activation_link via email
+          res.json({
+            "Status":"OK",
+            "Message":"A confirmation link will be sent via email"
+          })
+        } else {
+          console.log('NIM / Email not found')
+          res.json({
+            "Status":"Error",
+            "Message":"NIM / email not found"
+          })
+        }
+      }
+    )
+  } else {
+    console.log('nim and email should not left empty')
+    res.json({
+      "Status":"Error",
+      "Message":"NIM and Email should not left empty"
+    })
+  }
+}
+
 exports.stdLogin = function(req, res){
   // TODO: Login with token, generate random strings and numbers
   /*
@@ -270,7 +300,7 @@ exports.changePassword = function(req, res){
   let nimToChange = req.session.student,
       oldPass     = req.body.old_pass,
       newPass     = req.body.new_pass
-  if(oldPass !== '' & newPass !== ''){
+  if(oldPass !== '' && newPass !== ''){
     Student.findOne({nim: nimToChange}, function(e, s){
       if(s){
         let decrypted = encryptor.decrypt(s.password)
