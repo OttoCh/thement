@@ -1,0 +1,20 @@
+include ../static/layout
+head
+  link(rel='stylesheet', href='/static/css/login.css')
+
+body
+  div(class='container')
+  center
+    h3 
+      span.label.label-primary Student
+    form(action='login', method='post', class='form-signin')
+      h2(class='form-signin-heading') Please log in
+      label(for='inputEmail', class='sr-only') Username
+      input(type='text', id='inputEmail', name='username', class='form-control' placeholder='your username' required autofocus)
+      label(for='inputPassword', class='sr-only') Password
+      input(type='password', id='inputPassword', name='password', class='form-control', placeholder='your password' required)
+      button(class='btn btn-lg btn-primary btn-block', type='submit') Login
+      p 
+        center 
+        | Don't have an account? Register 
+        a(href='#') here

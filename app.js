@@ -8,6 +8,8 @@ var express         = require('express'),
     cookieParser    = require('cookie-parser'),
     bodyParser      = require('body-parser'),
     http            = require('http'),
+    jade            = require('jade'),
+    path            = require('path'),
     morgan          = require('morgan'),
     app             = express()
 
@@ -27,13 +29,19 @@ app.use(bodyParser.json())
 app.use(cookieParser())
 app.use(methodOverride('X-HTTP-Method-Override'))
 app.use(morgan('dev'))
+app.use('/static', express.static('public'));
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade')
 
+var student_apis    = require('./routes/api.student.route')
 var student         = require('./routes/student.route')
+
 var admin           = require('./routes/admin.route')
 var index           = require('./routes/index.route')
 
 app.use('/', index)
-app.use('/api/v1/student', student)
+app.use('/student', student)
+app.use('/api/v1/student', student_apis)
 app.use('/api/v1/admin', admin)
 
 app.listen(3500)
