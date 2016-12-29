@@ -10,6 +10,7 @@ var express       = require('express'),
   [ ] Authentication  : user credentials
   [ ] Authorization   : user role, access level
   [ ] StatusCode      : each message in json should include statusCode
+  [ ] Use try catch(err) instead of if else
 */
 
 var key       = '99u9d9h23h9fas9ah832hr'
