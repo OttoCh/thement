@@ -11,10 +11,10 @@ module.exports = function(req, res, next){
   let secretKey = secretKeys.key
   var token   = req.headers['x-access-key']
   let key     = req.headers['x-secret-key']
-  if ((token == accessKeys[0] || token == accessKeys[1] || token == accessKeys[2] || token == accessKeys[3] || token == accessKeys[4] || token == accessKeys[5]) && key == secretKey)
+
+  if(accessKeys.indexOf(token) > -1 && key == secretKey)
     {
     try {
-      console.log(secretKey)
       next()
     } catch (err) {
       res.status(500);
