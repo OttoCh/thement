@@ -4,11 +4,11 @@ var express       = require('express'),
     app           = express()
 
 // still hardcode, need to generate
-var tokenValid = 'tokenFisikaITB'
+var tokenValids = ['tokenfisikaITB', 'ITBfisikatoken', 'fisikaITBtoken']
 
 module.exports = function(req, res, next){
   var token   = req.headers['x-access-key']
-  if (token == tokenValid) {
+  if (token == tokenValids[0] || token == tokenValids[1] || token == tokenValids[2]) {
     try {
       next()
     } catch (err) {
