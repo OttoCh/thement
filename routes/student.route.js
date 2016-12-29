@@ -1,7 +1,8 @@
 var express   = require('express'),
     router    = express.Router()
 
-var student   = require('../modules/student.module')
+var student   = require('../modules/student.module'),
+    loggedin  = require('../middlewares/loggedin')
 
 router.use(function(req, res, next){
   console.log('%s %s [%s]', req.method, req.url, res.statusCode.toString())
@@ -18,25 +19,10 @@ router.post('/resetpassword', student.requestPasswordChange)
 router.get('/resetpassword/:link', student.activatePasswordChange)
 router.get('/activation/:link', student.activateStudent)
 
-
-// TODO: isLoggedIn still buggy
-function isLoggedIn(req,res,next){
-    if(!req.session.student){
-      console.log('unauthorized access!')
-      res.send('unauthorized access! please login first')
-    } else {
-      next();
-    }
-  }
-
 /* LOGGED IN ONLY ACCESS */
-router.use(isLoggedIn)
+router.use(loggedin)
 
 router.put('/changepassword', student.changePassword)
 router.post('/changeprofile', student.updateProfile)
-
-router.get('/test', function(req, res){
-  res.send('test login')
-})
 
 module.exports = router
