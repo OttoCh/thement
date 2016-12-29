@@ -17,11 +17,13 @@ app.use(cookieParser())
 app.use(methodOverride('X-HTTP-Method-Override'))
 
 app.use(session({
+  secret: 'faeb4453e5d14fe6f6d04637f78077c76c73d1b4a98us8h2',
+  proxy: true,
   resave: true,
   saveUninitialized: true,
-  secret: '8sayfh3ruh2893hr',
-  cookie: { maxAge: 60000 }
-}));
+  store: new MongoStore({ url: 'mongodb://localhost:27017/tugasakhir'})
+  })
+);
 
 var student         = require('./routes/student.route')
 var index           = require('./routes/index.route')

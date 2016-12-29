@@ -21,28 +21,6 @@
     },
 
     {
-      "endpoint"      :"api/v1/students",
-      "method"        :"GET",
-      "purpose"       : "retrieve all students",
-      "type"          : "profile",
-      "response"      : {
-        "status"      : "OK",
-        "data"        : "all students"
-      }
-    },
-
-    {
-      "endpoint"      : "api/v1/student/:nim",
-      "method"        : "GET",
-      "purpose"       : "retrieve all students",
-      "type"          : "profile",
-      "response"      : {
-        "status"      : "OK",
-        "data"        : "student with certain nim"
-      }
-    },
-
-    {
       "endpoint"      : "api/v1/student/:nim",
       "method"        : "PUT",
       "purpose"       : "update single user by nim",
@@ -59,6 +37,11 @@
         "message"     : "student updated"
       }
     },
+
+    {
+      "endpoint"      : "api/v1/student/changepassword",
+      "method"        : "PUT",
+    }
 
     {
       "endpoint"      : "api/v1/student/:nim",
@@ -407,6 +390,27 @@
   ],
 
   "admin"             : [
+    {
+      "endpoint"      :"api/v1/students",
+      "method"        :"GET",
+      "purpose"       : "retrieve all students",
+      "type"          : "profile",
+      "response"      : {
+        "status"      : "OK",
+        "data"        : "all students"
+      }
+    },
+
+    {
+      "endpoint"      : "api/v1/student/:nim",
+      "method"        : "GET",
+      "purpose"       : "retrieve single by nim",
+      "type"          : "profile",
+      "response"      : {
+        "status"      : "OK",
+        "data"        : "student with certain nim"
+      }
+    },
 
   ],
 

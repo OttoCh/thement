@@ -28,8 +28,11 @@ function isLoggedIn(req,res,next){
       next();
     }
   }
-//router.use(isLoggedIn)
 
+/* LOGGED IN ONLY ACCESS */
+router.use(isLoggedIn)
+
+router.put('/changepassword', student.changePassword)
 router.put('/:nim', student.updateProfile)
 
 router.get('/test', function(req, res){

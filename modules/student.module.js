@@ -5,12 +5,10 @@ var express       = require('express'),
     Student       = require('../models/student.model'),
     app           = express()
 
-app.use(session({
-  resave: true,
-  saveUninitialized: true,
-  secret: '8sayfh3ruh2893hr',
-  cookie: { maxAge: 60000 }
-}));
+/* TODO:
+  [ ] Authentication  : user credentials
+  [ ] Authorization   : user role, accesses
+*/
 
 var key       = '99u9d9h23h9fas9ah832hr'
 var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
@@ -115,6 +113,13 @@ exports.activateStudent = function(req, res){
 }
 
 exports.stdLogin = function(req, res){
+  // TODO: Login with token, generate random strings and numbers
+  /*
+    Example: PAYLOAD VALUES
+    1. User identification  : ID, Display name, avatar, NIM
+    2. Token metadata       : IssuedAt, expires, session ID
+  */
+
   let nim   = req.body.nim,
       pass  = req.body.password
   Student.findOne({nim: nim}, function(err, found){
@@ -255,6 +260,60 @@ exports.activatePasswordChange = function(req, res){
       })
     }
   })
+}
+
+exports.changePassword = function(req, res){
+  let nimToChange = req.session.student,
+      oldPass     = req.body.old_pass,
+      newPass     = req.body.new_pass
+  if(oldPass !== '' & newPass !== ''){
+    Student.findOne({nim: nimToChange}, function(e, s){
+      if(s){
+        let decrypted = encryptor.decrypt(s.password)
+        if(oldPass == decrypted){
+        let encrypted = encryptor.encrypt(newPass)
+          Student.update({nim: nimToChange}, {$set: {
+            password: encrypted
+          },
+        },
+          function(err, success){
+            if(success){
+              console.log('Password has been changed.')
+              res.json({
+                "Status":"OK",
+                "Message":"Password has been changed"
+              })
+            } else {
+              console.log('Failed to change password')
+              res.json({
+                "Status":"Error",
+                "Message":"Failed to change password"
+              })
+            }
+          }
+        )
+        } else {
+          console.log('Old password is wrong. Try again')
+          res.json({
+            "Status":"Error",
+            "Message":"Wrong old password"
+          })
+        }
+      } else {
+        console.log('NIM not found')
+        res.json({
+          "Status":"Error",
+          "Message":"NIM not found"
+        })
+      }
+    })
+  } else {
+    console.log('empty')
+    res.json({
+      "Status":"Error",
+      "Message":"Body should not left empty"
+    })
+  }
 }
 
 exports.stdLogout = function(req, res){
