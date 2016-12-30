@@ -30,6 +30,7 @@
     "morgan":"1.7.0",
     "redis":"2.6.3",
     "connect-redis":"3.2.0",
-    "jade":"1.11.0"
+    "jade":"1.11.0",
+    "emailjs":"1.0.8"
   }
 }

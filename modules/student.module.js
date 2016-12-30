@@ -3,7 +3,14 @@ var express       = require('express'),
     MongoStore    = require('connect-mongo')(session),
     mongoose      = require('mongoose')
     Student       = require('../models/student.model'),
-    app           = express()
+    app           = express(),
+    email         = require('emailjs/email'),
+    server        = email.server.connect({
+      user: "winistein@gmail.com",
+      password: "W1LD4N5N",
+      host: "smtp.gmail.com",
+      ssl: true
+    })
 
 /* TODO:
   [ ] Function        : Beautify way to fetch data from mongodb
@@ -218,6 +225,16 @@ exports.addStudent = function(req, res){
           }
           else {
             // everything's okay, send activation_link through email
+            let activate_link = baseurl+'/account/activation/'+link
+            let email         = std.email
+            console.log('link to activate : ', activate_link)
+            server.send({
+              subject:"[Welcome to thement] - "+nim,
+              text:"Please click here to activate your account : "+activate_link + "\n \n <strong >Administrator Thement Fisika ITB </strong>",
+              to:"Wildan <"+email+">",
+              from:"[FISIKA ITB] <notification@fi.itb.ac.id>"
+            })
+            console.log('An email was sent to ', email)
             res.format({
               json: function(){
                 res.json({
@@ -334,8 +351,15 @@ exports.requestPasswordChange = function(req, res){
               },
             }, function(err, success){
               if(success){
+                let email = found.email
                 console.log('inactive_pass : ' + inactive_pass + 'reset link : ' + url)
-                // TODO: send via email
+                server.send({
+                  subject:"[Reset Password] - "+nim,
+                  text:"Here is your new password : " + inactive_pass + " \n Click here to reset your password : "+url + "\n \n <strong >Administrator Thement Fisika ITB </strong>",
+                  to:"<"+email+">",
+                  from:"[FISIKA ITB] <notification@fi.itb.ac.id>"
+                })
+                console.log('An reset password email was sent to', email)
                 res.redirect('./forget_pass/sent')
               } else {
                 console.log('error creating inactive_password')
