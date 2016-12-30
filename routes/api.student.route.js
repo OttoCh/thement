@@ -15,7 +15,7 @@ router.get('/logout', auth.stdLogout)
 
 router.post('/register', student.addStudent)
 router.post('/resetpassword', student.requestPasswordChange)
-router.post('/requestconfirmation', student.requestConfirmation)
+router.post('/requestconfirmation', student.resendConfirmation)
 
 router.get('/resetpassword/:link', student.activatePasswordChange)
 router.get('/activation/:link', student.activateStudent)

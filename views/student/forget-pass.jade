@@ -18,18 +18,19 @@ body
       input(type='number', id='inputEmail', name='nim', class='form-control' placeholder='your NIM' required autofocus)
       label(for='inputPassword', class='sr-only') Email
       input(type='email', id='inputPassword', name='email', class='form-control', placeholder='your Email' required)
+      br
       button(class='btn btn-lg btn-primary btn-block', type='submit') Reset password
       p 
         center 
         | Don't have an account? Register
-        a(href='register')  here  
+        a(href='#{baseurl}/register')  here  
         br
         hr
         | Already have an account? Login 
         a(href='#{baseurl}') here
         br
         | Account not activated yet? Click 
-        a(href='#') here
+        a(href='#{baseurl}/account/resend_activation') here
       p
         center
         if(code !== '')

@@ -86,6 +86,14 @@ exports.getPassResetSuccess = function(req, res){
   res.render('student/password_sent', {title:"Password sent", caption:caption, baseurl:baseurl})
 }
 
+exports.getResendActivation = function(req, res){
+  res.render('student/resend-activation', {title:"Resend activation link", caption:caption, baseurl:baseurl})
+}
+
+exports.getResendSuccess = function(req, res){
+  res.render('student/activation_sent', {title:"Reactivation link sent", caption:caption, baseurl:baseurl})
+}
+
 exports.addStudent = function(req, res){
   var code
   var pass1   = req.body.password,
@@ -295,34 +303,48 @@ exports.activateStudent = function(req, res){
   })
 }
 
-exports.requestConfirmation = function(req, res){
+exports.resendConfirmation = function(req, res){
   let nim   = req.body.nim,
       email = req.body.email
-  if(nim !== '' && email !== ''){
-    Student.findOne({$and : [{nim: nim}, {email: email}]}, function(err, found){
-        if(found){
-          console.log('sending confirmation email')
-          // TODO: sending activation_link via email
-          res.json({
-            "Status":"OK",
-            "Message":"A confirmation link will be sent via email"
-          })
-        } else {
-          console.log('NIM / Email not found')
+  Student.findOne({$and : [{nim: nim}, {email: email}]}, function(err, found){
+    if(found){
+        console.log('nim and email found ' + nim + ' ' + email)
+        let reactivate = found.activation_link
+        let link       = baseurl+'/account/activation/'+reactivate
+        server.send({
+          subject:"[Resend activate_link] - "+nim,
+          text:"Please click here to activate your account : "+ link + "\n \n Administrator Thement Fisika ITB",
+          to:"<"+email+">",
+          from:"[FISIKA ITB] <notification@fi.itb.ac.id>"
+        })
+        console.log('A reactivate email was sent to ', email)
+        res.format({
+          json: function(){
+            res.json({
+              status:true,
+              message: 'Resend activated link'
+            })
+          },
+          html: function(){
+            res.redirect('./resend_activation/sent')
+          }
+        })
+      } else {
+      console.log('NIM / email not found')
+      code = 'NIM / email not found'
+      res.format({
+        json: function(){
           res.json({
             "Status":"Error",
             "Message":"NIM / email not found"
           })
+        },
+        html: function(){
+          res.render('student/resend-activation', {title:"Resend activation link", caption:caption, baseurl:baseurl, code:code})
         }
-      }
-    )
-  } else {
-    console.log('nim and email should not left empty')
-    res.json({
-      "Status":"Error",
-      "Message":"NIM and Email should not left empty"
-    })
-  }
+      })
+    }
+  })
 }
 
 exports.requestPasswordChange = function(req, res){
