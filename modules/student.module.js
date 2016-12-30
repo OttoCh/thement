@@ -24,6 +24,10 @@ var express       = require('express'),
   [ ] StatusCode      : each message in json should include statusCode
 */
 
+// statusCode
+var registerCode  = ''
+var forgetCode    = ''
+
 var key         = '99u9d9h23h9fas9ah832hr'
 var possible    = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 var baseurl_api = 'http://localhost:3500/api/v1/student/'
@@ -52,7 +56,7 @@ exports.getLoginPage = function(req, res){
 }
 
 exports.getRegisterPage = function(req, res){
-  res.render('student/register', {title:"Register yourself", caption:caption, baseurl:baseurl, code:code, hiding:hiding})
+  res.render('student/register', {title:"Register yourself", caption:caption, baseurl:baseurl, registerCode:registerCode, hiding:hiding})
 }
 
 exports.getHome = function(req, res){
@@ -87,7 +91,7 @@ exports.getRegisterSuccess = function(req, res){
 }
 
 exports.getForgetPassPage = function(req, res){
-  res.render('student/forget-pass', {title:"Forget password", caption:caption, baseurl:baseurl, code:code, hiding:hiding})
+  res.render('student/forget-pass', {title:"Forget password", caption:caption, baseurl:baseurl, forgetCode:forgetCode, hiding:hiding})
 }
 
 exports.getPassResetSuccess = function(req, res){
@@ -125,8 +129,8 @@ exports.addStudent = function(req, res){
     res.format({
       html: function(){
         hiding = ''
-        code  = 'NIM should started by 102* and length is 8'
-        res.render('student/register', {title:"Register yourself", caption:caption, code:code, hiding:hiding})
+        registerCode  = 'NIM should started by 102* and length is 8'
+        res.render('student/register', {title:"Register yourself", caption:caption, registerCode:registerCode, hiding:hiding})
       },
       json: function(){
         res.json({
@@ -143,8 +147,8 @@ exports.addStudent = function(req, res){
     res.format({
       html: function(){
         hiding = ''
-        code  = 'Email should be : yourname@students.itb.ac.id or yourname@s.itb.ac.id'
-        res.render('student/register', {title:"Register yourself", caption:caption, code:code, hiding:hiding})
+        registerCode  = 'Email should be : yourname@students.itb.ac.id or yourname@s.itb.ac.id'
+        res.render('student/register', {title:"Register yourself", caption:caption, registerCode:registerCode, hiding:hiding})
       },
       json: function(){
         res.json({
@@ -161,8 +165,8 @@ exports.addStudent = function(req, res){
     res.format({
       html: function(){
         hiding = ''
-        code  = 'Password does not match!'
-        res.render('student/register', {title:"Register yourself", caption:caption, code:code, hiding:hiding})
+        registerCode  = 'Password does not match!'
+        res.render('student/register', {title:"Register yourself", caption:caption, registerCode:registerCode, hiding:hiding})
       },
       json: function(){
         res.json({
@@ -179,8 +183,8 @@ exports.addStudent = function(req, res){
     res.format({
       html: function(){
         hiding = ''
-        code  = 'Password not secure! Your password must contains strings and numbers in 5 characters length'
-        res.render('student/register', {title:"Register yourself", caption:caption, code:code, hiding:hiding})
+        registerCode  = 'Password not secure! Your password must contains strings and numbers in 5 characters length'
+        res.render('student/register', {title:"Register yourself", caption:caption, registerCode:registerCode, hiding:hiding})
       },
       json: function(){
         res.json({
@@ -234,8 +238,8 @@ exports.addStudent = function(req, res){
           },
           html: function(){
             hiding = ''
-            code  = 'NIM exist!'
-            res.render('student/register', {title:"Register yourself", caption:caption, code:code, hiding:hiding})
+            registerCode  = 'NIM exist!'
+            res.render('student/register', {title:"Register yourself", caption:caption, registerCode:registerCode, hiding:hiding})
           }
         })
       } else {
@@ -372,8 +376,7 @@ exports.resendConfirmation = function(req, res){
 
 exports.requestPasswordChange = function(req, res){
   let nim   = req.body.nim,
-      email = req.body.email,
-      code
+      email = req.body.email
   Student.findOne({$and : [{nim: nim}, {email: email}]}, function(err, found){
     if(found){
         if(found.is_active == true){
@@ -413,7 +416,7 @@ exports.requestPasswordChange = function(req, res){
           )
         } else {
            console.log('account not activated yet')
-           code = 'Student not activated. Please activate your account first'
+           forgetCode = 'Student not activated. Please activate your account first'
            res.format({
              json: function(){
                res.json({
@@ -422,13 +425,13 @@ exports.requestPasswordChange = function(req, res){
                })
              },
              html: function(){
-               res.render('student/forget-pass', {title:"Forget password", caption:caption, baseurl:baseurl, code:code})
+               res.render('student/forget-pass', {title:"Forget password", caption:caption, baseurl:baseurl, forgetCode:forgetCode})
              }
            })
         }
       } else {
       console.log('NIM / email not found')
-      code = 'NIM / email not found'
+      forgetCode = 'NIM / email not found'
       res.format({
         json: function(){
           res.json({
@@ -437,7 +440,7 @@ exports.requestPasswordChange = function(req, res){
           })
         },
         html: function(){
-          res.render('student/forget-pass', {title:"Forget password", caption:caption, baseurl:baseurl, code:code})
+          res.render('student/forget-pass', {title:"Forget password", caption:caption, baseurl:baseurl, forgetCode:forgetCode})
         }
       })
     }
