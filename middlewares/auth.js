@@ -12,7 +12,7 @@ module.exports = function(req, res, next){
   var token   = req.headers['x-access-key']
   let key     = req.headers['x-secret-key']
 
-  if(accessKeys.indexOf(token) > -1 && key == secretKey)
+  if(accessKeys.indexOf(token) > -1 || key == secretKey)
     {
     try {
       next()

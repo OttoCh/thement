@@ -1,6 +1,9 @@
-var key           = '99u9d9h23h9fas9ah832hr'
-var encryptor     = require('simple-encryptor')(key)
-var Student       = require('../models/student.model')
+var express       = require('express'),
+    request       = require('request'),
+    app           = express(),
+    key           = '99u9d9h23h9fas9ah832hr',
+    encryptor     = require('simple-encryptor')(key),
+    Student       = require('../models/student.model')
 
 exports.stdLogin = function(req, res){
   // TODO: Login with token, generate random strings and numbers
@@ -9,7 +12,6 @@ exports.stdLogin = function(req, res){
     1. User identification  : ID, Display name, avatar, NIM
     2. Token metadata       : IssuedAt, expires, session ID
   */
-
   let nim   = req.body.nim,
       pass  = req.body.password
   Student.findOne({nim: nim}, function(err, found){
@@ -35,7 +37,7 @@ exports.stdLogin = function(req, res){
                 })
               },
               html: function(){
-                res.render('student/home', {title: "Dashboard ", nim:nim})
+                res.redirect('./home')
               }
             })
           } else {
@@ -72,9 +74,16 @@ exports.stdLogout = function(req, res){
     if(err){
         console.log(err);
     } else {
-        res.json({
-          "Status":true,
-          "Message":"Logged out"
+        res.format({
+          json: function(){
+            res.send({
+              status:true,
+              message: "Logged out"
+            })
+          },
+          html: function(){
+            res.redirect('./login')
+          }
         })
     }
   });

@@ -17,7 +17,11 @@ var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 var baseurl   = 'http://localhost:3500/api/v1/student/'
 var encryptor = require('simple-encryptor')(key)
 
-exports.getIndex = function(req, res){
+exports.getIndex = function(req,res){
+  res.redirect('student/login')
+}
+
+exports.getLoginPage = function(req, res){
   console.log("Session : ", req.session.student)
   res.format({
     json: function(){
