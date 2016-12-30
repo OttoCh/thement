@@ -13,9 +13,13 @@ router.get('/login', student.getLoginPage)
 router.get('/logout', auth.stdLogout)
 router.get('/register/success', student.getRegisterSuccess)
 router.get('/account/activation/:link', student.activateStudent)
+router.get('/account/forget_pass', student.getForgetPassPage)
+router.get('/account/forget_pass/sent', student.getPassResetSuccess)
+router.get('/account/resetpassword/:link', student.activatePasswordChange)
 
 router.post('/login', auth.stdLogin)
 router.post('/register', student.addStudent)
+router.post('/account/forget_pass', student.requestPasswordChange)
 
 router.use(loggedin)
 router.get('/home', student.getHome)

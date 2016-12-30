@@ -31,13 +31,13 @@ exports.getLoginPage = function(req, res){
     },
     html: function(){
       let caption = "Student", code = ''
-      res.render('student/login', {title:"Student login", caption:caption, code:code})
+      res.render('student/login', {title:"Student login", caption:caption, code:code, baseurl:baseurl})
     }
   })
 }
 
 exports.getRegisterPage = function(req, res){
-  res.render('student/register', {title:"Register yourself", caption:caption})
+  res.render('student/register', {title:"Register yourself", caption:caption, baseurl:baseurl})
 }
 
 exports.getHome = function(req, res){
@@ -58,6 +58,14 @@ exports.getProfile = function(req, res){
 
 exports.getRegisterSuccess = function(req, res){
   res.render('student/register-success', {title:"Register success!", baseurl:baseurl})
+}
+
+exports.getForgetPassPage = function(req, res){
+  res.render('student/forget-pass', {title:"Forget password", caption:caption, baseurl:baseurl})
+}
+
+exports.getPassResetSuccess = function(req, res){
+  res.render('student/password_sent', {title:"Password sent", caption:caption, baseurl:baseurl})
 }
 
 exports.addStudent = function(req, res){
@@ -291,12 +299,13 @@ exports.requestConfirmation = function(req, res){
 
 exports.requestPasswordChange = function(req, res){
   let nim   = req.body.nim,
-      email = req.body.email
+      email = req.body.email,
+      code
   Student.findOne({$and : [{nim: nim}, {email: email}]}, function(err, found){
     if(found){
         if(found.is_active == true){
           console.log('user is : ' + found.nim + ' email : ' + found.email)
-          let url = baseurl + 'resetpassword/' + found.passwordreset_link
+          let url = baseurl + '/account/resetpassword/' + found.passwordreset_link
           let nimToReset = found.nim
 
           // TODO: make it to middleware
@@ -314,13 +323,9 @@ exports.requestPasswordChange = function(req, res){
               },
             }, function(err, success){
               if(success){
-                console.log('inactive_pass : ', inactive_pass)
+                console.log('inactive_pass : ' + inactive_pass + 'reset link : ' + url)
                 // TODO: send via email
-                res.json({
-                  "Status":"OK",
-                  "Message":"NIM & email match. Reset link : " + url,
-                  "Inactive Password": inactive_pass
-                })
+                res.redirect('./forget_pass/sent')
               } else {
                 console.log('error creating inactive_password')
               }
@@ -328,16 +333,32 @@ exports.requestPasswordChange = function(req, res){
           )
         } else {
            console.log('account not activated yet')
-           res.json({
-             "Status":"Error",
-             "Message":"Student not activated. Please activate your account first"
+           code = 'Student not activated. Please activate your account first'
+           res.format({
+             json: function(){
+               res.json({
+                 "Status":"Error",
+                 "Message":"Student not activated. Please activate your account first"
+               })
+             },
+             html: function(){
+               res.render('student/forget-pass', {title:"Forget password", caption:caption, baseurl:baseurl, code:code})
+             }
            })
         }
       } else {
       console.log('NIM / email not found')
-      res.json({
-        "Status":"Error",
-        "Message":"NIM / email not found"
+      code = 'NIM / email not found'
+      res.format({
+        json: function(){
+          res.json({
+            "Status":"Error",
+            "Message":"NIM / email not found"
+          })
+        },
+        html: function(){
+          res.render('student/forget-pass', {title:"Forget password", caption:caption, baseurl:baseurl, code:code})
+        }
       })
     }
   })
@@ -357,10 +378,17 @@ exports.activatePasswordChange = function(req, res){
       },
     }, function(err, success){
       if(success){
-        console.log('success reset password, new password : ', encrypted)
-        res.json({
-          "Status":"OK",
-          "Message":"Succeed reset password. New password : " + encrypted
+        console.log('success reset password, new password : ', newPass)
+        res.format({
+          json: function(){
+            res.json({
+              "Status":"OK",
+              "Message":"Succeed reset password. New password : " + newPass
+            })
+          },
+          html: function(){
+            res.render('student/resetpassword', {title: "Password has been reset", caption:caption, baseurl:baseurl, newPass:newPass})
+          }
         })
       } else {
         console.log('failed to reset password, reason : ', err)
