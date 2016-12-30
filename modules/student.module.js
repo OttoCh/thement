@@ -12,11 +12,12 @@ var express       = require('express'),
   [ ] StatusCode      : each message in json should include statusCode
 */
 
-var key       = '99u9d9h23h9fas9ah832hr'
-var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-var baseurl   = 'http://localhost:3500/api/v1/student/'
-var encryptor = require('simple-encryptor')(key),
-    caption   = 'Student'
+var key         = '99u9d9h23h9fas9ah832hr'
+var possible    = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+var baseurl_api = 'http://localhost:3500/api/v1/student/'
+var baseurl     = 'http://localhost:3500/student'
+  var encryptor = require('simple-encryptor')(key),
+      caption   = 'Student'
 
 exports.getIndex = function(req,res){
   res.redirect('student/login')
@@ -53,6 +54,10 @@ exports.getProfile = function(req, res){
       throw err
     }
   })
+}
+
+exports.getRegisterSuccess = function(req, res){
+  res.render('student/register-success', {title:"Register success!", baseurl:baseurl})
 }
 
 exports.addStudent = function(req, res){
@@ -193,6 +198,7 @@ exports.addStudent = function(req, res){
             res.send(err)
           }
           else {
+            // everything's okay, send activation_link through email
             res.format({
               json: function(){
                 res.json({
@@ -201,7 +207,7 @@ exports.addStudent = function(req, res){
                 })
               },
               html: function(){
-                res.send('activated')
+                res.redirect('./register/success')
               }
             })
           }
@@ -221,10 +227,18 @@ exports.activateStudent = function(req, res){
       },
     }, function (err, success){
       if(success){
+        let nim_success = nimToUpdate
         console.log('success update')
-        res.json({
-          "Status":"OK",
-          "Message":"Account activated"
+        res.format({
+          json: function(){
+            res.json({
+              "Status":"OK",
+              "Message":"Account activated"
+            })
+          },
+          html: function(){
+            res.render('student/activation-success', {title:"Your account is active!", nim_success:nim_success, baseurl:baseurl})
+          }
         })
       } else {
         console.log('actiovation failed, reason ', err)

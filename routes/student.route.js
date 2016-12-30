@@ -11,6 +11,8 @@ router.get('/', student.getIndex)
 router.get('/register', student.getRegisterPage)
 router.get('/login', student.getLoginPage)
 router.get('/logout', auth.stdLogout)
+router.get('/register/success', student.getRegisterSuccess)
+router.get('/account/activation/:link', student.activateStudent)
 
 router.post('/login', auth.stdLogin)
 router.post('/register', student.addStudent)
