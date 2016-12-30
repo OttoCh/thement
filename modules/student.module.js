@@ -69,6 +69,9 @@ exports.addStudent = function(req, res){
       return false;
     }
   }
+  let email = req.body.email,
+         s1 = email.indexOf('@students.itb.ac.id'),
+         s2 = email.indexOf('@s.itb.ac.id')
 
   // NIM validation
   if(!isPhysics(nim) || nim.length !== 8){
@@ -82,6 +85,23 @@ exports.addStudent = function(req, res){
         res.json({
           status:false,
           message: 'NIM not valid'
+        })
+      }
+    })
+  }
+
+  // Email validation
+  else if(s1 < 0 && s2 < 0){
+    console.log('Invalid email', email)
+    res.format({
+      html: function(){
+        code  = 'Email should be : yourname@students.itb.ac.id or yourname@s.itb.ac.id'
+        res.render('student/register', {title:"Register yourself", caption:caption, code:code})
+      },
+      json: function(){
+        res.json({
+          status:false,
+          message: 'Email not valid'
         })
       }
     })
