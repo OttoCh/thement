@@ -33,8 +33,11 @@ body
         a(href='#{baseurl}/account/resend_activation') here
       p
         center
-        if(code !== '')
-          strong
-            .alert.alert-danger #{code}
+          if(code !== '')
+            strong
+              .alert.alert-danger(class='#{hiding}') 
+                button.close(type='button', data-dismiss='alert') ×
+                h4
+                | #{code}
 
   

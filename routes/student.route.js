@@ -29,6 +29,8 @@ router.use(loggedin)
 router.get('/home', student.getHome)
 router.get('/profile', student.getProfile)
 router.get('/settings', student.getSettings)
+
 router.post('/settings', student.changePassword)
+router.post('/profile', student.updateProfile)
 
 module.exports = router

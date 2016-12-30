@@ -6,7 +6,8 @@ var express       = require('express'),
     app           = express(),
     email         = require('emailjs/email'),
     credentials   = require('../credentials/email')
-    var code, completed, hiding
+    var code, completed
+    var hiding    = 'hide'
     let user_mail = credentials.user,
         user_pass = credentials.pass
     server        = email.server.connect({
@@ -35,20 +36,23 @@ exports.getIndex = function(req,res){
 }
 
 exports.getLoginPage = function(req, res){
-  console.log("Session : ", req.session.student)
-  res.format({
-    json: function(){
+  if(req.session.student){
+    res.redirect('./home')
+  } else {
+    res.format({
+      json: function(){
 
-    },
-    html: function(){
-      let caption = "Student", code = ''
-      res.render('student/login', {title:"Student login", caption:caption, code:code, baseurl:baseurl})
-    }
-  })
+      },
+      html: function(){
+        let caption = "Student", code = ''
+        res.render('student/login', {title:"Student login", caption:caption, code:code, baseurl:baseurl, hiding:hiding})
+      }
+    })
+  }
 }
 
 exports.getRegisterPage = function(req, res){
-  res.render('student/register', {title:"Register yourself", caption:caption, baseurl:baseurl})
+  res.render('student/register', {title:"Register yourself", caption:caption, baseurl:baseurl, code:code, hiding:hiding})
 }
 
 exports.getHome = function(req, res){
@@ -57,10 +61,10 @@ exports.getHome = function(req, res){
 }
 
 exports.getProfile = function(req, res){
-  let nim = req.session.student
-  Student.findOne({nim:nim}, function(err, details){
+  let nimToUpdate = req.session.student
+  Student.findOne({nim:nimToUpdate}, function(err, found){
     try{
-      res.render('student/profile', {title: "Profile", nim:nim, details:details})
+      res.render('student/profile', {title: "Profile", nimToUpdate:nimToUpdate, hiding:hiding, code:code, found:found})
     } catch(err){
       throw err
     }
@@ -68,11 +72,10 @@ exports.getProfile = function(req, res){
 }
 
 exports.getSettings = function(req, res){
-  hiding      = 'hide'
   let nim = req.session.student
-  Student.findOne({nim:nim}, function(err, details){
+  Student.findOne({nim:nim}, function(err, success){
     try{
-      res.render('student/settings', {title: "Settings", nim:nim, hiding:hiding})
+      res.render('student/settings', {title: "Settings", nim:nim, hiding:hiding, code:code})
     } catch(err){
       throw err
     }
@@ -84,7 +87,7 @@ exports.getRegisterSuccess = function(req, res){
 }
 
 exports.getForgetPassPage = function(req, res){
-  res.render('student/forget-pass', {title:"Forget password", caption:caption, baseurl:baseurl})
+  res.render('student/forget-pass', {title:"Forget password", caption:caption, baseurl:baseurl, code:code, hiding:hiding})
 }
 
 exports.getPassResetSuccess = function(req, res){
@@ -92,7 +95,7 @@ exports.getPassResetSuccess = function(req, res){
 }
 
 exports.getResendActivation = function(req, res){
-  res.render('student/resend-activation', {title:"Resend activation link", caption:caption, baseurl:baseurl})
+  res.render('student/resend-activation', {title:"Resend activation link", caption:caption, baseurl:baseurl, code:code, hiding:hiding})
 }
 
 exports.getResendSuccess = function(req, res){
@@ -121,8 +124,9 @@ exports.addStudent = function(req, res){
     console.log('Not a physics student', str)
     res.format({
       html: function(){
+        hiding = ''
         code  = 'NIM should started by 102* and length is 8'
-        res.render('student/register', {title:"Register yourself", caption:caption, code:code})
+        res.render('student/register', {title:"Register yourself", caption:caption, code:code, hiding:hiding})
       },
       json: function(){
         res.json({
@@ -138,8 +142,9 @@ exports.addStudent = function(req, res){
     console.log('Invalid email', email)
     res.format({
       html: function(){
+        hiding = ''
         code  = 'Email should be : yourname@students.itb.ac.id or yourname@s.itb.ac.id'
-        res.render('student/register', {title:"Register yourself", caption:caption, code:code})
+        res.render('student/register', {title:"Register yourself", caption:caption, code:code, hiding:hiding})
       },
       json: function(){
         res.json({
@@ -155,8 +160,9 @@ exports.addStudent = function(req, res){
     console.log('password does not match : ' + pass1 + 'type of : ' + typeof(pass1))
     res.format({
       html: function(){
+        hiding = ''
         code  = 'Password does not match!'
-        res.render('student/register', {title:"Register yourself", caption:caption, code:code})
+        res.render('student/register', {title:"Register yourself", caption:caption, code:code, hiding:hiding})
       },
       json: function(){
         res.json({
@@ -172,8 +178,9 @@ exports.addStudent = function(req, res){
     console.log('not secure! your password : ', str)
     res.format({
       html: function(){
+        hiding = ''
         code  = 'Password not secure! Your password must contains strings and numbers in 5 characters length'
-        res.render('student/register', {title:"Register yourself", caption:caption, code:code})
+        res.render('student/register', {title:"Register yourself", caption:caption, code:code, hiding:hiding})
       },
       json: function(){
         res.json({
@@ -226,8 +233,9 @@ exports.addStudent = function(req, res){
             })
           },
           html: function(){
+            hiding = ''
             code  = 'NIM exist!'
-            res.render('student/register', {title:"Register yourself", caption:caption, code:code})
+            res.render('student/register', {title:"Register yourself", caption:caption, code:code, hiding:hiding})
           }
         })
       } else {
@@ -318,8 +326,9 @@ exports.resendConfirmation = function(req, res){
   Student.findOne({$and : [{nim: nim}, {email: email}]}, function(err, found){
     if(found){
         if(found.is_active == true){
+          hiding = ''
           code = 'Your account was actived. No need to reactivate.'
-          res.render('student/resend-activation', {title:"Resend activation link", caption:caption, baseurl:baseurl, code:code})
+          res.render('student/resend-activation', {title:"Resend activation link", caption:caption, baseurl:baseurl, code:code, hiding:hiding})
         } else {
           console.log('nim and email found ' + nim + ' ' + email)
           let reactivate = found.activation_link
@@ -558,8 +567,9 @@ exports.changePassword = function(req, res){
 
 exports.updateProfile = function(req, res){
   let nimToUpdate = req.session.student
-  Student.findOne({nim: nimToUpdate}, function(err, success){
-    if(success){
+  let nim = req.session.student
+  Student.findOne({nim: nimToUpdate}, function(err, found){
+    if(found){
       Student.update({nim: nimToUpdate}, {$set: {
         'profile.first_name': req.body.first_name,
         'profile.last_name': req.body.last_name,
@@ -567,12 +577,21 @@ exports.updateProfile = function(req, res){
         'profile.address': req.body.address,
         'profile.birthday': req.body.birthday
       },
-    }, function(err, succeed){
-      if(succeed){
+    }, function(err, found){
+      if(found){
         console.log('success update profile')
-        res.json({
-          "Status":"OK",
-          "Message":"Profile updated"
+        code = 'Update profile success'
+        hiding = ''
+        res.format({
+          json: function(){
+            res.json({
+              "Status":"OK",
+              "Message":"Profile updated"
+            })
+          },
+          html: function(){
+            res.redirect('./profile')
+          }
         })
       } else {
         console.log('error updating profile', err)
