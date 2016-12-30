@@ -39,6 +39,17 @@ exports.getHome = function(req, res){
   res.render('student/home', {title: "Dashboard ", nim:nim})
 }
 
+exports.getProfile = function(req, res){
+  let nim = req.session.student
+  Student.findOne({nim:nim}, function(err, details){
+    try{
+      res.render('student/profile', {title: "Profile", nim:nim, details:details})
+    } catch(err){
+      throw err
+    }
+  })
+}
+
 exports.addStudent = function(req, res){
 
   var text, str

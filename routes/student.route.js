@@ -14,5 +14,6 @@ router.get('/logout', auth.stdLogout)
 
 router.use(loggedin)
 router.get('/home', student.getHome)
+router.get('/profile', student.getProfile)
 
 module.exports = router
