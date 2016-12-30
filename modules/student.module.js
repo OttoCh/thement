@@ -28,8 +28,8 @@ exports.getLoginPage = function(req, res){
 
     },
     html: function(){
-      let caption = "Student"
-      res.render('student/login', {title:"Student login", caption:caption})
+      let caption = "Student", code = ''
+      res.render('student/login', {title:"Student login", caption:caption, code:code})
     }
   })
 }

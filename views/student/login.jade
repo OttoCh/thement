@@ -1,12 +1,17 @@
 include ../static/layout
 head
-  link(rel='stylesheet', href='/static/css/login.css')
-
+  link(href='/static/vendors/bootstrap/css/bootstrap.min.css', rel='stylesheet', media='screen')
+  link(href='/static/vendors/bootstrap/css/bootstrap-responsive.min.css', rel='stylesheet', media='screen')
+  link(href='/static/vendors/assets/styles.css', rel='stylesheet', media='screen')
+  link(href='/static/vendors/vendors/jGrowl/jquery.jgrowl.css', rel='stylesheet', media='screen')
+  script(type="text/javascript")
+  
+  
 body
+
   div(class='container')
   center
-    h3 
-      span.label.label-primary #{caption}
+    span.label.label-info #{caption}
     form(action='login', method='post', class='form-signin')
       h2(class='form-signin-heading') Please log in
       label(for='inputEmail', class='sr-only') NIM
@@ -17,4 +22,14 @@ body
       p 
         center 
         | Don't have an account? Register 
-        a(href='#') here
+        a(href='#') here  
+      p
+        center
+        if(code !== '')
+          strong
+            .alert.alert-danger #{code}
+    
+      
+// TODO: error notification for wrong password / NIM not found
+
+  

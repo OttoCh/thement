@@ -14,8 +14,10 @@ exports.stdLogin = function(req, res){
   */
   let nim   = req.body.nim,
       pass  = req.body.password
+  var caption = 'Student'
   Student.findOne({nim: nim}, function(err, found){
     if(found){
+      var code
       if (found.is_active == true){
         console.log('check for decrypting')
         let decrypted = encryptor.decrypt(found.password)
@@ -47,23 +49,47 @@ exports.stdLogin = function(req, res){
       )
         } else {
           console.log('password wrong')
-          res.json({
-            "Status":"Error",
-            "Message":"Wrong password"
+          res.format({
+            json: function(){
+              res.json({
+                "Status":"Error",
+                "Message":"Wrong password"
+              })
+            },
+            html: function(){
+              code = 'Password wrong'
+              res.render('student/login', {title:"Student login", caption:caption, code:code})
+            }
           })
         }
       } else {
         console.log('Student not activated')
-        res.json({
-          "Status":"Error",
-          "Message":"Student not activated. Please activate your account first"
+        res.format({
+          json: function(){
+            res.json({
+              "Status":"Error",
+              "Message":"Account not activated yet"
+            })
+          },
+          html: function(){
+            code = 'Account not activated yet'
+            res.render('student/login', {title:"Student login", caption:caption, code:code})
+          }
         })
       }
     } else {
       console.log('NIM not found')
-      res.json({
-        "Status":"Error",
-        "Message":"Student not found"
+      res.format({
+        json: function(){
+          res.json({
+            "Status":"Error",
+            "Message":"NIM not found"
+          })
+        },
+        html: function(){
+          code = 'NIM not found'
+          res.render('student/login', {title:"Student login", caption:caption, code:code})
+        }
       })
     }
   })

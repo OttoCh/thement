@@ -62,7 +62,8 @@ html
                 |  Ownclouds
         // /span
         #content.span9
-          // morris stacked chart
+          // TODO: validation input
+          // Only edit after click 'Edit'
           .row-fluid
             // block
             .block
@@ -73,6 +74,7 @@ html
                   form.form-horizontal
                     fieldset
                       legend Fill the form to change your profile
+                      button.btn.btn-success(type='') Edit profile
                       .control-group
                         label.control-label(for='focusedInput') NIM
                         .controls
@@ -84,15 +86,15 @@ html
                       .control-group
                         label.control-label(for='focusedInput') Firstname
                         .controls
-                          input#focusedInput.input-xlarge.focused(type='password' value='#{details.profile.first_name}')
+                          input#focusedInput.input-xlarge.focused(type='text' value='#{details.profile.first_name}')
                       .control-group
                         label.control-label(for='focusedInput') Lastname
                         .controls
-                          input#focusedInput.input-xlarge.focused(type='password' value='#{details.profile.last_name}')
+                          input#focusedInput.input-xlarge.focused(type='text' value='#{details.profile.last_name}')
                       .control-group
                         label.control-label(for='focusedInput') Gender
                         .controls
-                          select(name='category')
+                          select(name='category' value='#{details.profile.gender}')
                             option(value='') Select...
                               |   
                               option(value='male') Male
@@ -102,7 +104,7 @@ html
                       .control-group
                         label.control-label(for='focusedInput') Address
                         .controls
-                          input#focusedInput.input-xlarge.focused(type='password' value='#{details.profile.address}')
+                          input#focusedInput.input-xlarge.focused(type='text' value='#{details.profile.address}')
                       .control-group
                         label.control-label(for='focusedInput') Date of birth
                         .controls
@@ -117,14 +119,11 @@ html
     link(href='/static/vendors/vendors/datepicker.css', rel='stylesheet', media='screen')
     link(href='/static/vendors/vendors/uniform.default.css', rel='stylesheet', media='screen')
     link(href='/static/vendors/vendors/chosen.min.css', rel='stylesheet', media='screen')
-    link(href='/static/vendors/vendors/wysiwyg/bootstrap-wysihtml5.css', rel='stylesheet', media='screen')
     script(src='/static/vendors/vendors/jquery-1.9.1.js')
     script(src='/static/vendors/bootstrap/js/bootstrap.min.js')
     script(src='/static/vendors/vendors/jquery.uniform.min.js')
     script(src='/static/vendors/vendors/chosen.jquery.min.js')
     script(src='/static/vendors/vendors/bootstrap-datepicker.js')
-    script(src='/static/vendors/vendors/wysiwyg/wysihtml5-0.3.0.js')
-    script(src='/static/vendors/vendors/wysiwyg/bootstrap-wysihtml5.js')
     script(src='/static/vendors/vendors/wizard/jquery.bootstrap.wizard.min.js')
     script(type='text/javascript', src='/static/vendors/vendors/jquery-validation/dist/jquery.validate.min.js')
     script(src='/static/vendors/assets/form-validation.js')
