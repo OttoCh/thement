@@ -24,5 +24,6 @@ router.post('/account/forget_pass', student.requestPasswordChange)
 router.use(loggedin)
 router.get('/home', student.getHome)
 router.get('/profile', student.getProfile)
+router.get('/settings', student.getSettings)
 
 module.exports = router

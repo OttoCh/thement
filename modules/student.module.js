@@ -56,6 +56,17 @@ exports.getProfile = function(req, res){
   })
 }
 
+exports.getSettings = function(req, res){
+  let nim = req.session.student
+  Student.findOne({nim:nim}, function(err, details){
+    try{
+      res.render('student/settings', {title: "Settings", nim:nim, details:details})
+    } catch(err){
+      throw err
+    }
+  })
+}
+
 exports.getRegisterSuccess = function(req, res){
   res.render('student/register-success', {title:"Register success!", baseurl:baseurl})
 }

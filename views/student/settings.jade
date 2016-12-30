@@ -20,7 +20,7 @@ html
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          a.brand(href='#') Student dashboard
+          a.brand(href='#') #{title}
           .nav-collapse.collapse
             ul.nav.pull-right
               li.dropdown
@@ -30,15 +30,15 @@ html
                   i.caret
                 ul.dropdown-menu
                   li
-                    a(tabindex='-1', href='#') Profile
+                    a(tabindex='-1', href='profile') Profile
                   li
-                    a(tabindex='-1', href='settings') Settings
+                    a(tabindex='-1', href='#') Settings
                   li.divider
                   li
                     a(tabindex='-1', href='logout') Logout
             ul.nav
               li.active
-                a(href='#') Profile
+                a(href='#') Settings
           // /.nav-collapse
     .container-fluid
       .row-fluid
@@ -48,8 +48,8 @@ html
               a(href='home')
                 i.icon-chevron-right
                 |  Dashboard
-            li.active
-              a(href='#')
+            li
+              a(href='profile')
                 i.icon-chevron-right
                 |  Profile
         // /span
@@ -65,42 +65,20 @@ html
                 .span12
                   form.form-horizontal
                     fieldset
-                      legend Fill the form to change your profile
-                      button.btn.btn-success(type='') Edit profile
+                      legend Change password
                       .control-group
-                        label.control-label(for='focusedInput') NIM
+                        label.control-label(for='focusedInput') Current password
                         .controls
-                          input#focusedInput.input-xlarge.focused(type='text' value='#{details.nim}' disabled)
+                          input#focusedInput.input-xlarge.focused(type='password')
                       .control-group
-                        label.control-label(for='focusedInput') Email
+                        label.control-label(for='focusedInput') New password
                         .controls
-                          input#focusedInput.input-xlarge.focused(type='text' value='#{details.email}' disabled)
+                          input#focusedInput.input-xlarge.focused(type='password')
                       .control-group
-                        label.control-label(for='focusedInput') Firstname
+                        label.control-label(for='focusedInput') Retype your new password
                         .controls
-                          input#focusedInput.input-xlarge.focused(type='text' value='#{details.profile.first_name}')
-                      .control-group
-                        label.control-label(for='focusedInput') Lastname
-                        .controls
-                          input#focusedInput.input-xlarge.focused(type='text' value='#{details.profile.last_name}')
-                      .control-group
-                        label.control-label(for='focusedInput') Gender
-                        .controls
-                          select(name='category' value='#{details.profile.gender}')
-                            option(value='') Select...
-                              |   
-                              option(value='male') Male
-                              |   
-                              option(value='female') Female
-                              |   
-                      .control-group
-                        label.control-label(for='focusedInput') Address
-                        .controls
-                          input#focusedInput.input-xlarge.focused(type='text' value='#{details.profile.address}')
-                      .control-group
-                        label.control-label(for='focusedInput') Date of birth
-                        .controls
-                          input#date01.input-xlarge.datepicker(type='text', value='#{details.profile.birthday}')
+                          input#focusedInput.input-xlarge.focused(type='password')
+                    
                       .form-actions
                         button.btn.btn-primary(type='submit') Save changes
                         &nbsp;
