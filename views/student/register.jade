@@ -1,0 +1,42 @@
+include ../static/layout
+head
+  link(href='/static/vendors/bootstrap/css/bootstrap.min.css', rel='stylesheet', media='screen')
+  link(href='/static/vendors/bootstrap/css/bootstrap-responsive.min.css', rel='stylesheet', media='screen')
+  link(href='/static/vendors/assets/styles.css', rel='stylesheet', media='screen')
+  link(href='/static/vendors/vendors/jGrowl/jquery.jgrowl.css', rel='stylesheet', media='screen')
+  script(type="text/javascript")
+  title=title
+  
+body
+
+  div(class='container')
+  center
+    span.label.label-info #{caption}
+    form(action='register', method='post', class='form-signin')
+      h2(class='form-signin-heading') #{title}
+      label(for='inputUsername', class='sr-only') 
+      input(type='number', id='inputEmail', name='nim', class='form-control' placeholder='your NIM' required autofocus)
+      
+      label(for='inputEmail', class='sr-only') 
+      input(type='email', id='inputPassword', name='email', class='form-control', placeholder='your Email' required)
+      
+      label(for='inputPassword', class='sr-only') 
+      input(type='password', id='inputPassword', name='password', class='form-control', placeholder='your Password' required)
+      
+      label(for='inputPassword', class='sr-only') 
+      input(type='password', id='inputPassword', name='repassword', class='form-control', placeholder='Retype your Password' required)
+      
+      button(class='btn btn-lg btn-primary btn-block', type='submit') Register
+      p 
+        center 
+        | Already have an account? Sign in 
+        a(href='login')  here  
+        
+      p
+        center
+        if(code !== '')
+          strong
+            .alert.alert-danger #{code}
+    
+
+  

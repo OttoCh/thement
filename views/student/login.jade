@@ -21,15 +21,19 @@ body
       button(class='btn btn-lg btn-primary btn-block', type='submit') Login
       p 
         center 
-        | Don't have an account? Register 
-        a(href='#') here  
+        | Don't have an account? Register
+        a(href='register')  here  
+        br
+        hr
+        | Forget password? Click 
+        a(href='#') here
+        br
+        | Account not activated yet? Click 
+        a(href='#') here
       p
         center
         if(code !== '')
           strong
             .alert.alert-danger #{code}
-    
-      
-// TODO: error notification for wrong password / NIM not found
 
   

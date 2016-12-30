@@ -15,7 +15,8 @@ var express       = require('express'),
 var key       = '99u9d9h23h9fas9ah832hr'
 var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 var baseurl   = 'http://localhost:3500/api/v1/student/'
-var encryptor = require('simple-encryptor')(key)
+var encryptor = require('simple-encryptor')(key),
+    caption   = 'Student'
 
 exports.getIndex = function(req,res){
   res.redirect('student/login')
@@ -32,6 +33,10 @@ exports.getLoginPage = function(req, res){
       res.render('student/login', {title:"Student login", caption:caption, code:code})
     }
   })
+}
+
+exports.getRegisterPage = function(req, res){
+  res.render('student/register', {title:"Register yourself", caption:caption})
 }
 
 exports.getHome = function(req, res){
@@ -51,61 +56,139 @@ exports.getProfile = function(req, res){
 }
 
 exports.addStudent = function(req, res){
-
-  var text, str
-  function makeid(str){
-  	text = str
-    for(var i=0; i<20; i++){
-    	text += possible.charAt(Math.floor(Math.random() * possible.length))
+  var code
+  var pass1   = req.body.password,
+      pass2   = req.body.repassword,
+      str     = pass1,
+      matches = str.match(/\d+/g),
+      nim     = req.body.nim
+  function isPhysics(nim){
+    if(nim.startsWith('102')){
+      return true;
+    } else {
+      return false;
     }
-    return (text)
   }
 
-  let link  = makeid('398hhces8dh8shd8ah')
-  let link2 = makeid('8hasa9hsd8hfdh3294')
+  // NIM validation
+  if(!isPhysics(nim) || nim.length !== 8){
+    console.log('Not a physics student', str)
+    res.format({
+      html: function(){
+        code  = 'NIM should started by 102* and length is 8'
+        res.render('student/register', {title:"Register yourself", caption:caption, code:code})
+      },
+      json: function(){
+        res.json({
+          status:false,
+          message: 'NIM not valid'
+        })
+      }
+    })
+  }
 
-  let encrypted = encryptor.encrypt(req.body.password)
+  // Same password validation
+  else if(pass1 !== pass2){
+    console.log('password does not match : ' + pass1 + 'type of : ' + typeof(pass1))
+    res.format({
+      html: function(){
+        code  = 'Password does not match!'
+        res.render('student/register', {title:"Register yourself", caption:caption, code:code})
+      },
+      json: function(){
+        res.json({
+          status:false,
+          message: 'password does not match'
+        })
+      }
+    })
+  }
 
-  // TODO : NIM should be started by 102*
-
-  var std                 = new Student()
-  std.nim                 = req.body.nim
-  std.email               = req.body.email
-  std.password            = encrypted
-  std.registered          = new Date
-  std.last_login          = ""
-  std.has_resetpass       = false
-  std.is_active           = false
-  std.inactive_password   = ""
-  std.activation_link     = link
-  std.passwordreset_link  = link2
-  std.profile.first_name  = ""
-  std.profile.last_name   = ""
-  std.profile.gender      = ""
-  std.profile.address     = ""
-  std.profile.birthday    = ""
-
-  Student.findOne({nim: std.nim}, function(err, exist){
-    if(exist){
-      console.log('NIM exist')
-      res.json({
-        "Status":"Error",
-        "Message":"NIM exist! Try another one"
-      })
-    } else {
-      std.save(function(err){
-        if(err){
-          res.send(err)
-        }
-        else {
-          res.json({
-            "Status":"OK",
-            "Message":"Student created"
-          })
-        }
-      })
+  // Security check
+  else if (str.length <= 5 || matches == null){
+    console.log('not secure! your password : ', str)
+    res.format({
+      html: function(){
+        code  = 'Password not secure! Your password must contains strings and numbers in 5 characters length'
+        res.render('student/register', {title:"Register yourself", caption:caption, code:code})
+      },
+      json: function(){
+        res.json({
+          status:false,
+          message: 'password not secure'
+        })
+      }
+    })
+  }
+  else {
+    var text, str
+    function makeid(str){
+      text = str
+      for(var i=0; i<20; i++){
+        text += possible.charAt(Math.floor(Math.random() * possible.length))
+      }
+      return (text)
     }
-  })
+
+    let link  = makeid('398hhces8dh8shd8ah')
+    let link2 = makeid('8hasa9hsd8hfdh3294')
+
+    let encrypted = encryptor.encrypt(req.body.password)
+
+    var std                 = new Student()
+    std.nim                 = req.body.nim
+    std.email               = req.body.email
+    std.password            = encrypted
+    std.registered          = new Date
+    std.last_login          = ""
+    std.has_resetpass       = false
+    std.is_active           = false
+    std.inactive_password   = ""
+    std.activation_link     = link
+    std.passwordreset_link  = link2
+    std.profile.first_name  = ""
+    std.profile.last_name   = ""
+    std.profile.gender      = ""
+    std.profile.address     = ""
+    std.profile.birthday    = ""
+
+    Student.findOne({nim: std.nim}, function(err, exist){
+      if(exist){
+        console.log('NIM exist')
+        res.format({
+          json: function(){
+            res.json({
+              "Status":"Error",
+              "Message":"NIM exist! Try another one"
+            })
+          },
+          html: function(){
+            code  = 'NIM exist!'
+            res.render('student/register', {title:"Register yourself", caption:caption, code:code})
+          }
+        })
+      } else {
+        std.save(function(err){
+          if(err){
+            res.send(err)
+          }
+          else {
+            res.format({
+              json: function(){
+                res.json({
+                  status: true,
+                  message: 'Student created'
+                })
+              },
+              html: function(){
+                res.send('activated')
+              }
+            })
+          }
+        })
+      }
+    })
+  }
 }
 
 exports.activateStudent = function(req, res){
