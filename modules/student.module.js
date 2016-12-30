@@ -30,6 +30,11 @@ exports.getIndex = function(req, res){
   })
 }
 
+exports.getHome = function(req, res){
+  let nim = req.session.student
+  res.render('student/home', {title: "Dashboard ", nim:nim})
+}
+
 exports.addStudent = function(req, res){
 
   var text, str
