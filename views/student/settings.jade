@@ -63,26 +63,33 @@ html
                 .muted.pull-left Your Profile
               .block-content.collapse.in
                 .span12
-                  form.form-horizontal
+                  form.form-horizontal(method='post' action='settings')
                     fieldset
                       legend Change password
                       .control-group
                         label.control-label(for='focusedInput') Current password
                         .controls
-                          input#focusedInput.input-xlarge.focused(type='password')
+                          input#focusedInput.input-xlarge.focused(type='password', name='old_pass', required)
                       .control-group
                         label.control-label(for='focusedInput') New password
                         .controls
-                          input#focusedInput.input-xlarge.focused(type='password')
+                          input#focusedInput.input-xlarge.focused(type='password', name='new_pass', required)
                       .control-group
                         label.control-label(for='focusedInput') Retype your new password
                         .controls
-                          input#focusedInput.input-xlarge.focused(type='password')
+                          input#focusedInput.input-xlarge.focused(type='password', name='re_newpass', required)
                     
                       .form-actions
                         button.btn.btn-primary(type='submit') Save changes
                         &nbsp;
                         button.btn(type='reset') Cancel
+                  
+                  if(completed !== '')
+                    strong
+                      .alert.alert-success(class='#{hiding}') 
+                        button.close(type='button', data-dismiss='alert') ×
+                        h4 Success
+                        | #{completed}
             // /block
       hr
     // /.fluid-container

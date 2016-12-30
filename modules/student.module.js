@@ -5,9 +5,13 @@ var express       = require('express'),
     Student       = require('../models/student.model'),
     app           = express(),
     email         = require('emailjs/email'),
+    credentials   = require('../credentials/email')
+    var code, completed, hiding
+    let user_mail = credentials.user,
+        user_pass = credentials.pass
     server        = email.server.connect({
-      user: "winistein@gmail.com",
-      password: "W1LD4N5N",
+      user: user_mail,
+      password: user_pass,
       host: "smtp.gmail.com",
       ssl: true
     })
@@ -64,10 +68,11 @@ exports.getProfile = function(req, res){
 }
 
 exports.getSettings = function(req, res){
+  hiding      = 'hide'
   let nim = req.session.student
   Student.findOne({nim:nim}, function(err, details){
     try{
-      res.render('student/settings', {title: "Settings", nim:nim, details:details})
+      res.render('student/settings', {title: "Settings", nim:nim, hiding:hiding})
     } catch(err){
       throw err
     }
@@ -95,7 +100,6 @@ exports.getResendSuccess = function(req, res){
 }
 
 exports.addStudent = function(req, res){
-  var code
   var pass1   = req.body.password,
       pass2   = req.body.repassword,
       str     = pass1,
@@ -236,13 +240,18 @@ exports.addStudent = function(req, res){
             let activate_link = baseurl+'/account/activation/'+link
             let email         = std.email
             console.log('link to activate : ', activate_link)
-            server.send({
-              subject:"[Welcome to thement] - "+nim,
-              text:"Please click here to activate your account : "+activate_link + "\n \n <strong >Administrator Thement Fisika ITB </strong>",
-              to:"Wildan <"+email+">",
-              from:"[FISIKA ITB] <notification@fi.itb.ac.id>"
+            let message = {
+              text: "Please click here to activate your account : "+activate_link + "\n \n Admin Fisika ITB",
+              from: "[FISIKA ITB] <notification@fi.itb.ac.id>",
+              to: "<"+email+">",
+              subject: "[Welcome to thement] - "+nim,
+              attachment: [
+                {data: "<html> <strong> Fisika ITB </strong> </html>"}
+              ]
+            }
+            server.send(message, function(err, message){
+              console.log(err || message)
             })
-            console.log('An email was sent to ', email)
             res.format({
               json: function(){
                 res.json({
@@ -308,27 +317,32 @@ exports.resendConfirmation = function(req, res){
       email = req.body.email
   Student.findOne({$and : [{nim: nim}, {email: email}]}, function(err, found){
     if(found){
-        console.log('nim and email found ' + nim + ' ' + email)
-        let reactivate = found.activation_link
-        let link       = baseurl+'/account/activation/'+reactivate
-        server.send({
-          subject:"[Resend activate_link] - "+nim,
-          text:"Please click here to activate your account : "+ link + "\n \n Administrator Thement Fisika ITB",
-          to:"<"+email+">",
-          from:"[FISIKA ITB] <notification@fi.itb.ac.id>"
-        })
-        console.log('A reactivate email was sent to ', email)
-        res.format({
-          json: function(){
-            res.json({
-              status:true,
-              message: 'Resend activated link'
-            })
-          },
-          html: function(){
-            res.redirect('./resend_activation/sent')
-          }
-        })
+        if(found.is_active == true){
+          code = 'Your account was actived. No need to reactivate.'
+          res.render('student/resend-activation', {title:"Resend activation link", caption:caption, baseurl:baseurl, code:code})
+        } else {
+          console.log('nim and email found ' + nim + ' ' + email)
+          let reactivate = found.activation_link
+          let link       = baseurl+'/account/activation/'+reactivate
+          server.send({
+            subject:"[Resend activate_link] - "+nim,
+            text:"Please click here to activate your account : "+ link + "\n \n Administrator Thement Fisika ITB",
+            to:"<"+email+">",
+            from:"[FISIKA ITB] <notification@fi.itb.ac.id>"
+          })
+          console.log('A reactivate email was sent to ', email)
+          res.format({
+            json: function(){
+              res.json({
+                status:true,
+                message: 'Resend activated link'
+              })
+            },
+            html: function(){
+              res.redirect('./resend_activation/sent')
+            }
+          })
+        }
       } else {
       console.log('NIM / email not found')
       code = 'NIM / email not found'
@@ -469,34 +483,56 @@ exports.activatePasswordChange = function(req, res){
 exports.changePassword = function(req, res){
   let nimToChange = req.session.student,
       oldPass     = req.body.old_pass,
-      newPass     = req.body.new_pass
+      newPass     = req.body.new_pass,
+      rePass      = req.body.re_newpass,
+      nim         = req.session.student,
+      hiding      = 'hide'
+
   if(oldPass !== '' && newPass !== ''){
     Student.findOne({nim: nimToChange}, function(e, s){
       if(s){
         let decrypted = encryptor.decrypt(s.password)
         if(oldPass == decrypted){
-        let encrypted = encryptor.encrypt(newPass)
-          Student.update({nim: nimToChange}, {$set: {
-            password: encrypted
-          },
-        },
-          function(err, success){
-            if(success){
-              console.log('Password has been changed.')
-              res.json({
-                "Status":"OK",
-                "Message":"Password has been changed"
-              })
-            } else {
-              console.log('Failed to change password')
-              res.json({
-                "Status":"Error",
-                "Message":"Failed to change password"
-              })
-            }
-          }
-        )
+        // check if retype password same
+        if(newPass !== rePass){
+          console.log('password not same')
+          res.json({
+            status:false,
+            message:'password not the same'
+          })
         } else {
+          let encrypted = encryptor.encrypt(newPass)
+            Student.update({nim: nimToChange}, {$set: {
+              password: encrypted
+            },
+          },
+            function(err, success){
+              if(success){
+                completed = 'Update password success'
+                hiding = ''
+                console.log('Password has been changed.')
+                res.format({
+                  json: function(){
+                    res.json({
+                      "Status":"OK",
+                      "Message":"Password has been changed"
+                    })
+                  },
+                  html: function(){
+                    res.render('student/settings', {title: "Settings", nim:nim, completed:completed, hiding:hiding})
+                  }
+                })
+              } else {
+                console.log('Failed to change password')
+                res.json({
+                  "Status":"Error",
+                  "Message":"Failed to change password"
+                })
+              }
+            }
+          )
+        }
+      } else {
           console.log('Old password is wrong. Try again')
           res.json({
             "Status":"Error",
