@@ -55,6 +55,25 @@ exports.getByNIM = function(req, res){
   })
 }
 
+exports.createStudent = function(req, res){
+  let nim       = req.body.nim,
+      email     = req.body.email,
+      password  = req.body.password
+
+  stdModel.create(nim, email, password, function(err, student){
+    try{
+      res.json({
+        status: true,
+        message: "Student created"
+      })
+    } catch(err){
+      res.send(err)
+    }
+  })
+}
+
+// --------------------------------- //
+
 exports.getIndex = function(req,res){
   res.redirect('student/login')
 }

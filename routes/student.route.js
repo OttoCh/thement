@@ -7,9 +7,6 @@ var express   = require('express'),
 
     Student   = require('../models/student.model')
 
-router.get('/all', student.getAll)
-router.get('/:nim', student.getByNIM)
-
 // TODO: Use headers in every request
 
 router.get('/', student.getIndex)
@@ -24,10 +21,15 @@ router.get('/account/forget_pass', student.getForgetPassPage)
 router.get('/account/forget_pass/sent', student.getPassResetSuccess)
 router.get('/account/resetpassword/:link', student.activatePasswordChange)
 
+router.post('/add', student.createStudent)
+
 router.post('/login', auth.stdLogin)
 router.post('/register', student.addStudent)
 router.post('/account/forget_pass', student.requestPasswordChange)
 router.post('/account/resend_activation', student.resendConfirmation)
+
+router.get('/all', student.getAll)
+router.get('/:nim', student.getByNIM)
 
 router.use(loggedin)
 
