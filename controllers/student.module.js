@@ -245,10 +245,6 @@ exports.addStudent = function(req, res){
   }
   else {
 
-    // generate activation_link & passwordreset_link
-    let link  = randoms('398hhces8dh8shd8ah'),
-        link2 = randoms('8hasa9hsd8hfdh3294')
-
     var std                 = new Student()
     std.nim                 = req.body.nim
     std.email               = req.body.email
@@ -370,6 +366,7 @@ exports.activateStudent = function(req, res){
 exports.resendConfirmation = function(req, res){
   let nim   = req.body.nim,
       email = req.body.email
+
   Student.findOne({$and : [{nim: nim}, {email: email}]}, function(err, found){
     if(found){
         if(found.is_active == true){
@@ -420,6 +417,7 @@ exports.resendConfirmation = function(req, res){
 exports.requestPasswordChange = function(req, res){
   let nim   = req.body.nim,
       email = req.body.email
+
   Student.findOne({$and : [{nim: nim}, {email: email}]}, function(err, found){
     if(found){
         if(found.is_active == true){
