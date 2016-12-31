@@ -27,6 +27,7 @@ var express       = require('express'),
 // statusCode
 var registerCode  = ''
 var forgetCode    = ''
+var profileCode   = ''
 
 var key         = '99u9d9h23h9fas9ah832hr'
 var possible    = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
@@ -68,7 +69,7 @@ exports.getProfile = function(req, res){
   let nimToUpdate = req.session.student
   Student.findOne({nim:nimToUpdate}, function(err, found){
     try{
-      res.render('student/profile', {title: "Profile", nimToUpdate:nimToUpdate, hiding:hiding, code:code, found:found})
+      res.render('student/profile', {title: "Profile", nimToUpdate:nimToUpdate, hiding:hiding, profileCode:profileCode, found:found})
     } catch(err){
       throw err
     }
@@ -583,7 +584,7 @@ exports.updateProfile = function(req, res){
     }, function(err, found){
       if(found){
         console.log('success update profile')
-        code = 'Update profile success'
+        profileCode = 'Update profile success'
         hiding = ''
         res.format({
           json: function(){
