@@ -1,25 +1,15 @@
-var mongoose = require('mongoose')
+var db = require('./student')
+// create new user
 
-var Schema = mongoose.Schema
+// get all users
+exports.all = function(cb){
+  db.find({}, cb)
+}
 
-var studentSchema = new Schema ({
-  nim: Number,
-  email: String,
-  password: String,
-  registered: Date,
-  last_login: Date,
-  is_active: Boolean,
-  activation_link: String,
-  passwordreset_link: String,
-  has_resetpass: Boolean,
-  inactive_password: String,
-  profile: {
-    first_name: String,
-    last_name: String,
-    gender: String,
-    birthday: String,
-    address: String
-  }
-})
-
-module.exports = mongoose.model('Student', studentSchema)
+// get user by nim
+exports.get = function(nim, cb){
+  db.find({nim:nim}, function(err, students){
+    if(err) return cb(err)
+    cb(null, students[0])
+  })
+}

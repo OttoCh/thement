@@ -2,7 +2,8 @@ var express       = require('express'),
     session       = require('express-session'),
     MongoStore    = require('connect-mongo')(session),
     mongoose      = require('mongoose')
-    Student       = require('../models/student.model'),
+    Student       = require('../models/student'),
+    stdModel      = require('../models/student.model'),
     app           = express(),
     email         = require('emailjs/email'),
     credentials   = require('../credentials/email')
@@ -25,7 +26,7 @@ var express       = require('express'),
     })
 
 /* TODO:
-  URGENT :
+  URGENT : in this file, should not calling database directly!
   [ ] Function        : Beautify way to fetch data from mongodb
   [ ] Authentication  : user credentials
   [ ] Authorization   : user role, access level
@@ -40,6 +41,19 @@ var profileCode   = ''
 // constants
 const baseurl_api = 'http://localhost:3500/api/v1/student/'
 const baseurl     = 'http://localhost:3500/student'
+
+// restructure
+exports.getAll = function(req, res){
+  stdModel.all(function(err, students){
+    res.send(students)
+  })
+}
+
+exports.getByNIM = function(req, res){
+  stdModel.get(req.params.nim, function(err, student){
+    res.send(student)
+  })
+}
 
 exports.getIndex = function(req,res){
   res.redirect('student/login')
@@ -622,5 +636,3 @@ exports.updateProfile = function(req, res){
     }
   })
 }
-
-exports.router = module;

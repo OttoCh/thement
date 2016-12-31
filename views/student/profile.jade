@@ -81,17 +81,7 @@ html
                       .control-group
                         label.control-label(for='focusedInput') Lastname
                         .controls
-                          input#focusedInput.input-xlarge.focused(type='text' value='#{found.profile.last_name}', name='last_name')
-                      .control-group
-                        label.control-label(for='focusedInput') Gender
-                        .controls
-                          select(name='category' value='')
-                            option(value='') Select...
-                              |   
-                              option(value='male', name='gender') Male
-                              |   
-                              option(value='female', name='gender') Female
-                              |   
+                          input#focusedInput.input-xlarge.focused(type='text' value='#{found.profile.last_name}', name='last_name')   
                       .control-group
                         label.control-label(for='focusedInput') Address
                         .controls
@@ -109,7 +99,7 @@ html
                     strong
                       .alert.alert-success(class='#{hiding}') 
                         button.close(type='button', data-dismiss='alert') ×
-                        h4 Success
+                        h4 
                         | #{profileCode}
                 .span3
                   h4  Image profile 

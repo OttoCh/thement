@@ -3,7 +3,7 @@ var express       = require('express'),
     app           = express(),
     key           = '99u9d9h23h9fas9ah832hr',
     encryptor     = require('simple-encryptor')(key),
-    Student       = require('../models/student.model'),
+    Student       = require('../models/student'),
     baseurl       = 'http://localhost:3500/student'
 
 exports.stdLogin = function(req, res){

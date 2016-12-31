@@ -1,9 +1,14 @@
 var express   = require('express'),
     router    = express.Router(),
     app       = express()
-    student   = require('../modules/student.module'),
-    auth      = require('../modules/student.auth'),
-    loggedin  = require('../middlewares/loggedin')
+    student   = require('../controllers/student.module'),
+    auth      = require('../controllers/student.auth'),
+    loggedin  = require('../middlewares/loggedin'),
+
+    Student   = require('../models/student.model')
+
+router.get('/all', student.getAll)
+router.get('/:nim', student.getByNIM)
 
 // TODO: Use headers in every request
 
