@@ -1,7 +1,4 @@
 var express       = require('express'),
-    session       = require('express-session'),
-    MongoStore    = require('connect-mongo')(session),
-    mongoose      = require('mongoose')
     Student       = require('../models/student'),
     stdModel      = require('../models/student.model'),
     app           = express(),
@@ -15,7 +12,7 @@ var express       = require('express'),
 
     var code, completed
     var hiding    = 'hide'
-    let user_mail = credentials.user,
+    var user_mail = credentials.user,
         user_pass = credentials.pass
 
     server        = email.server.connect({
@@ -42,6 +39,36 @@ var profileCode   = ''
 const baseurl_api = 'http://localhost:3500/api/v1/student/'
 const baseurl     = 'http://localhost:3500/student'
 
+/* functions */
+// 1. hash password
+hash = function(password){
+  let encrypted = encryptor.encrypt(password)
+  return encrypted
+}
+
+dehash = function(password){
+  let decrypted = encryptor.decrypt(password)
+  return decrypted
+}
+
+// 2. generate random code
+var text, strs
+randoms = function(strs){
+  text = strs
+  for(var i=0; i<20; i++){
+    text += possible.charAt(Math.floor(Math.random() * possible.length))
+  }
+  return (text)
+}
+
+random = function(){
+  text = ''
+  for(var i=0; i<10; i++){
+    text += possible.charAt(Math.floor(Math.random() * possible.length))
+  }
+  return (text)
+}
+
 // restructure
 exports.getAll = function(req, res){
   stdModel.all(function(err, students){
@@ -52,23 +79,6 @@ exports.getAll = function(req, res){
 exports.getByNIM = function(req, res){
   stdModel.get(req.params.nim, function(err, student){
     res.send(student)
-  })
-}
-
-exports.createStudent = function(req, res){
-  let nim       = req.body.nim,
-      email     = req.body.email,
-      password  = req.body.password
-
-  stdModel.create(nim, email, password, function(err, student){
-    try{
-      res.json({
-        status: true,
-        message: "Student created"
-      })
-    } catch(err){
-      res.send(err)
-    }
   })
 }
 
@@ -234,31 +244,22 @@ exports.addStudent = function(req, res){
     })
   }
   else {
-    var text, str
-    function makeid(str){
-      text = str
-      for(var i=0; i<20; i++){
-        text += possible.charAt(Math.floor(Math.random() * possible.length))
-      }
-      return (text)
-    }
 
-    let link  = makeid('398hhces8dh8shd8ah')
-    let link2 = makeid('8hasa9hsd8hfdh3294')
-
-    let encrypted = encryptor.encrypt(req.body.password)
+    // generate activation_link & passwordreset_link
+    let link  = randoms('398hhces8dh8shd8ah'),
+        link2 = randoms('8hasa9hsd8hfdh3294')
 
     var std                 = new Student()
     std.nim                 = req.body.nim
     std.email               = req.body.email
-    std.password            = encrypted
+    std.password            = hash(req.body.password)
     std.registered          = new Date
     std.last_login          = ""
     std.has_resetpass       = false
     std.is_active           = false
     std.inactive_password   = ""
-    std.activation_link     = link
-    std.passwordreset_link  = link2
+    std.activation_link     = randoms('398hhces8dh8shd8ah')
+    std.passwordreset_link  = randoms('8hasa9hsd8hfdh3294')
     std.profile.first_name  = ""
     std.profile.last_name   = ""
     std.profile.gender      = ""
@@ -290,6 +291,7 @@ exports.addStudent = function(req, res){
           }
           else {
             // everything's okay, send activation_link through email
+            let link          = std.activation_link
             let activate_link = baseurl+'/account/activation/'+link
             let email         = std.email
             console.log('link to activate : ', activate_link)
@@ -425,16 +427,7 @@ exports.requestPasswordChange = function(req, res){
           let url = baseurl + '/account/resetpassword/' + found.passwordreset_link
           let nimToReset = found.nim
 
-          // TODO: make it to middleware
-          var text, str
-          function makeid(){
-          	text = ''
-            for(var i=0; i<10; i++){
-            	text += possible.charAt(Math.floor(Math.random() * possible.length))
-            }
-            return (text)
-          }
-          let inactive_pass = makeid()
+          let inactive_pass = random()
               Student.update({nim: nimToReset}, {$set: {
                 inactive_password : inactive_pass
               },
