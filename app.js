@@ -11,6 +11,7 @@ var express         = require('express'),
     jade            = require('jade'),
     path            = require('path'),
     morgan          = require('morgan'),
+    util            = require('util'),
     app             = express()
 
 mongoose.connect('mongodb://127.0.0.1:27017/tugasakhir')
@@ -26,6 +27,7 @@ app.use(session({
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
+//app.use(bodyParser({ keepExtensions: true, uploadDir: __dirname+'/public/uploads'}))
 app.use(cookieParser())
 app.use(methodOverride('X-HTTP-Method-Override'))
 app.use(morgan('dev'))

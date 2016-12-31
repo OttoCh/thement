@@ -2,6 +2,7 @@ var express       = require('express'),
     Student       = require('../models/student'),
     stdModel      = require('../models/student.model'),
     app           = express(),
+    multer        = require('multer'),
     email         = require('emailjs/email'),
     credentials   = require('../credentials/email')
 
@@ -22,6 +23,31 @@ var express       = require('express'),
       ssl: true
     })
 
+/* file upload using multer */
+var storage = multer.diskStorage({
+  destination: function(req, file, cb){
+    cb(null, 'public/images')
+  },
+  filename: function(req, file, cb, res){
+    var now = new Date(),
+        month = now.getUTCMonth()+1,
+        tgl = 'profile-'+now.getDate()+'-'+month+'-'+now.getFullYear(),
+        waktu = now.getHours()+''+now.getMinutes()+''+now.getSeconds();
+    var student = req.session.student;
+    User.update({student:student}, {$set: {
+      'profile.img_url': 'something'
+    },
+  }, function(err, result){
+      if(result){
+        cb(null, student+'.png')
+      } else {
+        console.log('nothing found')
+      }
+    })
+  }
+})
+var upload  = multer({storage:storage}).single('profile-photo')
+
 /* TODO:
   URGENT : in this file, should not calling database directly!
   [ ] Function        : Beautify way to fetch data from mongodb
@@ -38,6 +64,7 @@ var profileCode   = ''
 // constants
 const baseurl_api = 'http://localhost:3500/api/v1/student/'
 const baseurl     = 'http://localhost:3500/student'
+const static      = 'http://localhost:3500/static'
 
 /* functions */
 // 1. hash password
@@ -643,6 +670,19 @@ exports.updateProfile = function(req, res){
         "Status":"Error",
         "Message":"Student not found"
       })
+    }
+  })
+}
+
+exports.imgUpload = function(req, res, next){
+  upload(req, res, function(err){
+    if(req.file != null){
+      done = true;
+      if(done){
+        res.redirect('#')
+      } else {
+        console.log('upload error')
+      }
     }
   })
 }

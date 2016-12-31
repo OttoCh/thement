@@ -37,5 +37,6 @@ router.get('/settings', student.getSettings)
 
 router.post('/settings', student.changePassword)
 router.post('/profile', student.updateProfile)
+router.post('/profile/imgupload', student.imgUpload)
 
 module.exports = router
