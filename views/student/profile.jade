@@ -104,7 +104,7 @@ html
                 .span3
                   form(method='post' action='profile/imgupload' enctype='multipart/form-data')
                     h4  Image profile 
-                    img(src='/static/images/#{nimToUpdate}.png' alt='profile-photo')
+                    img(src='#{found.profile.img_url}' alt='profile-photo')
                     br
                     input(type='file', name='image')
                     br

@@ -19,6 +19,7 @@ const caption = 'Student'
 const baseurl_api = 'http://localhost:3500/api/v1/student/'
 const baseurl     = 'http://localhost:3500/student'
 const static      = 'http://localhost:3500/static'
+const root_url    = 'http://localhost:3500'
 
 // statusCode
 var code
@@ -28,37 +29,6 @@ var forgetCode        = ''
 var profileCode       = ''
 var settingsCode      = ''
 var settingsWrongCode = ''
-
-// emailjs config
-server = email.server.connect({
-  user: user_mail,
-  password: user_pass,
-  host: "smtp.gmail.com",
-  ssl: true
-})
-
-// multer config
-var storage = multer.diskStorage({
-  destination: function(req, file, cb){
-    cb(null, 'public/images')
-  },
-  filename: function(req, file, cb, res){
-    var student = req.session.student;
-    Student.update({nim:student}, {$set: {
-      'profile.img_url': 'something'
-    },
-  }, function(err, result){
-      if(result){
-        console.log('success')
-        let profile = student.toString()
-        cb(null, profile+'.png')
-      } else {
-        console.log('nothing found')
-      }
-    })
-  }
-})
-var upload  = multer({storage:storage}).single('image')
 
 /* TODO:
   URGENT : in this file, should not calling database directly!
@@ -98,6 +68,38 @@ random = function(){
   }
   return (text)
 }
+
+// emailjs config
+server = email.server.connect({
+  user: user_mail,
+  password: user_pass,
+  host: "smtp.gmail.com",
+  ssl: true
+})
+
+// multer config
+var storage = multer.diskStorage({
+  destination: function(req, file, cb){
+    cb(null, 'public/images/profiles')
+  },
+  filename: function(req, file, cb, res){
+    let student = req.session.student;
+    let imgName = random()+'.png'
+    Student.update({nim:student}, {$set: {
+      'profile.img_url': root_url+'/static/images/profiles/'+imgName
+    },
+  }, function(err, result){
+      if(result){
+        console.log('success')
+        cb(null, imgName)
+      } else {
+        console.log('nothing found')
+      }
+    })
+  }
+})
+var upload  = multer({storage:storage}).single('image')
+
 
 // restructure
 exports.getAll = function(req, res){
