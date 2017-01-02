@@ -19,7 +19,7 @@ router.get('/account/resend_activation/sent', student.getResendSuccess)
 router.get('/account/activation/:link', student.activateStudent)
 router.get('/account/forget_pass', student.getForgetPassPage)
 router.get('/account/forget_pass/sent', student.getPassResetSuccess)
-router.get('/account/resetpassword/:link', student.activatePasswordChange)
+router.get('/account/resetpassword/:link', student.activateResetPass)
 
 router.post('/login', auth.stdLogin)
 router.post('/register', student.addStudent)

@@ -1,29 +1,43 @@
+// load packages
 var express       = require('express'),
     Student       = require('../models/student'),
     stdModel      = require('../models/student.model'),
-    app           = express(),
     multer        = require('multer'),
     email         = require('emailjs/email'),
-    credentials   = require('../credentials/email')
+    app           = express()
 
-    var key         = '99u9d9h23h9fas9ah832hr'
-    var possible    = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-    var encryptor   = require('simple-encryptor')(key),
-        caption     = 'Student'
+// load credentials
+var credentials   = require('../credentials/email'),
+    user_mail     = credentials.user,
+    user_pass     = credentials.pass,
+    key           = '99u9d9h23h9fas9ah832hr',
+    possible      = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
+    encryptor     = require('simple-encryptor')(key)
 
-    var code, completed
-    var hiding    = 'hide'
-    var user_mail = credentials.user,
-        user_pass = credentials.pass
+// constants
+const caption = 'Student'
+const baseurl_api = 'http://localhost:3500/api/v1/student/'
+const baseurl     = 'http://localhost:3500/student'
+const static      = 'http://localhost:3500/static'
 
-    server        = email.server.connect({
-      user: user_mail,
-      password: user_pass,
-      host: "smtp.gmail.com",
-      ssl: true
-    })
+// statusCode
+var code
+var hiding            = 'hide'
+var registerCode      = ''
+var forgetCode        = ''
+var profileCode       = ''
+var settingsCode      = ''
+var settingsWrongCode = ''
 
-/* file upload using multer */
+// emailjs config
+server = email.server.connect({
+  user: user_mail,
+  password: user_pass,
+  host: "smtp.gmail.com",
+  ssl: true
+})
+
+// multer config
 var storage = multer.diskStorage({
   destination: function(req, file, cb){
     cb(null, 'public/images')
@@ -51,20 +65,11 @@ var upload  = multer({storage:storage}).single('profile-photo')
 /* TODO:
   URGENT : in this file, should not calling database directly!
   [ ] Function        : Beautify way to fetch data from mongodb
+  [ ] Repetitive      : Make the functions!
   [ ] Authentication  : user credentials
   [ ] Authorization   : user role, access level
   [ ] StatusCode      : each message in json should include statusCode
 */
-
-// statusCode
-var registerCode  = ''
-var forgetCode    = ''
-var profileCode   = ''
-
-// constants
-const baseurl_api = 'http://localhost:3500/api/v1/student/'
-const baseurl     = 'http://localhost:3500/student'
-const static      = 'http://localhost:3500/static'
 
 /* functions */
 // 1. hash password
@@ -155,7 +160,7 @@ exports.getSettings = function(req, res){
   let nim = req.session.student
   Student.findOne({nim:nim}, function(err, success){
     try{
-      res.render('student/settings', {title: "Settings", nim:nim, hiding:hiding, code:code})
+      res.render('student/settings', {title: "Settings", nim:nim, hiding:hiding, code:code, settingsCode:settingsCode, settingsWrongCode:settingsWrongCode})
     } catch(err){
       throw err
     }
@@ -506,13 +511,13 @@ exports.requestPasswordChange = function(req, res){
   })
 }
 
-exports.activatePasswordChange = function(req, res){
+exports.activateResetPass = function(req, res){
   let link = req.params.link
   Student.findOne({passwordreset_link: link}, function(err, found){
     if(found){
       let nimToReset  = found.nim,
           newPass     = found.inactive_password,
-          encrypted   = encryptor.encrypt(newPass)
+          encrypted   = hash(newPass)
       console.log('new pass : ', newPass)
       Student.update({nim: nimToReset}, {$set: {
         password: encrypted,
@@ -562,24 +567,33 @@ exports.changePassword = function(req, res){
   if(oldPass !== '' && newPass !== ''){
     Student.findOne({nim: nimToChange}, function(e, s){
       if(s){
-        let decrypted = encryptor.decrypt(s.password)
+        let decrypted = dehash(s.password)
         if(oldPass == decrypted){
         // check if retype password same
         if(newPass !== rePass){
+          hiding = ''
+          settingsWrongCode = 'password not match'
           console.log('password not same')
-          res.json({
-            status:false,
-            message:'password not the same'
+          res.format({
+            json: function(){
+              res.json({
+                status:false,
+                message:'password not the same'
+              })
+            },
+            html: function(){
+              res.render('student/settings', {title: "Settings", nim:nim, hiding:hiding, settingsCode:settingsCode, settingsWrongCode:settingsWrongCode})
+            }
           })
         } else {
-          let encrypted = encryptor.encrypt(newPass)
+          let encrypted = hash(newPass)
             Student.update({nim: nimToChange}, {$set: {
               password: encrypted
             },
           },
             function(err, success){
               if(success){
-                completed = 'Update password success'
+                settingsCode = 'Update password success'
                 hiding = ''
                 console.log('Password has been changed.')
                 res.format({
@@ -590,7 +604,7 @@ exports.changePassword = function(req, res){
                     })
                   },
                   html: function(){
-                    res.render('student/settings', {title: "Settings", nim:nim, completed:completed, hiding:hiding})
+                    res.render('student/settings', {title: "Settings", nim:nim, settingsCode:settingsCode, hiding:hiding})
                   }
                 })
               } else {
@@ -605,9 +619,18 @@ exports.changePassword = function(req, res){
         }
       } else {
           console.log('Old password is wrong. Try again')
-          res.json({
-            "Status":"Error",
-            "Message":"Wrong old password"
+          settingsWrongCode = 'Old password is wrong'
+          hiding = ''
+          res.format({
+            json: function(){
+              res.json({
+                "Status":"Error",
+                "Message":"Wrong old password"
+              })
+            },
+            html: function(){
+              res.render('student/settings', {title: "Settings", nim:nim, settingsCode:settingsCode, hiding:hiding, settingsWrongCode:settingsWrongCode})
+            }
           })
         }
       } else {

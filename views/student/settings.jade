@@ -11,7 +11,8 @@ html
     // HTML5 shim, for IE6-8 support of HTML5 elements
     //if lt IE 9
       script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
-    script(src='/static/vendors/vendors/modernizr-2.6.2-respond-1.1.0.min.js')
+    script(src='/static/vendors/vendors/modernizr-2.6.2-respond-1.1.0.min.js')    
+      
   body
     .navbar.navbar-fixed-top
       .navbar-inner
@@ -84,12 +85,18 @@ html
                         &nbsp;
                         button.btn(type='reset') Cancel
                   
-                  if(completed !== '')
+                  if(settingsCode !== '')
                     strong
                       .alert.alert-success(class='#{hiding}') 
                         button.close(type='button', data-dismiss='alert') ×
                         h4 
-                        | #{completed}
+                        | #{settingsCode}
+                  else
+                    strong
+                      .alert.alert-danger(class='#{hiding}') 
+                        button.close(type='button', data-dismiss='alert') ×
+                        h4 
+                        | #{settingsWrongCode}
             // /block
       hr
     // /.fluid-container

@@ -17,7 +17,7 @@ router.post('/register', student.addStudent)
 router.post('/resetpassword', student.requestPasswordChange)
 router.post('/requestconfirmation', student.resendConfirmation)
 
-router.get('/resetpassword/:link', student.activatePasswordChange)
+router.get('/resetpassword/:link', student.activateResetPass)
 router.get('/activation/:link', student.activateStudent)
 
 /* LOGGED IN ONLY ACCESS */
