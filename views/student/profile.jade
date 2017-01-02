@@ -104,9 +104,10 @@ html
                 .span3
                   form(method='post' action='profile/imgupload' enctype='multipart/form-data')
                     h4  Image profile 
-                    img(src='#' width='200px' height='200px' alt='200px x 200px')
+                    img(src='/static/images/#{nimToUpdate}.png' alt='profile-photo')
                     br
-                    input(type='file', multiple,name='image')
+                    input(type='file', name='image')
+                    br
                     button(type='submit', value='upload', class='btn btn-primary') Upload file
       hr
     // /.fluid-container

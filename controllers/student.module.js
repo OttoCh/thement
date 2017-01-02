@@ -43,24 +43,22 @@ var storage = multer.diskStorage({
     cb(null, 'public/images')
   },
   filename: function(req, file, cb, res){
-    var now = new Date(),
-        month = now.getUTCMonth()+1,
-        tgl = 'profile-'+now.getDate()+'-'+month+'-'+now.getFullYear(),
-        waktu = now.getHours()+''+now.getMinutes()+''+now.getSeconds();
     var student = req.session.student;
-    User.update({student:student}, {$set: {
+    Student.update({nim:student}, {$set: {
       'profile.img_url': 'something'
     },
   }, function(err, result){
       if(result){
-        cb(null, student+'.png')
+        console.log('success')
+        let profile = student.toString()
+        cb(null, profile+'.png')
       } else {
         console.log('nothing found')
       }
     })
   }
 })
-var upload  = multer({storage:storage}).single('profile-photo')
+var upload  = multer({storage:storage}).single('image')
 
 /* TODO:
   URGENT : in this file, should not calling database directly!
@@ -704,7 +702,7 @@ exports.imgUpload = function(req, res, next){
     if(req.file != null){
       done = true;
       if(done){
-        res.redirect('#')
+        res.redirect(baseurl+'/profile')
       } else {
         console.log('upload error')
       }

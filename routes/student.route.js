@@ -7,6 +7,8 @@ var express   = require('express'),
 
     Student   = require('../models/student.model')
 
+const baseurl     = 'http://localhost:3500/student'
+
 // TODO: Use headers in every request
 
 router.get('/', student.getIndex)
@@ -33,6 +35,9 @@ router.use(loggedin)
 
 router.get('/home', student.getHome)
 router.get('/profile', student.getProfile)
+router.get('/profile/imgupload', function(req, res){
+  res.redirect(baseurl+'/profile')
+})
 router.get('/settings', student.getSettings)
 
 router.post('/settings', student.changePassword)

@@ -1,0 +1,36 @@
+1. STUDENT
+  # backend
+  // 1st milestone
+  [-] registration                 => add captcha?
+  [-] login
+  [-] settings (email, password)   => email?
+  [ ] profile (user detail, image) => image upload still fails
+
+  // 2nd milestone
+  [ ] db schema
+  [ ] choosing lecturer
+  [ ] verification
+
+  # frontend
+  [-] registration
+  [-] login
+  [-] dashboard
+  [-] profile
+  [ ] settings (notification)       => alert on wrong still fails
+
+2. LECTURER
+  # backend
+
+  # frontend
+
+3. ADMIN
+  # backend
+
+  # frontend
+
+4. KAPRODI
+  # backend
+
+  # frontend
+
+5. OTHER

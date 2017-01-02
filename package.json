@@ -33,6 +33,7 @@
     "jade":"1.11.0",
     "emailjs":"1.0.8",
     "util":"0.10.3",
-    "multer":"1.2.1"
+    "multer":"1.2.1",
+    "easy-captcha":"0.1.5"
   }
 }
