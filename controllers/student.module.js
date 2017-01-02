@@ -187,6 +187,10 @@ exports.getResendSuccess = function(req, res){
   res.render('student/activation_sent', {title:"Reactivation link sent", caption:caption, baseurl:baseurl})
 }
 
+exports.getImageUploaded = function(req, res){
+  res.render('student/profile_sent', {title:"Image profile updated"})
+}
+
 exports.addStudent = function(req, res){
   var pass1   = req.body.password,
       pass2   = req.body.repassword,
@@ -701,12 +705,27 @@ exports.updateProfile = function(req, res){
 
 exports.imgUpload = function(req, res, next){
   upload(req, res, function(err){
-    if(req.file != null){
-      done = true;
-      if(done){
-        res.redirect(baseurl+'/profile')
+    if(err){
+      console.log('error when uploading')
+      return
+    } else {
+      if(req.file == null){
+        res.json({
+          status: false,
+          message: "Please provide a file"
+        })
       } else {
-        console.log('upload error')
+        let fileType = req.file.originalname.split('.'),
+            type     = fileType[1]
+        if(type == 'jpg' || type == 'jpeg' || type == 'png'){
+          res.status(200)
+          res.redirect(baseurl+'/profile')
+        } else {
+          res.json({
+            status: false,
+            message:"File must jpeg/jpg/png"
+          })
+        }
       }
     }
   })

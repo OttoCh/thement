@@ -63,7 +63,7 @@ html
                 .muted.pull-left Your Profile
               .block-content.collapse.in
                 .span9
-                  form.form-horizontal(method='post', action='profile')
+                  form.form-horizontal(method='post' action='profile')
                     fieldset
                       legend Fill the form to change your profile
                       .control-group
@@ -109,6 +109,10 @@ html
                     input(type='file', name='image')
                     br
                     button(type='submit', value='upload', class='btn btn-primary') Upload file
+                    
+                    div.span12
+                      div.progress.progress-striped.active.hide
+                        div.bar(style='width: 0%')
       hr
     // /.fluid-container
     link(href='/static/vendors/vendors/datepicker.css', rel='stylesheet', media='screen')
