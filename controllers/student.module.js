@@ -582,7 +582,8 @@ exports.changePassword = function(req, res){
               })
             },
             html: function(){
-              res.render('student/settings', {title: "Settings", nim:nim, hiding:hiding, settingsCode:settingsCode, settingsWrongCode:settingsWrongCode})
+              // res.render('student/settings', {title: "Settings", nim:nim, hiding:hiding, settingsCode:settingsCode, settingsWrongCode:settingsWrongCode})
+              res.send('password not the same')
             }
           })
         } else {
@@ -604,7 +605,7 @@ exports.changePassword = function(req, res){
                     })
                   },
                   html: function(){
-                    res.render('student/settings', {title: "Settings", nim:nim, settingsCode:settingsCode, hiding:hiding})
+                    res.render('student/settings', {title: "Settings", nim:nim, settingsCode:settingsCode, hiding:hiding, settingsWrongCode:settingsWrongCode})
                   }
                 })
               } else {
@@ -629,7 +630,8 @@ exports.changePassword = function(req, res){
               })
             },
             html: function(){
-              res.render('student/settings', {title: "Settings", nim:nim, settingsCode:settingsCode, hiding:hiding, settingsWrongCode:settingsWrongCode})
+              // res.render('student/settings', {title: "Settings", nim:nim, settingsCode:settingsCode, hiding:hiding, settingsWrongCode:settingsWrongCode})
+              res.send('Old password is wrong.')
             }
           })
         }
