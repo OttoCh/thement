@@ -69,6 +69,17 @@ random = function(){
   return (text)
 }
 
+// 3. get friendly date format
+friendlyDate = function(tgl){
+    month = tgl.getMonth(),
+    month = month+1,
+    months = ['January', 'February', 'March', 'April', 'May', 'June', 'July','August','September','October','November','Desember'],
+    month  = months[tgl.getMonth()]
+    time = tgl.getHours()+':'+tgl.getMinutes()+' WIB'
+    tgl = month + ' '+ tgl.getDate()+', '+ tgl.getFullYear()+' at '+time
+    return tgl
+}
+
 // emailjs config
 server = email.server.connect({
   user: user_mail,
@@ -142,7 +153,12 @@ exports.getRegisterPage = function(req, res){
 
 exports.getHome = function(req, res){
   let nim = req.session.student
-  res.render('student/home', {title: "Dashboard ", nim:nim})
+  Student.findOne({nim:nim}, function(err, student){
+    console.log(student)
+    let tgl = student.last_login
+    tgl = friendlyDate(tgl)
+    res.render('student/home', {title: "Dashboard ", nim:nim, student:student, tgl:tgl})
+  })
 }
 
 exports.getProfile = function(req, res){
