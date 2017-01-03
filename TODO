@@ -1,10 +1,10 @@
 1. STUDENT
   # backend
   // 1st milestone
-  [-] registration                 => add captcha?
+  [-] registration                 
   [-] login
-  [-] settings (email, password)   => email?
-  [ ] profile (user detail, image) => image upload still fails
+  [-] settings (email, password)   => email (no need)
+  [-] profile (user detail, image) => image upload still fails => buggy on loading
 
   // 2nd milestone
   [ ] db schema
