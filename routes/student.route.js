@@ -2,6 +2,7 @@ var express   = require('express'),
     router    = express.Router(),
     app       = express()
     student   = require('../controllers/student.module'),
+    choose    = require('../controllers/student.choose'),
     auth      = require('../controllers/student.auth'),
     loggedin  = require('../middlewares/loggedin'),
 
@@ -38,8 +39,9 @@ router.get('/profile', student.getProfile)
 router.get('/profile/imgupload', function(req, res){
   res.redirect(baseurl+'/profile')
 })
-router.get('/settings', student.getSettings)
 
+router.get('/settings', student.getSettings)
+router.get('/lecturers', choose.getLecturers)
 router.post('/settings', student.changePassword)
 router.post('/profile', student.updateProfile)
 router.post('/profile/imgupload', student.imgUpload)

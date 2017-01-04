@@ -1,7 +1,7 @@
 1. STUDENT
   # backend
   // 1st milestone
-  [-] registration                 
+  [-] registration
   [-] login
   [-] settings (email, password)   => email (no need)
   [-] profile (user detail, image) => image upload still fails => buggy on loading
@@ -14,7 +14,7 @@
   # frontend
   [-] registration
   [-] login
-  [-] dashboard
+  [-] dashbo
   [-] profile
   [ ] settings (notification)       => alert on wrong still fails
 
