@@ -27,7 +27,7 @@ html
               li.dropdown
                 a.dropdown-toggle(href='#', role='button', data-toggle='dropdown')
                   i.icon-user
-                  |  Admin 
+                  |  #{nim} 
                   i.caret
                 ul.dropdown-menu
                   li
@@ -67,7 +67,7 @@ html
                       <div class="btn-group">
                       <a href="#"><button class="btn btn-success">Add New <i class="icon-plus icon-white"></i></button></a>
                       </div>
-                    legend Click user's email to see detail
+                    legend Click lecturer's name to see detail
                     .btn-group.pull-right
                       button.btn.dropdown-toggle(data-toggle='dropdown')
                         | Tools 
@@ -91,7 +91,8 @@ html
                     tbody
                       each lecturer in lecturers
                         tr
-                          td=lecturer.name
+                          td
+                            a(href='lecturer/#{lecturer.username}')=lecturer.name
                           td=lecturer.kk
                           td=lecturer.username+'@fi.itb.ac.id'
                           td
