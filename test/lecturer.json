@@ -1,4 +1,4 @@
-{
+[{
   "name":"Prof. Abdul Waris, Ph.D",
   "username":"awaris",
   "kk":"Nuclear Physics and Biophysics Research Division",
@@ -127,7 +127,7 @@
   "username":"gunawan",
   "kk":"Physics of Earth and Complex Systems Research Division",
   "kk_initial":"fisbum"
-}
+},
 {
   "name":"Dr. Freddy Haryanto",
   "username":"freddy",
@@ -388,4 +388,4 @@
   "username":"szaki",
   "kk":"Nuclear Physics and Biophysics Research Division",
   "kk_initial":"nukbio"
-}
+}]
