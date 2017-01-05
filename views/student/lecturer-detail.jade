@@ -1,4 +1,145 @@
-p lecturer detail
-ul
-  li=lecturer.name
-  li=lecturer.kk
+doctype html
+html
+  head
+    title=title
+    // Bootstrap
+    link(href='/static/vendors/bootstrap/css/bootstrap.min.css', rel='stylesheet', media='screen')
+    link(href='/static/vendors/bootstrap/css/bootstrap-responsive.min.css', rel='stylesheet', media='screen')
+    link(href='/static/vendors/assets/styles.css', rel='stylesheet', media='screen')
+    //if lte IE 8
+      script(language='javascript', type='text/javascript', src='/static/vendors/flot/excanvas.min.js')
+    // HTML5 shim, for IE6-8 support of HTML5 elements
+    //if lt IE 9
+      script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
+    script(src='/static/vendors/vendors/modernizr-2.6.2-respond-1.1.0.min.js')    
+      
+  body
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container-fluid
+          a.btn.btn-navbar(data-toggle='collapse', data-target='.nav-collapse')
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.brand(href='#') Student dashboard
+          .nav-collapse.collapse
+            ul.nav.pull-right
+              li.dropdown
+                a.dropdown-toggle(href='#', role='button', data-toggle='dropdown')
+                  i.icon-user
+                  |  #{nim} 
+                  i.caret
+                ul.dropdown-menu
+                  li
+                    a(tabindex='-1', href='profile') Profile
+                  li
+                    a(tabindex='-1', href='settings') Settings
+                  li.divider
+                  li
+                    a(tabindex='-1', href='logout') Logout
+            ul.nav
+              li.active
+                a(href='#') Lecturer's detail
+          // /.nav-collapse
+    .container-fluid
+      .row-fluid
+        #sidebar.span3
+          ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
+            li
+              a(href='home')
+                i.icon-chevron-right
+                |  Dashboard
+            li
+              a(href='profile')
+                i.icon-chevron-right
+                |  Profile
+        // /span
+        #content.span9
+          // TODO: validation input
+          // Only edit after click 'Edit'
+          .row-fluid
+            // block
+            .block
+              .navbar.navbar-inner.block-header
+                .muted.pull-left Lecturer's Profile
+              .block-content.collapse.in
+                .span12
+                  h3=lecturer.name
+                  ul(style='list-style:none')
+                    li
+                      h4 Email
+                      p=lecturer.username+'@fi.itb.ac.id'
+                    li
+                      h4 Education
+                      p
+                        ul
+                          li Bachelor, Institut Teknologi Bandung (1984)
+                          li Magister, University of Wisconsin, Madison-USA (1988)
+                          li Doctor, University of Wisconsin, Madison-USA (1993)
+                    li
+                      h4 Research division
+                      p=lecturer.kk
+                    
+                    
+                    a(href='../lecturers') Back to all lecturers
+                      //- .form-actions
+                      //-   button.btn.btn-primary(type='submit') Save changes
+                      //-   &nbsp;
+                      //-   button.btn(type='reset') Cancel
+                  
+                  //- if(settingsCode !== '')
+                  //-   strong
+                  //-     .alert.alert-success(class='#{hiding}') 
+                  //-       button.close(type='button', data-dismiss='alert') ×
+                  //-       h4 
+                  //-       | #{settingsCode}
+                  //- else 
+                  //-   strong
+                  //-     .alert.alert-danger(class='#{hiding}') 
+                  //-       button.close(type='button', data-dismiss='alert') ×
+                  //-       h4 
+                  //-       | #{settingsWrongCode}
+            // /block
+      hr
+    // /.fluid-container
+    link(href='/static/vendors/vendors/datepicker.css', rel='stylesheet', media='screen')
+    link(href='/static/vendors/vendors/uniform.default.css', rel='stylesheet', media='screen')
+    link(href='/static/vendors/vendors/chosen.min.css', rel='stylesheet', media='screen')
+    script(src='/static/vendors/vendors/jquery-1.9.1.js')
+    script(src='/static/vendors/bootstrap/js/bootstrap.min.js')
+    script(src='/static/vendors/vendors/jquery.uniform.min.js')
+    script(src='/static/vendors/vendors/chosen.jquery.min.js')
+    script(src='/static/vendors/vendors/bootstrap-datepicker.js')
+    script(src='/static/vendors/vendors/wizard/jquery.bootstrap.wizard.min.js')
+    script(type='text/javascript', src='/static/vendors/vendors/jquery-validation/dist/jquery.validate.min.js')
+    script(src='/static/vendors/assets/form-validation.js')
+    script(src='/static/vendors/assets/scripts.js')
+    script.
+      jQuery(document).ready(function() {
+      FormValidation.init();
+      });
+      $(function() {
+      $(".datepicker").datepicker();
+      $(".uniform_on").uniform();
+      $(".chzn-select").chosen();
+      $('.textarea').wysihtml5();
+      $('#rootwizard').bootstrapWizard({onTabShow: function(tab, navigation, index) {
+      var $total = navigation.find('li').length;
+      var $current = index+1;
+      var $percent = ($current/$total) * 100;
+      $('#rootwizard').find('.bar').css({width:$percent+'%'});
+      // If it's the last tab then hide the last button and show the finish instead
+      if($current >= $total) {
+      $('#rootwizard').find('.pager .next').hide();
+      $('#rootwizard').find('.pager .finish').show();
+      $('#rootwizard').find('.pager .finish').removeClass('disabled');
+      } else {
+      $('#rootwizard').find('.pager .next').show();
+      $('#rootwizard').find('.pager .finish').hide();
+      }
+      }});
+      $('#rootwizard .finish').click(function() {
+      alert('Finished!, Starting over!');
+      $('#rootwizard').find("a[href*='tab1']").trigger('click');
+      });
+      });
