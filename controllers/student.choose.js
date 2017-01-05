@@ -11,7 +11,14 @@ exports.getLecturers = function(req, res){
 
 exports.getDetailLecturer = function(req, res){
   let nim = req.session.student
+  console.log(req.url)
   lect.get(req.params.username, function(err, lecturer){
     res.render('student/lecturer-detail', {title:"Lecturer detail", nim:nim, lecturer:lecturer})
   })
+}
+
+exports.postChooseLecturer = function(req, res){
+  let nim = req.session.student
+  let chosen = req.url
+  res.send('url : ' + chosen)
 }

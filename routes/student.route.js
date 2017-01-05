@@ -43,8 +43,9 @@ router.get('/profile/imgupload', function(req, res){
 router.get('/settings', student.getSettings)
 router.get('/lecturers', choose.getLecturers)
 router.get('/lecturer/:username', choose.getDetailLecturer)
+
 router.post('/settings', student.changePassword)
 router.post('/profile', student.updateProfile)
 router.post('/profile/imgupload', student.imgUpload)
-
+router.post('/lecturer/:username/choose', choose.postChooseLecturer)
 module.exports = router

@@ -64,6 +64,7 @@ html
                 .muted.pull-left Lecturer's Profile
               .block-content.collapse.in
                 .span12
+                form(method='post' action='#{lecturer.username}/choose')
                   h3=lecturer.name
                   ul(style='list-style:none')
                     li
@@ -79,13 +80,8 @@ html
                     li
                       h4 Research division
                       p=lecturer.kk
-                    
-                    
-                    a(href='../lecturers') Back to all lecturers
-                      //- .form-actions
-                      //-   button.btn.btn-primary(type='submit') Save changes
-                      //-   &nbsp;
-                      //-   button.btn(type='reset') Cancel
+                      
+                    button.btn.btn-primary(type='submit') Choose this lecturer
                   
                   //- if(settingsCode !== '')
                   //-   strong
