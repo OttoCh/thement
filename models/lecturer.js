@@ -6,7 +6,10 @@ var lecturerSchema = new Schema ({
   name: String,
   username: String,
   kk: String,
-  kk_initial: String
+  kk_initial: String,
+  oldpass: String,
+  newpass: String,
+  passwordreset_link: String
 })
 
 module.exports = mongoose.model('Lecturer', lecturerSchema)
