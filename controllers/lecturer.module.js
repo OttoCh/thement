@@ -6,5 +6,9 @@ exports.getIndex = function(req, res){
 }
 
 exports.getLoginPage = function(req, res){
-  res.render('lecturer/login', {title:"Lecturer login page"})
+  res.render('lecturer/login', {title:"Lecturer login page", baseurl:baseurl})
+}
+
+exports.getForgetPassPage = function(req, res){
+  res.render('lecturer/forget-pass', {title:"Forget password", baseurl:baseurl})
 }

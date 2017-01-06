@@ -7,5 +7,6 @@ var lecturer    = require('../controllers/lecturer.module')
 
 router.get('/', lecturer.getIndex)
 router.get('/login', lecturer.getLoginPage)
+router.get('/account/forget_pass', lecturer.getForgetPassPage)
 
 module.exports = router

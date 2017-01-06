@@ -1,0 +1,40 @@
+include ../static/layout
+head
+  link(href='/static/vendors/bootstrap/css/bootstrap.min.css', rel='stylesheet', media='screen')
+  link(href='/static/vendors/bootstrap/css/bootstrap-responsive.min.css', rel='stylesheet', media='screen')
+  link(href='/static/vendors/assets/styles.css', rel='stylesheet', media='screen')
+  link(href='/static/vendors/vendors/jGrowl/jquery.jgrowl.css', rel='stylesheet', media='screen')
+  script(type="text/javascript")
+  
+  
+body
+
+  div(class='container')
+  center
+    span.label.label-success Lecturer
+    form(action='forget_pass', method='post', class='form-signin')
+      h2(class='form-signin-heading') Forget password
+      label(for='inputEmail', class='sr-only') NIM
+      input(type='number', id='inputEmail', name='nim', class='form-control' placeholder='your NIM' required autofocus)
+      label(for='inputPassword', class='sr-only') Email
+      input(type='email', id='inputPassword', name='email', class='form-control', placeholder='your Email' required)
+      br
+      button(class='btn btn-lg btn-success btn-block', type='submit') Reset password
+      p 
+        center 
+        hr
+        | Already have an account? Login 
+        a(href='#{baseurl}') here
+        //- br
+        //- | Account not activated yet? Click 
+        //- a(href='#{baseurl}/account/resend_activation') here
+      //- p
+      //-   center
+      //-     if(forgetCode !== '')
+      //-       strong
+      //-         .alert.alert-danger(class='#{hiding}') 
+      //-           button.close(type='button', data-dismiss='alert') ×
+      //-           h4
+      //-           | #{forgetCode}
+
+  
