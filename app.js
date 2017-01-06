@@ -35,12 +35,14 @@ app.set('view engine', 'jade')
 
 var student_apis    = require('./routes/api.student.route')
 var student         = require('./routes/student.route')
+var lecturer        = require('./routes/lecturer.route')
 
 var admin           = require('./routes/admin.route')
 var index           = require('./routes/index.route')
 
 app.use('/', index)
 app.use('/student', student)
+app.use('/lecturer', lecturer)
 app.use('/api/v1/student', student_apis)
 app.use('/api/v1/admin', admin)
 

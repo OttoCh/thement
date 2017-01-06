@@ -1,0 +1,37 @@
+include ../static/layout
+head
+  link(href='/static/vendors/bootstrap/css/bootstrap.min.css', rel='stylesheet', media='screen')
+  link(href='/static/vendors/bootstrap/css/bootstrap-responsive.min.css', rel='stylesheet', media='screen')
+  link(href='/static/vendors/assets/styles.css', rel='stylesheet', media='screen')
+  link(href='/static/vendors/vendors/jGrowl/jquery.jgrowl.css', rel='stylesheet', media='screen')
+  script(type="text/javascript")
+  
+  
+body
+
+  div(class='container')
+  center
+    span.label.label-info #{caption}
+    form(action='login', method='post', class='form-signin')
+      h2(class='form-signin-heading') Please log in
+      label(for='inputEmail', class='sr-only') Username
+      input(type='number', id='inputEmail', name='nim', class='form-control' placeholder='your NIM' required autofocus)
+      label(for='inputPassword', class='sr-only') Password
+      input(type='password', id='inputPassword', name='password', class='form-control', placeholder='your password' required)
+      button(class='btn btn-lg btn-primary btn-block', type='submit') Login
+      p 
+        center 
+        | Don't have an account? Register
+        a(href='register')  here  
+        br
+        hr
+        | Forget password? Click 
+        a(href='#{baseurl}/account/forget_pass') here
+        br
+        | Account not activated yet? Click 
+        a(href='#{baseurl}/account/resend_activation') here
+      //- p
+      //-   center
+      //-   if(code !== '')
+      //-     strong
+      //-       .alert.alert-danger #{code}
