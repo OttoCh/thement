@@ -21,10 +21,11 @@
     },
 
     {
-      "endpoint"      : "api/v1/student/:nim",
+      "endpoint"      : "api/v1/student/profile",
       "method"        : "PUT",
       "purpose"       : "update single user by nim",
       "type"          : "profile",
+      "status"        : true,
       "headers"       : {
         "content-type":"application/json"
       },
@@ -59,6 +60,7 @@
       "method"        : "POST",
       "purpose"       : "student log in",
       "type"          : "session",
+      "status"        : true,
       "response"      : {
         "status"      : "OK",
         "message"     : "logged in"
@@ -70,6 +72,7 @@
       "method"        : "POST",
       "purpose"       : "student log out",
       "type"          : "session",
+      "status"        : true,
       "response"      : {
         "status"      : "OK",
         "message"     : "logged out"
@@ -77,10 +80,11 @@
     },
 
     {
-      "endpoint"      : "api/v1/student/choose/lecturer/:username",
+      "endpoint"      : "api/v1/student/lecturer/:username/choose",
       "method"        : "POST",
       "purpose"       : "select a lecturer by username",
       "type"          : "choosing-system",
+      "status"        : false,
       "response"      : {
         "status"      : "OK",
         "message"     : "submitted"
