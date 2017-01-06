@@ -53,6 +53,10 @@ html
               a(href='#{baseurl}/profile')
                 i.icon-chevron-right
                 |  Profile
+            li.active
+              a(href='#{baseurl}/lecturers')
+                i.icon-chevron-right
+                |  Lecturers
         // /span
         #content.span9
           // TODO: validation input
@@ -83,6 +87,10 @@ html
                       
                     button.btn.btn-primary(type='submit') Choose this lecturer
                   
+                  
+                    // pagination
+                    li.next
+                      a(href='javascript:void(0);') Next
                   //- if(settingsCode !== '')
                   //-   strong
                   //-     .alert.alert-success(class='#{hiding}') 

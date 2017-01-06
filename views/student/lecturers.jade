@@ -71,7 +71,7 @@ html
                       <div class="btn-group">
                       <a href="#"><button class="btn btn-success">Add New <i class="icon-plus icon-white"></i></button></a>
                       </div>
-                    legend Click lecturer's name to see detail
+                    legend Click lecturer's name to see detail and choose one
                     .btn-group.pull-right
                       button.btn.dropdown-toggle(data-toggle='dropdown')
                         | Tools 
@@ -90,7 +90,6 @@ html
                         th Name
                         th Research Division
                         th Email
-                        th Choose
                         
                     tbody
                       each lecturer in lecturers
@@ -99,7 +98,6 @@ html
                             a(href='lecturer/#{lecturer.username}')=lecturer.name
                           td=lecturer.kk
                           td=lecturer.username+'@fi.itb.ac.id'
-                          td
                           
                       
             // /block
