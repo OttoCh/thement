@@ -1,3 +1,10 @@
+var express     = require('express'),
+      router    = express.Router()
+
 const baseurl   = 'http://localhost:3500/lecturer'
 
-router.get('/', )
+var lecturer    = require('../controllers/lecturer.module')
+
+router.get('/', lecturer.getIndex)
+
+module.exports = router
