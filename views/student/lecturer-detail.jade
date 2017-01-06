@@ -31,9 +31,9 @@ html
                   i.caret
                 ul.dropdown-menu
                   li
-                    a(tabindex='-1', href='profile') Profile
+                    a(tabindex='-1', href='#{baseurl}/profile') Profile
                   li
-                    a(tabindex='-1', href='settings') Settings
+                    a(tabindex='-1', href='#{baseurl}/settings') Settings
                   li.divider
                   li
                     a(tabindex='-1', href='logout') Logout
@@ -46,11 +46,11 @@ html
         #sidebar.span3
           ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
             li
-              a(href='home')
+              a(href='#{baseurl}/home')
                 i.icon-chevron-right
                 |  Dashboard
             li
-              a(href='profile')
+              a(href='#{baseurl}/profile')
                 i.icon-chevron-right
                 |  Profile
         // /span
