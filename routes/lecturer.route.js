@@ -9,4 +9,6 @@ router.get('/', lecturer.getIndex)
 router.get('/login', lecturer.getLoginPage)
 router.get('/account/forget_pass', lecturer.getForgetPassPage)
 
+router.post('/login', lecturer.postLogin)
+
 module.exports = router
