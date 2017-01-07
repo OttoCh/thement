@@ -1,5 +1,39 @@
-var Lect        = require('../models/lecturer')
+var Lect        = require('../models/lecturer'),
+    key         = 'hjshdjshd2283yausa2t323t7',
+    possible    = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
+    encryptor   = require('simple-encryptor')(key)
+
 const baseurl   = 'http://localhost:3500/lecturer'
+
+/* functions */
+// 1. hash password
+hash = function(password){
+  let encrypted = encryptor.encrypt(password)
+  return encrypted
+}
+
+dehash = function(password){
+  let decrypted = encryptor.decrypt(password)
+  return decrypted
+}
+
+// 2. generate random code
+var text, strs
+randoms = function(strs){
+  text = strs
+  for(var i=0; i<20; i++){
+    text += possible.charAt(Math.floor(Math.random() * possible.length))
+  }
+  return (text)
+}
+
+random = function(){
+  text = ''
+  for(var i=0; i<10; i++){
+    text += possible.charAt(Math.floor(Math.random() * possible.length))
+  }
+  return (text)
+}
 
 exports.getIndex = function(req, res){
   res.redirect('lecturer/login')
@@ -14,6 +48,9 @@ exports.getForgetPassPage = function(req, res){
 }
 
 exports.postLogin = function(req, res){
+  // check if newpass exists
+
+  
   let user  = req.body.username
   let pass  = req.body.password
   Lect.findOne({username:user}, function(e, found){
@@ -41,4 +78,32 @@ exports.postLogin = function(req, res){
       })
     }
   })
+}
+
+exports.changeInitPass = function(req, res){
+  // get username from session
+  let user     = req.body.username
+  let oldpass  = req.body.oldpass
+  let newp     = req.body.newpass
+
+  let enc_newpass = hash(newp)
+  let resetlink   = randoms('as82h323h')
+
+  // check if oldpass true
+  Lect.update({username: user}, {$set: {
+        newpass: enc_newpass,
+        passwordreset_link: resetlink
+      },
+    }, function(e, success){
+      if(success){
+        console.log('success')
+        res.json({
+          status: true,
+          message: 'change initial pass success'
+        })
+      } else {
+        console.log('error')
+      }
+    }
+  )
 }

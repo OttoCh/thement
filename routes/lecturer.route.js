@@ -10,5 +10,6 @@ router.get('/login', lecturer.getLoginPage)
 router.get('/account/forget_pass', lecturer.getForgetPassPage)
 
 router.post('/login', lecturer.postLogin)
+router.post('/changepass', lecturer.changeInitPass)
 
 module.exports = router
