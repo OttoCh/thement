@@ -50,7 +50,7 @@ exports.getForgetPassPage = function(req, res){
 exports.postLogin = function(req, res){
   // check if newpass exists
 
-  
+
   let user  = req.body.username
   let pass  = req.body.password
   Lect.findOne({username:user}, function(e, found){
@@ -59,6 +59,10 @@ exports.postLogin = function(req, res){
       if(pass == found.oldpass){
         // logged in, redirect to change pass
         console.log('logged in, change password immediately')
+
+        // save session
+        req.session.lecturer = user
+        console.log('Logged in as', req.session.lecturer)
         res.json({
           status: true,
           message: "Logged in"
@@ -78,6 +82,26 @@ exports.postLogin = function(req, res){
       })
     }
   })
+}
+
+exports.postLogout = function(req, res){
+  req.session.destroy(function(err){
+    if(err){
+        console.log(err);
+    } else {
+        res.format({
+          json: function(){
+            res.send({
+              status:true,
+              message: "Logged out"
+            })
+          },
+          html: function(){
+            res.redirect('./login')
+          }
+        })
+    }
+  });
 }
 
 exports.changeInitPass = function(req, res){
