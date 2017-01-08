@@ -48,31 +48,43 @@ exports.getForgetPassPage = function(req, res){
 }
 
 exports.postLogin = function(req, res){
-  // check if newpass exists
-
 
   let user  = req.body.username
   let pass  = req.body.password
   Lect.findOne({username:user}, function(e, found){
     if(found){
-      console.log('username found')
-      if(pass == found.oldpass){
-        // logged in, redirect to change pass
-        console.log('logged in, change password immediately')
-
-        // save session
-        req.session.lecturer = user
-        console.log('Logged in as', req.session.lecturer)
-        res.json({
-          status: true,
-          message: "Logged in"
-        })
+      if (found.newpass !== null){
+        // check newpass
+        console.log('newpass exist')
+        let decrypted = dehash(found.newpass)
+        if(pass !== decrypted){
+          console.log('wrong new pass')
+          res.send('try again')
+        } else {
+          console.log('logged in')
+          res.send('loggedin')
+        }
       } else {
-        console.log('wrong password')
-        res.json({
-          status: false,
-          message: 'wrong password'
-        })
+        // check oldpass, redirect to change pass
+        console.log('username found')
+        if(pass == found.oldpass){
+          // logged in, redirect to change pass
+          console.log('logged in, change password immediately')
+
+          // save session
+          req.session.lecturer = user
+          console.log('Logged in as', req.session.lecturer)
+          res.json({
+            status: true,
+            message: "Logged in"
+          })
+        } else {
+          console.log('wrong password')
+          res.json({
+            status: false,
+            message: 'wrong password'
+          })
+        }
       }
     } else {
       console.log('NOT FOUND')
