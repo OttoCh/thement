@@ -53,7 +53,8 @@ exports.postLogin = function(req, res){
   let pass  = req.body.password
   Lect.findOne({username:user}, function(e, found){
     if(found){
-      if (found.newpass !== null){
+      console.log('username : ', user)
+      if (found.newpass != null){
         // check newpass
         console.log('newpass exist')
         let decrypted = dehash(found.newpass)
@@ -66,7 +67,7 @@ exports.postLogin = function(req, res){
         }
       } else {
         // check oldpass, redirect to change pass
-        console.log('username found')
+        console.log('still oldpass')
         if(pass == found.oldpass){
           // logged in, redirect to change pass
           console.log('logged in, change password immediately')
