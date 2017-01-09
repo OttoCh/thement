@@ -119,12 +119,11 @@ exports.postLogout = function(req, res){
 
 exports.changeInitPass = function(req, res){
   // get username from session
-  let user     = req.body.username
-  let oldpass  = req.body.oldpass
-  let newp     = req.body.newpass
-
-  let enc_newpass = hash(newp)
-  let resetlink   = randoms('as82h323h')
+  let user     = req.body.username,
+      oldpass  = req.body.oldpass,
+      newp     = req.body.newpass,
+   enc_newpass = hash(newp),
+  lresetlink   = randoms('as82h323h')
 
   // check if oldpass true
   Lect.update({username: user}, {$set: {
