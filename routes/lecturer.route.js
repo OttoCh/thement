@@ -16,8 +16,4 @@ router.post('/changepass', lecturer.changeInitPass)
 
 router.use(session)
 
-router.get('/home', function(req, res){
-  res.send('dashboard')
-})
-
 module.exports = router
