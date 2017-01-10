@@ -6,6 +6,16 @@ var express       = require('express'),
     Student       = require('../models/student'),
     baseurl       = 'http://localhost:3500/student'
 
+hash = function(password){
+  let encrypted = encryptor.encrypt(password)
+  return encrypted
+}
+
+dehash = function(password){
+  let decrypted = encryptor.decrypt(password)
+  return decrypted
+}
+
 exports.stdLogin = function(req, res){
   // TODO: Login with token, generate random strings and numbers
   /*
@@ -21,7 +31,7 @@ exports.stdLogin = function(req, res){
       var code
       if (found.is_active == true){
         console.log('check for decrypting')
-        let decrypted = encryptor.decrypt(found.password)
+        let decrypted = dehash(found.password)
         if(pass == decrypted){
           let nim = found.nim
           req.session.student = nim
