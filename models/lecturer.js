@@ -9,7 +9,8 @@ var lecturerSchema = new Schema ({
   kk_initial: String,
   oldpass: String,
   newpass: String,
-  passwordreset_link: String
+  passwordreset_link: String,
+  candidates: []
 })
 
 module.exports = mongoose.model('Lecturer', lecturerSchema)
