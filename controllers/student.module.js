@@ -157,7 +157,16 @@ exports.getHome = function(req, res){
     console.log(student)
     let tgl = student.last_login
     tgl = friendlyDate(tgl)
-    res.render('student/home', {title: "Dashboard ", nim:nim, student:student, tgl:tgl})
+    let state
+    let supervisor = student.supervisor
+    if(student.is_choose == false){
+      state = 'None'
+    } else if(student.is_choose == true && student.is_accepted == false){
+      state = 'Pending'
+    } else if(student.is_accepted == true){
+      state = 'Accepted'
+    }
+    res.render('student/home', {title: "Dashboard ", nim:nim, student:student, tgl:tgl, state:state, supervisor:supervisor})
   })
 }
 
@@ -307,6 +316,7 @@ exports.addStudent = function(req, res){
     std.is_active           = false
     std.is_choose           = false
     std.is_accepted         = false
+    std.supervisor          = ""
     std.inactive_password   = ""
     std.activation_link     = randoms('398hhces8dh8shd8ah')
     std.passwordreset_link  = randoms('8hasa9hsd8hfdh3294')
