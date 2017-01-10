@@ -13,9 +13,19 @@ exports.getLecturers = function(req, res){
 
 exports.getDetailLecturer = function(req, res){
   let nim = req.session.student
-  console.log(req.url)
-  lect.get(req.params.username, function(err, lecturer){
-    res.render('student/lecturer-detail', {title:"Lecturer detail", nim:nim, lecturer:lecturer, baseurl:baseurl})
+  let hiding = ''
+  student.findOne({nim: nim}, function(err, std){
+    if(std.is_choose == true){
+      hiding = 'hide'
+      lect.get(req.params.username, function(err, lecturer){
+        res.render('student/lecturer-detail', {title:"Lecturer detail", nim:nim, lecturer:lecturer, baseurl:baseurl, hiding:hiding})
+      })
+    } else {
+      hiding = ''
+      lect.get(req.params.username, function(err, lecturer){
+        res.render('student/lecturer-detail', {title:"Lecturer detail", nim:nim, lecturer:lecturer, baseurl:baseurl, hiding:hiding})
+      })
+    }
   })
 }
 
