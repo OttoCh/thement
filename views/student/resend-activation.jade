@@ -15,7 +15,7 @@ body
     form(action='resend_activation', method='post', class='form-signin')
       h2(class='form-signin-heading') Resend activation link
       label(for='inputEmail', class='sr-only') NIM
-      input(type='number', id='inputEmail', name='nim', class='form-control' placeholder='your NIM' required autofocus)
+      input(type='number', id='inputEmail', name='nim', class='form-control' placeholder='your NIM' class='form-control' oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' maxLength='8' required autofocus)
       label(for='inputPassword', class='sr-only') Email
       input(type='email', id='inputPassword', name='email', class='form-control', placeholder='your Email' required)
       button(class='btn btn-lg btn-primary btn-block', type='submit') Resend activation

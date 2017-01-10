@@ -15,7 +15,7 @@ body
     form(action='login', method='post', class='form-signin')
       h2(class='form-signin-heading') Please log in
       label(for='inputEmail', class='sr-only') NIM
-      input(type='number', id='inputEmail', name='nim', class='form-control' placeholder='your NIM' required autofocus)
+      input(type='number', id='inputEmail', name='nim', class='form-control' oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' maxLength='8' placeholder='your NIM' required autofocus)
       label(for='inputPassword', class='sr-only') Password
       input(type='password', id='inputPassword', name='password', class='form-control', placeholder='your password' required)
       button(class='btn btn-lg btn-primary btn-block', type='submit') Login

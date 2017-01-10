@@ -15,7 +15,7 @@ body
     form(action='forget_pass', method='post', class='form-signin')
       h2(class='form-signin-heading') Forget password
       label(for='inputEmail', class='sr-only') NIM
-      input(type='number', id='inputEmail', name='nim', class='form-control' placeholder='your NIM' required autofocus)
+      input(type='number', id='inputEmail', name='nim', class='form-control' class='form-control' oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);' maxLength='8' placeholder='your NIM' required autofocus)
       label(for='inputPassword', class='sr-only') Email
       input(type='email', id='inputPassword', name='email', class='form-control', placeholder='your Email' required)
       br
