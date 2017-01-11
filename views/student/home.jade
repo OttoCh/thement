@@ -29,17 +29,31 @@ html.no-js
                   i.caret
                 ul.dropdown-menu
                   li
-                    a(tabindex='-1', href='#') 1st message
+                    a(tabindex='-1', href='#') 
+                      div 
+                        strong 1st message
+                      | Jade is a terse and simple templating language with a strong focus
                   li
-                    a(tabindex='-1', href='#') 2nd message
+                    a(tabindex='-1', href='#')
+                      div 
+                        strong 2nd message
+                      | Jade is a terse and simple templating language with a strong focus
                   li.divider
                   li
-                    a(tabindex='-1', href='logout') Read all messages 
+                    a(tabindex='-1', href='#') Read all messages 
               li.dropdown
                 a.dropdown-toggle(href='#', role='button', data-toggle='dropdown')
                   i.icon-volume-up
                   |  Notifications
                   i.caret
+                ul.dropdown-menu
+                  li
+                    a(tabindex='-1', href='#') 1st notif
+                  li
+                    a(tabindex='-1', href='#') 2nd notif
+                  li.divider
+                  li
+                    a(tabindex='-1', href='#') Read all notifications
               li.dropdown
                 a.dropdown-toggle(href='#', role='button', data-toggle='dropdown')
                   i.icon-user
