@@ -24,6 +24,24 @@ html.no-js
             ul.nav.pull-right
               li.dropdown
                 a.dropdown-toggle(href='#', role='button', data-toggle='dropdown')
+                  i.icon-envelope
+                  |  Messages
+                  i.caret
+                ul.dropdown-menu
+                  li
+                    a(tabindex='-1', href='#') 1st message
+                  li
+                    a(tabindex='-1', href='#') 2nd message
+                  li.divider
+                  li
+                    a(tabindex='-1', href='logout') Read all messages 
+              li.dropdown
+                a.dropdown-toggle(href='#', role='button', data-toggle='dropdown')
+                  i.icon-volume-up
+                  |  Notifications
+                  i.caret
+              li.dropdown
+                a.dropdown-toggle(href='#', role='button', data-toggle='dropdown')
                   i.icon-user
                   |  #{nim} 
                   i.caret
@@ -34,7 +52,7 @@ html.no-js
                     a(tabindex='-1', href='settings') Settings
                   li.divider
                   li
-                    a(tabindex='-1', href='logout') Logout
+                    a(tabindex='-1', href='logout') Logout  
             ul.nav
               li.active
                 a(href='#') Dashboard
