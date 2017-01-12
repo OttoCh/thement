@@ -4,6 +4,9 @@ var lect      = require('../models/lecturer.model'),
     lecturer  = require('../models/lecturer')
 const baseurl = 'http://localhost:3500/student'
 
+var hiding     = 'hide'
+var chooseCode = ''
+
 exports.getLecturers = function(req, res){
   let nim = req.session.student
   lect.all(function(err, lecturers){
@@ -13,7 +16,6 @@ exports.getLecturers = function(req, res){
 
 exports.getDetailLecturer = function(req, res){
   let nim = req.session.student
-  let hiding = ''
   student.findOne({nim: nim}, function(err, std){
     if(std.is_choose == true){
       hiding = 'hide'
@@ -48,10 +50,8 @@ exports.postChooseLecturer = function(req, res){
       }, function(e, s){
         if(s){
           console.log('success choosing lecturer')
-          res.json({
-            status: true,
-            message: "Success choosing lecturer"
-          })
+          chooseCode = 'Success choosing lecturer'
+          res.redirect(baseurl+'/lecturers')
         } else {
           console.log('error writing to lecturer')
           res.send('error writing to lecturer')

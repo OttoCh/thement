@@ -15,7 +15,7 @@ var credentials   = require('../credentials/email'),
     encryptor     = require('simple-encryptor')(key)
 
 // constants
-const caption = 'Student'
+const caption     = 'Student'
 const baseurl_api = 'http://localhost:3500/api/v1/student/'
 const baseurl     = 'http://localhost:3500/student'
 const static      = 'http://localhost:3500/static'
