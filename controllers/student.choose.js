@@ -45,7 +45,7 @@ exports.postChooseLecturer = function(req, res){
       if(success){
         // update lecturer's document
         lecturer.update({username: lecturerChosen}, {$push : {
-            candidates: nim
+            candidates: nim.toString()
         },
       }, function(e, s){
         if(s){
