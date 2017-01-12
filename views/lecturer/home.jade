@@ -53,9 +53,9 @@ html.no-js
                 i.icon-chevron-right
                 |  Profile
             li
-              a(href='lecturers')
+              a(href='candidates')
                 i.icon-chevron-right
-                |  Lecturers
+                |  Candidates (#{found.candidates.length})
         // /span
         #content.span9
           .row-fluid
@@ -79,7 +79,9 @@ html.no-js
                   p 
                 .span3
                   h4 Candidates
-                  p #{found.candidates}
+                  p #{found.candidates} 
+                  | See full list 
+                  a(href='candidates') here
                 .span3(class='#{hiding}')
                   h4 Password Change
                   p Your current password is unsafe. Change 

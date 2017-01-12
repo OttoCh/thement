@@ -60,6 +60,33 @@ exports.getHome = function(req, res){
   })
 }
 
+exports.getCandidates = function(req, res){
+  let lecturer = req.session.lecturer
+  let objs = [
+    {
+      "nim":10213001
+    },
+    {
+      "nim":10213075
+    }
+  ]
+  Lect.findOne({username:lecturer}, function(e, f){
+    if(f){
+      let cans    = []
+      let calons  = f.candidates
+      for(var i=0; i<calons.length; i++){
+        cans.push({
+          index:i,
+          nim:calons[i]
+        });
+      }
+      res.render('lecturer/candidates', {title:"All candidates", baseurl:baseurl, cans:cans})
+    } else {
+      console.log('lecturer not found')
+    }
+  })
+}
+
 exports.postLogin = function(req, res){
 
   let user  = req.body.username

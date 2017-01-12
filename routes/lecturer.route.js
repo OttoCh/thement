@@ -17,5 +17,5 @@ router.post('/changepass', lecturer.changeInitPass)
 router.use(session)
 
 router.get('/home', lecturer.getHome)
-
+router.get('/candidates', lecturer.getCandidates)
 module.exports = router
