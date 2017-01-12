@@ -47,6 +47,10 @@ exports.getForgetPassPage = function(req, res){
   res.render('lecturer/forget-pass', {title:"Forget password", baseurl:baseurl})
 }
 
+exports.getHome = function(req, res){
+  res.render('lecturer/home', {title: "Home", baseurl:baseurl})
+}
+
 exports.postLogin = function(req, res){
 
   let user  = req.body.username
@@ -75,10 +79,7 @@ exports.postLogin = function(req, res){
           // save session
           req.session.lecturer = user
           console.log('Logged in as', req.session.lecturer)
-          res.json({
-            status: true,
-            message: "Logged in"
-          })
+          res.redirect('home')
         } else {
           console.log('wrong password')
           res.json({
