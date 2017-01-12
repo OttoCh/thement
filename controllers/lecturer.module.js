@@ -5,6 +5,8 @@ var Lect        = require('../models/lecturer'),
 
 const baseurl   = 'http://localhost:3500/lecturer'
 
+var hiding      = ''
+
 /* functions */
 // 1. hash password
 hash = function(password){
@@ -48,7 +50,14 @@ exports.getForgetPassPage = function(req, res){
 }
 
 exports.getHome = function(req, res){
-  res.render('lecturer/home', {title: "Home", baseurl:baseurl})
+  let lecturer  = req.session.lecturer
+  Lect.findOne({username:lecturer}, function(e, found){
+    if(found){
+      res.render('lecturer/home', {title: "Home", baseurl:baseurl, found:found, hiding:hiding})
+    } else {
+      console.log('no lecturer found')
+    }
+  })
 }
 
 exports.postLogin = function(req, res){

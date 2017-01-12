@@ -1,7 +1,7 @@
 doctype html
 html.no-js
   head
-    title Dashboard - 
+    title Dashboard - #{found.username}
     // Bootstrap
     link(href='/static/vendors/bootstrap/css/bootstrap.min.css', rel='stylesheet', media='screen')
     link(href='/static/vendors/bootstrap/css/bootstrap-responsive.min.css', rel='stylesheet', media='screen')
@@ -19,13 +19,14 @@ html.no-js
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          a.brand(href='#') Student dashboard
+          a.brand(href='#') Lecturer dashboard
           .nav-collapse.collapse
             ul.nav.pull-right
               li.dropdown
                 a.dropdown-toggle(href='#', role='button', data-toggle='dropdown')
-                  i.icon-user
-                  |  
+                  i.icon-user 
+                  span 
+                  | #{found.name} 
                   i.caret
                 ul.dropdown-menu
                   li
@@ -77,16 +78,13 @@ html.no-js
                   h4 Last login
                   p 
                 .span3
-                  h4 Activation status
-                  p 
-                .span3
-                  h4 Dosen pembimbing
-                  p none
-                  | Choose 
-                  a(href='lecturers') here
-                .span3
-                  h4 Progress report(s)
-                  p none
+                  h4 Candidates
+                  p #{found.candidates}
+                .span3(class='#{hiding}')
+                  h4 Password Change
+                  p Your current password is unsafe. Change 
+                    a(href='#') here
+                
                   //- .chart(data-percent='13') 13%
                   //- .chart-bottom-heading
                   //-   span.label.label-info Orders
