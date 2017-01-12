@@ -95,7 +95,8 @@ html
                     tbody
                       each can in cans
                         tr
-                          td #{can.nim}
+                          td 
+                            a(href='candidates/detail/#{can.nim}') #{can.nim}
                           td
                           td
                             a(href='#' class='btn btn-success') Accept

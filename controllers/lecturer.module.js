@@ -1,4 +1,5 @@
 var Lect        = require('../models/lecturer'),
+    Std         = require('../models/student.model'),
     key         = 'hjshdjshd2283yausa2t323t7',
     possible    = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
     encryptor   = require('simple-encryptor')(key)
@@ -84,6 +85,12 @@ exports.getCandidates = function(req, res){
     } else {
       console.log('lecturer not found')
     }
+  })
+}
+
+exports.getDetailCandidate = function(req, res){
+  Std.get(req.params.nim, function(err, student){
+    res.render('lecturer/candidate-detail', {title:"Candidate detail", baseurl:baseurl, student:student})
   })
 }
 
