@@ -64,14 +64,6 @@ exports.getHome = function(req, res){
 
 exports.getCandidates = function(req, res){
   let lecturer = req.session.lecturer
-  let objs = [
-    {
-      "nim":10213001
-    },
-    {
-      "nim":10213075
-    }
-  ]
   Lect.findOne({username:lecturer}, function(e, f){
     if(f){
       let cans    = []
@@ -123,6 +115,10 @@ exports.rejectCandidate = function(req, res){
       }
     }
   )
+}
+
+exports.getFixStudents = function(req, res){
+  res.render('lecturer/students', {title:"Fix students"})
 }
 
 exports.postLogin = function(req, res){
