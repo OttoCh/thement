@@ -1,4 +1,5 @@
 var Lect        = require('../models/lecturer'),
+    Student     = require('../models/student'),
     Std         = require('../models/student.model'),
     key         = 'hjshdjshd2283yausa2t323t7',
     possible    = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
@@ -92,6 +93,36 @@ exports.getDetailCandidate = function(req, res){
   Std.get(req.params.nim, function(err, student){
     res.render('lecturer/candidate-detail', {title:"Candidate detail", baseurl:baseurl, student:student})
   })
+}
+
+exports.rejectCandidate = function(req, res){
+  let lecturer = req.session.lecturer
+  let nimToRemove = req.params.nim
+  Lect.update({username:lecturer}, {$pull : {
+        candidates: nimToRemove
+      },
+    }, function(e, s){
+      if(s){
+        console.log('success remove student')
+        nimToRemove = Number(nimToRemove)
+        Student.update({nim:nimToRemove}, {$set: {
+          supervisor: "",
+          is_choose: false
+        },
+      }, function(e, r){
+        if(r){
+          console.log('success!')
+          res.redirect(baseurl+'/candidates')
+        } else {
+          console.log('error changing student status')
+        }
+      }
+    )
+      } else {
+        console.log('error when removing nim from candidates')
+      }
+    }
+  )
 }
 
 exports.postLogin = function(req, res){

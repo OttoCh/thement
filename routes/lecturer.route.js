@@ -19,4 +19,5 @@ router.use(session)
 router.get('/home', lecturer.getHome)
 router.get('/candidates', lecturer.getCandidates)
 router.get('/candidates/detail/:nim', lecturer.getDetailCandidate)
+router.get('/candidates/:nim', lecturer.rejectCandidate)
 module.exports = router
