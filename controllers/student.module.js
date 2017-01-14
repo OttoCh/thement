@@ -164,7 +164,7 @@ exports.getHome = function(req, res){
     } else if(student.is_choose == true && student.is_accepted == false){
       state = 'Pending', stateColor = 'orange'
     } else if(student.is_accepted == true){
-      state = 'Accepted', stateColor = 'green' 
+      state = 'Accepted', stateColor = 'green'
     }
     res.render('student/home', {title: "Dashboard ", nim:nim, student:student, tgl:tgl, state:state, stateColor:stateColor, supervisor:supervisor})
   })
@@ -389,34 +389,40 @@ exports.activateStudent = function(req, res){
   var link = req.params.link
   Student.findOne({activation_link: link}, function(err, found){
     if(found){
-      let nimToUpdate = found.nim
-      Student.update({nim: nimToUpdate},{$set: {
-        is_active: true
-      },
-    }, function (err, success){
-      if(success){
-        let nim_success = nimToUpdate
-        console.log('success update')
-        res.format({
-          json: function(){
-            res.json({
-              "Status":"OK",
-              "Message":"Account activated"
-            })
-          },
-          html: function(){
-            res.render('student/activation-success', {title:"Your account is active!", nim_success:nim_success, baseurl:baseurl})
-          }
-        })
+      // check if already activate
+      if(found.is_active == true){
+        console.log('account already activated')
+        res.send('account already activate. click here to login')
       } else {
-        console.log('actiovation failed, reason ', err)
-        res.json({
-          "Status":"Error",
-          "Message":"Activation failed"
-        })
+        let nimToUpdate = found.nim
+        Student.update({nim: nimToUpdate},{$set: {
+          is_active: true
+        },
+      }, function (err, success){
+        if(success){
+          let nim_success = nimToUpdate
+          console.log('success update')
+          res.format({
+            json: function(){
+              res.json({
+                "Status":"OK",
+                "Message":"Account activated"
+              })
+            },
+            html: function(){
+              res.render('student/activation-success', {title:"Your account is active!", nim_success:nim_success, baseurl:baseurl})
+            }
+          })
+        } else {
+          console.log('actiovation failed, reason ', err)
+          res.json({
+            "Status":"Error",
+            "Message":"Activation failed"
+          })
+        }
       }
-    }
-  )
+    )
+      }
     } else {
       console.log('activation_link not found')
       res.send({
