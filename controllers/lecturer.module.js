@@ -117,6 +117,41 @@ exports.rejectCandidate = function(req, res){
   )
 }
 
+exports.acceptCandidate = function(req, res){
+  let lecturer    = req.session.lecturer
+  let nimToAccept = req.params.nim
+  // add nim to 'students' field
+  Lect.update({username:lecturer}, {$push : {
+        students: nimToAccept
+      },
+    }, function(err){
+      if(!err){
+        // remove nim from 'candidates' field
+        Lect.update({username:lecturer}, {$pull: {
+          candidates: nimToAccept
+        },
+      }, function(err){
+        if(!err){
+          // change status is_accepted to true
+          nimToAccept = Number(nimToAccept)
+          Student.update({nim:nimToAccept}, {$set : {
+            is_accepted: true
+          },
+        }, function(err){
+          if(!err){
+            console.log('is_accepted is true')
+            res.redirect(baseurl+'/candidates')
+          }
+        }
+      )
+        }
+      }
+    )
+      }
+    }
+  )
+}
+
 exports.getFixStudents = function(req, res){
   res.render('lecturer/students', {title:"Fix students"})
 }

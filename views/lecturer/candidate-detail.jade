@@ -78,7 +78,7 @@ html
                       h4 Address
                       p #{student.profile.address}
                       
-                    button.btn.btn-primary(type='submit' class='#{hiding}') Accept this student
+                    a(href='../accept/#{student.nim}' class='btn btn-success') Accept
                     &nbsp
                     a(href='../#{student.nim}' class='btn btn-danger') Decline
                   
