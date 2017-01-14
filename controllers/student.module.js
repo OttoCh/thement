@@ -157,16 +157,16 @@ exports.getHome = function(req, res){
     console.log(student)
     let tgl = student.last_login
     tgl = friendlyDate(tgl)
-    let state
+    let state, stateColor
     let supervisor = student.supervisor
     if(student.is_choose == false){
-      state = 'None'
+      state = 'None', stateColor = 'red'
     } else if(student.is_choose == true && student.is_accepted == false){
-      state = 'Pending'
+      state = 'Pending', stateColor = 'orange'
     } else if(student.is_accepted == true){
-      state = 'Accepted'
+      state = 'Accepted', stateColor = 'green'
     }
-    res.render('student/home', {title: "Dashboard ", nim:nim, student:student, tgl:tgl, state:state, supervisor:supervisor})
+    res.render('student/home', {title: "Dashboard ", nim:nim, student:student, tgl:tgl, state:state, stateColor:stateColor, supervisor:supervisor})
   })
 }
 
