@@ -10,7 +10,8 @@ var lecturerSchema = new Schema ({
   oldpass: String,
   newpass: String,
   passwordreset_link: String,
-  candidates: []
+  candidates: [],
+  students: []
 })
 
 module.exports = mongoose.model('Lecturer', lecturerSchema)
