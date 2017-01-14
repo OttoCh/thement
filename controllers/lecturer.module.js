@@ -153,7 +153,20 @@ exports.acceptCandidate = function(req, res){
 }
 
 exports.getFixStudents = function(req, res){
-  res.render('lecturer/students', {title:"Fix students"})
+  let lecturer = req.session.lecturer
+  Lect.findOne({username:lecturer}, function(err, f){
+    if(f){
+      let stds = []
+      let std  = f.students
+      for(var i=0; i<std.length; i++){
+        stds.push({
+          index:i,
+          nim:std[i]
+        });
+      }
+      res.render('lecturer/students', {title:"Fix students", baseurl:baseurl, stds:stds})
+    }
+  })
 }
 
 exports.postLogin = function(req, res){

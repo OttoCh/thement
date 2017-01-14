@@ -94,11 +94,12 @@ html
                         th Send message
                         
                     tbody
-                      //- each can in cans
+                      each std in stds
                         tr
-                          td 
                           td
-                          td
+                            a(href='#') #{std.nim}
+                          td=std.name
+                          td=std.email
                           td
                             
                           
