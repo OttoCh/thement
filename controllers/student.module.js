@@ -15,11 +15,12 @@ var credentials   = require('../credentials/email'),
     encryptor     = require('simple-encryptor')(key)
 
 // constants
-const caption     = 'Student'
-const baseurl_api = 'http://localhost:3500/api/v1/student/'
-const baseurl     = 'http://localhost:3500/student'
-const static      = 'http://localhost:3500/static'
-const root_url    = 'http://localhost:3500'
+const caption       = 'Student'
+const baseurl_api   = 'http://localhost:3500/api/v1/student/'
+const baseurl       = 'http://localhost:3500/student'
+const static        = 'http://localhost:3500/static'
+const root_url      = 'http://localhost:3500'
+const FOOTER_EMAIL  = 'Admin Thement ITB \n  ---------------------- \n  Copyright (c) 2017 | All rights reserved'
 
 // statusCode
 var code
@@ -356,7 +357,7 @@ exports.addStudent = function(req, res){
             let email         = std.email
             console.log('link to activate : ', activate_link)
             let message = {
-              text: "Please click here to activate your account : "+activate_link + "\n \n Admin Fisika ITB",
+              text: "Please click here to activate your account : "+activate_link + "\n \n " + FOOTER_EMAIL,
               from: "[FISIKA ITB] <notification@fi.itb.ac.id>",
               to: "<"+email+">",
               subject: "[Welcome to thement] - "+nim,
@@ -449,7 +450,7 @@ exports.resendConfirmation = function(req, res){
           let link       = baseurl+'/account/activation/'+reactivate
           server.send({
             subject:"[Resend activate_link] - "+nim,
-            text:"Please click here to activate your account : "+ link + "\n \n Administrator Thement Fisika ITB",
+            text:"Please click here to activate your account : "+ link + "\n \n " + FOOTER_EMAIL,
             to:"<"+email+">",
             from:"[FISIKA ITB] <notification@fi.itb.ac.id>"
           })
@@ -505,7 +506,7 @@ exports.requestPasswordChange = function(req, res){
                 console.log('inactive_pass : ' + inactive_pass + 'reset link : ' + url)
                 server.send({
                   subject:"[Reset Password] - "+nim,
-                  text:"Here is your new password : " + inactive_pass + " \n Click here to reset your password : "+url + "\n \n <strong >Administrator Thement Fisika ITB </strong>",
+                  text:"Here is your new password : " + inactive_pass + " \n Click here to reset your password : "+url + "\n \n " + FOOTER_EMAIL,
                   to:"<"+email+">",
                   from:"[FISIKA ITB] <notification@fi.itb.ac.id>"
                 })
