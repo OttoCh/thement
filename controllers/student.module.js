@@ -162,7 +162,7 @@ exports.getHome = function(req, res){
     let supervisor = student.supervisor
     if(student.is_choose == false){
       state = 'None', stateColor = 'red'
-    } else if(student.is_choose == true && student.is_accepted == false){
+    } else if(student.is_choose == true && supervisor != ""){
       state = 'Pending', stateColor = 'orange'
     } else if(student.is_accepted == true){
       state = 'Accepted', stateColor = 'green'

@@ -10,15 +10,16 @@
   [ ] db schema
   [ ] choosing lecturer
       STATUS :
-      1) none     => not yet choosing, REQUIRED : 
-      2) pending  => chosen, not accepted/rejected yet, REQUIRED :
-      3) accepted => chosen, accepted, REQUIRED :
+      1) none     => not yet choosing, REQUIRED : is_choose is false  [-]
+      1.1) rejected => NOTIFICATION                                   []
+      2) pending  => chosen, not accepted/rejected yet, REQUIRED : is_choose is true && supervisor != ""  [-]
+      3) accepted => chosen, accepted, REQUIRED : is_accepted is true [-]
   [ ] verification
 
   # frontend
   [-] registration
   [-] login
-  [-] dashbo
+  [-] dashboard
   [-] profile
   [ ] settings (notification)       => alert on wrong still fails
 
