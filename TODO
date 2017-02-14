@@ -10,11 +10,19 @@
   [ ] db schema
   [ ] choosing lecturer
       STATUS :
-      1) none     => not yet choosing, REQUIRED : is_choose is false  [-]
-      1.1) rejected => NOTIFICATION                                   []
-      2) pending  => chosen, not accepted/rejected yet, REQUIRED : is_choose is true && supervisor != ""  [-]
-      3) accepted => chosen, accepted, REQUIRED : is_accepted is true [-]
-  [ ] verification
+      1) none       => not yet choosing, REQUIRED : is_choose is false                                      [-]
+      1.1) rejected => NOTIFICATION                                                                         []
+      2) pending    => chosen, not accepted/rejected yet, REQUIRED : is_choose is true && supervisor != ""  [-]
+      3) accepted   => chosen, accepted, REQUIRED : is_accepted is true                                     [-]
+  [ ] verification (done)
+  [ ] Progress report (APIs)
+
+  // 3rd milestone
+  [ ] private message (student-lecturer)
+  [ ] broadcast message (admin-student & admin-lecturer & admin-student-lecturer)
+  [ ] Sidang 1 & 2 status
+  [ ] Pemilihan ruang
+
 
   # frontend
   [-] registration
