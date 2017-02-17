@@ -96,7 +96,6 @@ html
                         th Notification
                         th Date
                         th Detail
-                        th Delete
                         
                     tbody
                       each val in objNotifs
@@ -106,8 +105,6 @@ html
                           td=val.date
                           td
                             a(href='notification/#{val.index}') See detail
-                          td
-                            a(href='notification/delete/#{val.index}' class='btn btn-danger') DELETE
                           
                       
             // /block

@@ -41,7 +41,6 @@ exports.getSingleNotif = function(req, res){
       return notif.id = idToFind
     }
     let notifTo = notifs.find(findNotif)
-    console.log(notifTo)
     res.render('student/notif/notif-single', {title:"Single notif", notifTo:notifTo, idToFind:idToFind})
   })
 }

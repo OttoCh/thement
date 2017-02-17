@@ -14,6 +14,13 @@
       1.1) rejected => NOTIFICATION                                                                         []
       2) pending    => chosen, not accepted/rejected yet, REQUIRED : is_choose is true && supervisor != ""  [-]
       3) accepted   => chosen, accepted, REQUIRED : is_accepted is true                                     [-]
+  [ ] NOTIFICATIONS:
+        - read all            [-]
+        - delete all          [-]
+        - view one            [-]
+        - delete one          []
+        - read/unread status  []
+        -
   [ ] verification (done)
   [ ] Progress report (APIs)
 
