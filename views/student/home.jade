@@ -49,13 +49,11 @@ html.no-js
                   |  Notifications
                   i.caret
                 ul.dropdown-menu
+                  each notif in notifs
+                    li
+                      a(tabindex='-1', href='#') #{notif.notif}
                   li
-                    a(tabindex='-1', href='#') 1st notif
-                  li
-                    a(tabindex='-1', href='#') 2nd notif
-                  li.divider
-                  li
-                    a(tabindex='-1', href='./notifications') Read all notifications
+                    a(href='notifications') READ ALL NOTIFS
               li.dropdown
                 a.dropdown-toggle(href='#', role='button', data-toggle='dropdown')
                   i.icon-user

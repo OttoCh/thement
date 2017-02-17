@@ -75,7 +75,7 @@ html
                       <div class="btn-group">
                       <a href="#"><button class="btn btn-success">Add New <i class="icon-plus icon-white"></i></button></a>
                       </div>
-                    legend ALL NOTIFICATIONS
+                    legend SINGLE NOTIF
                     .btn-group.pull-right
                       button.btn.dropdown-toggle(data-toggle='dropdown')
                         | Tools 
@@ -90,8 +90,8 @@ html
                     br
                   
                     p Notif ID : #{idToFind}
-                    p=notifTo.notif
-                    p=notifTo.date
+                    p=found.notif
+                    p=found.date
                     
                     a(href='../notifications') Back to all notifs
                       

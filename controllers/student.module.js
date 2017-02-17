@@ -167,7 +167,12 @@ exports.getHome = function(req, res){
     } else if(student.is_accepted == true){
       state = 'Accepted', stateColor = 'green'
     }
-    res.render('student/home', {title: "Dashboard ", nim:nim, student:student, tgl:tgl, state:state, stateColor:stateColor, supervisor:supervisor})
+
+    // load all notifs
+    let notifs = student.notifs
+    res.render('student/home', {title: "Dashboard ", nim:nim, student:student, tgl:tgl, state:state, stateColor:stateColor, supervisor:supervisor,
+      notifs:notifs
+    })
   })
 }
 

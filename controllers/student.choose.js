@@ -49,7 +49,7 @@ exports.postChooseLecturer = function(req, res){
         notifs: {
           "id":n+1,
           "date": new Date(),
-          "notif": "This is notif",
+          "notif": "You are choosing : " + lecturerChosen + "\n Status : PENDING",
           "has_seen": false
         }
       },

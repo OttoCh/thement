@@ -37,11 +37,16 @@ exports.getSingleNotif = function(req, res){
   var nim        = req.session.student
   student.findOne({nim:nim}, function(err, std){
     let notifs = std.notifs
-    function findNotif(notif){
-      return notif.id = idToFind
-    }
-    let notifTo = notifs.find(findNotif)
-    res.render('student/notif/notif-single', {title:"Single notif", notifTo:notifTo, idToFind:idToFind})
+    console.log(notifs)
+    // function findNotif(notif){
+    //   return notif.id = idToFind
+    // }
+    // let notifTo = notifs.find(findNotif)
+    var found = notifs.filter(function(item){
+      return item.id == idToFind
+    })
+    found = found[0]
+    res.render('student/notif/notif-single', {title:"Single notif", found:found, idToFind:idToFind})
   })
 }
 

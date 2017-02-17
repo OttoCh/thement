@@ -103,8 +103,26 @@ exports.rejectCandidate = function(req, res){
         },
       }, function(e, r){
         if(r){
-          console.log('success!')
-          res.redirect(baseurl+'/candidates')
+          Student.findOne({nim:nimToRemove}, function(e, f){
+            let n = f.notifs.length
+            Student.findOne({nim:nimToRemove}, function(e, f){
+              let n = f.notifs.length
+              console.log('current notifs : ', n)
+              Student.update({nim:nimToRemove}, {$push : {
+                notifs: {
+                  "id":n+1,
+                  "date": new Date(),
+                  "notif": "You are rejected by : " + lecturer,
+                  "has_seen": false
+                }
+              },
+            }, function(e, s){
+                  console.log('success removed candidate')
+                  res.redirect(baseurl+'/candidates')
+                }
+              )
+            })
+          })
         } else {
           console.log('error changing student status')
         }
