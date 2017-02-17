@@ -75,7 +75,7 @@ html
                       <div class="btn-group">
                       <a href="#"><button class="btn btn-success">Add New <i class="icon-plus icon-white"></i></button></a>
                       </div>
-                    legend ALL NOTIFICATIONS
+                    legend SINGLE NOTIF
                     .btn-group.pull-right
                       button.btn.dropdown-toggle(data-toggle='dropdown')
                         | Tools 
@@ -104,7 +104,7 @@ html
                           td=val.notif
                           td=val.date
                           td
-                            a(href='#') See detail
+                            a(href='notification/#{val.index}') See detail
                           td
                             a(href='#' class='btn btn-danger') DELETE
                           

@@ -23,7 +23,7 @@ exports.getNotifs = function(req, res){
         data      = std.notifs
     for(var i=0; i<data.length; i++){
       objNotifs.push({
-        index:i,
+        index:i+1,
         notif:data[i].notif,
         date:friendlyDate(data[i].date)
       })
@@ -35,18 +35,12 @@ exports.getNotifs = function(req, res){
 }
 
 exports.getSingleNotif = function(req, res){
+  let id         = req.params.id
   var nim        = req.session.student
   student.findOne({nim:nim}, function(err, std){
-    let objNotifs = [],
-        data      = std.notifs
-    for(var i=0; i<data.length; i++){
-      objNotifs.push({
-        index:i,
-        notif:data[i].notif,
-        date:friendlyDate(data[i].date)
-      })
-    }
-    res.render('student/notif/notif-single', {title:"Single notif"})
+    let single_notif = std.notifs[id-1]
+    console.log(single_notif)
+    res.render('student/notif/notif-single', {title:"Single notif", id:id, single_notif:single_notif})
   })
 }
 
