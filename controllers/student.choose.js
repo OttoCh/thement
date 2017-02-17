@@ -43,7 +43,8 @@ exports.postChooseLecturer = function(req, res){
   student.update({nim: nim}, {$set : {
         is_choose: true,
         is_accepted: false,
-        supervisor: lecturerChosen
+        supervisor: lecturerChosen,
+        notif_seen:false
       },
       $push: {
         notifs: {

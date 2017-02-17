@@ -153,12 +153,32 @@ exports.acceptCandidate = function(req, res){
           // change status is_accepted to true
           nimToAccept = Number(nimToAccept)
           Student.update({nim:nimToAccept}, {$set : {
-            is_accepted: true
+            is_accepted: true,
+            notif_seen:false
           },
         }, function(err){
           if(!err){
-            console.log('is_accepted is true')
-            res.redirect(baseurl+'/candidates')
+            Student.findOne({nim:nimToAccept}, function(e, f){
+              let n = f.notifs.length
+              Student.findOne({nim:nimToAccept}, function(e, f){
+                let n = f.notifs.length
+                console.log('current notifs : ', n)
+                Student.update({nim:nimToAccept}, {$push : {
+                  notifs: {
+                    "id":n+1,
+                    "date": new Date(),
+                    "notif": "You are ACCEPTED by : " + lecturer,
+                    "has_seen": false
+                  }
+                },
+              }, function(e, s){
+                    console.log('is_accepted is true')
+                    res.redirect(baseurl+'/candidates')
+                  }
+                )
+              })
+            })
+
           }
         }
       )

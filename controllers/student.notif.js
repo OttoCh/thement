@@ -28,7 +28,13 @@ exports.getNotifs = function(req, res){
         date:friendlyDate(data[i].date)
       })
     }
-    res.render('student/notif/notifs', {title:"All Notifications", objNotifs:objNotifs})
+    student.update({nim:nim},{$set: {
+      notif_seen: true
+        },
+      }, function(e, seen){
+        res.render('student/notif/notifs', {title:"All Notifications", objNotifs:objNotifs})
+      }
+    )
   })
 }
 

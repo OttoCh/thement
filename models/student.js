@@ -17,6 +17,7 @@ var studentSchema = new Schema ({
   has_resetpass: Boolean,
   inactive_password: String,
   notifs: [],
+  notif_seen: Boolean,
   profile: {
     first_name: String,
     last_name: String,

@@ -153,6 +153,7 @@ exports.getRegisterPage = function(req, res){
 }
 
 exports.getHome = function(req, res){
+  var colored
   let nim = req.session.student
   Student.findOne({nim:nim}, function(err, student){
     console.log(student)
@@ -170,8 +171,13 @@ exports.getHome = function(req, res){
 
     // load all notifs
     let notifs = student.notifs
+    if (student.notif_seen == false) {
+      colored = '#b3d9ff'
+    } else {
+      colored = ''
+    }
     res.render('student/home', {title: "Dashboard ", nim:nim, student:student, tgl:tgl, state:state, stateColor:stateColor, supervisor:supervisor,
-      notifs:notifs
+      notifs:notifs, colored:colored
     })
   })
 }
@@ -324,6 +330,7 @@ exports.addStudent = function(req, res){
     std.is_accepted         = false
     std.supervisor          = ""
     std.inactive_password   = ""
+    std.notif_seen          = true
     std.activation_link     = randoms('398hhces8dh8shd8ah')
     std.passwordreset_link  = randoms('8hasa9hsd8hfdh3294')
     std.profile.first_name  = ""
