@@ -23,6 +23,8 @@ exports.getDetailLecturer = function(req, res){
         res.render('student/lecturer-detail', {title:"Lecturer detail", nim:nim, lecturer:lecturer, baseurl:baseurl, hiding:hiding})
       })
     } else {
+      let n = std.notifs.length
+      console.log(n)
       hiding = ''
       lect.get(req.params.username, function(err, lecturer){
         res.render('student/lecturer-detail', {title:"Lecturer detail", nim:nim, lecturer:lecturer, baseurl:baseurl, hiding:hiding})
@@ -36,10 +38,20 @@ exports.postChooseLecturer = function(req, res){
   let chosen = req.url
   // get lecturer's name from url
   let lecturerChosen = chosen.split('/lecturer')[1].split('/')[1]
+  student.findOne({nim:nim}, function(err, std){
+  let n = std.notifs.length
   student.update({nim: nim}, {$set : {
         is_choose: true,
         is_accepted: false,
         supervisor: lecturerChosen
+      },
+      $push: {
+        notifs: {
+          "id":n+1,
+          "date": new Date(),
+          "notif": "This is notif",
+          "has_seen": false
+        }
       },
     }, function(err, success){
       if(success){
@@ -64,4 +76,5 @@ exports.postChooseLecturer = function(req, res){
       }
     }
   )
+  })
 }

@@ -3,6 +3,7 @@ var express   = require('express'),
     app       = express()
     student   = require('../controllers/student.module'),
     choose    = require('../controllers/student.choose'),
+    notif     = require('../controllers/student.notif'),
     auth      = require('../controllers/student.auth'),
     loggedin  = require('../middlewares/loggedin'),
 
@@ -39,6 +40,8 @@ router.get('/profile', student.getProfile)
 router.get('/profile/imgupload', function(req, res){
   res.redirect(baseurl+'/profile')
 })
+router.get('/notifications', notif.getNotifs)
+router.get('/notification/:id', notif.getSingleNotif)
 
 router.get('/settings', student.getSettings)
 router.get('/lecturers', choose.getLecturers)
