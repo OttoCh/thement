@@ -75,7 +75,8 @@ html
                       <div class="btn-group">
                       <a href="#"><button class="btn btn-success">Add New <i class="icon-plus icon-white"></i></button></a>
                       </div>
-                    legend SINGLE NOTIF
+                    legend ALL NOTIFICATIONS
+                    a(href='notifications/delete_all' class='btn btn-danger') DELETE ALL
                     .btn-group.pull-right
                       button.btn.dropdown-toggle(data-toggle='dropdown')
                         | Tools 
@@ -91,14 +92,14 @@ html
                   table#example2.table.table-striped.table-bordered(cellpadding='0', cellspacing='0', border='0')
                     thead
                       tr
-                        th No.
+                        th ID
                         th Notification
                         th Date
                         th Detail
                         th Delete
                         
                     tbody
-                      each val in notifs
+                      each val in objNotifs
                         tr
                           td=val.index
                           td=val.notif
@@ -106,7 +107,7 @@ html
                           td
                             a(href='notification/#{val.index}') See detail
                           td
-                            a(href='#' class='btn btn-danger') DELETE
+                            a(href='notification/delete/#{val.index}' class='btn btn-danger') DELETE
                           
                       
             // /block

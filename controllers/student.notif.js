@@ -23,31 +23,48 @@ exports.getNotifs = function(req, res){
         data      = std.notifs
     for(var i=0; i<data.length; i++){
       objNotifs.push({
-        index:i+1,
+        index:data[i].id,
         notif:data[i].notif,
         date:friendlyDate(data[i].date)
       })
     }
-    var notifs = objNotifs.reverse()
-    console.log(notifs)
-    res.render('student/notif/notifs', {title:"All Notifications", notifs:notifs})
+    res.render('student/notif/notifs', {title:"All Notifications", objNotifs:objNotifs})
   })
 }
 
 exports.getSingleNotif = function(req, res){
-  let id         = req.params.id
+  let idToFind   = req.params.id
   var nim        = req.session.student
   student.findOne({nim:nim}, function(err, std){
-    let single_notif = std.notifs[id-1]
-    console.log(single_notif)
-    res.render('student/notif/notif-single', {title:"Single notif", id:id, single_notif:single_notif})
+    let notifs = std.notifs
+    function findNotif(notif){
+      return notif.id = idToFind
+    }
+    let notifTo = notifs.find(findNotif)
+    console.log(notifTo)
+    res.render('student/notif/notif-single', {title:"Single notif", notifTo:notifTo, idToFind:idToFind})
   })
 }
 
 exports.removeAllNotifs = function(req, res){
-  res.send('remove all notifs')
+  let nim = req.session.student
+  student.update({nim:nim},{$set: {
+    notifs: []
+  },}, function(err, removed){
+    console.log('all notifs removed')
+    res.redirect(baseurl)
+  })
 }
 
 exports.removeSingleNotif = function(req, res){
-  res.send('remove single notif')
+  let id         = req.params.id
+  var nim        = req.session.student
+  console.log(id)
+  student.update({nim:nim},{$pull : {"notifs.id": id
+      },
+    }, function(err, removed){
+      console.log('removed')
+      res.send('removed')
+    }
+  )
 }
