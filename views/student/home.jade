@@ -52,9 +52,14 @@ html.no-js
                 ul.dropdown-menu
                   each notif in sumNotifs
                     li
-                      a(tabindex='-1', href='#') #{notif.notif}
+                      a(tabindex='-1', href='#') 
+                        div 
+                          strong #{notif.date}
+                        | #{notif.notif}
+                  hr
                   li
-                    a(href='notifications') READ ALL NOTIFS
+                    a(href='notifications') 
+                      strong READ ALL NOTIFS →
               li.dropdown
                 a.dropdown-toggle(href='#', role='button', data-toggle='dropdown')
                   i.icon-user

@@ -174,14 +174,21 @@ exports.getHome = function(req, res){
 
     // limit to 3
     var sumNotifs = []
-    for(var i=3; i>0; i--){
-      sumNotifs.push({
-        index:notifs[i].id,
-        notif:notifs[i].notif,
-        date:notifs[i].date
-      })
+    if(notifs.length >= 3){
+      for(var i=3; i>0; i--){
+        sumNotifs.push({
+          index:notifs[i].id,
+          notif:notifs[i].notif,
+          date:notifs[i].date
+        })
+      }
+      console.log(sumNotifs)
+    } else if (notifs.length >= 1){
+      sumNotifs = notifs
     }
-    console.log(sumNotifs)
+    else {
+      console.log('no notifs yet')
+    }
     if (student.notif_seen == false) {
       colored = '#b3d9ff'
     } else {
