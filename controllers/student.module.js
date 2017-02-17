@@ -171,13 +171,24 @@ exports.getHome = function(req, res){
 
     // load all notifs
     let notifs = student.notifs
+
+    // limit to 3
+    var sumNotifs = []
+    for(var i=3; i>0; i--){
+      sumNotifs.push({
+        index:notifs[i].id,
+        notif:notifs[i].notif,
+        date:notifs[i].date
+      })
+    }
+    console.log(sumNotifs)
     if (student.notif_seen == false) {
       colored = '#b3d9ff'
     } else {
       colored = ''
     }
     res.render('student/home', {title: "Dashboard ", nim:nim, student:student, tgl:tgl, state:state, stateColor:stateColor, supervisor:supervisor,
-      notifs:notifs, colored:colored
+      sumNotifs:sumNotifs, colored:colored
     })
   })
 }
