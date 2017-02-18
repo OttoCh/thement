@@ -147,8 +147,8 @@ exports.getHome = function(req, res){
   let nim = req.session.student
   Student.findOne({nim:nim}, function(err, student){
     console.log(student)
-    let tgl = student.last_login
-    tgl = funcs.friendlyDate(tgl)
+    let login = student.last_login
+    login = funcs.friendlyDate(login)
     let state, stateColor, dosen
     let supervisor = student.supervisor
     if(student.is_choose == false){
@@ -161,19 +161,20 @@ exports.getHome = function(req, res){
 
     // load all notifs
     let notifs = student.notifs
-
+    let n      = notifs.length
+    console.log('panjang notif : ', notifs.length)
     // limit to 3
     var sumNotifs = []
-    if(notifs.length > 3){
+    if(n > 3){
       for(var i=3; i>0; i--){
         sumNotifs.push({
           index:notifs[i].id,
           notif:notifs[i].notif,
-          date:notifs[i].date
+          date:funcs.friendlyDate(notifs[i].date)
         })
       }
       console.log(sumNotifs)
-    } else if (notifs.length >= 1){
+    } else if ((n > 0) && (n < 4)){
       sumNotifs = notifs
     }
     else {
@@ -184,7 +185,7 @@ exports.getHome = function(req, res){
     } else {
       colored = ''
     }
-    res.render('student/home', {title: "Dashboard ", nim:nim, student:student, tgl:tgl, state:state, stateColor:stateColor, supervisor:supervisor,
+    res.render('student/home', {title: "Dashboard ", nim:nim, student:student, login:login, state:state, stateColor:stateColor, supervisor:supervisor,
       sumNotifs:sumNotifs, colored:colored, hideChoosing:hideChoosing
     })
   })
