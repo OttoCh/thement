@@ -1,20 +1,12 @@
 // load lecturers
 var lect      = require('../models/lecturer.model'),
     student   = require('../models/student'),
-    lecturer  = require('../models/lecturer')
+    lecturer  = require('../models/lecturer'),
+    funcs     = require('../middlewares/funcs')
 const baseurl = 'http://localhost:3500/student'
 
 var hiding     = 'hide'
 var chooseCode = ''
-friendlyDate = function(tgl){
-    month = tgl.getMonth(),
-    month = month+1,
-    months = ['January', 'February', 'March', 'April', 'May', 'June', 'July','August','September','October','November','Desember'],
-    month  = months[tgl.getMonth()]
-    time = tgl.getHours()+':'+tgl.getMinutes()+' WIB'
-    tgl = month + ' '+ tgl.getDate()+', '+ tgl.getFullYear()+' at '+time
-    return tgl
-}
 
 exports.getNotifs = function(req, res){
   var nim        = req.session.student
@@ -25,7 +17,7 @@ exports.getNotifs = function(req, res){
       objNotifs.push({
         index:data[i].id,
         notif:data[i].notif,
-        date:friendlyDate(data[i].date)
+        date:funcs.friendlyDate(data[i].date)
       })
     }
     student.update({nim:nim},{$set: {

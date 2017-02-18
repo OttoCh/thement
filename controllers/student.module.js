@@ -12,7 +12,8 @@ var credentials   = require('../credentials/email'),
     user_pass     = credentials.pass,
     key           = '99u9d9h23h9fas9ah832hr',
     possible      = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
-    encryptor     = require('simple-encryptor')(key)
+    encryptor     = require('simple-encryptor')(key),
+    funcs         = require('../middlewares/funcs')
 
 // constants
 const caption       = 'Student'
@@ -68,17 +69,6 @@ random = function(){
     text += possible.charAt(Math.floor(Math.random() * possible.length))
   }
   return (text)
-}
-
-// 3. get friendly date format
-friendlyDate = function(tgl){
-    month = tgl.getMonth(),
-    month = month+1,
-    months = ['January', 'February', 'March', 'April', 'May', 'June', 'July','August','September','October','November','Desember'],
-    month  = months[tgl.getMonth()]
-    time = tgl.getHours()+':'+tgl.getMinutes()+' WIB'
-    tgl = month + ' '+ tgl.getDate()+', '+ tgl.getFullYear()+' at '+time
-    return tgl
 }
 
 // emailjs config
@@ -158,7 +148,7 @@ exports.getHome = function(req, res){
   Student.findOne({nim:nim}, function(err, student){
     console.log(student)
     let tgl = student.last_login
-    tgl = friendlyDate(tgl)
+    tgl = funcs.friendlyDate(tgl)
     let state, stateColor, dosen
     let supervisor = student.supervisor
     if(student.is_choose == false){
@@ -174,7 +164,7 @@ exports.getHome = function(req, res){
 
     // limit to 3
     var sumNotifs = []
-    if(notifs.length >= 3){
+    if(notifs.length > 3){
       for(var i=3; i>0; i--){
         sumNotifs.push({
           index:notifs[i].id,

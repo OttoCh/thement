@@ -97,18 +97,15 @@ exports.rejectCandidate = function(req, res){
       if(s){
         console.log('success remove student')
         nimToRemove = Number(nimToRemove)
-        Student.update({nim:nimToRemove}, {$set: {
-          supervisor: "",
-          is_choose: false
-        },
-      }, function(e, r){
-        if(r){
-          Student.findOne({nim:nimToRemove}, function(e, f){
-            let n = f.notifs.length
-            Student.findOne({nim:nimToRemove}, function(e, f){
-              let n = f.notifs.length
-              console.log('current notifs : ', n)
-              Student.update({nim:nimToRemove}, {$push : {
+        Student.findOne({nim: nimToRemove}, function(e, found){
+          let n = found.notifs.length
+          Student.update({nim:nimToRemove}, {$set: {
+            supervisor: "",
+            is_choose: false,
+            is_accepted: false,
+            notif_seen: false
+              },
+              $push : {
                 notifs: {
                   "id":n+1,
                   "date": new Date(),
@@ -116,18 +113,12 @@ exports.rejectCandidate = function(req, res){
                   "has_seen": false
                 }
               },
-            }, function(e, s){
-                  console.log('success removed candidate')
-                  res.redirect(baseurl+'/candidates')
-                }
-              )
-            })
-          })
-        } else {
-          console.log('error changing student status')
-        }
-      }
-    )
+            }, function(e, r){
+              console.log('success rejecting student')
+              res.redirect(baseurl+'/candidates')
+            }
+          )
+        })
       } else {
         console.log('error when removing nim from candidates')
       }
