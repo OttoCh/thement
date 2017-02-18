@@ -35,29 +35,7 @@ exports.stdLogin = function(req, res){
         if(pass == decrypted){
           let nim = found.nim
           req.session.student = nim
-          Student.update({nim: nim}, {$set: {
-            last_login: new Date
-          },
-        }, function(err, success){
-          if(success){
-            console.log('Logged in as ', req.session.student)
-            res.format({
-              json: function(){
-                res.json({
-                  "Status":"OK",
-                  "Message":"Logged in as " + nim,
-                  "Last login": new Date
-                })
-              },
-              html: function(){
-                res.redirect('./home')
-              }
-            })
-          } else {
-            console.log('error update last_login')
-          }
-        }
-      )
+          res.redirect('./home')
         } else {
           console.log('password wrong')
           res.format({
@@ -107,21 +85,29 @@ exports.stdLogin = function(req, res){
 }
 
 exports.stdLogout = function(req, res){
+  let nim = req.session.student
   req.session.destroy(function(err){
     if(err){
         console.log(err);
     } else {
-        res.format({
-          json: function(){
-            res.send({
-              status:true,
-              message: "Logged out"
-            })
+        Student.update({nim:nim},{$set: {
+          last_login: new Date()
           },
-          html: function(){
-            res.redirect('./login')
-          }
-        })
+        }, function(e,s){
+          res.format({
+            json: function(){
+              res.send({
+                status:true,
+                message: "Logged out"
+              })
+            },
+            html: function(){
+              console.log(nim)
+              res.redirect('./login')
+            }
+          })
+        }
+      )
     }
   });
 }

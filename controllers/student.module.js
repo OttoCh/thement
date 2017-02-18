@@ -148,7 +148,11 @@ exports.getHome = function(req, res){
   Student.findOne({nim:nim}, function(err, student){
     console.log(student)
     let login = student.last_login
-    login = funcs.friendlyDate(login)
+    if(login == null){
+      login = '1st time'
+    } else {
+      login = funcs.friendlyDate(login)
+    }
     let state, stateColor, dosen
     let supervisor = student.supervisor
     if(student.is_choose == false){
@@ -163,19 +167,10 @@ exports.getHome = function(req, res){
     let notifs = student.notifs
     let n      = notifs.length
     console.log('panjang notif : ', notifs.length)
+    
     // limit to 3
-    var sumNotifs = []
-    if(n > 3){
-      for(var i=3; i>0; i--){
-        sumNotifs.push({
-          index:notifs[i].id,
-          notif:notifs[i].notif,
-          date:funcs.friendlyDate(notifs[i].date)
-        })
-      }
-      console.log(sumNotifs)
-    } else if ((n > 0) && (n < 4)){
-      sumNotifs = notifs
+    if(n > 0){
+      notifs = notifs
     }
     else {
       console.log('no notifs yet')
@@ -186,7 +181,7 @@ exports.getHome = function(req, res){
       colored = ''
     }
     res.render('student/home', {title: "Dashboard ", nim:nim, student:student, login:login, state:state, stateColor:stateColor, supervisor:supervisor,
-      sumNotifs:sumNotifs, colored:colored, hideChoosing:hideChoosing
+      notifs:notifs, colored:colored, hideChoosing:hideChoosing
     })
   })
 }
@@ -418,12 +413,32 @@ exports.activateStudent = function(req, res){
       } else {
         let nimToUpdate = found.nim
         Student.update({nim: nimToUpdate},{$set: {
-          is_active: true
+          is_active: true,
+          notif_seen: false
+        }, $push: {
+          notifs: {
+            "id":1,
+            "date": new Date(),
+            "notif": "Your account is now ACTIVE!",
+            "has_seen": false
+          }
         },
       }, function (err, success){
         if(success){
           let nim_success = nimToUpdate
-          console.log('success update')
+          let link_profile = "http://localhost:3500/student/profile"
+          Student.update({nim:nimToUpdate}, {$set: {
+            notif_seen:false
+          },
+          $push: {
+            notifs: {
+              "id":2,
+              "date": new Date(),
+              "notif": "Please update your profile. Click here " + link_profile ,
+              "has_seen": false
+            }
+          },
+        }, function(e, p){
           res.format({
             json: function(){
               res.json({
@@ -435,6 +450,8 @@ exports.activateStudent = function(req, res){
               res.render('student/activation-success', {title:"Your account is active!", nim_success:nim_success, baseurl:baseurl})
             }
           })
+        }
+      )
         } else {
           console.log('actiovation failed, reason ', err)
           res.json({
