@@ -4,6 +4,7 @@ var express   = require('express'),
     student   = require('../controllers/student.module'),
     choose    = require('../controllers/student.choose'),
     notif     = require('../controllers/student.notif'),
+    report    = require('../controllers/student.report'),
     auth      = require('../controllers/student.auth'),
     loggedin  = require('../middlewares/loggedin'),
 
@@ -53,4 +54,14 @@ router.post('/settings', student.changePassword)
 router.post('/profile', student.updateProfile)
 router.post('/profile/imgupload', student.imgUpload)
 router.post('/lecturer/:username/choose', choose.postChooseLecturer)
+
+// report
+router.post('/report', report.createReport)
+router.post('/report/update/:id', report.updateReport)
+router.get('/reports/all', report.getAllReports)
+router.get('/report/:id', report.getSingleReport)
+router.get('/reports/delete/all', report.removeAllReports)
+router.get('/report/delete/:id', report.removeSingleReport)
+
+
 module.exports = router
