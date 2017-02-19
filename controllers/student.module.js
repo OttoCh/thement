@@ -143,7 +143,7 @@ exports.getRegisterPage = function(req, res){
 }
 
 exports.getHome = function(req, res){
-  var colored, hideChoosing = ''
+  var colored, hideChoosing = '', msgReport = 'hide'
   let nim = req.session.student
   Student.findOne({nim:nim}, function(err, student){
     console.log(student)
@@ -160,14 +160,14 @@ exports.getHome = function(req, res){
     } else if(student.is_accepted == false && supervisor != "" ){
       state = 'Pending', stateColor = 'orange', hideChoosing = 'hide'
     } else if(student.is_accepted == true){
-      state = 'Accepted', stateColor = 'green', hideChoosing = 'hide'
+      state = 'Accepted', stateColor = 'green', hideChoosing = 'hide', msgReport = ''
     }
 
     // load all notifs
     let notifs = student.notifs
     let n      = notifs.length
     console.log('panjang notif : ', notifs.length)
-    
+
     // limit to 3
     if(n > 0){
       notifs = notifs
@@ -181,7 +181,7 @@ exports.getHome = function(req, res){
       colored = ''
     }
     res.render('student/home', {title: "Dashboard ", nim:nim, student:student, login:login, state:state, stateColor:stateColor, supervisor:supervisor,
-      notifs:notifs, colored:colored, hideChoosing:hideChoosing
+      notifs:notifs, colored:colored, hideChoosing:hideChoosing, msgReport:msgReport
     })
   })
 }

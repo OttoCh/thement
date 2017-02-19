@@ -1,0 +1,112 @@
+doctype html
+html
+  head
+    title=title
+    // Bootstrap
+    link(href='/static/vendors/bootstrap/css/bootstrap.min.css', rel='stylesheet', media='screen')
+    link(href='/static/vendors/bootstrap/css/bootstrap-responsive.min.css', rel='stylesheet', media='screen')
+    link(href='/static/vendors/assets/styles.css', rel='stylesheet', media='screen')
+    link(href='/static/vendors/assets/DT_bootstrap.css', rel='stylesheet', media='screen')
+    //if lte IE 8
+      script(language='javascript', type='text/javascript', src='/static/vendors/vendors/flot/excanvas.min.js')
+    // HTML5 shim, for IE6-8 support of HTML5 elements
+    //if lt IE 9
+      script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
+    script(src='/static/vendors/vendors/modernizr-2.6.2-respond-1.1.0.min.js')
+  body
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container-fluid
+          a.btn.btn-navbar(data-toggle='collapse', data-target='.nav-collapse')
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.brand(href='#') Student dashboard
+          .nav-collapse.collapse
+            ul.nav.pull-right
+              li.dropdown
+                a.dropdown-toggle(href='#', role='button', data-toggle='dropdown')
+                  i.icon-user
+                  |  #{nim} 
+                  i.caret
+                ul.dropdown-menu
+                  li
+                    a(tabindex='-1', href='#{baseurl}/profile') Profile
+                  li
+                    a(tabindex='-1', href='#{baseurl}/settings') Settings
+                  li.divider
+                  li
+                    a(tabindex='-1', href='logout') Logout
+            ul.nav
+              li.active
+                a(href='#') Reports
+          // /.nav-collapse
+    .container-fluid
+      .row-fluid
+        #sidebar.span3
+          ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
+            li
+              a(href='#{baseurl}/home')
+                i.icon-chevron-right
+                |  Dashboard
+            li
+              a(href='#{baseurl}/profile')
+                i.icon-chevron-right
+                |  Profile
+            li.active
+              a(href='lecturers')
+                i.icon-chevron-right
+                |  Lecturers
+        // /span
+        #content.span9
+          .row-fluid
+            // block
+            .block
+              .navbar.navbar-inner.block-header
+                .muted.pull-left All lecturers
+              .block-content.collapse.in
+                .span12
+                  .table-toolbar
+                    //
+                      <div class="btn-group">
+                      <a href="#"><button class="btn btn-success">Add New <i class="icon-plus icon-white"></i></button></a>
+                      </div>
+                    legend Click lecturer's name to see detail and choose one
+                    .btn-group.pull-right
+                      button.btn.dropdown-toggle(data-toggle='dropdown')
+                        | Tools 
+                        span.caret
+                      ul.dropdown-menu
+                        li
+                          a(href='#') Print
+                        li
+                          a(href='#') Save as PDF
+                        li
+                          a(href='#') Export to Excel
+                    br
+                  table#example2.table.table-striped.table-bordered(cellpadding='0', cellspacing='0', border='0')
+                    thead
+                      tr
+                        th Name
+                        th Research Division
+                        th Email
+                        
+                    tbody
+                      each lecturer in lecturers
+                        tr
+                          td
+                            a(href='lecturer/#{lecturer.username}')=lecturer.name
+                          td=lecturer.kk
+                          td=lecturer.username+'@fi.itb.ac.id'
+                          
+                      
+            // /block
+    // /.fluid-container
+    script(src='/static/vendors/vendors/jquery-1.9.1.js')
+    script(src='/static/vendors/bootstrap/js/bootstrap.min.js')
+    script(src='/static/vendors/vendors/datatables/js/jquery.dataTables.min.js')
+    script(src='/static/vendors/assets/scripts.js')
+    script(src='/static/vendors/assets/DT_bootstrap.js')
+    script.
+      $(function() {
+      });
