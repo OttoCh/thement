@@ -19,8 +19,8 @@
         - delete all          [-]
         - view one            [-]
         - delete one          []
-        - read/unread status  []
-        -
+        - read/unread status  [-]
+        - show top latest 3   []
   [ ] verification (done)
   [ ] Progress report (APIs)
 
@@ -31,7 +31,7 @@
   [ ] Pemilihan ruang
 
   // 4th milestone
-  [ ] ADMINISTRATOR PAGE
+  [ ] ADMINISTRATOR PAGE (admin, operator, kaprodi)
 
 
   # frontend
@@ -40,22 +40,3 @@
   [-] dashboard
   [-] profile
   [ ] settings (notification)       => alert on wrong still fails
-
-2. LECTURER
-  # backend
-  [] login
-  [] forget password
-
-  # frontend
-
-3. ADMIN
-  # backend
-
-  # frontend
-
-4. KAPRODI
-  # backend
-
-  # frontend
-
-5. OTHER
