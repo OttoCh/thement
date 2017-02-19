@@ -56,7 +56,8 @@ router.post('/profile/imgupload', student.imgUpload)
 router.post('/lecturer/:username/choose', choose.postChooseLecturer)
 
 // report
-router.post('/report', report.createReport)
+router.get('/report/create', report.getCreateReport)
+router.post('/report/create', report.createReport)
 router.post('/report/update/:id', report.updateReport)
 router.get('/reports/all', report.getAllReports)
 router.get('/report/:id', report.getSingleReport)

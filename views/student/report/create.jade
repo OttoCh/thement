@@ -53,52 +53,42 @@ html
               a(href='#{baseurl}/profile')
                 i.icon-chevron-right
                 |  Profile
-            li.active
-              a(href='lecturers')
+            li
+              a(href='#{baseurl}/lecturers')
                 i.icon-chevron-right
                 |  Lecturers
+            li.active
+              a(href='#')
+                i.icon-chevron-right
+                |  Reports
         // /span
         #content.span9
           .row-fluid
             // block
             .block
               .navbar.navbar-inner.block-header
-                .muted.pull-left All lecturers
+                .muted.pull-left REPORT
               .block-content.collapse.in
-                .span12
-                  .table-toolbar
-                    //
-                      <div class="btn-group">
-                      <a href="#"><button class="btn btn-success">Add New <i class="icon-plus icon-white"></i></button></a>
-                      </div>
-                    legend Click lecturer's name to see detail and choose one
-                    .btn-group.pull-right
-                      button.btn.dropdown-toggle(data-toggle='dropdown')
-                        | Tools 
-                        span.caret
-                      ul.dropdown-menu
-                        li
-                          a(href='#') Print
-                        li
-                          a(href='#') Save as PDF
-                        li
-                          a(href='#') Export to Excel
-                    br
-                  table#example2.table.table-striped.table-bordered(cellpadding='0', cellspacing='0', border='0')
-                    thead
-                      tr
-                        th Name
-                        th Research Division
-                        th Email
-                        
-                    tbody
-                      each lecturer in lecturers
-                        tr
-                          td
-                            a(href='lecturer/#{lecturer.username}')=lecturer.name
-                          td=lecturer.kk
-                          td=lecturer.username+'@fi.itb.ac.id'
-                          
+                .span9
+                  form.form-horizontal(method='post' action='profile')
+                    fieldset
+                      legend Fill the form to change your profile
+                      .control-group
+                        label.control-label(for='focusedInput') NIM
+                        .controls
+                          input#focusedInput.input-xlarge.focused(type='text' disabled)
+                      .control-group
+                        label.control-label(for='focusedInput') Email
+                        .controls
+                          input#focusedInput.input-xlarge.focused(type='text' disabled)
+                      .control-group
+                        label.control-label(for='focusedInput') Firstname
+                        .controls
+                          input#focusedInput.input-xlarge.focused(type='text' name='first_name')
+                      .form-actions
+                        button.btn.btn-primary(type='submit') Save changes
+                        &nbsp;
+                        button.btn(type='reset') Cancel
                       
             // /block
     // /.fluid-container
