@@ -72,21 +72,25 @@ html
                 .span9
                   form.form-horizontal(method='post' action='profile')
                     fieldset
-                      legend Fill the form to change your profile
+                      legend Fill the form to make progress report
                       .control-group
                         label.control-label(for='focusedInput') NIM
                         .controls
-                          input#focusedInput.input-xlarge.focused(type='text' disabled)
+                          input#focusedInput.input-xlarge.focused(type='text', value='#{nim}' disabled)
                       .control-group
-                        label.control-label(for='focusedInput') Email
+                        label.control-label(for='focusedInput') Progress Report ID
                         .controls
-                          input#focusedInput.input-xlarge.focused(type='text' disabled)
+                          input#focusedInput.input-xlarge.focused(type='text', value='#{idReport}' disabled)
                       .control-group
-                        label.control-label(for='focusedInput') Firstname
+                        label.control-label(for='focusedInput') Report title
                         .controls
-                          input#focusedInput.input-xlarge.focused(type='text' name='first_name')
+                          input#focusedInput.input-xlarge.focused(type='text' name='first_name', placeholder='Enter title ...')
+                      .control-group
+                        label.control-label(for='textarea2') Report body
+                        .controls
+                          textarea.input-xlarge.textarea(placeholder='Enter text ...', style='width: 510px; height: 200px')
                       .form-actions
-                        button.btn.btn-primary(type='submit') Save changes
+                        button.btn.btn-primary(type='submit') Next
                         &nbsp;
                         button.btn(type='reset') Cancel
                       

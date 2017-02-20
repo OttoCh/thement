@@ -14,9 +14,11 @@ exports.getCreateReport = function(req, res){
   student.findOne({nim:nim}, function(e, s){
     // check if initial report has been set
     report.findOne({nim:nim}, function(err, exist){
+      let nReport   = exist.reports.length
+      let idReport  = nReport+1
       if(exist){
-        console.log('initial report has been set!')
-        res.render('student/report/create', {title:"Create report", baseurl:baseurl})
+        console.log('initial report has been set! n Report : ', nReport)
+        res.render('student/report/create', {title:"Create report", baseurl:baseurl, nim:nim, idReport:idReport})
       } else {
         let supervisor = s.supervisor
         console.log('NIM : ' + nim + ' and Supervisor is ' + supervisor)
@@ -27,8 +29,8 @@ exports.getCreateReport = function(req, res){
 
         rep.save(function(err){
           if(!err){
-            console.log('create initial report bio')
-            res.render('student/report/create', {title:"Create report", baseurl:baseurl})
+            console.log('create initial report bio, NIM : ', nim)
+            res.render('student/report/create', {title:"Create report", baseurl:baseurl, nim:nim})
           }
         })
       }
