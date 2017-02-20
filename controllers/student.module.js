@@ -144,7 +144,7 @@ exports.getRegisterPage = function(req, res){
 }
 
 exports.getHome = function(req, res){
-  var colored, hideChoosing = '', reportCreate = 'hide', reportAll = 'hide', nReport = 'none', msgReport = 'hide'
+  var colored, hideChoosing = '', reportCreate = 'hide', reportAll = 'hide', nReport = 'none', msgReport = 'hide', reportStatus = 'hide'
   let nim = req.session.student
   Student.findOne({nim:nim}, function(err, student){
     console.log(student)
@@ -184,13 +184,21 @@ exports.getHome = function(req, res){
 
     // REPORT CHECKING
     report.findOne({nim:nim}, function(err, rep){
+      let status = rep.is_approved
+      let statusStyle
+      if(status == true){
+        statusStyle = 'green'
+      } else {
+        statusStyle = 'red'
+      }
       if(rep){
         // check if user had created a report
         if(rep.reports.length > 0){
           console.log('user has min 1 report')
           nReport = rep.reports.length
           reportCreate = 'hide',
-          msgReport = ''
+          msgReport = '',
+          reportStatus = ''
         } else {
           console.log('user has report initial, but not created yet')
         }
@@ -198,7 +206,8 @@ exports.getHome = function(req, res){
         console.log('user has no report yet')
       }
       res.render('student/home', {title: "Dashboard ", nim:nim, student:student, login:login, state:state, stateColor:stateColor, supervisor:supervisor,
-        notifs:notifs, colored:colored, hideChoosing:hideChoosing, reportCreate:reportCreate, nReport:nReport, msgReport:msgReport
+        notifs:notifs, colored:colored, hideChoosing:hideChoosing, reportCreate:reportCreate, nReport:nReport, msgReport:msgReport, reportStatus:reportStatus, status:status,
+        statusStyle:statusStyle
       })
     })
   })

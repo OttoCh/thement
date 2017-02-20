@@ -93,6 +93,10 @@ html.no-js
               a(href='lecturers')
                 i.icon-chevron-right
                 |  Lecturers
+            li(class='#{msgReport}')
+              a(href='reports/all')
+                i.icon-chevron-right
+                |  Reports
         // /span
         #content.span9
           .row-fluid
@@ -131,6 +135,8 @@ html.no-js
                     a(href='reports/all') See here
                     br
                     a(href='report/create') Add here
+                  p Report status :
+                  p(class='#{reportStatus}', style='color:#{statusStyle};') #{status}
                   //- .chart(data-percent='13') 13%
                   //- .chart-bottom-heading
                   //-   span.label.label-info Orders

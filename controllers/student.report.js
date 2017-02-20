@@ -17,15 +17,28 @@ exports.getCreateReport = function(req, res){
       if(exist){
         let nReport   = exist.reports.length
         let idReport  = nReport+1
-        console.log('initial report has been set! n Report : ', nReport)
-        res.render('student/report/create', {title:"Create report", baseurl:baseurl, nim:nim, idReport:idReport})
+        if(nReport == 0){
+          // create report without approval check
+          console.log('initial report has been set! n Report : ', nReport)
+          res.render('student/report/create', {title:"Create report", baseurl:baseurl, nim:nim, idReport:idReport})
+        } else if(nReport > 0){
+          if(exist.is_approved == true){
+            console.log('initial report has been set! n Report : ', nReport)
+            res.render('student/report/create', {title:"Create report", baseurl:baseurl, nim:nim, idReport:idReport})
+          } else if(exist.is_approved == false) {
+            console.log('latest report has not approved yet')
+            res.redirect(baseurl)
+          }
+        } else {
+          console.log('error')
+          res.send('PLEASE REVIEW YOUR REPORT')
+        }
       } else {
         let supervisor = s.supervisor
         console.log('NIM : ' + nim + ' and Supervisor is ' + supervisor)
         var rep         = new report()
         rep.nim         = nim
         rep.supervisor  = supervisor
-        rep.is_approved = false
         rep.is_create   = false
 
         rep.save(function(err){
@@ -45,8 +58,10 @@ exports.createReport = function(req, res){
   let reportTitle    = req.body.reportTitle
   let reportBody     = req.body.reportBody
   console.log('CREATED REPORT : ' + 'id : ' + reportID + ' title : '+ reportTitle + ' body : ' + reportBody)
+
   report.update({nim:nim}, {$set: {
-      is_create: true
+      is_create: true,
+      is_approved: false
     },
       $push: {
         reports: {
@@ -59,7 +74,7 @@ exports.createReport = function(req, res){
     }, function(err, created){
       if(!err){
         console.log('report created')
-        res.redirect('#{baseurl}/home')
+        res.redirect('#{baseurl}/home/reports/all')
       } else {
         console.log('error creating report')
       }
@@ -68,7 +83,8 @@ exports.createReport = function(req, res){
 }
 
 exports.getAllReports = function(req, res){
-  res.send('get all reports')
+  let nim = req.session.student
+  res.render('student/report/all', {title:"All reports", baseurl:baseurl})
 }
 
 exports.getSingleReport = function(req, res){

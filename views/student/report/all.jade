@@ -53,10 +53,14 @@ html
               a(href='#{baseurl}/profile')
                 i.icon-chevron-right
                 |  Profile
-            li.active
-              a(href='lecturers')
+            li
+              a(href='#{baseurl}/lecturers')
                 i.icon-chevron-right
-                |  Lecturers
+                |  Lecturers  
+            li.active
+              a(href='#')
+                i.icon-chevron-right
+                |  Reports
         // /span
         #content.span9
           .row-fluid
@@ -71,7 +75,7 @@ html
                       <div class="btn-group">
                       <a href="#"><button class="btn btn-success">Add New <i class="icon-plus icon-white"></i></button></a>
                       </div>
-                    legend Click lecturer's name to see detail and choose one
+                    legend Click report's title to see detail
                     .btn-group.pull-right
                       button.btn.dropdown-toggle(data-toggle='dropdown')
                         | Tools 
@@ -87,17 +91,17 @@ html
                   table#example2.table.table-striped.table-bordered(cellpadding='0', cellspacing='0', border='0')
                     thead
                       tr
-                        th Name
-                        th Research Division
-                        th Email
+                        th Report Title
+                        th Report Body
+                        th Attachment 
                         
                     tbody
-                      each lecturer in lecturers
+                      each 
                         tr
                           td
-                            a(href='lecturer/#{lecturer.username}')=lecturer.name
-                          td=lecturer.kk
-                          td=lecturer.username+'@fi.itb.ac.id'
+                            a(href='') test
+                          td 
+                          td 
                           
                       
             // /block
