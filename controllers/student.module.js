@@ -144,7 +144,7 @@ exports.getRegisterPage = function(req, res){
 }
 
 exports.getHome = function(req, res){
-  var colored, hideChoosing = '', reportCreate = 'hide', reportAll = 'hide', nReport = 'none'
+  var colored, hideChoosing = '', reportCreate = 'hide', reportAll = 'hide', nReport = 'none', msgReport = 'hide'
   let nim = req.session.student
   Student.findOne({nim:nim}, function(err, student){
     console.log(student)
@@ -189,7 +189,8 @@ exports.getHome = function(req, res){
         if(rep.reports.length > 0){
           console.log('user has min 1 report')
           nReport = rep.reports.length
-          reportCreate = 'hide'
+          reportCreate = 'hide',
+          msgReport = ''
         } else {
           console.log('user has report initial, but not created yet')
         }
@@ -197,7 +198,7 @@ exports.getHome = function(req, res){
         console.log('user has no report yet')
       }
       res.render('student/home', {title: "Dashboard ", nim:nim, student:student, login:login, state:state, stateColor:stateColor, supervisor:supervisor,
-        notifs:notifs, colored:colored, hideChoosing:hideChoosing, reportCreate:reportCreate, nReport:nReport
+        notifs:notifs, colored:colored, hideChoosing:hideChoosing, reportCreate:reportCreate, nReport:nReport, msgReport:msgReport
       })
     })
   })
