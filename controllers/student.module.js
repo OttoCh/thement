@@ -2,6 +2,7 @@
 var express       = require('express'),
     Student       = require('../models/student'),
     stdModel      = require('../models/student.model'),
+    report        = require('../models/report'),
     multer        = require('multer'),
     email         = require('emailjs/email'),
     app           = express()
@@ -143,7 +144,7 @@ exports.getRegisterPage = function(req, res){
 }
 
 exports.getHome = function(req, res){
-  var colored, hideChoosing = '', msgReport = 'hide'
+  var colored, hideChoosing = '', reportCreate = 'hide', reportAll = 'hide', nReport = 'none'
   let nim = req.session.student
   Student.findOne({nim:nim}, function(err, student){
     console.log(student)
@@ -160,10 +161,10 @@ exports.getHome = function(req, res){
     } else if(student.is_accepted == false && supervisor != "" ){
       state = 'Pending', stateColor = 'orange', hideChoosing = 'hide'
     } else if(student.is_accepted == true){
-      state = 'Accepted', stateColor = 'green', hideChoosing = 'hide', msgReport = ''
+      state = 'Accepted', stateColor = 'green', hideChoosing = 'hide', reportCreate = ''
     }
 
-    // load all notifs
+    // NOTIF CHECKING
     let notifs = student.notifs
     let n      = notifs.length
     console.log('panjang notif : ', notifs.length)
@@ -180,8 +181,24 @@ exports.getHome = function(req, res){
     } else {
       colored = ''
     }
-    res.render('student/home', {title: "Dashboard ", nim:nim, student:student, login:login, state:state, stateColor:stateColor, supervisor:supervisor,
-      notifs:notifs, colored:colored, hideChoosing:hideChoosing, msgReport:msgReport
+
+    // REPORT CHECKING
+    report.findOne({nim:nim}, function(err, rep){
+      if(rep){
+        // check if user had created a report
+        if(rep.reports.length > 0){
+          console.log('user has min 1 report')
+          nReport = rep.reports.length
+          reportCreate = 'hide'
+        } else {
+          console.log('user has report initial, but not created yet')
+        }
+      } else {
+        console.log('user has no report yet')
+      }
+      res.render('student/home', {title: "Dashboard ", nim:nim, student:student, login:login, state:state, stateColor:stateColor, supervisor:supervisor,
+        notifs:notifs, colored:colored, hideChoosing:hideChoosing, reportCreate:reportCreate, nReport:nReport
+      })
     })
   })
 }
