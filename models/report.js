@@ -6,7 +6,8 @@ var reportSchema = new Schema ({
   nim: Number,
   supervisor: String,
   reports:[],
-  is_approved: Boolean
+  is_approved: Boolean,
+  is_create: Boolean
 })
 
 module.exports = mongoose.model('Report', reportSchema)

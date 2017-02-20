@@ -14,9 +14,9 @@ exports.getCreateReport = function(req, res){
   student.findOne({nim:nim}, function(e, s){
     // check if initial report has been set
     report.findOne({nim:nim}, function(err, exist){
-      let nReport   = exist.reports.length
-      let idReport  = nReport+1
       if(exist){
+        let nReport   = exist.reports.length
+        let idReport  = nReport+1
         console.log('initial report has been set! n Report : ', nReport)
         res.render('student/report/create', {title:"Create report", baseurl:baseurl, nim:nim, idReport:idReport})
       } else {
@@ -26,6 +26,7 @@ exports.getCreateReport = function(req, res){
         rep.nim         = nim
         rep.supervisor  = supervisor
         rep.is_approved = false
+        rep.is_create   = false
 
         rep.save(function(err){
           if(!err){
@@ -39,7 +40,31 @@ exports.getCreateReport = function(req, res){
 }
 
 exports.createReport = function(req, res){
-  res.send('create single report')
+  let nim            = req.session.student
+  let reportID       = req.body.reportID
+  let reportTitle    = req.body.reportTitle
+  let reportBody     = req.body.reportBody
+  console.log('CREATED REPORT : ' + 'id : ' + reportID + ' title : '+ reportTitle + ' body : ' + reportBody)
+  report.update({nim:nim}, {$set: {
+      is_create: true
+    },
+      $push: {
+        reports: {
+          "id": reportID,
+          "title": reportTitle,
+          "body": reportBody,
+          "date_created": new Date()
+        }
+      },
+    }, function(err, created){
+      if(!err){
+        console.log('report created')
+        res.redirect('#{baseurl}/home')
+      } else {
+        console.log('error creating report')
+      }
+    }
+  )
 }
 
 exports.getAllReports = function(req, res){

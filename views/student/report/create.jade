@@ -70,25 +70,25 @@ html
                 .muted.pull-left REPORT
               .block-content.collapse.in
                 .span9
-                  form.form-horizontal(method='post' action='profile')
+                  form.form-horizontal(method='post' action='')
                     fieldset
                       legend Fill the form to make progress report
                       .control-group
                         label.control-label(for='focusedInput') NIM
                         .controls
                           input#focusedInput.input-xlarge.focused(type='text', value='#{nim}' disabled)
-                      .control-group
+                      .control-group(class='hide')
                         label.control-label(for='focusedInput') Progress Report ID
                         .controls
-                          input#focusedInput.input-xlarge.focused(type='text', value='#{idReport}' disabled)
+                          input#focusedInput.input-xlarge.focused(type='text', value='#{idReport}' name='reportID')
                       .control-group
                         label.control-label(for='focusedInput') Report title
                         .controls
-                          input#focusedInput.input-xlarge.focused(type='text' name='first_name', placeholder='Enter title ...')
+                          input#focusedInput.input-xlarge.focused(type='text' name='reportTitle', placeholder='Enter title ...', required)
                       .control-group
                         label.control-label(for='textarea2') Report body
                         .controls
-                          textarea.input-xlarge.textarea(placeholder='Enter text ...', style='width: 510px; height: 200px')
+                          textarea.input-xlarge.textarea(placeholder='Enter text ...', style='width: 510px; height: 200px', name='reportBody' required)
                       .form-actions
                         button.btn.btn-primary(type='submit') Next
                         &nbsp;
