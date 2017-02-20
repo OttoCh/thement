@@ -27,7 +27,7 @@ exports.getCreateReport = function(req, res){
             res.render('student/report/create', {title:"Create report", baseurl:baseurl, nim:nim, idReport:idReport})
           } else if(exist.is_approved == false) {
             console.log('latest report has not approved yet')
-            res.redirect(baseurl)
+            res.redirect(baseurl+'#')
           }
         } else {
           console.log('error')
@@ -84,6 +84,9 @@ exports.createReport = function(req, res){
 
 exports.getAllReports = function(req, res){
   let nim = req.session.student
+  report.findOne({nim:nim}, function(err, reports){
+    let reps = reports.reports
+  })
   res.render('student/report/all', {title:"All reports", baseurl:baseurl})
 }
 

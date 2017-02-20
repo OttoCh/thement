@@ -185,6 +185,8 @@ exports.getHome = function(req, res){
     // REPORT CHECKING
     report.findOne({nim:nim}, function(err, rep){
       let status = rep.is_approved
+      let coloredStatus = status.toString()
+      coloredStatus = coloredStatus.toUpperCase()
       let statusStyle
       if(status == true){
         statusStyle = 'green'
@@ -206,8 +208,8 @@ exports.getHome = function(req, res){
         console.log('user has no report yet')
       }
       res.render('student/home', {title: "Dashboard ", nim:nim, student:student, login:login, state:state, stateColor:stateColor, supervisor:supervisor,
-        notifs:notifs, colored:colored, hideChoosing:hideChoosing, reportCreate:reportCreate, nReport:nReport, msgReport:msgReport, reportStatus:reportStatus, status:status,
-        statusStyle:statusStyle
+        notifs:notifs, colored:colored, hideChoosing:hideChoosing, reportCreate:reportCreate, nReport:nReport, msgReport:msgReport, reportStatus:reportStatus,
+        coloredStatus:coloredStatus, statusStyle:statusStyle
       })
     })
   })
