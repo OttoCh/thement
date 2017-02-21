@@ -68,7 +68,8 @@ exports.createReport = function(req, res){
           "id": reportID,
           "title": reportTitle,
           "body": reportBody,
-          "date_created": new Date()
+          "date_created": new Date(),
+          "last_edit": new Date()
         }
       },
     }, function(err, created){
@@ -85,14 +86,50 @@ exports.createReport = function(req, res){
 exports.getAllReports = function(req, res){
   let nim = req.session.student
   report.findOne({nim:nim}, function(err, reports){
+    let status = reports.is_approved
+    let statusColored, colored, showCreateReport = 'hide', showEditReport = 'hide'
+    let startReport = 'hide', approvalStatus = 'hide'
+    let objReports = []
     let reps = reports.reports
+    if(reps.length > 0){
+      approvalStatus = ''
+      if(status == true){
+        colored = 'green'
+        statusColored = 'DISETUJUI'
+        showCreateReport = ''
+      } else {
+        colored = 'red'
+        statusColored = 'BELUM DISETUJUI',
+        showEditReport = ''
+      }
+      for(var i=0; i<reps.length; i++){
+        objReports.push({
+          index: reps[i].id,
+          title: reps[i].title,
+          body: reps[i].body,
+          date_created: funcs.friendlyDate(reps[i].date_created),
+          last_edit: funcs.friendlyDate(reps[i].last_edit)
+        })
+      }
+      res.render('student/report/all', {title:"All reports", baseurl:baseurl, objReports:objReports, colored:colored, statusColored:statusColored,
+        showCreateReport:showCreateReport, showEditReport:showEditReport, startReport:startReport, approvalStatus:approvalStatus
+      })
+    } else {
+      startReport = ''
+      res.render('student/report/all', {title:"All reports", baseurl:baseurl, objReports:objReports, colored:colored, statusColored:statusColored,
+        showCreateReport:showCreateReport, showEditReport:showEditReport, startReport:startReport, approvalStatus:approvalStatus
+      })
+    }
   })
-  res.render('student/report/all', {title:"All reports", baseurl:baseurl})
 }
 
 exports.getSingleReport = function(req, res){
   let id = req.params.id
   res.send('get single report : '+ id)
+}
+
+exports.getUpdateReport = function(req, res){
+  res.send('update latest report')
 }
 
 exports.updateReport = function(req, res){

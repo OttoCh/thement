@@ -76,6 +76,15 @@ html
                       <a href="#"><button class="btn btn-success">Add New <i class="icon-plus icon-white"></i></button></a>
                       </div>
                     legend Click report's title to see detail
+                    p(class='#{approvalStatus}') Status approval :
+                    div(class='#{startReport}')
+                      h3 You have no report yet
+                      a(href='../report/create' class='btn btn-info') Start creating report
+                    h4(style='color:#{colored}') #{statusColored}
+                    p(class='#{showCreateReport}')
+                      a(href='../report/create?from=all' class='btn btn-success') Create another report
+                    p(class='#{showEditReport}')
+                      a(href='../report/update?from=all' class='btn btn-primary') Edit latest report
                     .btn-group.pull-right
                       button.btn.dropdown-toggle(data-toggle='dropdown')
                         | Tools 
@@ -94,14 +103,17 @@ html
                         th Report Title
                         th Report Body
                         th Attachment 
+                        th Created at
+                        th Last Edit
                         
                     tbody
-                      each  
+                      each report in objReports  
                         tr
-                          td
-                            a(href='') test
-                          td 
-                          td 
+                          td=report.title
+                          td=report.body 
+                          td file
+                          td=report.date_created
+                          td=report.last_edit
                           
                       
             // /block
