@@ -10,7 +10,8 @@ var express         = require('express'),
     http            = require('http'),
     jade            = require('jade'),
     path            = require('path'),
-    morgan          = require('morgan')
+    morgan          = require('morgan'),
+    compression     = require('compression'),
     app             = express()
 
 mongoose.connect('mongodb://127.0.0.1:27017/tugasakhir')
@@ -29,6 +30,7 @@ app.use(bodyParser.json())
 app.use(cookieParser())
 app.use(methodOverride('X-HTTP-Method-Override'))
 app.use(morgan('dev'))
+app.use(compression())
 app.use('/static', express.static('public'));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade')
