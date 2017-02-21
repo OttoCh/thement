@@ -156,8 +156,10 @@ exports.getHome = function(req, res){
       coloredStatus = coloredStatus.toUpperCase()
       let statusStyle
       if(status == true){
+        coloredStatus = 'DISETUJUI'
         statusStyle = 'green'
       } else {
+        coloredStatus = 'BELUM DISETUJUI'
         statusStyle = 'red'
       }
       if(rep){
