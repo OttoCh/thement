@@ -1,43 +1,10 @@
 var Lect        = require('../models/lecturer'),
     Student     = require('../models/student'),
     Std         = require('../models/student.model'),
-    key         = 'hjshdjshd2283yausa2t323t7',
-    possible    = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
-    encryptor   = require('simple-encryptor')(key)
+    funcs       = require('../middlewares/funcs')
 
 const baseurl   = 'http://localhost:3500/lecturer'
-
 var hiding      = ''
-
-/* functions */
-// 1. hash password
-hash = function(password){
-  let encrypted = encryptor.encrypt(password)
-  return encrypted
-}
-
-dehash = function(password){
-  let decrypted = encryptor.decrypt(password)
-  return decrypted
-}
-
-// 2. generate random code
-var text, strs
-randoms = function(strs){
-  text = strs
-  for(var i=0; i<20; i++){
-    text += possible.charAt(Math.floor(Math.random() * possible.length))
-  }
-  return (text)
-}
-
-random = function(){
-  text = ''
-  for(var i=0; i<10; i++){
-    text += possible.charAt(Math.floor(Math.random() * possible.length))
-  }
-  return (text)
-}
 
 exports.getIndex = function(req, res){
   res.redirect('lecturer/login')
@@ -169,13 +136,12 @@ exports.acceptCandidate = function(req, res){
                 )
               })
             })
-
+                  }
+                }
+              )
+            }
           }
-        }
-      )
-        }
-      }
-    )
+        )
       }
     }
   )
@@ -208,7 +174,7 @@ exports.postLogin = function(req, res){
       if (found.newpass != null){
         // check newpass
         console.log('newpass exist')
-        let decrypted = dehash(found.newpass)
+        let decrypted = funcs.decryptTo(found.newpass)
         if(pass !== decrypted){
           console.log('wrong new pass')
           res.send('try again')
@@ -270,8 +236,8 @@ exports.changeInitPass = function(req, res){
   let user     = req.body.username,
       oldpass  = req.body.oldpass,
       newp     = req.body.newpass,
-   enc_newpass = hash(newp),
-  lresetlink   = randoms('as82h323h')
+   enc_newpass = funcs.encryptTo(newp),
+   resetlink   = funcs.maxRandom('as82h323h')
 
   // check if oldpass true
   Lect.update({username: user}, {$set: {
