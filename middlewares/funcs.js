@@ -1,3 +1,10 @@
+// load all requirements
+var key       = '99u9d9h23h9fas9ah832hr',
+    encryptor = require('simple-encryptor')(key),
+    possible  = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+
+var text, strs
+
 module.exports = {
   friendlyDate: function(tgl){
       let now = new Date()
@@ -34,5 +41,31 @@ module.exports = {
         tgl = tgl
       }
       return tgl
+  },
+
+  encryptTo: function(password){
+    let encrypted = encryptor.encrypt(password)
+    return encrypted
+  },
+
+  decryptTo: function(password){
+    let decrypted = encryptor.decrypt(password)
+    return decrypted
+  },
+
+  minRandom: function(){
+    text = ''
+    for(var i=0; i<10; i++){
+      text += possible.charAt(Math.floor(Math.random() * possible.length))
+    }
+    return (text)
+  },
+
+  maxRandom: function(strs){
+    text = strs
+    for(var i=0; i<20; i++){
+      text += possible.charAt(Math.floor(Math.random() * possible.length))
+    }
+    return (text)
   }
 }

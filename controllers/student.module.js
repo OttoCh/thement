@@ -11,9 +11,6 @@ var express       = require('express'),
 var credentials   = require('../credentials/email'),
     user_mail     = credentials.user,
     user_pass     = credentials.pass,
-    key           = '99u9d9h23h9fas9ah832hr',
-    possible      = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
-    encryptor     = require('simple-encryptor')(key),
     funcs         = require('../middlewares/funcs')
 
 // constants
@@ -42,36 +39,6 @@ var settingsWrongCode = ''
   [ ] StatusCode      : each message in json should include statusCode
 */
 
-/* functions */
-// 1. hash password
-hash = function(password){
-  let encrypted = encryptor.encrypt(password)
-  return encrypted
-}
-
-dehash = function(password){
-  let decrypted = encryptor.decrypt(password)
-  return decrypted
-}
-
-// 2. generate random code
-var text, strs
-randoms = function(strs){
-  text = strs
-  for(var i=0; i<20; i++){
-    text += possible.charAt(Math.floor(Math.random() * possible.length))
-  }
-  return (text)
-}
-
-random = function(){
-  text = ''
-  for(var i=0; i<10; i++){
-    text += possible.charAt(Math.floor(Math.random() * possible.length))
-  }
-  return (text)
-}
-
 // emailjs config
 server = email.server.connect({
   user: user_mail,
@@ -87,7 +54,7 @@ var storage = multer.diskStorage({
   },
   filename: function(req, file, cb, res){
     let student = req.session.student;
-    let imgName = random()+'.png'
+    let imgName = funcs.minRandom()+'.png'
     Student.update({nim:student}, {$set: {
       'profile.img_url': root_url+'/static/images/profiles/'+imgName
     },
@@ -354,7 +321,7 @@ exports.addStudent = function(req, res){
     var std                 = new Student()
     std.nim                 = req.body.nim
     std.email               = req.body.email
-    std.password            = hash(req.body.password)
+    std.password            = funcs.encryptTo(req.body.password)
     std.registered          = new Date
     std.last_login          = ""
     std.has_resetpass       = false
@@ -364,8 +331,8 @@ exports.addStudent = function(req, res){
     std.supervisor          = ""
     std.inactive_password   = ""
     std.notif_seen          = true
-    std.activation_link     = randoms('398hhces8dh8shd8ah')
-    std.passwordreset_link  = randoms('8hasa9hsd8hfdh3294')
+    std.activation_link     = funcs.maxRandom('398hhces8dh8shd8ah')
+    std.passwordreset_link  = funcs.maxRandom('8hasa9hsd8hfdh3294')
     std.profile.first_name  = ""
     std.profile.last_name   = ""
     std.profile.gender      = ""
@@ -563,7 +530,7 @@ exports.requestPasswordChange = function(req, res){
           let url = baseurl + '/account/resetpassword/' + found.passwordreset_link
           let nimToReset = found.nim
 
-          let inactive_pass = random()
+          let inactive_pass = funcs.minRandom()
               Student.update({nim: nimToReset}, {$set: {
                 inactive_password : inactive_pass
               },
@@ -623,7 +590,7 @@ exports.activateResetPass = function(req, res){
     if(found){
       let nimToReset  = found.nim,
           newPass     = found.inactive_password,
-          encrypted   = hash(newPass)
+          encrypted   = funcs.encryptTo(newPass)
       console.log('new pass : ', newPass)
       Student.update({nim: nimToReset}, {$set: {
         password: encrypted,
@@ -673,7 +640,7 @@ exports.changePassword = function(req, res){
   if(oldPass !== '' && newPass !== ''){
     Student.findOne({nim: nimToChange}, function(e, s){
       if(s){
-        let decrypted = dehash(s.password)
+        let decrypted = funcs.decryptTo(s.password)
         if(oldPass == decrypted){
         // check if retype password same
         if(newPass !== rePass){
@@ -693,7 +660,7 @@ exports.changePassword = function(req, res){
             }
           })
         } else {
-          let encrypted = hash(newPass)
+          let encrypted = funcs.encryptTo(newPass)
             Student.update({nim: nimToChange}, {$set: {
               password: encrypted
             },
