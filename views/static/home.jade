@@ -1,0 +1,24 @@
+include ../static/layout
+head
+  link(href='/static/vendors/bootstrap/css/bootstrap.min.css', rel='stylesheet', media='screen')
+  link(href='/static/vendors/bootstrap/css/bootstrap-responsive.min.css', rel='stylesheet', media='screen')
+  link(href='/static/vendors/assets/styles.css', rel='stylesheet', media='screen')
+  link(href='/static/vendors/vendors/jGrowl/jquery.jgrowl.css', rel='stylesheet', media='screen')
+  script(type="text/javascript")
+  
+  
+body
+
+  div(class='container')
+  br
+  center
+    span.label.label-info THESIS MANAGEMENT SYSTEM - FISIKA ITB
+    h2(class='form-signin-heading') Please select your role : 
+    .container-fluid
+      .row-fluid
+        p
+          a(href='admin' class='btn btn-info') ADMIN
+        p 
+          a(href='lecturer' class='btn btn-success') LECTURER
+        p 
+          a(href='student' class='btn btn-primary') STUDENT
