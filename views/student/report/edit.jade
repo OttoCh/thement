@@ -1,0 +1,109 @@
+doctype html
+html
+  head
+    title=title
+    // Bootstrap
+    link(href='/static/vendors/bootstrap/css/bootstrap.min.css', rel='stylesheet', media='screen')
+    link(href='/static/vendors/bootstrap/css/bootstrap-responsive.min.css', rel='stylesheet', media='screen')
+    link(href='/static/vendors/assets/styles.css', rel='stylesheet', media='screen')
+    link(href='/static/vendors/assets/DT_bootstrap.css', rel='stylesheet', media='screen')
+    //if lte IE 8
+      script(language='javascript', type='text/javascript', src='/static/vendors/vendors/flot/excanvas.min.js')
+    // HTML5 shim, for IE6-8 support of HTML5 elements
+    //if lt IE 9
+      script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
+    script(src='/static/vendors/vendors/modernizr-2.6.2-respond-1.1.0.min.js')
+  body
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container-fluid
+          a.btn.btn-navbar(data-toggle='collapse', data-target='.nav-collapse')
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.brand(href='#') Student dashboard
+          .nav-collapse.collapse
+            ul.nav.pull-right
+              li.dropdown
+                a.dropdown-toggle(href='#', role='button', data-toggle='dropdown')
+                  i.icon-user
+                  |   
+                  i.caret
+                ul.dropdown-menu
+                  li
+                    a(tabindex='-1', href='#{baseurl}/profile') Profile
+                  li
+                    a(tabindex='-1', href='#{baseurl}/settings') Settings
+                  li.divider
+                  li
+                    a(tabindex='-1', href='logout') Logout
+            ul.nav
+              li.active
+                a(href='#') Reports
+          // /.nav-collapse
+    .container-fluid
+      .row-fluid
+        #sidebar.span3
+          ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
+            li
+              a(href='#{baseurl}/home')
+                i.icon-chevron-right
+                |  Dashboard
+            li
+              a(href='#{baseurl}/profile')
+                i.icon-chevron-right
+                |  Profile
+            li
+              a(href='#{baseurl}/lecturers')
+                i.icon-chevron-right
+                |  Lecturers
+            li.active
+              a(href='#')
+                i.icon-chevron-right
+                |  Reports
+        // /span
+        #content.span9
+          .row-fluid
+            // block
+            .block
+              .navbar.navbar-inner.block-header
+                .muted.pull-left REPORT
+              .block-content.collapse.in
+                .span9
+                  form.form-horizontal(method='post' action='create')
+                    fieldset
+                      legend 
+                        h2 Edit latest report
+                      .control-group
+                        label.control-label(for='focusedInput') NIM
+                        .controls
+                          input#focusedInput.input-xlarge.focused(type='text', value='#{nim}' disabled)
+                      .control-group()
+                        label.control-label(for='focusedInput') Progress Report ID
+                        .controls
+                          input#focusedInput.input-xlarge.focused(type='text', value='#{reps.id}' name='reportID', disabled)
+                      .control-group
+                        label.control-label(for='focusedInput') Report title
+                        .controls
+                          input#focusedInput.input-xlarge.focused(type='text', value='#{reps.title}' name='reportTitle', required)
+                      .control-group
+                        label.control-label(for='textarea2') Report body
+                        .controls
+                          textarea.input-xlarge.textarea(style='width: 510px; height: 200px', name='reportBody' required) #{reps.body}
+                      .form-actions
+                        button.btn.btn-primary(type='submit') Next
+                        &nbsp;
+                        button.btn(type='reset') Clear
+                        &nbsp;
+                        a(href='') Back
+                      
+            // /block
+    // /.fluid-container
+    script(src='/static/vendors/vendors/jquery-1.9.1.js')
+    script(src='/static/vendors/bootstrap/js/bootstrap.min.js')
+    script(src='/static/vendors/vendors/datatables/js/jquery.dataTables.min.js')
+    script(src='/static/vendors/assets/scripts.js')
+    script(src='/static/vendors/assets/DT_bootstrap.js')
+    script.
+      $(function() {
+      });

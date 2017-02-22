@@ -99,14 +99,14 @@ exports.createReport = function(req, res){
           "title": reportTitle,
           "body": reportBody,
           "last_edit": new Date(),
-          "file_name":"",
-          "file_location":""
+          "file_name":"There is not file, yet!",
+          "file_location":"#"
         }
       },
     }, function(err, created){
       if(!err){
         console.log('report created')
-        res.redirect(baseurl+'/report/create/file')
+        res.redirect(baseurl+'/report/create/file?from=create')
       } else {
         console.log('error creating report')
       }
@@ -115,6 +115,7 @@ exports.createReport = function(req, res){
 }
 
 exports.getAddFile = function(req, res){
+  console.log('Access this page via : ', req.url)
   res.render('student/report/add-file', {title:"Add file", baseurl:baseurl})
 }
 
@@ -194,7 +195,15 @@ exports.getSingleReport = function(req, res){
 }
 
 exports.getUpdateReport = function(req, res){
-  res.send('update latest report')
+  let nim = req.session.student
+  report.findOne({nim:nim}, function(err, update){
+    let reportID = update.reports.length.toString()
+    report.findOne({nim:nim}, {"reports":{"$elemMatch":{"id":reportID}}}, function(e, found){
+      let reps = found.reports[0]
+      console.log(reps.body)
+      res.render('student/report/edit', {title:"Edit latest report", baseurl:baseurl, nim:nim, reps:reps})
+    })
+  })
 }
 
 exports.updateReport = function(req, res){
