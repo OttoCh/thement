@@ -1,20 +1,21 @@
+"use strict"
+
 var express       = require('express'),
     request       = require('request'),
     app           = express(),
-    key           = '99u9d9h23h9fas9ah832hr',
-    encryptor     = require('simple-encryptor')(key),
+    funcs         = require('../middlewares/funcs'),
     Student       = require('../models/student'),
     baseurl       = 'http://localhost:3500/student'
 
-hash = function(password){
-  let encrypted = encryptor.encrypt(password)
-  return encrypted
-}
-
-dehash = function(password){
-  let decrypted = encryptor.decrypt(password)
-  return decrypted
-}
+// hash = function(password){
+//   let encrypted = encryptor.encrypt(password)
+//   return encrypted
+// }
+//
+// dehash = function(password){
+//   let decrypted = encryptor.decrypt(password)
+//   return decrypted
+// }
 
 exports.stdLogin = function(req, res){
   // TODO: Login with token, generate random strings and numbers
@@ -31,7 +32,7 @@ exports.stdLogin = function(req, res){
       var code
       if (found.is_active == true){
         console.log('check for decrypting')
-        let decrypted = dehash(found.password)
+        let decrypted = funcs.decryptTo(found.password)
         if(pass == decrypted){
           let nim = found.nim
           req.session.student = nim

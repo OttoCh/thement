@@ -1,3 +1,5 @@
+"use strict"
+
 // load all requirements
 var key       = '99u9d9h23h9fas9ah832hr',
     encryptor = require('simple-encryptor')(key),

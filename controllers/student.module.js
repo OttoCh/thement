@@ -1,3 +1,5 @@
+"use strict"
+
 // load packages
 var express       = require('express'),
     Student       = require('../models/student'),
@@ -17,7 +19,7 @@ var credentials   = require('../credentials/email'),
 const caption       = 'Student'
 const baseurl_api   = 'http://localhost:3500/api/v1/student/'
 const baseurl       = 'http://localhost:3500/student'
-const static        = 'http://localhost:3500/static'
+const statik        = 'http://localhost:3500/static'
 const root_url      = 'http://localhost:3500'
 const FOOTER_EMAIL  = 'Admin Thement ITB \n  ---------------------- \n  Copyright (c) 2017 | All rights reserved'
 
@@ -40,7 +42,7 @@ var settingsWrongCode = ''
 */
 
 // emailjs config
-server = email.server.connect({
+var server = email.server.connect({
   user: user_mail,
   password: user_pass,
   host: "smtp.gmail.com",
@@ -56,7 +58,7 @@ var storage = multer.diskStorage({
     let student = req.session.student;
     let imgName = funcs.minRandom()+'.png'
     Student.update({nim:student}, {$set: {
-      'profile.img_url': root_url+'/static/images/profiles/'+imgName
+      'profile.img_url': root_url+'/statik/images/profiles/'+imgName
     },
   }, function(err, result){
       if(result){

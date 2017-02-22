@@ -1,3 +1,5 @@
+"use strict"
+
 // load lecturers
 var lect      = require('../models/lecturer.model'),
     student   = require('../models/student'),

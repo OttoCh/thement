@@ -5,14 +5,14 @@ var express       = require('express'),
 
 // still hardcode, need to generate
 var accessKeys = ['tokenfisikaITB', 'tokenITBfisika', 'ITBfisikatoken', 'ITBtokenfisika',  'fisikatokenITB', 'fisikaITBtoken']
-var secretKeys = require('../credentials/secret')
+// var secretKeys = require('../credentials/secret')
 
 module.exports = function(req, res, next){
-  let secretKey = secretKeys.key
-  var token   = req.headers['x-access-key']
-  let key     = req.headers['x-secret-key']
+  var secretKey = secretKeys.key
+  var token     = req.headers['x-access-key']
+  var key       = req.headers['x-secret-key']
 
-  if(accessKeys.indexOf(token) > -1 || key == secretKey)
+  if(accessKeys.indexOf(token) > -1)
     {
     try {
       next()
