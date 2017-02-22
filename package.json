@@ -4,6 +4,7 @@
   "description": "thesis management system for students and lecturers",
   "main": "app.js",
   "scripts": {
+    "start":"node app.js",
     "test": "./node_modules/jshint/bin/jshint app.js"
   },
   "repository": {
