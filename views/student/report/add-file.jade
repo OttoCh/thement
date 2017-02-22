@@ -39,7 +39,7 @@ html
                     a(tabindex='-1', href='logout') Logout
             ul.nav
               li.active
-                a(href='#') Lecturers
+                a(href='#') Reports
           // /.nav-collapse
     .container-fluid
       .row-fluid
@@ -56,7 +56,7 @@ html
             li
               a(href='#{baseurl}/lecturers')
                 i.icon-chevron-right
-                |  Lecturers  
+                |  Lecturers
             li.active
               a(href='#')
                 i.icon-chevron-right
@@ -67,54 +67,19 @@ html
             // block
             .block
               .navbar.navbar-inner.block-header
-                .muted.pull-left All lecturers
+                .muted.pull-left File Attachment
               .block-content.collapse.in
-                .span12
-                  .table-toolbar
-                    //
-                      <div class="btn-group">
-                      <a href="#"><button class="btn btn-success">Add New <i class="icon-plus icon-white"></i></button></a>
-                      </div>
-                    legend Click report's title to see detail
-                    p(class='#{approvalStatus}') Status approval :
-                    div(class='#{startReport}')
-                      h3 You have no report yet
-                      a(href='../report/create' class='btn btn-info') Start creating report
-                    h4(style='color:#{colored}') #{statusColored}
-                    p(class='#{showCreateReport}')
-                      a(href='../report/create?from=all' class='btn btn-success') Create another report
-                    p(class='#{showEditReport}')
-                      a(href='../report/update?from=all' class='btn btn-primary') Edit latest report
-                    .btn-group.pull-right
-                      button.btn.dropdown-toggle(data-toggle='dropdown')
-                        | Tools 
-                        span.caret
-                      ul.dropdown-menu
-                        li
-                          a(href='#') Print
-                        li
-                          a(href='#') Save as PDF
-                        li
-                          a(href='#') Export to Excel
-                    br
-                  table#example2.table.table-striped.table-bordered(cellpadding='0', cellspacing='0', border='0')
-                    thead
-                      tr
-                        th Report Title
-                        th Report Body
-                        th Attachment 
-                        th Last Edit
-                        
-                    tbody
-                      each report in objReports  
-                        tr
-                          td=report.title
-                          td=report.body 
-                          td
-                            a(href='#{report.file_location}')=report.file_name
-                          td=report.last_edit
-                          
-                      
+                .span9
+                  form(method='post' action='' enctype='multipart/form-data')
+                    fieldset
+                      legend ADD FILE (OPTIONAL)
+                      h4  Upload your associated file
+                      input(type='file', name='report')
+                      br
+                      button(type='submit', value='upload', class='btn btn-primary') Upload file
+                      hr
+                      p
+                        a(href='#{baseurl}/home') SKIP THIS STEP
             // /block
     // /.fluid-container
     script(src='/static/vendors/vendors/jquery-1.9.1.js')

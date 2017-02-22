@@ -3,11 +3,41 @@ var lect      = require('../models/lecturer.model'),
     student   = require('../models/student'),
     lecturer  = require('../models/lecturer'),
     report    = require('../models/report'),
-    funcs     = require('../middlewares/funcs')
+    funcs     = require('../middlewares/funcs'),
+    multer    = require('multer')
 const baseurl = 'http://localhost:3500/student'
+const root_url= 'http://localhost:3500'
 
 var hiding     = 'hide'
 var chooseCode = ''
+
+// multer config
+var storage = multer.diskStorage({
+  destination: function(req, file, cb){
+    cb(null, 'public/reports')
+  },
+  filename: function(req, file, cb, res){
+      let student    = req.session.student;
+    report.findOne({nim:student}, function(e, found){
+      let reportID   = found.reports.length.toString()
+      let reportName = student.toString()+'-'+reportID
+      console.log('report ID : '+ reportID + ' and name : ' + reportName)
+      report.update({nim:student, "reports.id": reportID}, {"$set": {
+        "reports.$.file_location": root_url+'/static/reports/'+reportName,
+        "reports.$.file_name": reportName
+      },
+    }, function(err, result){
+        if(result){
+          console.log('success')
+          cb(null, reportName)
+        } else {
+          console.log('nothing found')
+        }
+      })
+    })
+  }
+})
+var upload  = multer({storage:storage}).single('report')
 
 exports.getCreateReport = function(req, res){
   let nim = req.session.student
@@ -68,19 +98,53 @@ exports.createReport = function(req, res){
           "id": reportID,
           "title": reportTitle,
           "body": reportBody,
-          "date_created": new Date(),
-          "last_edit": new Date()
+          "last_edit": new Date(),
+          "file_name":"",
+          "file_location":""
         }
       },
     }, function(err, created){
       if(!err){
         console.log('report created')
-        res.redirect('#{baseurl}/home/reports/all')
+        res.redirect(baseurl+'/report/create/file')
       } else {
         console.log('error creating report')
       }
     }
   )
+}
+
+exports.getAddFile = function(req, res){
+  res.render('student/report/add-file', {title:"Add file", baseurl:baseurl})
+}
+
+exports.addFile = function(req, res, next){
+  upload(req, res, function(err){
+    if(err){
+      console.log('error when uploading')
+      return
+    } else {
+      if(req.file == null){
+        res.json({
+          status: false,
+          message: "Please provide a file"
+        })
+      } else {
+        let fileType = req.file.originalname.split('.'),
+            type     = fileType[1]
+        if(type == 'pdf' || type == 'doc' || type == 'docx'){
+          res.status(200)
+          res.redirect(baseurl+'/home')
+          console.log('upload successfull')
+        } else {
+          res.json({
+            status: false,
+            message:"File must pdf/doc/docx"
+          })
+        }
+      }
+    }
+  })
 }
 
 exports.getAllReports = function(req, res){
@@ -107,8 +171,9 @@ exports.getAllReports = function(req, res){
           index: reps[i].id,
           title: reps[i].title,
           body: reps[i].body,
-          date_created: funcs.friendlyDate(reps[i].date_created),
-          last_edit: funcs.friendlyDate(reps[i].last_edit)
+          last_edit: funcs.friendlyDate(reps[i].last_edit),
+          file_location: reps[i].file_location,
+          file_name: reps[i].file_name
         })
       }
       res.render('student/report/all', {title:"All reports", baseurl:baseurl, objReports:objReports, colored:colored, statusColored:statusColored,

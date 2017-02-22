@@ -28,6 +28,10 @@
       2. upload file optional                   []
       3. bisa diedit sampai disetujui           []
 
+      # FILE uploading
+      1. show message when file is not yet in there
+      
+
   // 3rd milestone
   [ ] private message (student-lecturer)
   [ ] broadcast message (admin-student & admin-lecturer & admin-student-lecturer)
