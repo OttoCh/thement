@@ -1,0 +1,30 @@
+include ../static/layout
+head
+  link(href='/static/vendors/bootstrap/css/bootstrap.min.css', rel='stylesheet', media='screen')
+  link(href='/static/vendors/bootstrap/css/bootstrap-responsive.min.css', rel='stylesheet', media='screen')
+  link(href='/static/vendors/assets/styles.css', rel='stylesheet', media='screen')
+  link(href='/static/vendors/vendors/jGrowl/jquery.jgrowl.css', rel='stylesheet', media='screen')
+  script(type="text/javascript")
+  
+  
+body
+
+  div(class='container')
+  center
+    span.label.label-warning Admin
+    form(action='login', method='post', class='form-signin')
+      h2(class='form-signin-heading') Please log in
+      label(for='inputEmail', class='sr-only') Username
+      input(type='text', id='inputEmail', name='username', class='form-control' placeholder='your username' required autofocus)
+      label(for='inputPassword', class='sr-only') Password
+      input(type='password', id='inputPassword', name='password', class='form-control', placeholder='your password' required)
+      button(class='btn btn-lg btn-warning btn-block', type='submit') Login
+      p 
+        center 
+        hr
+        | Forget password? Click 
+        a(href='#') here
+      hr
+      p
+        | Back to  
+        a(href='../')  HOME 

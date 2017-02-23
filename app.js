@@ -47,6 +47,7 @@ var index           = require('./routes/index.route');
 app.use('/', index);
 app.use('/student', student);
 app.use('/lecturer', lecturer);
+app.use('/admin', admin);
 app.use('/api/v1/student', student_apis);
 app.use('/api/v1/admin', admin);
 

@@ -26,7 +26,8 @@ var storage = multer.diskStorage({
       console.log('report ID : '+ reportID + ' and name : ' + reportName)
       report.update({nim:student, "reports.id": reportID}, {"$set": {
         "reports.$.file_location": root_url+'/static/reports/'+reportName,
-        "reports.$.file_name": reportName
+        "reports.$.file_name": reportName,
+        "reports.$.last_edit": new Date()
       },
     }, function(err, result){
         if(result){

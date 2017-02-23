@@ -9,6 +9,9 @@ router.use(function(req, res, next){
 })
 
 router.get('/', admin.getIndex)
+router.get('/login', admin.getLoginPage)
+router.get('/home', admin.getHome)
+router.post('/login', admin.postLogin)
 
 /* LOGGED IN ONLY ACCESS */
 // router.use(loggedin)

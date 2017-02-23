@@ -13,6 +13,8 @@ html
     //if lt IE 9
       script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
     script(src='/static/vendors/vendors/modernizr-2.6.2-respond-1.1.0.min.js')
+    style.
+      i {color:white}
   body
     .navbar.navbar-fixed-top
       .navbar-inner
@@ -84,7 +86,11 @@ html
                     p(class='#{showCreateReport}')
                       a(href='../report/create?from=all' class='btn btn-success') Create another report
                     p(class='#{showEditReport}')
-                      a(href='../report/update?from=all' class='btn btn-primary') Edit latest report
+                      a(href='../report/update?from=all' class='btn btn-primary') Edit
+                        &nbsp;
+                        i.icon-download-alt
+                          
+
                     .btn-group.pull-right
                       button.btn.dropdown-toggle(data-toggle='dropdown')
                         | Tools 

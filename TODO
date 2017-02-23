@@ -39,8 +39,10 @@
   [ ] Pemilihan ruang
 
   // 4th milestone
-  [ ] ADMINISTRATOR PAGE (admin, operator, kaprodi)
-
+  [] ADMIN LEVEL
+    1. super
+    2. operator
+    3. kaprodi
 
   # frontend
   [-] registration

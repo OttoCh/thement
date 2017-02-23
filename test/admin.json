@@ -1,0 +1,18 @@
+[{
+  "id":1,
+  "role":"super",
+  "pass":"super123",
+  "email":"wildansn@arc.itb.ac.id"
+},
+{
+  "id":2,
+  "role":"operator",
+  "pass":"operator123",
+  "email":"wildansn@arc.itb.ac.id"
+},
+{
+  "id":3,
+  "role":"kaprodi",
+  "pass":"kaprodi123",
+  "email":"widayani@fi.itb.ac.id"
+}]

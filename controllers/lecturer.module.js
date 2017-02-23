@@ -275,8 +275,13 @@ exports.changeInitPass = function(req, res){
 exports.getDetailStudent = function(req, res){
   let param = req.params.nim
   Student.findOne({nim:param}, function(e, std){
-    let profile   = std
-    let last_seen = funcs.friendlyDate(std.last_login)
+    let profile   = std, last_seen
+    // check if student ever login
+    if(std.last_login != null){
+      last_seen = funcs.friendlyDate(std.last_login)
+    } else {
+      last_seen = 'Never'
+    }
     report.findOne({nim:param}, function(e, report){
       let showAccept = 'hide'
       let objReports = []
@@ -287,6 +292,13 @@ exports.getDetailStudent = function(req, res){
       } else {
         showAccept = ''
       }
+
+      if(reps.length > 0){
+        console.log('there is ONE OR MORE report', reps.length)
+      } else {
+        console.log('NO REPORT', reps.length)
+      }
+
       for(var i=0; i<reps.length; i++){
         objReports.push({
           index: reps[i].id,
