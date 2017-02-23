@@ -1,7 +1,7 @@
 doctype html
 html
   head
-    title=title
+    title #{title} - #{nim}
     // Bootstrap
     link(href='/static/vendors/bootstrap/css/bootstrap.min.css', rel='stylesheet', media='screen')
     link(href='/static/vendors/bootstrap/css/bootstrap-responsive.min.css', rel='stylesheet', media='screen')
@@ -27,7 +27,7 @@ html
               li.dropdown
                 a.dropdown-toggle(href='#', role='button', data-toggle='dropdown')
                   i.icon-user
-                  |   
+                  | #{nim}
                   i.caret
                 ul.dropdown-menu
                   li
@@ -48,25 +48,47 @@ html
             li
               a(href='./home')
                 i.icon-chevron-right
+                i.icon-home
                 |  Dashboard
             li
-              a(href='./profile')
+              a(href='profile')
                 i.icon-chevron-right
+                i.icon-user
                 |  Profile
             li
-              a(href='./lecturers')
+              a(href='lecturers')
                 i.icon-chevron-right
+                i.icon-briefcase
                 |  Lecturers
-            li
-              a(href='./reports/all')
+            li(class='#{msgReport}')
+              a(href='reports/all')
                 i.icon-chevron-right
+                i.icon-book
                 |  Reports
             li.active
-              a(href='#')
-                i.icon-chevron-right
+              a(href='notifications')
+                span.badge.badge-info.pull-right
+                i.icon-volume-up
                 |  Notifications
+            li
+              a(href='#')
+                span.badge.badge-info.pull-right
+                i.icon-envelope
+                |  Messages
         // /span
         #content.span9
+          .row-fluid
+            .navbar
+              .navbar-inner
+                ul.breadcrumb
+                  i.icon-chevron-left.hide-sidebar
+                    a(href='#', title='Hide Sidebar', rel='tooltip')  
+                  i.icon-chevron-right.show-sidebar(style='display:none;')
+                    a(href='#', title='Show Sidebar', rel='tooltip')  
+                  li
+                    a(href='home') Dashboard
+                    span.divider /
+                  li Notifications
           .row-fluid
             // block
             .block
@@ -80,7 +102,10 @@ html
                       <a href="#"><button class="btn btn-success">Add New <i class="icon-plus icon-white"></i></button></a>
                       </div>
                     legend ALL NOTIFICATIONS
-                    a(href='notifications/delete_all' class='btn btn-danger') DELETE ALL
+                    a(href='notifications/delete_all') 
+                      button.btn.btn-danger
+                        i.icon-remove.icon-white
+                        |  DELETE ALL
                     .btn-group.pull-right
                       button.btn.dropdown-toggle(data-toggle='dropdown')
                         | Tools 

@@ -76,7 +76,7 @@ html.no-js
             ul.nav
               li.active
                 a(href='#') Dashboard
-          // /.nav-collapse
+    // SIDEBAR
     .container-fluid
       .row-fluid
         #sidebar.span3
@@ -84,23 +84,34 @@ html.no-js
             li.active
               a(href='#')
                 i.icon-chevron-right
+                i.icon-home
                 |  Dashboard
             li
               a(href='profile')
                 i.icon-chevron-right
+                i.icon-user
                 |  Profile
             li
               a(href='lecturers')
                 i.icon-chevron-right
+                i.icon-briefcase
                 |  Lecturers
             li(class='#{msgReport}')
               a(href='reports/all')
                 i.icon-chevron-right
+                i.icon-book
                 |  Reports
             li
               a(href='notifications')
                 span.badge.badge-info.pull-right #{nNotifs}
+                i.icon-volume-up
                 |  Notifications
+            li
+              a(href='#')
+                span.badge.badge-info.pull-right
+                i.icon-envelope
+                |  Messages
+                
         // /span
         #content.span9
           .row-fluid
@@ -111,8 +122,8 @@ html.no-js
                     a(href='#', title='Hide Sidebar', rel='tooltip')  
                   i.icon-chevron-right.show-sidebar(style='display:none;')
                     a(href='#', title='Show Sidebar', rel='tooltip')  
-                  li
-                    a.active(href='#') Dashboard
+                  li Dashboard
+          
           .row-fluid
             // block
             .block
@@ -130,27 +141,30 @@ html.no-js
                   p(class='stateStyle') #{state} : #{supervisor}
                   p(class='#{hideChoosing}') Choose
                     a(href='lecturers')  here
+                  
                 .span3
                   div(class='#{divReport}')
                     h4 Progress report(s)
-                    p #{nReport}
-
+                    p 
+                      h4 Total report :
+                        &nbsp;
+                        span.badge.badge-info #{nReport}
+                    hr
                     p(class='#{msgReport}')
                     
                     a(href='reports/all?from=home')
-                      button.btn.btn-info
-                        | View report(s)
-                        &nbsp;
+                      button.btn.btn-success
                         i.icon-eye-open.icon-white
+                        |  View report(s)
                     br
                     br
                     p(class='#{reportCreate}')
                     
                     a(href='report/create?from=home')
-                      button.btn.btn-success
-                        | Add report
-                        &nbsp;
+                      button.btn.btn-primary
                         i.icon-folder-open.icon-white
+                        |  Add report
+                        
                     br
                     br
                     p Report approval :

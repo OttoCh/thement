@@ -181,12 +181,12 @@ exports.getAllReports = function(req, res){
         })
       }
       res.render('student/report/all', {title:"All reports", baseurl:baseurl, objReports:objReports, colored:colored, statusColored:statusColored,
-        showCreateReport:showCreateReport, showEditReport:showEditReport, startReport:startReport, approvalStatus:approvalStatus
+        showCreateReport:showCreateReport, showEditReport:showEditReport, startReport:startReport, approvalStatus:approvalStatus, nim:nim
       })
     } else {
       startReport = ''
       res.render('student/report/all', {title:"All reports", baseurl:baseurl, objReports:objReports, colored:colored, statusColored:statusColored,
-        showCreateReport:showCreateReport, showEditReport:showEditReport, startReport:startReport, approvalStatus:approvalStatus
+        showCreateReport:showCreateReport, showEditReport:showEditReport, startReport:startReport, approvalStatus:approvalStatus, nim:nim
       })
     }
   })

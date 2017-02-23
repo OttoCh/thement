@@ -69,5 +69,12 @@ module.exports = {
       text += possible.charAt(Math.floor(Math.random() * possible.length))
     }
     return (text)
+  },
+
+  jsonOutput: function(msg){
+    return {
+      "status":"Error",
+      "Message":msg
+    }
   }
 }

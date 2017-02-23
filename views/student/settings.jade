@@ -46,13 +46,35 @@ html
         #sidebar.span3
           ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
             li
-              a(href='home')
+              a(href='./home')
                 i.icon-chevron-right
+                i.icon-home
                 |  Dashboard
             li
               a(href='profile')
                 i.icon-chevron-right
+                i.icon-user
                 |  Profile
+            li
+              a(href='lecturers')
+                i.icon-chevron-right
+                i.icon-briefcase
+                |  Lecturers
+            li(class='#{msgReport}')
+              a(href='reports/all')
+                i.icon-chevron-right
+                i.icon-book
+                |  Reports
+            li
+              a(href='notifications')
+                span.badge.badge-info.pull-right
+                i.icon-volume-up
+                |  Notifications
+            li
+              a(href='#')
+                span.badge.badge-info.pull-right
+                i.icon-envelope
+                |  Messages
         // /span
         #content.span9
           // TODO: validation input
@@ -61,7 +83,7 @@ html
             // block
             .block
               .navbar.navbar-inner.block-header
-                .muted.pull-left Your Profile
+                .muted.pull-left Settings
               .block-content.collapse.in
                 .span12
                   form.form-horizontal(method='post' action='settings')
