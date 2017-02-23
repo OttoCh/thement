@@ -25,12 +25,12 @@
   [ ] Progress report (APIs)
       ATURAN :
       1. baru bisa nambah setelah diverifikasi  [-]
-      2. upload file optional                   []
-      3. bisa diedit sampai disetujui           []
+      2. upload file optional                   [-]
+      3. bisa diedit sampai disetujui           [-]
 
       # FILE uploading
       1. show message when file is not yet in there
-      
+
 
   // 3rd milestone
   [ ] private message (student-lecturer)
@@ -47,4 +47,4 @@
   [-] login
   [-] dashboard
   [-] profile
-  [ ] settings (notification)       => alert on wrong still fails
+  [-] settings (notification)       => alert on wrong still fails
