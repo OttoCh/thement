@@ -20,4 +20,4 @@ Thesis management system, called 'thement' is a information system-based platfor
 
 ## Contributors
 
-* Wildan S. Nahar [Personal sites](http://wildan.us)
+* Wildan S. Nahar [(Personal sites)](http://wildan.us)
