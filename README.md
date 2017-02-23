@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/wldn/thement.svg?branch=master)](https://travis-ci.org/wldn/thement)
+
 ## Thement
 
 Thesis management system, called **thement** is an information system-based platform used by students and lecturers to communicate. The goal is making thesis more transparant, well-structured, and accountable. It will be applied at Department of Physics (undergraduate level), Bandung Institute of Technology (ITB).
