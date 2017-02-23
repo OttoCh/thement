@@ -271,3 +271,49 @@ exports.changeInitPass = function(req, res){
     }
   )
 }
+
+exports.getDetailStudent = function(req, res){
+  let param = req.params.nim
+  Student.findOne({nim:param}, function(e, std){
+    let profile   = std
+    let last_seen = funcs.friendlyDate(std.last_login)
+    report.findOne({nim:param}, function(e, report){
+      let showAccept = 'hide'
+      let objReports = []
+      let reps = report.reports
+      let approval = report.is_approved
+      if(approval == true){
+        showAccept = 'hide'
+      } else {
+        showAccept = ''
+      }
+      for(var i=0; i<reps.length; i++){
+        objReports.push({
+          index: reps[i].id,
+          title: reps[i].title,
+          body: reps[i].body,
+          last_edit: funcs.friendlyDate(reps[i].last_edit),
+          file_location: reps[i].file_location,
+          file_name: reps[i].file_name
+        })
+      }
+      res.render('lecturer/student-detail', {title:"Student detail", baseurl:baseurl, last_seen:last_seen, profile:profile,
+        objReports:objReports, showAccept:showAccept
+      })
+    })
+  })
+}
+
+exports.acceptStudentReport = function(req, res){
+  let url   = req.url
+  let nims  = url.split('/')
+  let nim   = Number(nims[3])
+  console.log('accept report for ' + nim + ' type : ' + typeof(nim))
+  report.update({nim:nim},{$set: {
+    is_approved: true
+    },
+  }, function(e, accepted){
+      res.redirect(baseurl+'/students')
+    }
+  )
+}

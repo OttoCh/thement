@@ -22,4 +22,6 @@ router.get('/candidates/detail/:nim', lecturer.getDetailCandidate)
 router.get('/candidates/:nim', lecturer.rejectCandidate)
 router.get('/candidates/accept/:nim', lecturer.acceptCandidate)
 router.get('/students', lecturer.getFixStudents)
+router.get('/student/detail/:nim', lecturer.getDetailStudent)
+router.get('/student/detail/:nim/accept', lecturer.acceptStudentReport)
 module.exports = router

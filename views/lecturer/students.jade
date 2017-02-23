@@ -53,10 +53,14 @@ html
               a(href='#{baseurl}/profile')
                 i.icon-chevron-right
                 |  Profile
+            li
+              a(href='#{baseurl}/candidates')
+                i.icon-chevron-right
+                |  Candidates
             li.active
               a(href='#')
                 i.icon-chevron-right
-                |  Candidates
+                |  Fix Students
         // /span
         #content.span9
           .row-fluid
@@ -83,26 +87,24 @@ html
                           a(href='#') Save as PDF
                         li
                           a(href='#') Export to Excel
-                    br
+                    
                   table#example2.table.table-striped.table-bordered(cellpadding='0', cellspacing='0', border='0')
                     thead
                       tr
                         th NIM
-                        th Fullname
-                        th Email
-                        th Phone Number
                         th Send message
+                        th Delete
                         
                     tbody
                       each std in stds
                         tr
                           td
-                            a(href='#') #{std.nim}
-                          td=std.name
-                          td=std.email
+                            a(href='#{baseurl}/student/detail/#{std.nim}') #{std.nim}
                           td
+                            a(href='' class='btn btn-primary') Send message
+                          td
+                            a(href='' class='btn btn-danger') Remove student
                             
-                          
                       
             // /block
     // /.fluid-container

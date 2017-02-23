@@ -209,7 +209,17 @@ exports.getUpdateReport = function(req, res){
 }
 
 exports.updateReport = function(req, res){
-  res.send('update single report')
+  let nim = req.session.student
+  report.update({nim:nim, "reports.id":req.body.reportID}, {
+    "$set": {
+      "reports.$.title":req.body.reportTitle,
+      "reports.$.body":req.body.reportBody,
+      "reports.$.last_edit": new Date()
+      },
+    }, function(e, updated){
+        res.redirect(baseurl+'/report/create/file?from=update')
+    }
+  )
 }
 
 exports.removeAllReports = function(req, res){

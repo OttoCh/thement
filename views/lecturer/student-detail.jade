@@ -21,7 +21,7 @@ html
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          a.brand(href='#') Student dashboard
+          a.brand(href='#') Lecturer dashboard
           .nav-collapse.collapse
             ul.nav.pull-right
               li.dropdown
@@ -31,72 +31,86 @@ html
                   i.caret
                 ul.dropdown-menu
                   li
-                    a(tabindex='-1', href='#{baseurl}/profile') Profile
+                    a(tabindex='-1', href='#') Profile
                   li
-                    a(tabindex='-1', href='#{baseurl}/settings') Settings
+                    a(tabindex='-1', href='#') Settings
                   li.divider
                   li
                     a(tabindex='-1', href='logout') Logout
             ul.nav
               li.active
-                a(href='#') Reports
+                a(href='#') Student's detail
           // /.nav-collapse
     .container-fluid
       .row-fluid
         #sidebar.span3
           ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
             li
-              a(href='#{baseurl}/home')
+              a(href='./home')
                 i.icon-chevron-right
                 |  Dashboard
             li
-              a(href='#{baseurl}/profile')
+              a(href='./profile')
                 i.icon-chevron-right
                 |  Profile
             li
-              a(href='#{baseurl}/lecturers')
+              a(href='./lecturers')
                 i.icon-chevron-right
-                |  Lecturers
+                |  Candidates
             li.active
-              a(href='#')
+              a(href='#{baseurl}/students')
                 i.icon-chevron-right
-                |  Reports
+                |  Students
         // /span
         #content.span9
           .row-fluid
             // block
             .block
               .navbar.navbar-inner.block-header
-                .muted.pull-left REPORT
+                .muted.pull-left STUDENT
               .block-content.collapse.in
-                .span9
-                  form.form-horizontal(method='post' action='update')
-                    fieldset
-                      legend 
-                        h2 Edit latest report
-                      .control-group
-                        label.control-label(for='focusedInput') NIM
-                        .controls
-                          input#focusedInput.input-xlarge.focused(type='text', value='#{nim}' disabled)
-                      .control-group()
-                        label.control-label(for='focusedInput') Progress Report ID
-                        .controls
-                          input#focusedInput.input-xlarge.focused(type='text', value='#{reps.id}' name='reportID')
-                      .control-group
-                        label.control-label(for='focusedInput') Report title
-                        .controls
-                          input#focusedInput.input-xlarge.focused(type='text', value='#{reps.title}' name='reportTitle', required)
-                      .control-group
-                        label.control-label(for='textarea2') Report body
-                        .controls
-                          textarea.input-xlarge.textarea(style='width: 510px; height: 200px', name='reportBody' required) #{reps.body}
-                      .form-actions
-                        button.btn.btn-primary(type='submit') Next
-                        &nbsp;
-                        button.btn(type='reset') Clear
-                        &nbsp;
-                        a(href='') Back
-                      
+                .span12
+                  .table-toolbar
+                    //
+                      <div class="btn-group">
+                      <a href="#"><button class="btn btn-success">Add New <i class="icon-plus icon-white"></i></button></a>
+                      </div>
+                    legend STUDENT PROFILE
+                    
+                    br
+                  
+                    p NIM : #{profile.nim}
+                    p Last seen : #{last_seen}
+                    hr
+                    h4 Progress report(s)
+                    
+                    table#example2.table.table-striped.table-bordered(cellpadding='0', cellspacing='0', border='0')
+                      thead
+                        tr
+                          th ID
+                          th Title
+                          th Body
+                          th Last Edit
+                          th File Attachment
+                          th Detail
+                          
+                      tbody
+                        each report in objReports
+                          tr
+                            td=report.index
+                            td=report.title
+                            td=report.body
+                            td=report.last_edit
+                            td=report.file_location
+                            td
+                              a(href='') See detail
+                  p(class='#{showAccept}')
+                    a(href='#{baseurl}/student/detail/#{profile.nim}/accept' class='btn btn-primary') Accept Latest Progress Report
+                    
+                  hr    
+                  p 
+                    a(href='#{baseurl}/students') 
+                      h4 ← Back to all students
             // /block
     // /.fluid-container
     script(src='/static/vendors/vendors/jquery-1.9.1.js')
