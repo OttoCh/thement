@@ -125,7 +125,9 @@ exports.getHome = function(req, res){
     }
     let state, stateColor, dosen, divReport = 'hide', acceptance
     var supervisor = student.supervisor
-
+    if(supervisor == ""){
+      supervisor = 'None'
+    }
 
     if(student.is_choose == false){
       state = 'NONE', stateColor = 'red', acceptance = 'badge badge-important'
@@ -137,15 +139,26 @@ exports.getHome = function(req, res){
 
       // convert username to fullname supervisor
       Lect.findOne({username:supervisor}, function(err, superv){
-        console.log('name supervisor',superv.name)
-        supervisor = superv.name
+        if(superv){
+          supervisor = superv.name
+        }
+        else {
+          supervisor = '🡳'
+        }
 
       // NOTIF CHECKING
       let registered_at = funcs.friendlyDate(student.registered)
       let notifs = student.notifs
       let n      = notifs.length
       let nNotifs= notifs.length
+      let isNotifShow = 'hide'
       console.log('panjang notif : ', notifs.length)
+
+      if (student.notif_seen == true){
+        isNotifShow = 'hide'
+      } else {
+        isNotifShow = ''
+      }
 
       // limit to 3
       if(n > 0){
@@ -191,13 +204,13 @@ exports.getHome = function(req, res){
           res.render('student/home', {title: "Dashboard ", nim:nim, student:student, login:login, state:state, stateColor:stateColor, supervisor:supervisor,
             notifs:notifs, colored:colored, hideChoosing:hideChoosing, reportCreate:reportCreate, nReport:nReport, msgReport:msgReport, reportStatus:reportStatus,
             coloredStatus:coloredStatus, statusStyle:statusStyle, divReport:divReport, nNotifs:nNotifs, registered_at:registered_at,
-            acceptance:acceptance
+            acceptance:acceptance, isNotifShow
           })
         } else {
           res.render('student/home', {title: "Dashboard ", nim:nim, student:student, login:login, state:state, stateColor:stateColor, supervisor:supervisor,
             notifs:notifs, colored:colored, hideChoosing:hideChoosing, reportCreate:reportCreate, nReport:nReport, msgReport:msgReport, reportStatus:reportStatus,
             coloredStatus:coloredStatus, statusStyle:statusStyle, divReport:divReport, nNotifs:nNotifs, registered_at:registered_at,
-            acceptance:acceptance
+            acceptance:acceptance, isNotifShow
           })
         }
       })

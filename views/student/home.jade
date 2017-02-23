@@ -103,7 +103,8 @@ html.no-js
                 |  Reports
             li
               a(href='notifications')
-                span.badge.badge-info.pull-right #{nNotifs}
+                div(class='#{isNotifShow}')
+                  span.badge.badge-info.pull-right #{nNotifs}
                 i.icon-volume-up
                 |  Notifications
             li
