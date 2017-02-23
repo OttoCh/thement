@@ -6,7 +6,7 @@ Thesis management system, called **thement** is an information system-based plat
 
 * Server : Nginx
 * Database : MongoDB
-* Session storage : Redis
+* Session storage : express-session with MongoDB
 * Backend : NodeJS
 * Frontend : Pure-HTML & jQuery
 

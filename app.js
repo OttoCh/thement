@@ -1,10 +1,8 @@
 var express         = require('express'),
-    redis           = require('redis'),
     session         = require('express-session'),
-    redisStore      = require('connect-redis')(session),
+    MongoStore      = require('connect-mongo')(session),
     methodOverride  = require('method-override'),
     mongoose        = require('mongoose'),
-    client          = redis.createClient(),
     cookieParser    = require('cookie-parser'),
     bodyParser      = require('body-parser'),
     http            = require('http'),
@@ -18,12 +16,16 @@ mongoose.connect('mongodb://127.0.0.1:27017/tugasakhir');
 
 app.all('/api/v1/*', [require('./middlewares/auth')]);
 
+// express-session
 app.use(session({
-  secret: 'idf032nasd',
-  store: new redisStore({host: 'localhost', port: 6379, client:client, ttl: 260}),
-  saveUninitialized: false,
-  resave: false
-}));
+  secret: 'faeb4453e5d14fe6f6d04637f78077c76c73d1b4',
+  proxy: true,
+  resave: true,
+  saveUninitialized: true,
+  store: new MongoStore({ url: 'mongodb://127.0.0.1:27017/tugasakhir'})
+  })
+);
+
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
