@@ -3,7 +3,8 @@
 var Lect        = require('../models/lecturer'),
     Student     = require('../models/student'),
     Std         = require('../models/student.model'),
-    funcs       = require('../middlewares/funcs')
+    funcs       = require('../middlewares/funcs'),
+    report      = require('../models/report')
 
 const baseurl   = 'http://localhost:3500/lecturer'
 var hiding      = ''
@@ -132,8 +133,19 @@ exports.acceptCandidate = function(req, res){
                   }
                 },
               }, function(e, s){
-                    console.log('is_accepted is true')
-                    res.redirect(baseurl+'/candidates')
+                    let supervisor = f.supervisor
+                    //console.log('NIM : ' + nim + ' and Supervisor is ' + supervisor)
+                    var rep         = new report()
+                    rep.nim         = nimToAccept
+                    rep.supervisor  = supervisor
+                    rep.is_create   = false
+                    rep.is_approved = false
+                    rep.save(function(err){
+                      if(!err){
+                        console.log('is_accepted is true')
+                        res.redirect(baseurl+'/candidates')
+                      }
+                    })
                   }
                 )
               })
@@ -173,7 +185,7 @@ exports.postLogin = function(req, res){
   Lect.findOne({username:user}, function(e, found){
     if(found){
       console.log('username : ', user)
-      if (found.newpass != null){
+      if (found.newpass == ""){
         // check newpass
         console.log('newpass exist')
         let decrypted = funcs.decryptTo(found.newpass)
