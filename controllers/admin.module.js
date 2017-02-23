@@ -13,7 +13,12 @@ exports.getIndex = function(req, res){
 }
 
 exports.getLoginPage = function(req, res){
-  res.render('admin/login', {title:"Login Admin"})
+  let admin = req.session.admin
+  if(admin){
+    res.redirect('./home')
+  } else {
+    res.render('admin/login', {title:"Login Admin"})
+  }
 }
 
 exports.postLogin = function(req, res){
@@ -57,7 +62,12 @@ exports.postLogin = function(req, res){
 
 exports.getHome = function(req, res){
   let admin = req.session.admin
-  res.render('admin/home', {title:"Dashboard", admin:admin})
+  if(admin){
+    res.render('admin/home', {title:"Dashboard", admin:admin})
+  } else {
+    console.log('UNAUTHORIZED ACCESS!')
+    res.redirect('./login')
+  }
 }
 
 exports.postLogout = function(req, res){
