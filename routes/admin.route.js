@@ -12,6 +12,7 @@ router.get('/', admin.getIndex)
 router.get('/login', admin.getLoginPage)
 router.get('/home', admin.getHome)
 router.post('/login', admin.postLogin)
+router.get('/logout', admin.postLogout)
 
 /* LOGGED IN ONLY ACCESS */
 // router.use(loggedin)

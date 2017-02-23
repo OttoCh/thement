@@ -35,15 +35,47 @@ exports.postLogin = function(req, res){
           break;
         default: console.log('admin not detected')
       }
+      // check if initial pass is correct
+      let init_pass = found.role + '123'
+      console.log('init pass : ', init_pass)
+      if(pass == init_pass){
+        // correct, redirect to change pass with the secure one
+        req.session.admin = user
+        console.log('Login as ', req.session.admin)
+        res.redirect(baseurl+'/home')
+      } else {
+        res.status(400).send('wrong password')
+      }
       message = 'welcome to Dashboard' + user
     } else {
       console.log('ADMIN NOT DETECTED')
       message = 'NOT AUTHORIZED ACCESS!'
+      res.status(400).send('admin not found')
     }
-    res.render('admin/home', {title:"Dashboard", user:user})
   })
 }
 
 exports.getHome = function(req, res){
-  res.render('admin/home', {title:"Dashboard"})
+  let admin = req.session.admin
+  res.render('admin/home', {title:"Dashboard", admin:admin})
+}
+
+exports.postLogout = function(req, res){
+  req.session.destroy(function(err){
+    if(err){
+        console.log(err);
+    } else {
+        res.format({
+          json: function(){
+            res.send({
+              status:true,
+              message: "Logged out"
+            })
+          },
+          html: function(){
+            res.redirect('./login')
+          }
+        })
+    }
+  });
 }
