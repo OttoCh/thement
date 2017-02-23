@@ -9,6 +9,7 @@ var express         = require('express'),
     jade            = require('jade'),
     path            = require('path'),
     morgan          = require('morgan'),
+    winston         = require('winston'),
     compression     = require('compression'),
     app             = express();
 

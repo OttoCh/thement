@@ -3,6 +3,7 @@
 var express       = require('express'),
     Admin         = require('../models/admin'),
     funcs         = require('../middlewares/funcs'),
+    winston       = require('winston'),
     app           = express()
 
 const baseurl     = 'http://localhost:3500/admin'
@@ -26,6 +27,7 @@ exports.postLogin = function(req, res){
   let user = req.body.username
   let message
   console.log('login with user : ' + user + ' and pass : ' + pass)
+  winston.log('info', 'Hi in login post')
   Admin.findOne({role:user}, function(err, found){
     if(found){
       switch (user) {

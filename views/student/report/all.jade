@@ -86,10 +86,11 @@ html
                     p(class='#{showCreateReport}')
                       a(href='../report/create?from=all' class='btn btn-success') Create another report
                     p(class='#{showEditReport}')
-                      a(href='../report/update?from=all' class='btn btn-primary') Edit
-                        &nbsp;
-                        i.icon-download-alt
-                          
+                      a(href='../report/update?from=all')
+                        button.btn.btn-primary
+                          | Edit
+                          &nbsp;
+                          i.icon-edit.icon-white
 
                     .btn-group.pull-right
                       button.btn.dropdown-toggle(data-toggle='dropdown')

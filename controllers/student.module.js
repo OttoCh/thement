@@ -136,6 +136,7 @@ exports.getHome = function(req, res){
     // NOTIF CHECKING
     let notifs = student.notifs
     let n      = notifs.length
+    let nNotifs= notifs.length
     console.log('panjang notif : ', notifs.length)
 
     // limit to 3
@@ -181,12 +182,12 @@ exports.getHome = function(req, res){
         }
         res.render('student/home', {title: "Dashboard ", nim:nim, student:student, login:login, state:state, stateColor:stateColor, supervisor:supervisor,
           notifs:notifs, colored:colored, hideChoosing:hideChoosing, reportCreate:reportCreate, nReport:nReport, msgReport:msgReport, reportStatus:reportStatus,
-          coloredStatus:coloredStatus, statusStyle:statusStyle, divReport:divReport
+          coloredStatus:coloredStatus, statusStyle:statusStyle, divReport:divReport, nNotifs:nNotifs
         })
       } else {
         res.render('student/home', {title: "Dashboard ", nim:nim, student:student, login:login, state:state, stateColor:stateColor, supervisor:supervisor,
           notifs:notifs, colored:colored, hideChoosing:hideChoosing, reportCreate:reportCreate, nReport:nReport, msgReport:msgReport, reportStatus:reportStatus,
-          coloredStatus:coloredStatus, statusStyle:statusStyle, divReport:divReport
+          coloredStatus:coloredStatus, statusStyle:statusStyle, divReport:divReport, nNotifs:nNotifs
         })
       }
     })

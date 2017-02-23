@@ -97,6 +97,10 @@ html.no-js
               a(href='reports/all')
                 i.icon-chevron-right
                 |  Reports
+            li
+              a(href='notifications')
+                span.badge.badge-info.pull-right #{nNotifs}
+                |  Notifications
         // /span
         #content.span9
           .row-fluid
@@ -132,14 +136,21 @@ html.no-js
                     p #{nReport}
 
                     p(class='#{msgReport}')
+                    
                     a(href='reports/all?from=home')
-                      i.icon-zoom-out
-                      | See report(s)
+                      button.btn.btn-info
+                        | View report(s)
+                        &nbsp;
+                        i.icon-eye-open.icon-white
+                    br
                     br
                     p(class='#{reportCreate}')
+                    
                     a(href='report/create?from=home')
-                      i.icon-plus-sign
-                      | Add report
+                      button.btn.btn-success
+                        | Add report
+                        &nbsp;
+                        i.icon-folder-open.icon-white
                     br
                     br
                     p Report approval :
