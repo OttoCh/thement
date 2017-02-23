@@ -31,20 +31,20 @@ html.no-js
                   i.caret
                 ul.dropdown-menu
                   li
-                    a(tabindex='-1', href='#') 
-                      div 
+                    a(tabindex='-1', href='#')
+                      div
                         strong 1st message
                       | Jade is a terse and simple templating language with a strong focus
                   li
                     a(tabindex='-1', href='#')
-                      div 
+                      div
                         strong 2nd message
                       | Jade is a terse and simple templating language with a strong focus
                   li.divider
                   li
-                    a(tabindex='-1', href='#') Read all messages 
+                    a(tabindex='-1', href='#') Read all messages
               li.dropdown
-                a.dropdown-toggle(href='#', role='button', data-toggle='dropdown', 
+                a.dropdown-toggle(href='#', role='button', data-toggle='dropdown',
                   style='color:#001a33; background:#{colored}; font-weight:bold;')
                   i.icon-volume-up
                   |  Notifications
@@ -52,18 +52,18 @@ html.no-js
                 ul.dropdown-menu
                   each notif in notifs
                     li
-                      a(tabindex='-1', href='#') 
-                        div 
+                      a(tabindex='-1', href='#')
+                        div
                           strong #{notif.date}
                         | #{notif.notif}
                   hr
                   li
-                    a(href='notifications?from=topbar') 
+                    a(href='notifications?from=topbar')
                       strong READ ALL NOTIFS →
               li.dropdown
                 a.dropdown-toggle(href='#', role='button', data-toggle='dropdown')
                   i.icon-user
-                  |  #{nim} 
+                  |  #{nim}
                   i.caret
                 ul.dropdown-menu
                   li
@@ -72,7 +72,7 @@ html.no-js
                     a(tabindex='-1', href='settings') Settings
                   li.divider
                   li
-                    a(tabindex='-1', href='logout') Logout  
+                    a(tabindex='-1', href='logout') Logout
             ul.nav
               li.active
                 a(href='#') Dashboard
@@ -124,26 +124,27 @@ html.no-js
                 .span3
                   h4 Dosen pembimbing
                   p(class='stateStyle') #{state} : #{supervisor}
-                  p(class='#{hideChoosing}') Choose 
-                    a(href='lecturers') here
+                  p(class='#{hideChoosing}') Choose
+                    a(href='lecturers')  here
                 .span3
-                  h4 Progress report(s)
-                  p #{nReport}
-          
-                  p(class='#{msgReport}') 
-                  a(href='reports/all?from=home')
-                    i.icon-zoom-out
-                    | See report(s)
-                  br
-                  p(class='#{reportCreate}') 
-                  a(href='report/create?from=home')
-                    i.icon-plus-sign
-                    | Add report
-                  br
-                  br
-                  p Report approval :
-                  h4(class='#{reportStatus}', style='color:#{statusStyle};') #{coloredStatus}
-                  
+                  div(class='#{divReport}')
+                    h4 Progress report(s)
+                    p #{nReport}
+
+                    p(class='#{msgReport}')
+                    a(href='reports/all?from=home')
+                      i.icon-zoom-out
+                      | See report(s)
+                    br
+                    p(class='#{reportCreate}')
+                    a(href='report/create?from=home')
+                      i.icon-plus-sign
+                      | Add report
+                    br
+                    br
+                    p Report approval :
+                    h4(class='#{reportStatus}', style='color:#{statusStyle};') #{coloredStatus}
+
             // /block
       hr
     // /.fluid-container

@@ -123,14 +123,14 @@ exports.getHome = function(req, res){
     } else {
       login = funcs.friendlyDate(login)
     }
-    let state, stateColor, dosen
+    let state, stateColor, dosen, divReport = 'hide'
     let supervisor = student.supervisor
     if(student.is_choose == false){
       state = 'None', stateColor = 'red'
     } else if(student.is_accepted == false && supervisor != "" ){
       state = 'Pending', stateColor = 'orange', hideChoosing = 'hide'
     } else if(student.is_accepted == true){
-      state = 'Accepted', stateColor = 'green', hideChoosing = 'hide', reportCreate = ''
+      state = 'Accepted', stateColor = 'green', hideChoosing = 'hide', reportCreate = '', divReport = ''
     }
 
     // NOTIF CHECKING
@@ -181,12 +181,12 @@ exports.getHome = function(req, res){
         }
         res.render('student/home', {title: "Dashboard ", nim:nim, student:student, login:login, state:state, stateColor:stateColor, supervisor:supervisor,
           notifs:notifs, colored:colored, hideChoosing:hideChoosing, reportCreate:reportCreate, nReport:nReport, msgReport:msgReport, reportStatus:reportStatus,
-          coloredStatus:coloredStatus, statusStyle:statusStyle
+          coloredStatus:coloredStatus, statusStyle:statusStyle, divReport:divReport
         })
       } else {
         res.render('student/home', {title: "Dashboard ", nim:nim, student:student, login:login, state:state, stateColor:stateColor, supervisor:supervisor,
           notifs:notifs, colored:colored, hideChoosing:hideChoosing, reportCreate:reportCreate, nReport:nReport, msgReport:msgReport, reportStatus:reportStatus,
-          coloredStatus:coloredStatus, statusStyle:statusStyle
+          coloredStatus:coloredStatus, statusStyle:statusStyle, divReport:divReport
         })
       }
     })

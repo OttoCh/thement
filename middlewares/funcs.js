@@ -13,7 +13,7 @@ module.exports = {
       let nowDate = now.getDate()
       let tglDate = tgl.getDate()
       let diff    = nowDate - tglDate
-      month = tgl.getMonth(),
+      var month = tgl.getMonth(),
       month = month+1,
       months = ['January', 'February', 'March', 'April', 'May', 'June', 'July','August','September','October','November','Desember'],
       month  = months[tgl.getMonth()]
@@ -24,7 +24,7 @@ module.exports = {
         tglMin = tgl.getMinutes()
       }
 
-      time = tgl.getHours()+':'+tglMin+' WIB'
+      var time = tgl.getHours()+':'+tglMin+' WIB'
       tgl = month + ' '+ tgl.getDate()+', '+ tgl.getFullYear()+' at '+time
 
       if(diff > 7){

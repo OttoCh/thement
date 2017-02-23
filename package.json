@@ -34,7 +34,8 @@
     "util":"0.10.3",
     "multer":"1.2.1",
     "compression":"1.6.2",
-    "jshint":"2.9.4"
+    "jshint":"2.9.4",
+    "forever":"0.15.3"
   },
   "engines":{
 	  "node":"6.3.0"
