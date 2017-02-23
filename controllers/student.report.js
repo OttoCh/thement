@@ -154,40 +154,44 @@ exports.addFile = function(req, res, next){
 exports.getAllReports = function(req, res){
   let nim = req.session.student
   report.findOne({nim:nim}, function(err, reports){
-    let status = reports.is_approved
-    let statusColored, colored, showCreateReport = 'hide', showEditReport = 'hide'
-    let startReport = 'hide', approvalStatus = 'hide'
-    let objReports = []
-    let reps = reports.reports
-    if(reps.length > 0){
-      approvalStatus = ''
-      if(status == true){
-        colored = 'green'
-        statusColored = 'DISETUJUI'
-        showCreateReport = ''
+    if(reports){
+      let status = reports.is_approved
+      let statusColored, colored, showCreateReport = 'hide', showEditReport = 'hide'
+      let startReport = 'hide', approvalStatus = 'hide'
+      let objReports = []
+      let reps = reports.reports
+      if(reps.length > 0){
+        approvalStatus = ''
+        if(status == true){
+          colored = 'green'
+          statusColored = 'DISETUJUI'
+          showCreateReport = ''
+        } else {
+          colored = 'red'
+          statusColored = 'BELUM DISETUJUI',
+          showEditReport = ''
+        }
+        for(var i=0; i<reps.length; i++){
+          objReports.push({
+            index: reps[i].id,
+            title: reps[i].title,
+            body: reps[i].body,
+            last_edit: funcs.friendlyDate(reps[i].last_edit),
+            file_location: reps[i].file_location,
+            file_name: reps[i].file_name
+          })
+        }
+        res.render('student/report/all', {title:"All reports", baseurl:baseurl, objReports:objReports, colored:colored, statusColored:statusColored,
+          showCreateReport:showCreateReport, showEditReport:showEditReport, startReport:startReport, approvalStatus:approvalStatus, nim:nim
+        })
       } else {
-        colored = 'red'
-        statusColored = 'BELUM DISETUJUI',
-        showEditReport = ''
-      }
-      for(var i=0; i<reps.length; i++){
-        objReports.push({
-          index: reps[i].id,
-          title: reps[i].title,
-          body: reps[i].body,
-          last_edit: funcs.friendlyDate(reps[i].last_edit),
-          file_location: reps[i].file_location,
-          file_name: reps[i].file_name
+        startReport = ''
+        res.render('student/report/all', {title:"All reports", baseurl:baseurl, objReports:objReports, colored:colored, statusColored:statusColored,
+          showCreateReport:showCreateReport, showEditReport:showEditReport, startReport:startReport, approvalStatus:approvalStatus, nim:nim
         })
       }
-      res.render('student/report/all', {title:"All reports", baseurl:baseurl, objReports:objReports, colored:colored, statusColored:statusColored,
-        showCreateReport:showCreateReport, showEditReport:showEditReport, startReport:startReport, approvalStatus:approvalStatus, nim:nim
-      })
     } else {
-      startReport = ''
-      res.render('student/report/all', {title:"All reports", baseurl:baseurl, objReports:objReports, colored:colored, statusColored:statusColored,
-        showCreateReport:showCreateReport, showEditReport:showEditReport, startReport:startReport, approvalStatus:approvalStatus, nim:nim
-      })
+      res.redirect(baseurl)
     }
   })
 }

@@ -19,12 +19,19 @@ module.exports = {
       month  = months[tgl.getMonth()]
       var tglMin = tgl.getMinutes()
       if(tglMin < 10){
-        tglMin = '0'+tgl.getMinutes()
+        tglMin = '0'+tglMin
       } else {
         tglMin = tgl.getMinutes()
       }
 
-      var time = tgl.getHours()+':'+tglMin+' WIB'
+      var tglHours = tgl.getHours()
+      if(tglHours < 10){
+        tglHours = '0'+tglHours
+      } else {
+        tglHours = tglHours
+      }
+
+      var time = tglHours+':'+tglMin+' WIB'
       tgl = month + ' '+ tgl.getDate()+', '+ tgl.getFullYear()+' at '+time
 
       if(diff > 7){

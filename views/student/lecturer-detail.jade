@@ -46,17 +46,35 @@ html
         #sidebar.span3
           ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
             li
-              a(href='#{baseurl}/home')
+              a(href='../home')
                 i.icon-chevron-right
+                i.icon-home
                 |  Dashboard
             li
-              a(href='#{baseurl}/profile')
+              a(href='../profile')
                 i.icon-chevron-right
+                i.icon-user
                 |  Profile
             li.active
-              a(href='#{baseurl}/lecturers')
+              a(href='#')
                 i.icon-chevron-right
+                i.icon-briefcase
                 |  Lecturers
+            li
+              a(href='../reports/all')
+                i.icon-chevron-right
+                i.icon-book
+                |  Reports
+            li
+              a(href='../notifications')
+                span.badge.badge-info.pull-right #{nNotifs}
+                i.icon-volume-up
+                |  Notifications
+            li
+              a(href='#')
+                span.badge.badge-info.pull-right
+                i.icon-envelope
+                |  Messages
         // /span
         #content.span9
           // TODO: validation input
@@ -85,12 +103,22 @@ html
                       h4 Research division
                       p=lecturer.kk
                       
-                    button.btn.btn-primary(type='submit' class='#{hiding}') Choose this lecturer
+                    button.btn.btn-primary(type='submit' class='#{hiding}')
+                      i.icon-ok.icon-white
+                      strong  Choose
                   
                   
-                    // pagination
-                    li.next
-                      a(href='javascript:void(0);') Next
+                    ul.pager.wizard
+                      li.previous.first(style='display:none;')
+                        a(href='javascript:void(0);') First
+                      li.previous
+                        a(href='javascript:void(0);') Previous
+                      li.next.last(style='display:none;')
+                        a(href='javascript:void(0);') Last
+                      li.next
+                        a(href='javascript:void(0);') Next
+                      li.next.finish(style='display:none;')
+                        a(href='javascript:;') Finish
                       
                     //- if(chooseCode !== '')
                     //-   strong

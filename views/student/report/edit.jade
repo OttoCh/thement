@@ -46,21 +46,35 @@ html
         #sidebar.span3
           ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
             li
-              a(href='#{baseurl}/home')
+              a(href='../home')
                 i.icon-chevron-right
+                i.icon-home
                 |  Dashboard
             li
-              a(href='#{baseurl}/profile')
+              a(href='../profile')
                 i.icon-chevron-right
+                i.icon-user
                 |  Profile
             li
-              a(href='#{baseurl}/lecturers')
+              a(href='../lecturers')
                 i.icon-chevron-right
+                i.icon-briefcase
                 |  Lecturers
             li.active
-              a(href='#')
+              a(href='reports/all')
                 i.icon-chevron-right
+                i.icon-book
                 |  Reports
+            li
+              a(href='../notifications')
+                span.badge.badge-info.pull-right #{nNotifs}
+                i.icon-volume-up
+                |  Notifications
+            li
+              a(href='#')
+                span.badge.badge-info.pull-right
+                i.icon-envelope
+                |  Messages
         // /span
         #content.span9
           .row-fluid
@@ -99,7 +113,17 @@ html
                         &nbsp;
                         a(href='') Back
                       
-            // /block
+      
+      // footer
+      hr
+      footer
+        center
+          | Thesis Management System &copy; 2017 -
+          &nbsp;
+          a(href='https://github.com/wldn/thement' title='Source code' target='_blank')
+            strong v1.0
+            br
+          strong Department of Physics, ITB
     // /.fluid-container
     script(src='/static/vendors/vendors/jquery-1.9.1.js')
     script(src='/static/vendors/bootstrap/js/bootstrap.min.js')

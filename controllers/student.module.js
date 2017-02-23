@@ -5,6 +5,7 @@ var express       = require('express'),
     Student       = require('../models/student'),
     stdModel      = require('../models/student.model'),
     report        = require('../models/report'),
+    Lect          = require('../models/lecturer'),
     multer        = require('multer'),
     email         = require('emailjs/email'),
     app           = express()
@@ -116,80 +117,90 @@ exports.getHome = function(req, res){
   var colored, hideChoosing = '', reportCreate = 'hide', reportAll = 'hide', nReport = 'none', msgReport = 'hide', reportStatus = 'hide'
   let nim = req.session.student
   Student.findOne({nim:nim}, function(err, student){
-    console.log(student)
     let login = student.last_login
     if(login == null){
       login = '1st time'
     } else {
       login = funcs.friendlyDate(login)
     }
-    let state, stateColor, dosen, divReport = 'hide'
-    let supervisor = student.supervisor
+    let state, stateColor, dosen, divReport = 'hide', acceptance
+    var supervisor = student.supervisor
+
+
     if(student.is_choose == false){
-      state = 'None', stateColor = 'red'
+      state = 'NONE', stateColor = 'red', acceptance = 'badge badge-important'
     } else if(student.is_accepted == false && supervisor != "" ){
-      state = 'Pending', stateColor = 'orange', hideChoosing = 'hide'
+      state = 'PENDING', stateColor = 'orange', hideChoosing = 'hide', acceptance = 'badge badge-warning'
     } else if(student.is_accepted == true){
-      state = 'Accepted', stateColor = 'green', hideChoosing = 'hide', reportCreate = '', divReport = ''
+      state = 'ACCEPTED', stateColor = 'green', hideChoosing = 'hide', reportCreate = '', divReport = '', acceptance = 'badge badge-success'
     }
 
-    // NOTIF CHECKING
-    let notifs = student.notifs
-    let n      = notifs.length
-    let nNotifs= notifs.length
-    console.log('panjang notif : ', notifs.length)
+      // convert username to fullname supervisor
+      Lect.findOne({username:supervisor}, function(err, superv){
+        console.log('name supervisor',superv.name)
+        supervisor = superv.name
 
-    // limit to 3
-    if(n > 0){
-      notifs = notifs
-    }
-    else {
-      console.log('no notifs yet')
-    }
-    if (student.notif_seen == false) {
-      colored = '#b3d9ff'
-    } else {
-      colored = ''
-    }
+      // NOTIF CHECKING
+      let registered_at = funcs.friendlyDate(student.registered)
+      let notifs = student.notifs
+      let n      = notifs.length
+      let nNotifs= notifs.length
+      console.log('panjang notif : ', notifs.length)
 
-    // REPORT CHECKING
-    report.findOne({nim:nim}, function(err, rep){
-      var coloredStatus = '', statusStyle = ''
-      if(rep){
-        let status = rep.is_approved
-        let coloredStatus = status.toString()
-        coloredStatus = coloredStatus.toUpperCase()
-        if(status == true){
-          coloredStatus = 'DISETUJUI'
-          statusStyle = 'green'
-        } else {
-          coloredStatus = 'BELUM DISETUJUI'
-          statusStyle = 'red'
-        }
-        if(rep){
-          // check if user had created a report
-          if(rep.reports.length > 0){
-            console.log('user has min 1 report')
-            nReport = rep.reports.length
-            reportCreate = 'hide',
-            msgReport = '',
-            reportStatus = ''
-          } else {
-            console.log('user has report initial, but not created yet')
-          }
-        } else {
-          console.log('user has no report yet')
-        }
-        res.render('student/home', {title: "Dashboard ", nim:nim, student:student, login:login, state:state, stateColor:stateColor, supervisor:supervisor,
-          notifs:notifs, colored:colored, hideChoosing:hideChoosing, reportCreate:reportCreate, nReport:nReport, msgReport:msgReport, reportStatus:reportStatus,
-          coloredStatus:coloredStatus, statusStyle:statusStyle, divReport:divReport, nNotifs:nNotifs
-        })
-      } else {
-        res.render('student/home', {title: "Dashboard ", nim:nim, student:student, login:login, state:state, stateColor:stateColor, supervisor:supervisor,
-          notifs:notifs, colored:colored, hideChoosing:hideChoosing, reportCreate:reportCreate, nReport:nReport, msgReport:msgReport, reportStatus:reportStatus,
-          coloredStatus:coloredStatus, statusStyle:statusStyle, divReport:divReport, nNotifs:nNotifs
-        })
+      // limit to 3
+      if(n > 0){
+        notifs = notifs
       }
+      else {
+        console.log('no notifs yet')
+      }
+      if (student.notif_seen == false) {
+        colored = '#b3d9ff'
+      } else {
+        colored = ''
+      }
+
+      // REPORT CHECKING
+      report.findOne({nim:nim}, function(err, rep){
+        var coloredStatus = '', statusStyle = ''
+        if(rep){
+          let status = rep.is_approved
+          let coloredStatus = status.toString()
+          coloredStatus = coloredStatus.toUpperCase()
+          if(status == true){
+            coloredStatus = 'DISETUJUI'
+            statusStyle = 'green'
+          } else {
+            coloredStatus = 'BELUM DISETUJUI'
+            statusStyle = 'red'
+          }
+          if(rep){
+            // check if user had created a report
+            if(rep.reports.length > 0){
+              console.log('user has min 1 report')
+              nReport = rep.reports.length
+              reportCreate = 'hide',
+              msgReport = '',
+              reportStatus = ''
+            } else {
+              console.log('user has report initial, but not created yet')
+            }
+          } else {
+            console.log('user has no report yet')
+          }
+          res.render('student/home', {title: "Dashboard ", nim:nim, student:student, login:login, state:state, stateColor:stateColor, supervisor:supervisor,
+            notifs:notifs, colored:colored, hideChoosing:hideChoosing, reportCreate:reportCreate, nReport:nReport, msgReport:msgReport, reportStatus:reportStatus,
+            coloredStatus:coloredStatus, statusStyle:statusStyle, divReport:divReport, nNotifs:nNotifs, registered_at:registered_at,
+            acceptance:acceptance
+          })
+        } else {
+          res.render('student/home', {title: "Dashboard ", nim:nim, student:student, login:login, state:state, stateColor:stateColor, supervisor:supervisor,
+            notifs:notifs, colored:colored, hideChoosing:hideChoosing, reportCreate:reportCreate, nReport:nReport, msgReport:msgReport, reportStatus:reportStatus,
+            coloredStatus:coloredStatus, statusStyle:statusStyle, divReport:divReport, nNotifs:nNotifs, registered_at:registered_at,
+            acceptance:acceptance
+          })
+        }
+      })
     })
   })
 }

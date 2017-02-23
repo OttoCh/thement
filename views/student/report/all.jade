@@ -29,7 +29,7 @@ html
               li.dropdown
                 a.dropdown-toggle(href='#', role='button', data-toggle='dropdown')
                   i.icon-user
-                  |  #{nim} 
+                  strong  #{nim} 
                   i.caret
                 ul.dropdown-menu
                   li
@@ -41,7 +41,7 @@ html
                     a(tabindex='-1', href='../logout') Logout
             ul.nav
               li.active
-                a(href='#') Lecturers
+                a(href='#') Reports
           // /.nav-collapse
     .container-fluid
       .row-fluid
@@ -95,7 +95,7 @@ html
             // block
             .block
               .navbar.navbar-inner.block-header
-                .muted.pull-left All lecturers
+                .muted.pull-left Reports
               .block-content.collapse.in
                 .span12
                   .table-toolbar
@@ -110,12 +110,16 @@ html
                       a(href='../report/create' class='btn btn-info') Start creating report
                     h4(style='color:#{colored}') #{statusColored}
                     p(class='#{showCreateReport}')
-                      a(href='../report/create?from=all' class='btn btn-success') Create another report
+                      a(href='../report/create?from=all') 
+                        button.btn.btn-success
+                          i.icon-plus-sign.icon-white
+                          strong  Create
+      
                     p(class='#{showEditReport}')
                       a(href='../report/update?from=all')
                         button.btn.btn-primary
                           i.icon-edit.icon-white
-                          |  Edit
+                          strong  Edit
 
                     .btn-group.pull-right
                       button.btn.dropdown-toggle(data-toggle='dropdown')
@@ -145,7 +149,15 @@ html
                           td
                             a(href='#{report.file_location}')=report.file_name
                           td=report.last_edit
-                          
+      hr
+      footer
+        center
+          | Thesis Management System &copy; 2017 -
+          &nbsp;
+          a(href='https://github.com/wldn/thement' title='Source code' target='_blank')
+            strong v1.0
+            br
+          strong Department of Physics, ITB                    
                       
             // /block
     // /.fluid-container
