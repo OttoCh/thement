@@ -13,7 +13,7 @@ var express         = require('express'),
     compression     = require('compression'),
     app             = express();
 
-mongoose.connect('mongodb://127.0.0.1:27017/tugasakhir');
+mongoose.connect('mongodb://wildan:wildan123@ds028679.mlab.com:28679/tugasakhir');
 
 app.all('/api/v1/*', [require('./middlewares/auth')]);
 
