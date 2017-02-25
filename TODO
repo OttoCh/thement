@@ -21,6 +21,7 @@
         - delete one          []
         - read/unread status  [-]
         - show top latest 3   []
+        BUG : notif date ERROR
   [ ] verification (done)
   [ ] Progress report (APIs)
       ATURAN :
