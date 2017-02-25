@@ -317,15 +317,35 @@ exports.getDetailStudent = function(req, res){
 }
 
 exports.acceptStudentReport = function(req, res){
+  let lecturer = req.session.lecturer
   let url   = req.url
   let nims  = url.split('/')
   let nim   = Number(nims[3])
   console.log('accept report for ' + nim + ' type : ' + typeof(nim))
   report.update({nim:nim},{$set: {
-    is_approved: true
+      is_approved: true,
+      is_create: false
     },
   }, function(e, accepted){
-      res.redirect(baseurl+'/students')
+      // add notif to student
+      Student.findOne({nim:nim}, function(err, std){
+        let n = std.notifs.length
+        Student.update({nim:nim}, {$set: {
+              notif_seen: false
+            }},
+            {$push: {
+              notifs: {
+                "id":n+1,
+                "date": new Date(),
+                "notif": "Your report had approved by : " + lecturer,
+                "has_seen": false
+              }
+            },
+          }, function(e, report){
+            res.redirect(baseurl+'/students')
+          }
+        )
+      })
     }
   )
 }

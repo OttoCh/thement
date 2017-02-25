@@ -148,16 +148,16 @@ exports.getHome = function(req, res){
 
       // NOTIF CHECKING
       let registered_at = funcs.friendlyDate(student.registered)
-      let notifs = student.notifs
-      let n      = notifs.length
-      let nNotifs= notifs.length
-      let isNotifShow = 'hide'
+      let notifs        = student.notifs
+      let n             = notifs.length
+      let newNotif      = notifs.length
+      let isNotifShow   = ''
       console.log('panjang notif : ', notifs.length)
 
       if (student.notif_seen == true){
         isNotifShow = 'hide'
       } else {
-        isNotifShow = ''
+        isNotifShow = '', newNotif = 'NEW'
       }
 
       // limit to 3
@@ -203,14 +203,14 @@ exports.getHome = function(req, res){
           }
           res.render('student/home', {title: "Dashboard ", nim:nim, student:student, login:login, state:state, stateColor:stateColor, supervisor:supervisor,
             notifs:notifs, colored:colored, hideChoosing:hideChoosing, reportCreate:reportCreate, nReport:nReport, msgReport:msgReport, reportStatus:reportStatus,
-            coloredStatus:coloredStatus, statusStyle:statusStyle, divReport:divReport, nNotifs:nNotifs, registered_at:registered_at,
-            acceptance:acceptance, isNotifShow
+            coloredStatus:coloredStatus, statusStyle:statusStyle, divReport:divReport, newNotif:newNotif, registered_at:registered_at,
+            acceptance:acceptance, isNotifShow:isNotifShow
           })
         } else {
           res.render('student/home', {title: "Dashboard ", nim:nim, student:student, login:login, state:state, stateColor:stateColor, supervisor:supervisor,
             notifs:notifs, colored:colored, hideChoosing:hideChoosing, reportCreate:reportCreate, nReport:nReport, msgReport:msgReport, reportStatus:reportStatus,
-            coloredStatus:coloredStatus, statusStyle:statusStyle, divReport:divReport, nNotifs:nNotifs, registered_at:registered_at,
-            acceptance:acceptance, isNotifShow
+            coloredStatus:coloredStatus, statusStyle:statusStyle, divReport:divReport, newNotif:newNotif, registered_at:registered_at,
+            acceptance:acceptance, isNotifShow:isNotifShow
           })
         }
       })
