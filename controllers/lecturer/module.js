@@ -327,24 +327,32 @@ exports.acceptStudentReport = function(req, res){
       is_create: false
     },
   }, function(e, accepted){
-      // add notif to student
-      Student.findOne({nim:nim}, function(err, std){
-        let n = std.notifs.length
-        Student.update({nim:nim}, {$set: {
-              notif_seen: false
-            }},
-            {$push: {
-              notifs: {
-                "id":n+1,
-                "date": new Date(),
-                "notif": "Your report had approved by : " + lecturer,
-                "has_seen": false
+      // find reportID
+      report.findOne({nim:nim}, function(e,r){
+        let reportID = r.reports.length
+        
+        Student.findOne({nim:nim}, function(err, std){
+          // set notif tp unseen  
+          Student.update({nim:nim}, {$set: {
+            notif_seen: false
+            },}, function(e, seen){
+            // add notif to student
+            let n = std.notifs.length
+            Student.update({nim:nim},
+                {$push: {
+                  notifs: {
+                    "id":n+1,
+                    "date": new Date(),
+                    "notif": "Your report #"+ reportID +" had approved by : " + lecturer,
+                    "has_seen": false
+                  }
+                },
+              }, function(e, report){
+                res.redirect(baseurl+'/students')
               }
-            },
-          }, function(e, report){
-            res.redirect(baseurl+'/students')
-          }
-        )
+            )
+          })
+        })
       })
     }
   )

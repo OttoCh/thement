@@ -14,6 +14,7 @@
       1.1) rejected => NOTIFICATION                                                                         []
       2) pending    => chosen, not accepted/rejected yet, REQUIRED : is_choose is true && supervisor != ""  [-]
       3) accepted   => chosen, accepted, REQUIRED : is_accepted is true                                     [-]
+
   [ ] NOTIFICATIONS:
         - read all            [-]
         - delete all          [-]
@@ -45,9 +46,6 @@
     2. operator
     3. kaprodi
 
-  # frontend
-  [-] registration
-  [-] login
-  [-] dashboard
-  [-] profile
-  [-] settings (notification)       => alert on wrong still fails
+# PROBLEMS :
+1. uploading file still buggy
+2. sortir table still fails

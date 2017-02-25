@@ -15,6 +15,12 @@ exports.getNotifs = function(req, res){
   student.findOne({nim:nim}, function(err, std){
     let objNotifs = [],
         data      = std.notifs
+    
+    // sort notifs by latest
+    data.sort(function(a,b){
+        return parseFloat(b.id) - parseFloat(a.id)
+    })
+    
     for(var i=0; i<data.length; i++){
       objNotifs.push({
         index:data[i].id,

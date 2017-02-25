@@ -160,6 +160,12 @@ exports.getAllReports = function(req, res){
       let startReport = 'hide', approvalStatus = 'hide'
       let objReports = []
       let reps = reports.reports
+
+      // sort by the latest
+      reps.sort(function(a,b){
+        return parseFloat(b.id) - parseFloat(a.id)
+      })
+      
       if(reps.length > 0){
         approvalStatus = ''
         if(status == true){
@@ -181,6 +187,7 @@ exports.getAllReports = function(req, res){
             file_name: reps[i].file_name
           })
         }
+        
         res.render('student/report/all', {title:"All reports", baseurl, objReports, colored, statusColored,
           showCreateReport, showEditReport, startReport, approvalStatus, nim
         })
