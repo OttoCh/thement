@@ -67,7 +67,7 @@ router.get('/reports/all', report.getAllReports)
 router.get('/report/:id', report.getSingleReport)
 
 // message
-router.get('/message/all', msg.getAll)
+router.get('/message/all?', msg.getAll)
 
 router.use(function(req, res, next){
   res.status(404)

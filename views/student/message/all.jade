@@ -114,24 +114,82 @@ html
                   h5 Last message
                   i.icon-calendar
                   |  #{last_message}
+                  p
+                  hr
+                  a(href='#') 
+                    button.btn.btn-success
+                      i.icon-plus-sign.icon-white
+                      strong  New message
                 .span9
-                  h4 Messages
-                  table#example2.table.table-striped.table-bordered(cellpadding='0', cellspacing='0', border='0')
-                    thead
-                      tr
-                        th ID
-                        th From
-                        th Body
-                        th Date
-                        
-                    tbody
-                      each val in objMsgs
+                  .span9
+                    //- all message
+                    h4(class='#{hideAllMsg}') All Messages
+                    table.table.table-hover(class='#{hideAllMsg}')
+                      thead
                         tr
-                          td=val.index
-                          td=val.from
-                          td=val.body
-                          td=val.date
-                            
+                          th ID
+                          th From
+                          th Body
+                          th Date
+                          
+                      tbody
+                        each val in objMsgs
+                          tr
+                            td=val.index
+                            td=val.from
+                            td=val.body
+                            td=val.date_created
+                    //- inbox message
+                    h4(class='#{showInbox}') Inbox Messages
+                    table.table.table-hover(class='#{showInbox}')
+                      thead
+                        tr
+                          th ID
+                          th From
+                          th Body
+                          th Date
+                          
+                      tbody
+                        each val in objMsgs
+                          tr
+                            td=val.index
+                            td=val.from
+                            td=val.body
+                            td=val.date_created
+
+                    //- outbox message
+                    h4(class='#{showOutbox}') Outbox Messages
+                    table.table.table-hover(class='#{showOutbox}')
+                      thead
+                        tr
+                          th ID
+                          th From
+                          th Body
+                          th Date
+                          
+                      tbody
+                        each val in objMsgs
+                          tr
+                            td=val.index
+                            td=val.from
+                            td=val.body
+                            td=val.date_created
+                  .span3
+                    h4 TYPE
+                    a(href='#{baseurl}/message/all') 
+                        button.btn.btn-info
+                          i.icon-align-center.icon-white
+                          strong  ALL
+                    p
+                    a(href='?type=inbox') 
+                        button.btn.btn-success
+                          i.icon-inbox.icon-white
+                          strong  Inbox
+                    p
+                    a(href='?type=outbox') 
+                        button.btn.btn-primary
+                          i.icon-envelope.icon-white
+                          strong  Outbox
       hr
       footer
         center
