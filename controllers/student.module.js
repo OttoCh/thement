@@ -201,10 +201,10 @@ exports.getHome = function(req, res){
           } else {
             console.log('user has no report yet')
           }
-          res.render('student/home', {title: "Dashboard ", nim:nim, student:student, login:login, state:state, stateColor:stateColor, supervisor:supervisor,
-            notifs:notifs, colored:colored, hideChoosing:hideChoosing, reportCreate:reportCreate, nReport:nReport, msgReport:msgReport, reportStatus:reportStatus,
-            coloredStatus:coloredStatus, statusStyle:statusStyle, divReport:divReport, newNotif:newNotif, registered_at:registered_at,
-            acceptance:acceptance, isNotifShow:isNotifShow
+          res.render('student/home', {title: "Dashboard ", nim, student, login, state, stateColor, supervisor,
+            notifs, colored, hideChoosing, reportCreate, nReport, msgReport, reportStatus,
+            coloredStatus, statusStyle, divReport, newNotif, registered_at,
+            acceptance, isNotifShow
           })
         } else {
           res.render('student/home', {title: "Dashboard ", nim:nim, student:student, login:login, state:state, stateColor:stateColor, supervisor:supervisor,

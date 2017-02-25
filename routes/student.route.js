@@ -5,6 +5,7 @@ var express   = require('express'),
     choose    = require('../controllers/student.choose'),
     notif     = require('../controllers/student.notif'),
     report    = require('../controllers/student.report'),
+    msg       = require('../controllers/student.message'),
     auth      = require('../controllers/student.auth'),
     loggedin  = require('../middlewares/loggedin'),
 
@@ -67,5 +68,7 @@ router.get('/report/:id', report.getSingleReport)
 router.get('/reports/delete/all', report.removeAllReports)
 router.get('/report/delete/:id', report.removeSingleReport)
 
+// message
+router.get('/message/all', msg.getAll)
 
 module.exports = router

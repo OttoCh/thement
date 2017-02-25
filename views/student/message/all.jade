@@ -13,6 +13,8 @@ html
     //if lt IE 9
       script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
     script(src='/static/vendors/vendors/modernizr-2.6.2-respond-1.1.0.min.js')
+    style.
+      i {color:white}
   body
     .navbar.navbar-fixed-top
       .navbar-inner
@@ -36,27 +38,27 @@ html
                     a(tabindex='-1', href='#{baseurl}/settings') Settings
                   li.divider
                   li
-                    a(tabindex='-1', href='logout') Logout
+                    a(tabindex='-1', href='../logout') Logout
             ul.nav
               li.active
-                a(href='#') Lecturers
+                a(href='#') Reports
           // /.nav-collapse
     .container-fluid
       .row-fluid
         #sidebar.span3
           ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
             li
-              a(href='./home')
+              a(href='../home')
                 i.icon-chevron-right
                 i.icon-home
                 |  Dashboard
             li
-              a(href='profile')
+              a(href='../profile')
                 i.icon-chevron-right
                 i.icon-user
                 |  Profile
-            li.active
-              a(href='lecturers')
+            li
+              a(href='../lecturers')
                 i.icon-chevron-right
                 i.icon-briefcase
                 |  Lecturers
@@ -66,11 +68,11 @@ html
                 i.icon-book
                 |  Reports
             li
-              a(href='notifications')
+              a(href='../notifications')
                 span.badge.badge-info.pull-right
                 i.icon-volume-up
                 |  Notifications
-            li
+            li.active
               a(href='#')
                 span.badge.badge-info.pull-right
                 i.icon-envelope
@@ -91,51 +93,45 @@ html
                   i.icon-chevron-right.show-sidebar(style='display:none;')
                     a(href='#', title='Show Sidebar', rel='tooltip')  
                   li
-                    a(href='home') Dashboard
+                    a(href='../home') Dashboard
                     span.divider /
-                  li Lecturers
+                  li Messages
           .row-fluid
             // block
             .block
               .navbar.navbar-inner.block-header
-                .muted.pull-left All lecturers
+                .muted.pull-left Messages
               .block-content.collapse.in
-                .span12
-                  .table-toolbar
-                    //
-                      <div class="btn-group">
-                      <a href="#"><button class="btn btn-success">Add New <i class="icon-plus icon-white"></i></button></a>
-                      </div>
-                    legend Click lecturer's name to see detail and choose one
-                    .btn-group.pull-right
-                      button.btn.dropdown-toggle(data-toggle='dropdown')
-                        | Tools 
-                        span.caret
-                      ul.dropdown-menu
-                        li
-                          a(href='#') Print
-                        li
-                          a(href='#') Save as PDF
-                        li
-                          a(href='#') Export to Excel
-                    br
+                .span3
+                  h5 Supervisor
+                  i.icon-user 
+                  |  #{supervFull}
+                  p
+                  h5 Last seen
+                  i.icon-time
+                  |  Today
+                  p
+                  h5 Last message
+                  i.icon-calendar
+                  |  #{last_message}
+                .span9
+                  h4 Messages
                   table#example2.table.table-striped.table-bordered(cellpadding='0', cellspacing='0', border='0')
                     thead
                       tr
-                        th Name
-                        th Research Division
-                        th Email
+                        th ID
+                        th From
+                        th Body
+                        th Date
                         
                     tbody
-                      each lecturer in lecturers
+                      each val in objMsgs
                         tr
-                          td
-                            a(href='lecturer/#{lecturer.username}')=lecturer.name
-                          td=lecturer.kk
-                          td=lecturer.username+'@fi.itb.ac.id'
-                          
-                      
-            // /block
+                          td=val.index
+                          td=val.from
+                          td=val.body
+                          td=val.date
+                            
       hr
       footer
         center
@@ -144,8 +140,9 @@ html
           a(href='https://github.com/wldn/thement' title='Source code' target='_blank')
             strong v1.0
             br
-          strong Department of Physics, ITB
-
+          strong Department of Physics, ITB                    
+                      
+            // /block
     // /.fluid-container
     script(src='/static/vendors/vendors/jquery-1.9.1.js')
     script(src='/static/vendors/bootstrap/js/bootstrap.min.js')

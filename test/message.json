@@ -5,11 +5,58 @@
       {
         "id":1,
         "author":"hendro",
-        "body":""
+        "body":"Dari pak hendro",
+        "date": ISODate("2017-02-23T18:37:24.789Z")
+      },
+      {
+        "id":2,
+        "author":"10213075",
+        "body":"untuk pak hendro",
+        "date": ISODate("2017-02-24T18:37:24.789Z")
+      },
+      {
+        "id":3,
+        "author":"hendro",
+        "body":"balasan pak hendro",
+        "date": ISODate("2017-02-25T18:37:24.789Z")
+      },
+      {
+        "id":4,
+        "author":"10213075",
+        "body":"balasan untuk pak hendro 2nd",
+        "date": ISODate("2017-02-26T18:37:24.789Z")
       }
-    ]
+    ],
+    "has_seen":false
   },
   {
-
+    "members": ["miftah", "10213099"],
+    "messages": [
+      {
+        "id":1,
+        "author":"miftah",
+        "body":"Dari pak miftah",
+        "date": ISODate("2017-02-23T18:37:24.789Z")
+      },
+      {
+        "id":2,
+        "author":"10213099",
+        "body":"untuk pak miftah",
+        "date": ISODate("2017-02-24T18:37:24.789Z")
+      },
+      {
+        "id":3,
+        "author":"miftah",
+        "body":"balasan pak miftah",
+        "date": ISODate("2017-02-25T18:37:24.789Z")
+      },
+      {
+        "id":4,
+        "author":"10213099",
+        "body":"balasan untuk pak miftah 2nd",
+        "date": ISODate("2017-02-26T18:37:24.789Z")
+      }
+    ],
+    "has_seen":false
   }
 ]
