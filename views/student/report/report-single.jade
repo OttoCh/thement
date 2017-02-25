@@ -1,7 +1,7 @@
 doctype html
 html
   head
-    title #{title} - #{nim}
+    title=title
     // Bootstrap
     link(href='/static/vendors/bootstrap/css/bootstrap.min.css', rel='stylesheet', media='screen')
     link(href='/static/vendors/bootstrap/css/bootstrap-responsive.min.css', rel='stylesheet', media='screen')
@@ -27,19 +27,19 @@ html
               li.dropdown
                 a.dropdown-toggle(href='#', role='button', data-toggle='dropdown')
                   i.icon-user
-                  strong  #{nim} 
+                  |   
                   i.caret
                 ul.dropdown-menu
                   li
-                    a(tabindex='-1', href='#{baseurl}/profile') Profile
+                    a(tabindex='-1', href='#') Profile
                   li
-                    a(tabindex='-1', href='#{baseurl}/settings') Settings
+                    a(tabindex='-1', href='#') Settings
                   li.divider
                   li
                     a(tabindex='-1', href='logout') Logout
             ul.nav
               li.active
-                a(href='#') Lecturers
+                a(href='#') Notifications
           // /.nav-collapse
     .container-fluid
       .row-fluid
@@ -48,57 +48,26 @@ html
             li
               a(href='./home')
                 i.icon-chevron-right
-                i.icon-home
                 |  Dashboard
             li
-              a(href='profile')
+              a(href='./profile')
                 i.icon-chevron-right
-                i.icon-user
                 |  Profile
-            li.active
-              a(href='lecturers')
+            li
+              a(href='./lecturers')
                 i.icon-chevron-right
-                i.icon-briefcase
                 |  Lecturers
-            li(class='#{msgReport}')
-              a(href='reports/all')
+            li
+              a(href='#')
                 i.icon-chevron-right
-                i.icon-book
-                |  Reports
-            li
-              a(href='notifications')
-                span.badge.badge-info.pull-right
-                i.icon-volume-up
                 |  Notifications
-            li
-              a(href='#')
-                span.badge.badge-info.pull-right
-                i.icon-envelope
-                |  Messages
-            li
-              a(href='#')
-                span.badge.badge-info.pull-right
-                i.icon-inbox
-                |  Broadcast
         // /span
         #content.span9
-          .row-fluid
-            .navbar
-              .navbar-inner
-                ul.breadcrumb
-                  i.icon-chevron-left.hide-sidebar
-                    a(href='#', title='Hide Sidebar', rel='tooltip')  
-                  i.icon-chevron-right.show-sidebar(style='display:none;')
-                    a(href='#', title='Show Sidebar', rel='tooltip')  
-                  li
-                    a(href='home') Dashboard
-                    span.divider /
-                  li Lecturers
           .row-fluid
             // block
             .block
               .navbar.navbar-inner.block-header
-                .muted.pull-left All lecturers
+                .muted.pull-left All notifications
               .block-content.collapse.in
                 .span12
                   .table-toolbar
@@ -106,37 +75,32 @@ html
                       <div class="btn-group">
                       <a href="#"><button class="btn btn-success">Add New <i class="icon-plus icon-white"></i></button></a>
                       </div>
-                    legend Click lecturer's name to see detail and choose one
+                    legend SINGLE REPORT
                     .btn-group.pull-right
+                                    
+                    h4 Report ID : #{idTo}
+                    hr
                     
-                    br
-                  table#example2.table.table-striped.table-bordered(cellpadding='0', cellspacing='0', border='0')
-                    thead
-                      tr
-                        th Name
-                        th Research Division
-                        th Email
-                        
-                    tbody
-                      each lecturer in lecturers
-                        tr
-                          td
-                            a(href='lecturer/#{lecturer.username}')=lecturer.name
-                          td=lecturer.kk
-                          td=lecturer.username+'@fi.itb.ac.id'
-                          
+                    h5 Title
+                    i.icon-font
+                    |  #{found.title}
+                    
+                    h5 Body
+                    i.icon-align-justify
+                    |  #{found.body}
+                    
+                    h5 Last edit
+                    i.icon-time
+                    |  #{found.last_edit}
+                    h5 File attachment
+                    i.icon-file
+                    |  #{found.file_location}
+                                        
+                    p 
+                     a(href='#{baseurl}/reports/all') 
+                      h4 ← Back to all reports
                       
             // /block
-      hr
-      footer
-        center
-          | Thesis Management System &copy; 2017 -
-          &nbsp;
-          a(href='https://github.com/wldn/thement' title='Source code' target='_blank')
-            strong v1.0
-            br
-          strong Department of Physics, ITB
-
     // /.fluid-container
     script(src='/static/vendors/vendors/jquery-1.9.1.js')
     script(src='/static/vendors/bootstrap/js/bootstrap.min.js')

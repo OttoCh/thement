@@ -109,7 +109,7 @@ html
                       <div class="btn-group">
                       <a href="#"><button class="btn btn-success">Add New <i class="icon-plus icon-white"></i></button></a>
                       </div>
-                    legend Click report's title to see detail
+                    legend Click report's ID to see detail
                     p(class='#{approvalStatus}') Status approval :
                     div(class='#{startReport}')
                       h3 You have no report yet
@@ -131,6 +131,7 @@ html
                   table.table.table-striped
                     thead
                       tr
+                        th Report ID
                         th Report Title
                         th Report Body
                         th Attachment 
@@ -139,11 +140,14 @@ html
                     tbody
                       each report in objReports  
                         tr
+                          td
+                            a(href='#{baseurl}/report/#{report.index}') #{report.index}
                           td=report.title
                           td=report.body 
                           td
                             a(href='#{report.file_location}')=report.file_name
                           td=report.last_edit
+                  
       hr
       footer
         center

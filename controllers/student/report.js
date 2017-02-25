@@ -204,8 +204,18 @@ exports.getAllReports = function(req, res){
 }
 
 exports.getSingleReport = function(req, res){
-  let id = req.params.id
-  res.send('get single report : '+ id)
+  let idTo  = req.params.id
+  let nim   = req.session.student
+  report.findOne({nim:nim}, function(err, std){
+    let reports = std.reports
+    console.log('all reports : ', reports)
+    var found = reports.filter(function(item){
+      return item.id == idTo
+    })
+    found = found[0]
+    found.last_edit = funcs.friendlyDate(found.last_edit)
+    res.render('student/report/report-single', {title:"Report single", baseurl, found, idTo})
+  })
 }
 
 exports.getUpdateReport = function(req, res){
@@ -232,12 +242,4 @@ exports.updateReport = function(req, res){
         res.redirect(baseurl+'/report/create/file?from=update')
     }
   )
-}
-
-exports.removeAllReports = function(req, res){
-  res.send('remove all reports')
-}
-
-exports.removeSingleReport = function(req, res){
-  res.send('remove single report')
 }
