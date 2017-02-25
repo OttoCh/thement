@@ -23,7 +23,7 @@ app.use(session({
   proxy: true,
   resave: true,
   saveUninitialized: true,
-  store: new MongoStore({ url: 'mongodb://127.0.0.1:27017/tugasakhir'})
+  store: new MongoStore({ url: 'mongodb://wildan:wildan123@ds028679.mlab.com:28679/tugasakhir'})
   })
 );
 
