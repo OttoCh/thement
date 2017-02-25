@@ -21,14 +21,16 @@ exports.getAll = function(req, res){
         let supervFull = full.name
         let nimStr     = nim.toString()
         nimStr         = JSON.parse("[" + nimStr + "]")
-        msg.findOne({members: {$in: ["hendro"]},},
+        msg.findOne({members: {$in: [superv]},},
           function(err, strs){
             let msgs        = strs.messages
+            let _id         = strs._id
+            console.log('_id : ', _id)
             // sort by the latest
             msgs.sort(function(a,b){
               return parseFloat(b.id) - parseFloat(a.id)
             })
-            console.log('msgs after sorted :', msgs)
+  
             let msgsLength  = msgs.length
             let objMsgs     = []
             for(var i=0; i<msgsLength; i++){
@@ -52,8 +54,13 @@ exports.getAll = function(req, res){
               console.log('no detected')
               hideAllMsg = ''
             }
-            // get all inbox
 
+            // get all inbox
+            report.aggregate({$match:{"_id":_id}},{$unwind:"$messages"},{$match:{"messages.author":"hendro"},},
+              function(err, from){
+                console.log('from hendro : ', from.length)
+              }            
+            )
             // get all sent
 
             console.log("pengirim : ",objMsgs[1].from)
