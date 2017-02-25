@@ -150,10 +150,29 @@ exports.getHome = function(req, res){
       let registered_at = funcs.friendlyDate(student.registered)
       let notifs        = student.notifs
       let n             = notifs.length
+      // get latest 3 notifs
+      console.log("notifs awal : ", notifs)
+      notifs.sort(function(a,b){
+        return parseInt(b.id) - parseInt(a.id)
+      })      
+      console.log("notifs akhir : ", notifs)
+      let objNotifs = []
+      if(n > 0){
+        for(var i=0; i<n; i++){
+          objNotifs.push({
+            index:notifs[i].id,
+            notif:notifs[i].notif,
+            date:funcs.friendlyDate(notifs[i].date)
+          })
+        }
+      } else {
+        notifs = ''
+      }
+      notifs = objNotifs
+      console.log("TOP 3 NOTIFS : ", objNotifs)
       let newNotif      = notifs.length
       let isNotifShow   = ''
-      console.log('panjang notif : ', notifs.length)
-
+      
       if (student.notif_seen == true){
         isNotifShow = 'hide'
       } else {
