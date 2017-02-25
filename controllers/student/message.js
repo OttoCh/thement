@@ -42,6 +42,22 @@ exports.getAll = function(req, res){
               })
             }
 
+            // echo 'YOU' instead of nim
+            // for(var j=0; j<objMsgs.length; j++){
+            //   if(objMsgs[i].from == '10213075'){
+            //     objMsgs.push({
+            //       from:'YOU'
+            //     })
+            //     console.log('YOU : ', objMsgs)
+            //   } else {
+            //     objMsgs.push({
+            //       from:superv
+            //     })
+            //     console.log("SUPERVISOR : ", objMsgs)
+            //   }
+            // }
+
+
             // get query
             let quer = req.query.type
             if(quer == 'outbox'){
@@ -61,10 +77,9 @@ exports.getAll = function(req, res){
                 console.log('from hendro : ', from.length)
               }            
             )
-            // get all sent
 
-            console.log("pengirim : ",objMsgs[1].from)
-            let last_message = objMsgs[msgsLength-1].date_created
+            // get all sent
+            let last_message = objMsgs[0].date_created
             console.log('last message : ', last_message)
             res.render('student/message/all', {title:"All Messages", baseurl, last_message, supervFull, objMsgs, nim,
               hideAllMsg, showInbox, showOutbox, superv

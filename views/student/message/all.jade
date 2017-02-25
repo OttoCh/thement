@@ -147,7 +147,7 @@ html
                     table.table.table-hover(class='#{hideAllMsg}')
                       thead
                         tr
-                          th ID
+                          th #
                           th From
                           th Body
                           th Date
@@ -155,9 +155,12 @@ html
                       tbody
                         each val in objMsgs
                           tr
-                            td=val.index
+                            td
+                              span.label.label-info #{val.index}
                             td=val.from
-                            td=val.body
+                            td=val.body 
+                              &nbsp;
+                              a(href='#{baseurl}/message/detail/#{val.index}') See more
                             td=val.date_created
                     //- inbox message
                     h4(class='#{showInbox}') Inbox Messages
