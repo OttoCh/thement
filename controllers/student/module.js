@@ -158,12 +158,24 @@ exports.getHome = function(req, res){
       console.log("notifs akhir : ", notifs)
       let objNotifs = []
       if(n > 0){
-        for(var i=0; i<n; i++){
-          objNotifs.push({
-            index:notifs[i].id,
-            notif:notifs[i].notif,
-            date:funcs.friendlyDate(notifs[i].date)
-          })
+        if(n < 3){
+            // show all
+            for(var i=0; i<n; i++){
+            objNotifs.push({
+              index:notifs[i].id,
+              notif:notifs[i].notif,
+              date:funcs.friendlyDate(notifs[i].date)
+            })
+          }
+        } else {
+             // show only 3
+              for(var i=0; i<3; i++){
+              objNotifs.push({
+              index:notifs[i].id,
+              notif:notifs[i].notif,
+              date:funcs.friendlyDate(notifs[i].date)
+            })
+          }
         }
       } else {
         notifs = ''

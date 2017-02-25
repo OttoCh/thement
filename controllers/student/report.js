@@ -160,6 +160,7 @@ exports.getAllReports = function(req, res){
       let startReport = 'hide', approvalStatus = 'hide'
       let objReports = []
       let reps = reports.reports
+      let showDeleteButton = 'hide'
 
       // sort by the latest
       reps.sort(function(a,b){
@@ -187,14 +188,21 @@ exports.getAllReports = function(req, res){
             file_name: reps[i].file_name
           })
         }
+
+        // show delete button
+        if(reports.is_approved == true && reports.is_create == false && reps.length > 0){
+          showDeleteButton = ''
+        } else {
+          showDeleteButton = 'hide'
+        }
         
         res.render('student/report/all', {title:"All reports", baseurl, objReports, colored, statusColored,
-          showCreateReport, showEditReport, startReport, approvalStatus, nim
+          showCreateReport, showEditReport, startReport, approvalStatus, nim, showDeleteButton
         })
       } else {
         startReport = ''
         res.render('student/report/all', {title:"All reports", baseurl, objReports, colored, statusColored,
-          showCreateReport, showEditReport, startReport, approvalStatus, nim
+          showCreateReport, showEditReport, startReport, approvalStatus, nim, showDeleteButton
         })
       }
     } else {
@@ -242,4 +250,14 @@ exports.updateReport = function(req, res){
         res.redirect(baseurl+'/report/create/file?from=update')
     }
   )
+}
+
+exports.removeAll = function(req, res){
+  let nim = req.session.student
+  report.update({nim:nim},{$set:{
+    reports: []
+  },}, function(err, removed){
+    console.log('removed')
+    res.redirect(baseurl+'/reports/all')
+  })
 }

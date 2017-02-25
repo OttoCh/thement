@@ -127,7 +127,6 @@ html
                           i.icon-edit.icon-white
                           strong  Edit
 
-                    br
                   table.table.table-striped
                     thead
                       tr
@@ -147,7 +146,11 @@ html
                           td
                             a(href='#{report.file_location}')=report.file_name
                           td=report.last_edit
-                  
+                  p  
+                  a(href='../report/delete/all?from=all' class='#{showDeleteButton}') 
+                      button.btn.btn-danger
+                        i.icon-remove.icon-white
+                        strong  Delete all
       hr
       footer
         center

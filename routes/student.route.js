@@ -65,6 +65,7 @@ router.get('/report/update', report.getUpdateReport)
 router.post('/report/update', report.updateReport)
 router.get('/reports/all', report.getAllReports)
 router.get('/report/:id', report.getSingleReport)
+router.get('/report/delete/all', report.removeAll)
 
 // message
 router.get('/message/all?', msg.getAll)
