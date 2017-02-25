@@ -65,7 +65,7 @@ exports.postLogin = function(req, res){
 exports.getHome = function(req, res){
   let admin = req.session.admin
   if(admin){
-    res.render('admin/home', {title:"Dashboard", admin:admin})
+    res.render('admin/home', {title:"Dashboard", admin})
   } else {
     console.log('UNAUTHORIZED ACCESS!')
     res.redirect('./login')

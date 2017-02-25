@@ -14,18 +14,18 @@ exports.getIndex = function(req, res){
 }
 
 exports.getLoginPage = function(req, res){
-  res.render('lecturer/login', {title:"Lecturer login page", baseurl:baseurl})
+  res.render('lecturer/login', {title:"Lecturer login page", baseurl})
 }
 
 exports.getForgetPassPage = function(req, res){
-  res.render('lecturer/forget-pass', {title:"Forget password", baseurl:baseurl})
+  res.render('lecturer/forget-pass', {title:"Forget password", baseurl})
 }
 
 exports.getHome = function(req, res){
   let lecturer  = req.session.lecturer
   Lect.findOne({username:lecturer}, function(e, found){
     if(found){
-      res.render('lecturer/home', {title: "Home", baseurl:baseurl, found:found, hiding:hiding})
+      res.render('lecturer/home', {title: "Home", baseurl, found, hiding})
     } else {
       console.log('no lecturer found')
     }
@@ -44,7 +44,7 @@ exports.getCandidates = function(req, res){
           nim:calons[i]
         });
       }
-      res.render('lecturer/candidates', {title:"All candidates", baseurl:baseurl, cans:cans})
+      res.render('lecturer/candidates', {title:"All candidates", baseurl, cans})
     } else {
       console.log('lecturer not found')
     }
@@ -53,7 +53,7 @@ exports.getCandidates = function(req, res){
 
 exports.getDetailCandidate = function(req, res){
   Std.get(req.params.nim, function(err, student){
-    res.render('lecturer/candidate-detail', {title:"Candidate detail", baseurl:baseurl, student:student})
+    res.render('lecturer/candidate-detail', {title:"Candidate detail", baseurl, student})
   })
 }
 
@@ -173,7 +173,7 @@ exports.getFixStudents = function(req, res){
           nim:std[i]
         });
       }
-      res.render('lecturer/students', {title:"Fix students", baseurl:baseurl, stds:stds})
+      res.render('lecturer/students', {title:"Fix students", baseurl, stds})
     }
   })
 }
@@ -309,7 +309,7 @@ exports.getDetailStudent = function(req, res){
           file_name: reps[i].file_name
         })
       }
-      res.render('lecturer/student-detail', {title:"Student detail", baseurl:baseurl, last_seen:last_seen, profile:profile,
+      res.render('lecturer/student-detail', {title:"Student detail", baseurl, last_seen, profile,
         objReports:objReports, showAccept:showAccept
       })
     })

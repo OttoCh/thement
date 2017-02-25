@@ -53,11 +53,11 @@ exports.getCreateReport = function(req, res){
         if(nReport == 0){
           // create report without approval check
           console.log('initial report has been set! n Report : ', nReport)
-          res.render('student/report/create', {title:"Create report", baseurl:baseurl, nim:nim, idReport:idReport})
+          res.render('student/report/create', {title:"Create report", baseurl, nim, idReport})
         } else if(nReport > 0){
           if(exist.is_approved == true){
             console.log('initial report has been set! n Report : ', nReport)
-            res.render('student/report/create', {title:"Create report", baseurl:baseurl, nim:nim, idReport:idReport})
+            res.render('student/report/create', {title:"Create report", baseurl, nim, idReport})
           } else if(exist.is_approved == false) {
             console.log('latest report has not approved yet')
             res.redirect(baseurl+'#')
@@ -77,7 +77,7 @@ exports.getCreateReport = function(req, res){
         rep.save(function(err){
           if(!err){
             console.log('create initial report bio, NIM : ', nim)
-            res.render('student/report/create', {title:"Create report", baseurl:baseurl, nim:nim})
+            res.render('student/report/create', {title:"Create report", baseurl, nim})
           }
         })
       }
@@ -119,7 +119,7 @@ exports.createReport = function(req, res){
 
 exports.getAddFile = function(req, res){
   console.log('Access this page via : ', req.url)
-  res.render('student/report/add-file', {title:"Add file", baseurl:baseurl})
+  res.render('student/report/add-file', {title:"Add file", baseurl})
 }
 
 exports.addFile = function(req, res, next){
@@ -181,13 +181,13 @@ exports.getAllReports = function(req, res){
             file_name: reps[i].file_name
           })
         }
-        res.render('student/report/all', {title:"All reports", baseurl:baseurl, objReports:objReports, colored:colored, statusColored:statusColored,
-          showCreateReport:showCreateReport, showEditReport:showEditReport, startReport:startReport, approvalStatus:approvalStatus, nim:nim
+        res.render('student/report/all', {title:"All reports", baseurl, objReports, colored, statusColored,
+          showCreateReport, showEditReport, startReport, approvalStatus, nim
         })
       } else {
         startReport = ''
-        res.render('student/report/all', {title:"All reports", baseurl:baseurl, objReports:objReports, colored:colored, statusColored:statusColored,
-          showCreateReport:showCreateReport, showEditReport:showEditReport, startReport:startReport, approvalStatus:approvalStatus, nim:nim
+        res.render('student/report/all', {title:"All reports", baseurl, objReports, colored, statusColored,
+          showCreateReport, showEditReport, startReport, approvalStatus, nim
         })
       }
     } else {
@@ -208,7 +208,7 @@ exports.getUpdateReport = function(req, res){
     report.findOne({nim:nim}, {"reports":{"$elemMatch":{"id":reportID}}}, function(e, found){
       let reps = found.reports[0]
       console.log(reps.body)
-      res.render('student/report/edit', {title:"Edit latest report", baseurl:baseurl, nim:nim, reps:reps})
+      res.render('student/report/edit', {title:"Edit latest report", baseurl, nim, reps})
     })
   })
 }

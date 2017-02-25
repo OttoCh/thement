@@ -12,7 +12,7 @@ var chooseCode = ''
 exports.getLecturers = function(req, res){
   let nim = req.session.student
   lect.all(function(err, lecturers){
-    res.render('student/lecturers', {title:"All lecturers", nim:nim, lecturers:lecturers, baseurl:baseurl})
+    res.render('student/lecturers', {title:"All lecturers", nim, lecturers, baseurl})
   })
 }
 
@@ -22,14 +22,14 @@ exports.getDetailLecturer = function(req, res){
     if(std.is_choose == true){
       hiding = 'hide'
       lect.get(req.params.username, function(err, lecturer){
-        res.render('student/lecturer-detail', {title:"Lecturer detail", nim:nim, lecturer:lecturer, baseurl:baseurl, hiding:hiding})
+        res.render('student/lecturer-detail', {title:"Lecturer detail", nim, lecturer, baseurl, hiding})
       })
     } else {
       let n = std.notifs.length
       console.log(n)
       hiding = ''
       lect.get(req.params.username, function(err, lecturer){
-        res.render('student/lecturer-detail', {title:"Lecturer detail", nim:nim, lecturer:lecturer, baseurl:baseurl, hiding:hiding})
+        res.render('student/lecturer-detail', {title:"Lecturer detail", nim, lecturer, baseurl, hiding})
       })
     }
   })

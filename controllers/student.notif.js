@@ -26,7 +26,7 @@ exports.getNotifs = function(req, res){
       notif_seen: true
         },
       }, function(e, seen){
-        res.render('student/notif/notifs', {title:"All Notifications", objNotifs:objNotifs, nim:nim})
+        res.render('student/notif/notifs', {title:"All Notifications", objNotifs, nim})
       }
     )
   })
@@ -42,7 +42,7 @@ exports.getSingleNotif = function(req, res){
     })
     found = found[0]
     found.date = funcs.friendlyDate(found.date)
-    res.render('student/notif/notif-single', {title:"Single notif", found:found, idToFind:idToFind})
+    res.render('student/notif/notif-single', {title:"Single notif", found, idToFind})
   })
 }
 

@@ -7,16 +7,6 @@ var express       = require('express'),
     Student       = require('../models/student'),
     baseurl       = 'http://localhost:3500/student'
 
-// hash = function(password){
-//   let encrypted = encryptor.encrypt(password)
-//   return encrypted
-// }
-//
-// dehash = function(password){
-//   let decrypted = encryptor.decrypt(password)
-//   return decrypted
-// }
-
 exports.stdLogin = function(req, res){
   // TODO: Login with token, generate random strings and numbers
   /*
@@ -48,7 +38,7 @@ exports.stdLogin = function(req, res){
             },
             html: function(){
               code = 'Password wrong'
-              res.render('student/login', {title:"Student login", caption:caption, code:code, baseurl:baseurl})
+              res.render('student/login', {title:"Student login", caption, code, baseurl})
             }
           })
         }
@@ -63,7 +53,7 @@ exports.stdLogin = function(req, res){
           },
           html: function(){
             code = 'Account not activated yet'
-            res.render('student/login', {title:"Student login", caption:caption, code:code, baseurl:baseurl})
+            res.render('student/login', {title:"Student login", caption, code, baseurl})
           }
         })
       }
@@ -78,7 +68,7 @@ exports.stdLogin = function(req, res){
         },
         html: function(){
           code = 'NIM not found'
-          res.render('student/login', {title:"Student login", caption:caption, code:code, baseurl:baseurl})
+          res.render('student/login', {title:"Student login", caption, code, baseurl})
         }
       })
     }

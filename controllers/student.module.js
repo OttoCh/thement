@@ -103,14 +103,14 @@ exports.getLoginPage = function(req, res){
       },
       html: function(){
         let caption = "Student", code = ''
-        res.render('student/login', {title:"Student login", caption:caption, code:code, baseurl:baseurl, hiding:hiding})
+        res.render('student/login', {title:"Student login", caption, code, baseurl, hiding})
       }
     })
   }
 }
 
 exports.getRegisterPage = function(req, res){
-  res.render('student/register', {title:"Register yourself", caption:caption, baseurl:baseurl, registerCode:registerCode, hiding:hiding})
+  res.render('student/register', {title:"Register yourself", caption, baseurl, registerCode, hiding})
 }
 
 exports.getHome = function(req, res){
@@ -207,10 +207,10 @@ exports.getHome = function(req, res){
             acceptance, isNotifShow
           })
         } else {
-          res.render('student/home', {title: "Dashboard ", nim:nim, student:student, login:login, state:state, stateColor:stateColor, supervisor:supervisor,
-            notifs:notifs, colored:colored, hideChoosing:hideChoosing, reportCreate:reportCreate, nReport:nReport, msgReport:msgReport, reportStatus:reportStatus,
-            coloredStatus:coloredStatus, statusStyle:statusStyle, divReport:divReport, newNotif:newNotif, registered_at:registered_at,
-            acceptance:acceptance, isNotifShow:isNotifShow
+          res.render('student/home', {title: "Dashboard ", nim, student, login, state, stateColor, supervisor,
+            notifs, colored, hideChoosing, reportCreate, nReport, msgReport, reportStatus,
+            coloredStatus, statusStyle, divReport, newNotif, registered_at,
+            acceptance, isNotifShow
           })
         }
       })
@@ -222,7 +222,7 @@ exports.getProfile = function(req, res){
   let nimToUpdate = req.session.student
   Student.findOne({nim:nimToUpdate}, function(err, found){
     try{
-      res.render('student/profile', {title: "Profile", nimToUpdate:nimToUpdate, hiding:hiding, profileCode:profileCode, found:found})
+      res.render('student/profile', {title: "Profile", nimToUpdate, hiding, profileCode, found})
     } catch(err){
       throw err
     }
@@ -233,7 +233,7 @@ exports.getSettings = function(req, res){
   let nim = req.session.student
   Student.findOne({nim:nim}, function(err, success){
     try{
-      res.render('student/settings', {title: "Settings", nim:nim, hiding:hiding, code:code, settingsCode:settingsCode, settingsWrongCode:settingsWrongCode})
+      res.render('student/settings', {title: "Settings", nim, hiding, code, settingsCode, settingsWrongCode})
     } catch(err){
       throw err
     }
@@ -241,23 +241,23 @@ exports.getSettings = function(req, res){
 }
 
 exports.getRegisterSuccess = function(req, res){
-  res.render('student/register-success', {title:"Register success!", baseurl:baseurl})
+  res.render('student/register-success', {title:"Register success!", baseurl})
 }
 
 exports.getForgetPassPage = function(req, res){
-  res.render('student/forget-pass', {title:"Forget password", caption:caption, baseurl:baseurl, forgetCode:forgetCode, hiding:hiding})
+  res.render('student/forget-pass', {title:"Forget password", caption, baseurl, forgetCode, hiding})
 }
 
 exports.getPassResetSuccess = function(req, res){
-  res.render('student/password_sent', {title:"Password sent", caption:caption, baseurl:baseurl})
+  res.render('student/password_sent', {title:"Password sent", caption, baseurl})
 }
 
 exports.getResendActivation = function(req, res){
-  res.render('student/resend-activation', {title:"Resend activation link", caption:caption, baseurl:baseurl, code:code, hiding:hiding})
+  res.render('student/resend-activation', {title:"Resend activation link", caption, baseurl, code, hiding})
 }
 
 exports.getResendSuccess = function(req, res){
-  res.render('student/activation_sent', {title:"Reactivation link sent", caption:caption, baseurl:baseurl})
+  res.render('student/activation_sent', {title:"Reactivation link sent", caption, baseurl})
 }
 
 exports.getImageUploaded = function(req, res){
@@ -288,7 +288,7 @@ exports.addStudent = function(req, res){
       html: function(){
         hiding = ''
         registerCode  = 'NIM should started by 102* and length is 8'
-        res.render('student/register', {title:"Register yourself", caption:caption, registerCode:registerCode, hiding:hiding})
+        res.render('student/register', {title:"Register yourself", caption, registerCode, hiding})
       },
       json: function(){
         res.json({
@@ -306,7 +306,7 @@ exports.addStudent = function(req, res){
       html: function(){
         hiding = ''
         registerCode  = 'Email should be : yourname@students.itb.ac.id or yourname@s.itb.ac.id'
-        res.render('student/register', {title:"Register yourself", caption:caption, registerCode:registerCode, hiding:hiding})
+        res.render('student/register', {title:"Register yourself", caption, registerCode, hiding})
       },
       json: function(){
         res.json({
@@ -324,7 +324,7 @@ exports.addStudent = function(req, res){
       html: function(){
         hiding = ''
         registerCode  = 'Password does not match!'
-        res.render('student/register', {title:"Register yourself", caption:caption, registerCode:registerCode, hiding:hiding})
+        res.render('student/register', {title:"Register yourself", caption, registerCode, hiding})
       },
       json: function(){
         res.json({
@@ -342,7 +342,7 @@ exports.addStudent = function(req, res){
       html: function(){
         hiding = ''
         registerCode  = 'Password not secure! Your password must contains strings and numbers in 5 characters length'
-        res.render('student/register', {title:"Register yourself", caption:caption, registerCode:registerCode, hiding:hiding})
+        res.render('student/register', {title:"Register yourself", caption, registerCode, hiding})
       },
       json: function(){
         res.json({
@@ -390,7 +390,7 @@ exports.addStudent = function(req, res){
           html: function(){
             hiding = ''
             registerCode  = 'NIM exist!'
-            res.render('student/register', {title:"Register yourself", caption:caption, registerCode:registerCode, hiding:hiding})
+            res.render('student/register', {title:"Register yourself", caption, registerCode, hiding})
           }
         })
       } else {
@@ -479,7 +479,7 @@ exports.activateStudent = function(req, res){
               })
             },
             html: function(){
-              res.render('student/activation-success', {title:"Your account is active!", nim_success:nim_success, baseurl:baseurl})
+              res.render('student/activation-success', {title:"Your account is active!", nim_success, baseurl})
             }
           })
         }
@@ -513,7 +513,7 @@ exports.resendConfirmation = function(req, res){
         if(found.is_active == true){
           hiding = ''
           code = 'Your account was actived. No need to reactivate.'
-          res.render('student/resend-activation', {title:"Resend activation link", caption:caption, baseurl:baseurl, code:code, hiding:hiding})
+          res.render('student/resend-activation', {title:"Resend activation link", caption, baseurl, code, hiding})
         } else {
           console.log('nim and email found ' + nim + ' ' + email)
           let reactivate = found.activation_link
@@ -548,7 +548,7 @@ exports.resendConfirmation = function(req, res){
           })
         },
         html: function(){
-          res.render('student/resend-activation', {title:"Resend activation link", caption:caption, baseurl:baseurl, code:code})
+          res.render('student/resend-activation', {title:"Resend activation link", caption, baseurl, code})
         }
       })
     }
@@ -598,7 +598,7 @@ exports.requestPasswordChange = function(req, res){
                })
              },
              html: function(){
-               res.render('student/forget-pass', {title:"Forget password", caption:caption, baseurl:baseurl, forgetCode:forgetCode})
+               res.render('student/forget-pass', {title:"Forget password", caption, baseurl, forgetCode})
              }
            })
         }
@@ -613,7 +613,7 @@ exports.requestPasswordChange = function(req, res){
           })
         },
         html: function(){
-          res.render('student/forget-pass', {title:"Forget password", caption:caption, baseurl:baseurl, forgetCode:forgetCode})
+          res.render('student/forget-pass', {title:"Forget password", caption, baseurl, forgetCode})
         }
       })
     }
@@ -643,7 +643,7 @@ exports.activateResetPass = function(req, res){
             })
           },
           html: function(){
-            res.render('student/resetpassword', {title: "Password has been reset", caption:caption, baseurl:baseurl, newPass:newPass})
+            res.render('student/resetpassword', {title: "Password has been reset", caption, baseurl, newPass})
           }
         })
       } else {
@@ -714,7 +714,7 @@ exports.changePassword = function(req, res){
                     })
                   },
                   html: function(){
-                    res.render('student/settings', {title: "Settings", nim:nim, settingsCode:settingsCode, hiding:hiding, settingsWrongCode:settingsWrongCode})
+                    res.render('student/settings', {title: "Settings", nim, settingsCode, hiding, settingsWrongCode})
                   }
                 })
               } else {
