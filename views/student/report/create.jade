@@ -91,10 +91,10 @@ html
                         label.control-label(for='focusedInput') NIM
                         .controls
                           input#focusedInput.input-xlarge.focused(type='text', value='#{nim}' disabled)
-                      .control-group(class='hide')
+                      .control-group
                         label.control-label(for='focusedInput') Progress Report ID
                         .controls
-                          input#focusedInput.input-xlarge.focused(type='text', value='#{idReport}' name='reportID')
+                          input#focusedInput.input-xlarge.focused(type='text', value='#{idReport}' name='reportID' readOnly='true')
                       .control-group
                         label.control-label(for='focusedInput') Report title
                         .controls

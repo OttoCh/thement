@@ -67,7 +67,7 @@ exports.getAll = function(req, res){
             let last_message = objMsgs[msgsLength-1].date_created
             console.log('last message : ', last_message)
             res.render('student/message/all', {title:"All Messages", baseurl, last_message, supervFull, objMsgs, nim,
-              hideAllMsg, showInbox, showOutbox
+              hideAllMsg, showInbox, showOutbox, superv
             })
           }
         )
@@ -76,5 +76,31 @@ exports.getAll = function(req, res){
       console.log('please choose supervisor first')
       res.redirect(baseurl)
     }
+  })
+}
+
+exports.sendMessage = function(req, res){
+  let nim         = req.session.student
+  let msgBody     = req.body.msg
+  let supervisor  = req.body.supervisor
+
+  msg.findOne({nim:nim}, function(e, m){
+    let msgLength = m.messages.length
+      if(msgLength > 0){
+        msgLength = msgLength
+      } else {
+        msgLength = 0
+      }
+      msg.update({nim:nim},{$push:{
+      messages:{
+        "id":msgLength+1,
+        "author": nim,
+        "body": msgBody,
+        "date_created": new Date()
+      }
+    },}, function(err, sent){
+      console.log('message sent')
+      res.redirect(baseurl+'/message/all')
+    })
   })
 }
