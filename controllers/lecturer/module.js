@@ -1,10 +1,10 @@
 "use strict"
 
-var Lect        = require('../models/lecturer'),
-    Student     = require('../models/student'),
-    Std         = require('../models/student.model'),
-    funcs       = require('../middlewares/funcs'),
-    report      = require('../models/report')
+var Lect        = require('../../models/lecturer'),
+    Student     = require('../../models/student'),
+    Std         = require('../../models/student.model'),
+    funcs       = require('../../middlewares/funcs'),
+    report      = require('../../models/report')
 
 const baseurl   = 'http://localhost:3500/lecturer'
 var hiding      = ''

@@ -3,8 +3,8 @@
 var express       = require('express'),
     request       = require('request'),
     app           = express(),
-    funcs         = require('../middlewares/funcs'),
-    Student       = require('../models/student'),
+    funcs         = require('../../middlewares/funcs'),
+    Student       = require('../../models/student'),
     baseurl       = 'http://localhost:3500/student'
 
 exports.stdLogin = function(req, res){

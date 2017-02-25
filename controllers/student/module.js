@@ -2,19 +2,19 @@
 
 // load packages
 var express       = require('express'),
-    Student       = require('../models/student'),
-    stdModel      = require('../models/student.model'),
-    report        = require('../models/report'),
-    Lect          = require('../models/lecturer'),
+    Student       = require('../../models/student'),
+    stdModel      = require('../../models/student.model'),
+    report        = require('../../models/report'),
+    Lect          = require('../../models/lecturer'),
     multer        = require('multer'),
     email         = require('emailjs/email'),
     app           = express()
 
 // load credentials
-var credentials   = require('../credentials/email'),
+var credentials   = require('../../credentials/email'),
     user_mail     = credentials.user,
     user_pass     = credentials.pass,
-    funcs         = require('../middlewares/funcs')
+    funcs         = require('../../middlewares/funcs')
 
 // constants
 const caption       = 'Student'

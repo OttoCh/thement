@@ -1,8 +1,8 @@
 "use strict"
 
 var express       = require('express'),
-    Admin         = require('../models/admin'),
-    funcs         = require('../middlewares/funcs'),
+    Admin         = require('../../models/admin'),
+    funcs         = require('../../middlewares/funcs'),
     winston       = require('winston'),
     app           = express()
 

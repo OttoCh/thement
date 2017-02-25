@@ -1,12 +1,12 @@
 var express   = require('express'),
     router    = express.Router(),
     app       = express()
-    student   = require('../controllers/student.module'),
-    choose    = require('../controllers/student.choose'),
-    notif     = require('../controllers/student.notif'),
-    report    = require('../controllers/student.report'),
-    msg       = require('../controllers/student.message'),
-    auth      = require('../controllers/student.auth'),
+    student   = require('../controllers/student/module'),
+    choose    = require('../controllers/student/choose'),
+    notif     = require('../controllers/student/notif'),
+    report    = require('../controllers/student/report'),
+    msg       = require('../controllers/student/message'),
+    auth      = require('../controllers/student/auth'),
     loggedin  = require('../middlewares/loggedin'),
 
     Student   = require('../models/student.model')

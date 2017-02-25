@@ -1,8 +1,8 @@
 var express   = require('express'),
     router    = express.Router()
 
-var student   = require('../controllers/student.module'),
-    auth      = require('../controllers/student.auth'),
+var student   = require('../controllers/student/module'),
+    auth      = require('../controllers/student/auth'),
     loggedin  = require('../middlewares/loggedin')
 
 router.get('/', student.getIndex)

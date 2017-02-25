@@ -1,9 +1,9 @@
 "use strict"
 
 // load lecturers
-var lect      = require('../models/lecturer.model'),
-    student   = require('../models/student'),
-    lecturer  = require('../models/lecturer')
+var lect      = require('../../models/lecturer.model'),
+    student   = require('../../models/student'),
+    lecturer  = require('../../models/lecturer')
 const baseurl = 'http://localhost:3500/student'
 
 var hiding     = 'hide'
