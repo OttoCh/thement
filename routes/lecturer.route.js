@@ -24,4 +24,10 @@ router.get('/candidates/accept/:nim', lecturer.acceptCandidate)
 router.get('/students', lecturer.getFixStudents)
 router.get('/student/detail/:nim', lecturer.getDetailStudent)
 router.get('/student/detail/:nim/accept', lecturer.acceptStudentReport)
+
+router.use(function(req, res, next){
+  res.status(404)
+  res.render('static/404', {title:"404 Not Found"})
+  return
+})
 module.exports = router

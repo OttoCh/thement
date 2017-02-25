@@ -71,4 +71,10 @@ router.get('/report/delete/:id', report.removeSingleReport)
 // message
 router.get('/message/all', msg.getAll)
 
+router.use(function(req, res, next){
+  res.status(404)
+  res.render('static/404', {title:"404 Not Found"})
+  return
+})
+
 module.exports = router
