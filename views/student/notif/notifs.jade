@@ -102,10 +102,21 @@ html
                       <a href="#"><button class="btn btn-success">Add New <i class="icon-plus icon-white"></i></button></a>
                       </div>
                     legend ALL NOTIFICATIONS
-                    a(href='notifications/delete_all') 
-                      button.btn.btn-danger
-                        i.icon-remove.icon-white
-                        |  DELETE ALL
+                    h4(class='#{showMsg}') There is no notification, yet
+
+                    a(href='#myModal' data-toggle='modal' class='btn btn-danger #{showDeleteButton}') 
+                      i.icon-remove.icon-white
+                      strong  DELETE ALL
+                    div(id='myModal' class='modal hide')
+                      div(class='modal-header')
+                        button(data-dismiss='modal' class='close' type='button')&times;
+                        h4 DELETE ALL NOTIFS
+                      div(class='modal-body')
+                        .span12
+                          p.lead Are you sure want to delete all of your notifications?
+                          a(href='notifications/delete_all' class='btn btn-primary') Yes
+                          &nbsp;
+                          a(data-dismiss='modal' href='#' class='btn') No
                     
                     br
                   table.table.table-striped.table-bordered(cellpadding='0', cellspacing='0', border='0')

@@ -103,10 +103,22 @@ html
                       h4 Research division
                       p=lecturer.kk
                       
-                    button.btn.btn-primary(type='submit' class='#{hiding}')
-                      i.icon-ok.icon-white
-                      strong  Choose
-                  
+                    //- button.btn.btn-primary(type='submit' class='#{hiding}')
+                    //-   i.icon-ok.icon-white
+                    //-   strong  Choose
+                    a(href='#myModal' data-toggle='modal' class='btn btn-primary #{hiding}') 
+                        i.icon-ok.icon-white
+                        strong  Choose
+                      div(id='myModal' class='modal hide')
+                        div(class='modal-header')
+                          button(data-dismiss='modal' class='close' type='button')&times;
+                          h4 Choose lecturer
+                        div(class='modal-body')
+                          .span12
+                            p Are you sure want to choose <strong> #{lecturer.name} </strong> as your supervisor?
+                            button.btn.btn-primary(type='submit') Yes
+                            &nbsp;
+                            a(data-dismiss='modal' href='#' class='btn') No
                   
                     ul.pager.wizard
                       li.previous.first(style='display:none;')

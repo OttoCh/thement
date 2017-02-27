@@ -147,10 +147,20 @@ html
                             a(href='#{report.file_location}')=report.file_name
                           td=report.last_edit
                   p  
-                  a(href='../report/delete/all?from=all' class='#{showDeleteButton}') 
-                      button.btn.btn-danger
-                        i.icon-remove.icon-white
-                        strong  Delete all
+
+                  a(href='#myModal' data-toggle='modal' class='btn btn-danger #{showDeleteButton}') 
+                      i.icon-remove.icon-white
+                      strong  DELETE ALL
+                    div(id='myModal' class='modal hide')
+                      div(class='modal-header')
+                        button(data-dismiss='modal' class='close' type='button')&times;
+                        h4 DELETE ALL NOTIFS
+                      div(class='modal-body')
+                        .span12
+                          p.lead Are you sure want to delete all of your reports?
+                          a(href='../report/delete/all?from=all' class='btn btn-primary') Yes
+                          &nbsp;
+                          a(data-dismiss='modal' href='#' class='btn') No
       hr
       footer
         center

@@ -28,11 +28,20 @@ exports.getNotifs = function(req, res){
         date:funcs.friendlyDate(data[i].date)
       })
     }
+    // check if notif lengh < 1
+    let showDeleteButton = 'hide', showMsg = 'hide'
+    if(data.length < 1){
+      showDeleteButton = 'hide'
+      showMsg = ''
+    } else {
+      showDeleteButton = ''
+      showMsg = 'hide'
+    }
     student.update({nim:nim},{$set: {
       notif_seen: true
         },
       }, function(e, seen){
-        res.render('student/notif/notifs', {title:"All Notifications", objNotifs, nim})
+        res.render('student/notif/notifs', {title:"All Notifications", objNotifs, nim, showDeleteButton, showMsg})
       }
     )
   })
@@ -58,7 +67,7 @@ exports.removeAllNotifs = function(req, res){
     notifs: []
   },}, function(err, removed){
     console.log('all notifs removed')
-    res.redirect(baseurl)
+    res.redirect(baseurl+'/notifications')
   })
 }
 

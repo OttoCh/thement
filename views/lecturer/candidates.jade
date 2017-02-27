@@ -96,9 +96,35 @@ html
                             a(href='candidates/detail/#{can.nim}') #{can.nim}
                           td
                           td
-                            a(href='candidates/accept/#{can.nim}' class='btn btn-success') Accept
+                            //- a(href='candidates/accept/#{can.nim}' class='btn btn-success') Accept
+                            a(href='#myModal' data-toggle='modal' class='btn btn-success') 
+                              i.icon-ok.icon-white
+                              strong  Accept
+                          div(id='myModal' class='modal hide')
+                            div(class='modal-header')
+                              button(data-dismiss='modal' class='close' type='button')&times;
+                              h4 Accept student
+                            div(class='modal-body')
+                              .span12
+                                p.lead Are you sure want to accept <strong>#{can.nim}</strong> as your student?
+                                a(href='candidates/accept/#{can.nim}' class='btn btn-primary') Yes
+                                &nbsp;
+                                a(data-dismiss='modal' href='#' class='btn') No
                           td
-                            a(href='candidates/#{can.nim}' class='btn btn-danger') Decline
+                            //- a(href='candidates/#{can.nim}' class='btn btn-danger') Decline
+                            a(href='#myModal2' data-toggle='modal' class='btn btn-danger') 
+                              i.icon-remove.icon-white
+                              strong  Decline
+                          div(id='myModal2' class='modal hide')
+                            div(class='modal-header')
+                              button(data-dismiss='modal' class='close' type='button')&times;
+                              h4 Decline student
+                            div(class='modal-body')
+                              .span12
+                                p.lead Are you sure want to DECLINE <strong>#{can.nim}</strong> from your candidates?
+                                a(href='candidates/#{can.nim}' class='btn btn-primary') Yes
+                                &nbsp;
+                                a(data-dismiss='modal' href='#' class='btn') No
                           
                       
             // /block
