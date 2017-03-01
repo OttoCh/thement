@@ -7,7 +7,6 @@ var Lect        = require('../../models/lecturer'),
     report      = require('../../models/report')
 
 const baseurl   = 'http://localhost:3500/lecturer'
-var hiding      = ''
 
 exports.getIndex = function(req, res){
   res.redirect('lecturer/login')
@@ -25,15 +24,14 @@ exports.getHome = function(req, res){
   let lecturer  = req.session.lecturer
   Lect.findOne({username:lecturer}, function(e, found){
     if(found){
-      let msgAlert = ''
-      // check if oldpass has not been changed
-      if(found.oldpass == found.username+'123'){
-        console.log('oldpass must be changed')
-        msgAlert = 'red'
+      let msgAlert = '', hiding = ''
+      // check if newpass !== ""
+      if(found.newpass !== ""){
+        hiding = 'hide'
       } else {
-        console.log('oldpass is OKAY')
-        msgAlert = ''
+        msgAlert = 'red'
       }
+
       res.render('lecturer/home', {title: "Home", baseurl, found, hiding, msgAlert})
     } else {
       console.log('no lecturer found')
@@ -192,44 +190,29 @@ exports.postLogin = function(req, res){
   let user  = req.body.username
   let pass  = req.body.password
   Lect.findOne({username:user}, function(e, found){
-    if(found){
-      console.log('username : ', user)
-      if (found.newpass == ""){
-        // check newpass
-        console.log('newpass exist')
+    if(!found){
+      console.log('user not found')
+      res.redirect('#')
+    } else {
+      // check if newpass exist and not empty
+      if(found.newpass !== ""){
+        // decrypt
         let decrypted = funcs.decryptTo(found.newpass)
-        if(pass !== decrypted){
-          console.log('wrong new pass')
-          res.send('try again')
-        } else {
-          console.log('logged in')
-          res.send('loggedin')
-        }
-      } else {
-        // check oldpass, redirect to change pass
-        console.log('still oldpass')
-        if(pass == found.oldpass){
-          // logged in, redirect to change pass
-          console.log('logged in, change password immediately')
 
-          // save session
-          req.session.lecturer = user
-          console.log('Logged in as', req.session.lecturer)
-          res.redirect('home')
-        } else {
-          console.log('wrong password')
-          res.json({
-            status: false,
-            message: 'wrong password'
-          })
+        // save session
+        req.session.lecturer = found.username
+        if(pass == decrypted){
+          res.redirect(baseurl+'/home')
         }
       }
-    } else {
-      console.log('NOT FOUND')
-      res.json({
-        status: false,
-        message: 'username not found'
-      })
+      else {
+        // check oldpass
+        if(found.oldpass == pass){
+          // save session
+          req.session.lecturer = found.username
+          res.redirect(baseurl+'/home')
+        }
+      }
     }
   })
 }
@@ -375,5 +358,46 @@ exports.getProfile = function(req, res){
 }
 
 exports.getSettings = function(req, res){
-  res.send('lecturer settings')
+  let lecturer = req.session.lecturer
+  Lect.findOne({username:lecturer}, function(err, found){
+    let passToChange = ''
+    if(found.newpass !== ""){
+      passToChange = funcs.decryptTo(found.newpass)
+    } else {
+      passToChange = found.oldpass
+      console.log('oldpass : ', passToChange)
+    }
+    res.render('lecturer/settings', {title:"Settings", found, passToChange})
+  })
+}
+
+exports.postSettings = function(req, res){
+  let lecturer = req.session.lecturer
+  let newpass  = req.body.newpass
+  let renew    = req.body.renewpass
+
+  // check if newpass & renew is the same
+  if(renew !== newpass){
+    console.log('confirmation password is different. try again')
+    res.redirect('#')
+  } else {
+    // check if new pass is different to oldpass
+    Lect.findOne({username:lecturer}, function(e, found){
+      if(found.oldpass == newpass){
+        console.log('password is same as the old one. use different one')
+        res.redirect('#')
+      } else {
+        // set newpass to oldpass in database
+        console.log('SUCCESS!') 
+        Lect.update({username:lecturer}, {$set: {
+          newpass: funcs.encryptTo(newpass)
+        },}, function(err, succeed){
+          if(succeed){
+            console.log('success changing password')
+            res.redirect('#')
+          }
+        })
+      }
+    })
+  }
 }
