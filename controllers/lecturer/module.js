@@ -24,6 +24,7 @@ exports.getHome = function(req, res){
   let cans = 'hide'
   let stds = 'hide'
   let lecturer  = req.session.lecturer
+  let colored, isNotifShow = 'hide', newNotif
   Lect.findOne({username:lecturer}, function(e, found){
     if(found){
       
@@ -49,7 +50,48 @@ exports.getHome = function(req, res){
         msgAlert = 'red'
       }
 
-      res.render('lecturer/home', {title: "Home", baseurl, found, hiding, msgAlert, stds, cans})
+      let notifs = found.notifs
+      let n      = notifs.length
+      // get latest 3 notifs
+      console.log("notifs awal : ", notifs)
+      notifs.sort(function(a,b){
+        return parseInt(b.id) - parseInt(a.id)
+      })      
+      console.log("notifs akhir : ", notifs)
+      let objNotifs = []
+      if(n > 0){
+        if(n < 3){
+            // show all
+            for(var i=0; i<n; i++){
+            objNotifs.push({
+              index:notifs[i].id,
+              notif:notifs[i].notif,
+              date:funcs.friendlyDate(notifs[i].date)
+            })
+          }
+        } else {
+             // show only 3
+              for(var i=0; i<3; i++){
+              objNotifs.push({
+              index:notifs[i].id,
+              notif:notifs[i].notif,
+              date:funcs.friendlyDate(notifs[i].date)
+            })
+          }
+        }
+      } else {
+        notifs = ''
+      }
+
+      // alert notif
+      if(found.notif_seen == false){
+        colored = '#b3d9ff', isNotifShow = '', newNotif = 'NEW'
+      } else {
+        colored = '', isNotifShow = 'hide'
+      }
+
+      res.render('lecturer/home', {title: "Home", baseurl, found, hiding, 
+      msgAlert, stds, cans, colored, isNotifShow, newNotif, notifs})
     } else {
       console.log('no lecturer found')
     }

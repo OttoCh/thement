@@ -48,12 +48,12 @@ html.no-js
                   |  Notifications
                   i.caret
                 ul.dropdown-menu
-                  //- each notif in notifs
-                  li
-                    a(tabindex='-1', href='#')
-                      div
-                        strong date
-                      | notif
+                  each notif in notifs
+                    li
+                      a(tabindex='-1', href='#')
+                        div
+                          strong #{notif.date}
+                        | #{notif.notif}
                   hr
                   li
                     a(href='notifications?from=topbar')
@@ -102,8 +102,8 @@ html.no-js
                 |  Fix Students
             li
               a(href='notifications')
-                div(class='')
-                  span.badge.badge-info.pull-right
+                div(class='#{isNotifShow}')
+                  span.badge.badge-info.pull-right #{newNotif}
                 i.icon-volume-up
                 |  Notifications
             li

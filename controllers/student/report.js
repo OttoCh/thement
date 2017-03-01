@@ -118,7 +118,7 @@ exports.createReport = function(req, res){
               $push:{
                 notifs:{
                   "id":nNotif+1,
-                  "notif":"you are notified",
+                  "notif":nim + " has created a report",
                   "date":new Date()
                 }
               },
