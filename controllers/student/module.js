@@ -6,6 +6,7 @@ var express       = require('express'),
     stdModel      = require('../../models/student.model'),
     report        = require('../../models/report'),
     Lect          = require('../../models/lecturer'),
+    Msg           = require('../../models/message'),
     multer        = require('multer'),
     email         = require('emailjs/email'),
     app           = express()
@@ -206,6 +207,49 @@ exports.getHome = function(req, res){
         colored = ''
       }
 
+      // MESSAGE CHECKING
+      let allMsgs
+      Msg.findOne({nim:nim}, function(e, msg){
+        if(msg){
+          allMsgs = msg.messages
+          // get latest 3 notifs
+          
+          allMsgs.sort(function(a,b){
+            return parseInt(b.id) - parseInt(a.id)
+          })
+          let n   = allMsgs.length
+          // convert array of objects to readable format
+          var objMsgs = []
+          if(n > 0){
+            if(n < 3){
+              // show all
+              for(var i=0; i<n; i++){
+                objMsgs.push({
+                  index:allMsgs[i].id,
+                  author:allMsgs[i].author,
+                  body:allMsgs[i].body,
+                  date_created:funcs.friendlyDate(allMsgs[i].date_created)
+                })
+              }
+            } else {
+              // show only 3
+              for(var i=0; i<3; i++){
+                objMsgs.push({
+                  index:allMsgs[i].id,
+                  author:allMsgs[i].author,
+                  body:allMsgs[i].body,
+                  date_created:funcs.friendlyDate(allMsgs[i].date_created)
+                })
+              }
+            }
+          } else {
+            objMsgs = ''
+          }
+        } else {
+          // student has not created message yet
+          allMsgs = 'no message yet'
+        }
+
       // REPORT CHECKING
       report.findOne({nim:nim}, function(err, rep){
         var coloredStatus = '', statusStyle = ''
@@ -237,15 +281,16 @@ exports.getHome = function(req, res){
           res.render('student/home', {title: "Dashboard ", nim, student, login, state, stateColor, supervisor,
             notifs, colored, hideChoosing, reportCreate, nReport, msgReport, reportStatus,
             coloredStatus, statusStyle, divReport, newNotif, registered_at,
-            acceptance, isNotifShow
+            acceptance, isNotifShow, allMsgs, objMsgs
           })
         } else {
           res.render('student/home', {title: "Dashboard ", nim, student, login, state, stateColor, supervisor,
             notifs, colored, hideChoosing, reportCreate, nReport, msgReport, reportStatus,
             coloredStatus, statusStyle, divReport, newNotif, registered_at,
-            acceptance, isNotifShow
-          })
-        }
+            acceptance, isNotifShow, allMsgs, objMsgs
+            })
+          }
+        })
       })
     })
   })

@@ -178,10 +178,10 @@ html
                           th Date
                           
                       tbody
-                        each val in objMsgs
+                        each val in inboxMsg
                           tr
                             td=val.index
-                            td=val.from
+                            td=val.author
                             td=val.body
                             td=val.date_created
 

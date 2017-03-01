@@ -72,18 +72,41 @@ exports.getAll = function(req, res){
             }
 
             // get all inbox
-            report.aggregate({$match:{"_id":_id}},{$unwind:"$messages"},{$match:{"messages.author":"hendro"},},
-              function(err, from){
-                console.log('from hendro : ', from.length)
+            var inboxMsg = []
+            msg.aggregate({$match:{"nim":nim}},
+                {$unwind:"$messages"},
+              {$match:{"messages.author":superv}
+            },
+              function(err, agg){
+                if(agg){
+                // convert to array
+                  let inboxs   = agg
+                  let inboxLen = agg.length
+
+                  inboxs.sort(function(a,b){
+                    return parseFloat(b.id) - parseFloat(a.id)
+                  })
+                  
+                  for(var i=0; i<inboxLen; i++){
+                  inboxMsg.push({
+                      index:i+1,
+                      author:inboxs[i].messages.author,
+                      body:inboxs[i].messages.body,
+                      date_created:funcs.friendlyDate(inboxs[i].messages.date_created),
+                    })
+                  }
+                  
+                  console.log('from hendro : ', agg.length)
+                  console.log('CONVERTED INBOXES :', inboxMsg)
+                  // get all sent
+                  let last_message = objMsgs[0].date_created
+                  
+                  res.render('student/message/all', {title:"All Messages", baseurl, last_message, supervFull, objMsgs, nim,
+                    hideAllMsg, showInbox, showOutbox, superv, inboxMsg
+                  })
+                }
               }            
             )
-
-            // get all sent
-            let last_message = objMsgs[0].date_created
-            console.log('last message : ', last_message)
-            res.render('student/message/all', {title:"All Messages", baseurl, last_message, supervFull, objMsgs, nim,
-              hideAllMsg, showInbox, showOutbox, superv
-            })
           }
         )
       })

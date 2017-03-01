@@ -30,19 +30,22 @@ html.no-js
                   strong  Messages
                   i.caret
                 ul.dropdown-menu
-                  li
-                    a(tabindex='-1', href='#')
-                      div
-                        strong 1st message
-                      | Jade is a terse and simple templating language with a strong focus
-                  li
-                    a(tabindex='-1', href='#')
-                      div
-                        strong 2nd message
-                      | Jade is a terse and simple templating language with a strong focus
+                  each msg in objMsgs
+                    li
+                      a(tabindex='-1', href='#')
+                        div
+                          strong #{msg.author}
+                          br
+                        | #{msg.body}
+                        br
+                        span(style='color:#04A957; font-weigt:bolder; font-size:8pt') #{msg.date_created}
+                    br
+                          
                   li.divider
                   li
-                    a(tabindex='-1', href='#') Read all messages
+                    a(href='message/all?from=topbar')
+                      strong READ ALL MESSAGES →
+                  
               li.dropdown
                 a.dropdown-toggle(href='#', role='button', data-toggle='dropdown',
                   style='color:#001a33; background:#{colored}; font-weight:bold;')
