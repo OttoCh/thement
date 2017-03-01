@@ -135,19 +135,46 @@ html.no-js
                 .muted.pull-left General information
               .block-content.collapse.in
                 .span3
-                  h4 Last login
+                  h4 Profile
                   p 
-                .span3
-                  h4 Update profile
-                  p here
+                  i.icon-folder-open
+                  | &nbsp; 
+                  strong Research Division : 
+                  | #{found.kk}
+                  hr
+                  p
+                    a(href='profile?from=general_info')
+                      button.btn.btn-info
+                        i.icon-refresh.icon-white
+                        strong  Update my profile
                 .span3
                   h4 Candidates
-                  p #{found.candidates} 
-                  | See full list 
-                  a(href='candidates') here
-                .span3(class='#{std}')
-                  h4 Overview students
-                  p 
+                  p
+                  i.icon-list
+                  | &nbsp;
+                  strong Some of them : 
+                  div(class='#{cans}')
+                    p #{found.candidates}
+                  hr
+                  p
+                    a(href='candidates?from=general_info')
+                      button.btn.btn-primary
+                        i.icon-search.icon-white
+                        strong  See all
+                .span3
+                  h4 Fix Students
+                  p
+                  i.icon-user
+                  | &nbsp;
+                  strong Some of them : 
+                  div(class='#{stds}')
+                    p #{found.students}
+                  hr
+                  p
+                    a(href='students?from=general_info')
+                      button.btn.btn-success
+                        i.icon-eye-open.icon-white
+                        strong  See all 
                 .span3(class='#{hiding}')
                   h4 Password Change
                   p Your current password is 

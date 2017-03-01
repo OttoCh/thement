@@ -21,17 +21,26 @@ exports.getForgetPassPage = function(req, res){
 }
 
 exports.getHome = function(req, res){
+  let cans = 'hide'
+  let stds = 'hide'
   let lecturer  = req.session.lecturer
   Lect.findOne({username:lecturer}, function(e, found){
     if(found){
-      // check if lecturer already has a students
-      let std = 'hide'
-      if(found.students !== []){
-        std = ''
+      
+      // check candidates
+      if(found.candidates.length > 0){
+        cans = ''
       } else {
-        std = 'hide'
+        cans = 'hide'
       }
-      console.log('show std : ', std)
+
+      // check students
+      if(found.students.length > 0){
+        stds = ''
+      } else {
+        stds = 'hide'
+      }
+      
       let msgAlert = '', hiding = ''
       // check if newpass !== ""
       if(found.newpass !== ""){
@@ -40,7 +49,7 @@ exports.getHome = function(req, res){
         msgAlert = 'red'
       }
 
-      res.render('lecturer/home', {title: "Home", baseurl, found, hiding, msgAlert, std})
+      res.render('lecturer/home', {title: "Home", baseurl, found, hiding, msgAlert, stds, cans})
     } else {
       console.log('no lecturer found')
     }
@@ -225,22 +234,30 @@ exports.postLogin = function(req, res){
 }
 
 exports.postLogout = function(req, res){
+  let lecturer = req.session.lecturer
   req.session.destroy(function(err){
     if(err){
         console.log(err);
     } else {
-        res.format({
-          json: function(){
-            res.send({
-              status:true,
-              message: "Logged out"
+        Lect.update({username:lecturer},{$set:{
+          last_login: new Date()
+            },
+          }, function(e, u){
+              console.log('last login updated')
+              res.format({
+              json: function(){
+                res.send({
+                  status:true,
+                  message: "Logged out"
+                })
+              },
+              html: function(){
+                res.redirect('./login')
+              }
             })
-          },
-          html: function(){
-            res.redirect('./login')
           }
-        })
-    }
+        )
+      }
   });
 }
 
