@@ -90,7 +90,6 @@ exports.createReport = function(req, res){
   let reportID       = req.body.reportID
   let reportTitle    = req.body.reportTitle
   let reportBody     = req.body.reportBody
-  console.log('CREATED REPORT : ' + 'id : ' + reportID + ' title : '+ reportTitle + ' body : ' + reportBody)
 
   report.update({nim:nim}, {$set: {
       is_create: true,
@@ -108,11 +107,31 @@ exports.createReport = function(req, res){
       },
     }, function(err, created){
       if(!err){
-        console.log('report created')
-        res.redirect(baseurl+'/report/create/file?from=create')
+        student.findOne({nim:nim}, function(e, std){
+          let superv = std.supervisor
+          lecturer.findOne({username:superv}, function(e, found){
+            console.log('notif : ' + found.name)
+            let nNotif = found.notifs.length
+            lecturer.update({username:superv},{$set:{
+              notif_seen: false
+            },
+              $push:{
+                notifs:{
+                  "id":nNotif+1,
+                  "notif":"you are notified",
+                  "date":new Date()
+                }
+              },
+            }, function(e, notified){
+              res.redirect(baseurl+'/report/create/file?from=create')
+            }
+           )
+          })
+        })
       } else {
         console.log('error creating report')
       }
+
     }
   )
 }

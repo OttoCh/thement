@@ -4,7 +4,8 @@ var express     = require('express'),
 
 const baseurl   = 'http://localhost:3500/lecturer'
 
-var lecturer    = require('../controllers/lecturer/module')
+var lecturer    = require('../controllers/lecturer/module'),
+    notif       = require('../controllers/lecturer/notif')
 
 router.get('/', lecturer.getIndex)
 router.get('/login', lecturer.getLoginPage)
@@ -18,15 +19,23 @@ router.use(session)
 
 router.get('/home', lecturer.getHome)
 router.get('/profile', lecturer.getProfile)
+
 router.get('/settings', lecturer.getSettings)
 router.post('/settings', lecturer.postSettings)
+
 router.get('/candidates', lecturer.getCandidates)
 router.get('/candidates/detail/:nim', lecturer.getDetailCandidate)
 router.get('/candidates/:nim', lecturer.rejectCandidate)
 router.get('/candidates/accept/:nim', lecturer.acceptCandidate)
+
 router.get('/students', lecturer.getFixStudents)
 router.get('/student/detail/:nim', lecturer.getDetailStudent)
 router.get('/student/detail/:nim/accept', lecturer.acceptStudentReport)
+
+router.get('/notifications', notif.getNotifs)
+router.get('/notifications/delete_all', notif.removeAllNotifs)
+router.get('/notification/:id', notif.getSingleNotif)
+router.get('/notification/delete/:id', notif.removeSingleNotif)
 
 router.use(function(req, res, next){
   res.status(404)

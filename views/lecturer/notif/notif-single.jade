@@ -1,0 +1,107 @@
+doctype html
+html
+  head
+    title=title
+    // Bootstrap
+    link(href='/static/vendors/bootstrap/css/bootstrap.min.css', rel='stylesheet', media='screen')
+    link(href='/static/vendors/bootstrap/css/bootstrap-responsive.min.css', rel='stylesheet', media='screen')
+    link(href='/static/vendors/assets/styles.css', rel='stylesheet', media='screen')
+    link(href='/static/vendors/assets/DT_bootstrap.css', rel='stylesheet', media='screen')
+    //if lte IE 8
+      script(language='javascript', type='text/javascript', src='/static/vendors/vendors/flot/excanvas.min.js')
+    // HTML5 shim, for IE6-8 support of HTML5 elements
+    //if lt IE 9
+      script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
+    script(src='/static/vendors/vendors/modernizr-2.6.2-respond-1.1.0.min.js')
+  body
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container-fluid
+          a.btn.btn-navbar(data-toggle='collapse', data-target='.nav-collapse')
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.brand(href='#') Student dashboard
+          .nav-collapse.collapse
+            ul.nav.pull-right
+              li.dropdown
+                a.dropdown-toggle(href='#', role='button', data-toggle='dropdown')
+                  i.icon-user
+                  |   
+                  i.caret
+                ul.dropdown-menu
+                  li
+                    a(tabindex='-1', href='#') Profile
+                  li
+                    a(tabindex='-1', href='#') Settings
+                  li.divider
+                  li
+                    a(tabindex='-1', href='logout') Logout
+            ul.nav
+              li.active
+                a(href='#') Notifications
+          // /.nav-collapse
+    .container-fluid
+      .row-fluid
+        #sidebar.span3
+          ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
+            li
+              a(href='./home')
+                i.icon-chevron-right
+                |  Dashboard
+            li
+              a(href='./profile')
+                i.icon-chevron-right
+                |  Profile
+            li
+              a(href='./lecturers')
+                i.icon-chevron-right
+                |  Lecturers
+            li.active
+              a(href='#')
+                i.icon-chevron-right
+                |  Notifications
+        // /span
+        #content.span9
+          .row-fluid
+            // block
+            .block
+              .navbar.navbar-inner.block-header
+                .muted.pull-left All notifications
+              .block-content.collapse.in
+                .span12
+                  .table-toolbar
+                    //
+                      <div class="btn-group">
+                      <a href="#"><button class="btn btn-success">Add New <i class="icon-plus icon-white"></i></button></a>
+                      </div>
+                    legend SINGLE NOTIF
+                    .btn-group.pull-right
+                      button.btn.dropdown-toggle(data-toggle='dropdown')
+                        | Tools 
+                        span.caret
+                      ul.dropdown-menu
+                        li
+                          a(href='#') Print
+                        li
+                          a(href='#') Save as PDF
+                        li
+                          a(href='#') Export to Excel
+                    br
+                  
+                    p Notif ID : #{idToFind}
+                    p MESSAGE : #{found.notif}
+                    p DATE : #{found.date}
+                    
+                    a(href='../notifications') Back to all notifs
+                      
+            // /block
+    // /.fluid-container
+    script(src='/static/vendors/vendors/jquery-1.9.1.js')
+    script(src='/static/vendors/bootstrap/js/bootstrap.min.js')
+    script(src='/static/vendors/vendors/datatables/js/jquery.dataTables.min.js')
+    script(src='/static/vendors/assets/scripts.js')
+    script(src='/static/vendors/assets/DT_bootstrap.js')
+    script.
+      $(function() {
+      });

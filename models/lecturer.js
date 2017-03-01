@@ -9,9 +9,12 @@ var lecturerSchema = new Schema ({
   kk_initial: String,
   oldpass: String,
   newpass: String,
+  last_login: Date,
+  notif_seen: Boolean,
   passwordreset_link: String,
   candidates: [],
-  students: []
+  students: [],
+  notifs: []
 })
 
 module.exports = mongoose.model('Lecturer', lecturerSchema)
