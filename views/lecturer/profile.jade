@@ -24,48 +24,12 @@ html.no-js
             ul.nav.pull-right
               li.dropdown
                 a.dropdown-toggle(href='#', role='button', data-toggle='dropdown')
-                  i.icon-envelope
-                  strong  Messages
-                  i.caret
-                ul.dropdown-menu
-                  li
-                    a(tabindex='-1', href='#')
-                      div
-                        strong 1st message
-                      | Jade is a terse and simple templating language with a strong focus
-                  li
-                    a(tabindex='-1', href='#')
-                      div
-                        strong 2nd message
-                      | Jade is a terse and simple templating language with a strong focus
-                  li.divider
-                  li
-                    a(tabindex='-1', href='#') Read all messages
-              li.dropdown
-                a.dropdown-toggle(href='#', role='button', data-toggle='dropdown',
-                  style='color:#001a33; background:#{colored}; font-weight:bold;')
-                  i.icon-volume-up
-                  |  Notifications
-                  i.caret
-                ul.dropdown-menu
-                  //- each notif in notifs
-                  li
-                    a(tabindex='-1', href='#')
-                      div
-                        strong date
-                      | notif
-                  hr
-                  li
-                    a(href='notifications?from=topbar')
-                      strong READ ALL NOTIFS →
-              li.dropdown
-                a.dropdown-toggle(href='#', role='button', data-toggle='dropdown')
                   i.icon-user
                   strong  #{found.name}
                   i.caret
                 ul.dropdown-menu
                   li
-                    a(tabindex='-1', href='profile') Profile
+                    a(tabindex='-1', href='#') Profile
                   li
                     a(tabindex='-1', href='settings') Settings
                   li.divider
@@ -74,19 +38,19 @@ html.no-js
              
             ul.nav
               li.active
-                a(href='#') Dashboard
+                a(href='#') Profile
           // /.nav-collapse
     .container-fluid
       .row-fluid
         #sidebar.span3
           ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
-            li.active
-              a(href='#')
+            li
+              a(href='home')
                 i.icon-chevron-right
                 i.icon-home
                 |  Dashboard
-            li
-              a(href='profile')
+            li.active
+              a(href='#')
                 i.icon-chevron-right
                 i.icon-user
                 |  Profile
@@ -110,28 +74,17 @@ html.no-js
                     a(href='#', title='Hide Sidebar', rel='tooltip')  
                   i.icon-chevron-right.show-sidebar(style='display:none;')
                     a(href='#', title='Show Sidebar', rel='tooltip')  
-                  li
-                    a.active(href='#') Dashboard
+                  li 
+                    a(href='home') Dashboard
+                    span.divider /
+                  li Profile
           .row-fluid
             // block
             .block
               .navbar.navbar-inner.block-header
-                .muted.pull-left General information
+                .muted.pull-left Lecturer's Profile
               .block-content.collapse.in
-                .span3
-                  h4 Last login
-                  p 
-                .span3
-                  h4 Candidates
-                  p #{found.candidates} 
-                  | See full list 
-                  a(href='candidates') here
-                .span3(class='#{hiding}')
-                  h4 Password Change
-                  p Your current password is 
-                    strong(style='color:#{msgAlert}') unsafe
-                    br
-                    a(href='#') Change here
+                
                 
                   //- .chart(data-percent='13') 13%
                   //- .chart-bottom-heading

@@ -25,7 +25,16 @@ exports.getHome = function(req, res){
   let lecturer  = req.session.lecturer
   Lect.findOne({username:lecturer}, function(e, found){
     if(found){
-      res.render('lecturer/home', {title: "Home", baseurl, found, hiding})
+      let msgAlert = ''
+      // check if oldpass has not been changed
+      if(found.oldpass == found.username+'123'){
+        console.log('oldpass must be changed')
+        msgAlert = 'red'
+      } else {
+        console.log('oldpass is OKAY')
+        msgAlert = ''
+      }
+      res.render('lecturer/home', {title: "Home", baseurl, found, hiding, msgAlert})
     } else {
       console.log('no lecturer found')
     }
@@ -44,7 +53,7 @@ exports.getCandidates = function(req, res){
           nim:calons[i]
         });
       }
-      res.render('lecturer/candidates', {title:"All candidates", baseurl, cans})
+      res.render('lecturer/candidates', {title:"All candidates", baseurl, cans, f})
     } else {
       console.log('lecturer not found')
     }
@@ -173,7 +182,7 @@ exports.getFixStudents = function(req, res){
           nim:std[i]
         });
       }
-      res.render('lecturer/students', {title:"Fix students", baseurl, stds})
+      res.render('lecturer/students', {title:"Fix students", baseurl, stds, f})
     }
   })
 }
@@ -356,4 +365,15 @@ exports.acceptStudentReport = function(req, res){
       })
     }
   )
+}
+
+exports.getProfile = function(req, res){
+  let lecturer = req.session.lecturer
+  Lect.findOne({username:lecturer}, function(err, found){
+    res.render('lecturer/profile', {title:"Lecturer's Profile", found})
+  })
+}
+
+exports.getSettings = function(req, res){
+  res.send('lecturer settings')
 }

@@ -17,6 +17,8 @@ router.post('/changepass', lecturer.changeInitPass)
 router.use(session)
 
 router.get('/home', lecturer.getHome)
+router.get('/profile', lecturer.getProfile)
+router.get('/settings', lecturer.getSettings)
 router.get('/candidates', lecturer.getCandidates)
 router.get('/candidates/detail/:nim', lecturer.getDetailCandidate)
 router.get('/candidates/:nim', lecturer.rejectCandidate)

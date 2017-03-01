@@ -39,27 +39,31 @@ html
                     a(tabindex='-1', href='logout') Logout
             ul.nav
               li.active
-                a(href='#') Lecturers
+                a(href='#') Fix Students
           // /.nav-collapse
     .container-fluid
       .row-fluid
         #sidebar.span3
           ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
             li
-              a(href='#{baseurl}/home')
+              a(href='home')
                 i.icon-chevron-right
+                i.icon-home
                 |  Dashboard
             li
-              a(href='#{baseurl}/profile')
+              a(href='profile')
                 i.icon-chevron-right
+                i.icon-user
                 |  Profile
             li
-              a(href='#{baseurl}/candidates')
+              a(href='candidates')
                 i.icon-chevron-right
-                |  Candidates
+                i.icon-list
+                |  Candidates (#{f.candidates.length})
             li.active
               a(href='#')
                 i.icon-chevron-right
+                i.icon-user
                 |  Fix Students
         // /span
         #content.span9
