@@ -42,22 +42,6 @@ exports.getAll = function(req, res){
               })
             }
 
-            // echo 'YOU' instead of nim
-            // for(var j=0; j<objMsgs.length; j++){
-            //   if(objMsgs[i].from == '10213075'){
-            //     objMsgs.push({
-            //       from:'YOU'
-            //     })
-            //     console.log('YOU : ', objMsgs)
-            //   } else {
-            //     objMsgs.push({
-            //       from:superv
-            //     })
-            //     console.log("SUPERVISOR : ", objMsgs)
-            //   }
-            // }
-
-
             // get query
             let quer = req.query.type
             if(quer == 'outbox'){
@@ -82,10 +66,6 @@ exports.getAll = function(req, res){
                 // convert to array
                   let inboxs   = agg
                   let inboxLen = agg.length
-
-                  inboxs.sort(function(a,b){
-                    return parseFloat(b.id) - parseFloat(a.id)
-                  })
                   
                   for(var i=0; i<inboxLen; i++){
                   inboxMsg.push({
@@ -95,14 +75,49 @@ exports.getAll = function(req, res){
                       date_created:funcs.friendlyDate(inboxs[i].messages.date_created),
                     })
                   }
-                  
+
+                  inboxMsg.sort(function(a,b){
+                    return parseFloat(b.index) - parseFloat(a.index)
+                  })                  
+
                   console.log('from hendro : ', agg.length)
                   console.log('CONVERTED INBOXES :', inboxMsg)
-                  // get all sent
-                  let last_message = objMsgs[0].date_created
-                  
-                  res.render('student/message/all', {title:"All Messages", baseurl, last_message, supervFull, objMsgs, nim,
-                    hideAllMsg, showInbox, showOutbox, superv, inboxMsg
+
+                   // get all outbox
+                  let nimStr = nim.toString()
+                  var outboxMsg = []
+                  msg.aggregate({$match:{"nim":nim}},
+                    {$unwind:"$messages"},
+                    {$match:{"messages.author":nimStr}
+                  },
+                  function(err, out){
+                    if(out){
+                      
+                      let outboxs   = out
+                      let outboxLen = out.length
+                      
+                      for(var k=0; k<outboxLen; k++){
+                      outboxMsg.push({
+                          index:k+1,
+                          author:"YOU",
+                          body:outboxs[k].messages.body,
+                          date_created:funcs.friendlyDate(outboxs[k].messages.date_created),
+                        })
+                      }
+
+                      outboxMsg.sort(function(a,b){
+                        return parseFloat(b.index) - parseFloat(a.index)
+                      })
+                      console.log('ALL OUTBOX : ', outboxMsg)
+                      
+                      // get all sent
+                      let last_message = objMsgs[0].date_created
+                      res.render('student/message/all', {title:"All Messages", baseurl, last_message, supervFull, objMsgs, nim,
+                        hideAllMsg, showInbox, showOutbox, superv, inboxMsg, outboxMsg
+                      })
+                    } else {
+                      console.log('no outgoing message')
+                    }
                   })
                 }
               }            
@@ -132,7 +147,7 @@ exports.sendMessage = function(req, res){
       msg.update({nim:nim},{$push:{
       messages:{
         "id":msgLength+1,
-        "author": nim,
+        "author": nim.toString(),
         "body": msgBody,
         "date_created": new Date()
       }
