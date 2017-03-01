@@ -24,6 +24,14 @@ exports.getHome = function(req, res){
   let lecturer  = req.session.lecturer
   Lect.findOne({username:lecturer}, function(e, found){
     if(found){
+      // check if lecturer already has a students
+      let std = 'hide'
+      if(found.students !== []){
+        std = ''
+      } else {
+        std = 'hide'
+      }
+      console.log('show std : ', std)
       let msgAlert = '', hiding = ''
       // check if newpass !== ""
       if(found.newpass !== ""){
@@ -32,7 +40,7 @@ exports.getHome = function(req, res){
         msgAlert = 'red'
       }
 
-      res.render('lecturer/home', {title: "Home", baseurl, found, hiding, msgAlert})
+      res.render('lecturer/home', {title: "Home", baseurl, found, hiding, msgAlert, std})
     } else {
       console.log('no lecturer found')
     }
