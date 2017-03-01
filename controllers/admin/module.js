@@ -2,6 +2,8 @@
 
 var express       = require('express'),
     Admin         = require('../../models/admin'),
+    Std           = require('../../models/student'),
+    Lect          = require('../../models/lecturer'),
     funcs         = require('../../middlewares/funcs'),
     winston       = require('winston'),
     app           = express()
@@ -65,7 +67,24 @@ exports.postLogin = function(req, res){
 exports.getHome = function(req, res){
   let admin = req.session.admin
   if(admin){
-    res.render('admin/home', {title:"Dashboard", admin})
+    Admin.findOne({role:admin}, function(e, a){
+      // count all lecturers
+          Lect.count({}, function(e, lecturers){
+            let nLects = lecturers      
+            // count all students
+            Std.count({}, function(e, all){
+              let nStd = all
+              console.log("total : ", nStd)
+              // count student where is_accepted is true
+            Std.count({"is_accepted":true}, function(e, count){
+              let nAccepted = count
+              console.log('accepted : ', nAccepted)
+              let precenAccept = (nAccepted/nStd) * 100
+              res.render('admin/home', {title:"Dashboard", admin, a, nStd, nAccepted, precenAccept, nLects})
+            })
+          })
+        })
+      })
   } else {
     console.log('UNAUTHORIZED ACCESS!')
     res.redirect('./login')

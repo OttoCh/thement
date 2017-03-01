@@ -17,4 +17,10 @@ router.get('/logout', admin.postLogout)
 /* LOGGED IN ONLY ACCESS */
 // router.use(loggedin)
 
+router.use(function(req, res, next){
+  res.status(404)
+  res.render('static/404', {title:"404 Not Found"})
+  return
+})
+
 module.exports = router

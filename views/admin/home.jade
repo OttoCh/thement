@@ -25,7 +25,7 @@ html.no-js
               li.dropdown
                 a.dropdown-toggle(href='#', role='button', data-toggle='dropdown')
                   i.icon-user 
-                  span 
+                  strong  #{a.role}
                   | 
                   i.caret
                 ul.dropdown-menu
@@ -79,21 +79,32 @@ html.no-js
                 .muted.pull-left General information
               .block-content.collapse.in
                 .span3
-                  h4 Last login
+                  h4 Accepted students
                   p 
+                    .chart(data-percent='#{precenAccept}') #{precenAccept}%
+                    .chart-bottom-heading
+                      span.label.label-info #{nAccepted}/#{nStd} students
+                      br
+                      
                 .span3
-                  h4 Candidates
-                  p  
-                  | See full list 
-                  a(href='candidates') here
-                .span3(class='#')
-                  h4 Password Change
-                  p Your current password is unsafe. Change 
-                    a(href='#') here
-                
-                  //- .chart(data-percent='13') 13%
-                  //- .chart-bottom-heading
-                  //-   span.label.label-info Orders
+                  h4 Active lecturers
+                  p
+                  span.label.label-success #{nLects}
+                  hr
+                  a(href='candidates?from=general_info')
+                      button.btn.btn-primary
+                        i.icon-search.icon-white
+                        strong  See all
+                .span3
+                  h4 Active students
+                  p
+                  span.label.label-primary #{nStd}
+                  hr
+                  a(href='candidates?from=general_info')
+                      button.btn.btn-info
+                        i.icon-eye-open.icon-white
+                        strong  See all
+
             // /block
       hr
     // /.fluid-container
