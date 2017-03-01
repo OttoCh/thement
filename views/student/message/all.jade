@@ -111,10 +111,7 @@ html
                   i.icon-time
                   |  Today
                   p
-                  h5 Last message
-                  i.icon-calendar
-                  |  #{last_message}
-                  p
+                  
                   hr
                   a(href='#myModal' data-toggle='modal' class='btn btn-success') 
                     i.icon-plus-sign.icon-white
@@ -142,33 +139,27 @@ html
                   //- end load modal
                   hr
                   p
-                  a(href='#' class='btn btn-danger') 
-                    i.icon-remove.icon-white
-                    strong  Delete all
+                  //- a(href='#' class='btn btn-danger') 
+                  //-   i.icon-remove.icon-white
+                  //-   strong  Delete all
+                  a(href='#myModal2' data-toggle='modal' class='btn btn-danger') 
+                      i.icon-remove.icon-white
+                      strong  Delete all
+                    div(id='myModal2' class='modal hide')
+                      div(class='modal-header')
+                        button(data-dismiss='modal' class='close' type='button')&times;
+                        h4 DELETE ALL MESSAGES
+                      div(class='modal-body')
+                        .span12
+                          p.lead Are you sure want to delete all of your messages (inbox + outbox)?
+                          a(href=baseurl+'/message/all/delete' class='btn btn-primary') Yes
+                          &nbsp;
+                          a(data-dismiss='modal' href='#' class='btn') No
                 .span9
                   .span9
-                    //- all message
-                    h4(class='#{hideAllMsg}') All Messages
-                    table.table.table-hover(class='#{hideAllMsg}')
-                      thead
-                        tr
-                          th #
-                          th From
-                          th Body
-                          th Date
-                          
-                      tbody
-                        each val in objMsgs
-                          tr
-                            td
-                              span.label.label-info #{val.index}
-                            td=val.from
-                            td=val.body 
-                              &nbsp;
-                              a(href='#{baseurl}/message/detail/#{val.index}') See more
-                            td=val.date_created
+                    
                     //- inbox message
-                    h4(class='#{showInbox}') Inbox Messages
+                    h4(class='#{hideAllMsg}') Inbox Messages
                     table.table.table-hover(class='#{showInbox}')
                       thead
                         tr
@@ -205,12 +196,9 @@ html
                             td=val.date_created
                   .span3
                     h4 TYPE
-                    a(href='#{baseurl}/message/all') 
-                        button.btn.btn-info
-                          i.icon-align-center.icon-white
-                          strong  ALL
+                    
                     p
-                    a(href='?type=inbox') 
+                    a(href=baseurl+'/message/all') 
                         button.btn.btn-success
                           i.icon-inbox.icon-white
                           strong  Inbox

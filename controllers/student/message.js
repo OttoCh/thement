@@ -25,23 +25,7 @@ exports.getAll = function(req, res){
           function(err, strs){
             let msgs        = strs.messages
             let _id         = strs._id
-            console.log('_id : ', _id)
-            // sort by the latest
-            msgs.sort(function(a,b){
-              return parseFloat(b.id) - parseFloat(a.id)
-            })
-  
-            let msgsLength  = msgs.length
-            let objMsgs     = []
-            for(var i=0; i<msgsLength; i++){
-              objMsgs.push({
-                index:msgs[i].id,
-                from:msgs[i].author,
-                body:msgs[i].body,
-                date_created:funcs.friendlyDate(msgs[i].date_created)
-              })
-            }
-
+            
             // get query
             let quer = req.query.type
             if(quer == 'outbox'){
@@ -109,10 +93,8 @@ exports.getAll = function(req, res){
                         return parseFloat(b.index) - parseFloat(a.index)
                       })
                       console.log('ALL OUTBOX : ', outboxMsg)
-                      
-                      // get all sent
-                      let last_message = objMsgs[0].date_created
-                      res.render('student/message/all', {title:"All Messages", baseurl, last_message, supervFull, objMsgs, nim,
+                                            
+                      res.render('student/message/all', {title:"All Messages", baseurl, supervFull, nim,
                         hideAllMsg, showInbox, showOutbox, superv, inboxMsg, outboxMsg
                       })
                     } else {
@@ -156,4 +138,17 @@ exports.sendMessage = function(req, res){
       res.redirect(baseurl+'/message/all')
     })
   })
+}
+
+exports.removeAll = function(req, res){
+  let nim = req.session.student
+  msg.update({nim:nim},{$set:{
+    messages:[]
+  },}, function(err, deleted){
+    if(deleted){
+      console.log('all messages deleted')
+      res.redirect(baseurl+'/message/all')
+    }
+  }
+  )
 }

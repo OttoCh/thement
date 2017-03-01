@@ -70,6 +70,7 @@ router.get('/report/delete/all', report.removeAll)
 // message
 router.get('/message/all?', msg.getAll)
 router.post('/message/send', msg.sendMessage)
+router.get('/message/all/delete', msg.removeAll)
 
 router.use(function(req, res, next){
   res.status(404)
