@@ -46,21 +46,25 @@ html
         #sidebar.span3
           ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
             li
-              a(href='./home')
+              a(href=baseurl+'/home')
                 i.icon-chevron-right
+                i.icon-home
                 |  Dashboard
             li
-              a(href='./profile')
+              a(href=baseurl+'/profile')
                 i.icon-chevron-right
+                i.icon-user
                 |  Profile
-            li
-              a(href='./lecturers')
-                i.icon-chevron-right
-                |  Candidates
             li.active
-              a(href='#{baseurl}/students')
+              a(href='#')
                 i.icon-chevron-right
-                |  Students
+                i.icon-list
+                |  Candidates
+            li
+              a(href=baseurl+'/students')
+                i.icon-chevron-right
+                i.icon-user
+                |  Fix Students
         // /span
         #content.span9
           .row-fluid

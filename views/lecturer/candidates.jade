@@ -62,13 +62,41 @@ html
                 i.icon-chevron-right
                 i.icon-user
                 |  Fix Students
+             li
+              a(href='notifications')
+                div(class='')
+                  span.badge.badge-info.pull-right
+                i.icon-volume-up
+                |  Notifications
+            li
+              a(href='message/all')
+                span.badge.badge-info.pull-right
+                i.icon-envelope
+                |  Messages
+            li
+              a(href='#')
+                span.badge.badge-info.pull-right
+                i.icon-inbox
+                |  Broadcast
         // /span
         #content.span9
+         .row-fluid
+            .navbar
+              .navbar-inner
+                ul.breadcrumb
+                  i.icon-chevron-left.hide-sidebar
+                    a(href='#', title='Hide Sidebar', rel='tooltip')  
+                  i.icon-chevron-right.show-sidebar(style='display:none;')
+                    a(href='#', title='Show Sidebar', rel='tooltip')  
+                  li 
+                    a(href='home') Dashboard
+                    span.divider /
+                  li Candidates
           .row-fluid
             // block
             .block
               .navbar.navbar-inner.block-header
-                .muted.pull-left All candidates
+                .muted.pull-left All Candidates
               .block-content.collapse.in
                 .span12
                   .table-toolbar

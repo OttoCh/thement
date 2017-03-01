@@ -12,9 +12,9 @@ var text, strs, alias = 0
 module.exports = {
   friendlyDate: function(tgl){
       let now = new Date()
-      let nowDate = now.getDate()
-      let tglDate = tgl.getDate()
-      let diff    = nowDate - tglDate
+      let nowDate = now.getFullYear()
+      let tglDate = tgl.getFullYear()
+      let diffY   = nowDate - tglDate
       var month = tgl.getMonth(),
       month = month+1,
       months = ['January', 'February', 'March', 'April', 'May', 'June', 'July','August','September','October','November','Desember'],
@@ -33,24 +33,17 @@ module.exports = {
         tglHours = tglHours
       }
 
-      var time = tglHours+':'+tglMin+' WIB'
-      tgl = month + ' '+ tgl.getDate()+', '+ tgl.getFullYear()+' at '+time
+      let year = ''
+      console.log(year + 'and year diff : ' + diffY)
+      if(diffY == 0 ){
+        year = year
+      } else {
+        year = nowDate
+      }
 
-      if(diff > 7){
-          tgl = tgl
-      }
-      else if((diff > 1) && (diff < 7)){
-        tgl = diff + ' days ago'
-      }
-      else if(diff < 1) {
-        tgl = 'Today at : '+ time
-      }
-      else if(diff == 1){
-        tgl = 'Yesterday at '+ time
-      }
-      else {
-        tgl = tgl
-      }
+      var time = tglHours+':'+tglMin+' WIB'
+      tgl = month + ' '+ tgl.getDate()+ year +' at '+time
+
       return tgl
   },
 

@@ -194,23 +194,22 @@ exports.postLogin = function(req, res){
       console.log('user not found')
       res.redirect('#')
     } else {
-      // check if newpass exist and not empty
       if(found.newpass !== ""){
-        // decrypt
-        let decrypted = funcs.decryptTo(found.newpass)
-
-        // save session
-        req.session.lecturer = found.username
-        if(pass == decrypted){
+        // check if newpass is correct
+        if(pass == funcs.decryptTo(found.newpass)){
+          req.session.lecturer = user
           res.redirect(baseurl+'/home')
+        } else {
+          console.log('newpass wrong!')
+          res.redirect('#')
         }
-      }
-      else {
-        // check oldpass
-        if(found.oldpass == pass){
-          // save session
-          req.session.lecturer = found.username
+      } else {
+        if(pass == found.oldpass){
+          req.session.lecturer = user
           res.redirect(baseurl+'/home')
+        } else {
+          console.log('oldpass wrong')
+          res.redirect('#')
         }
       }
     }

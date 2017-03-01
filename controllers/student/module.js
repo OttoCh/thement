@@ -148,8 +148,10 @@ exports.getHome = function(req, res){
 
       // NOTIF CHECKING
       let registered_at = funcs.friendlyDate(student.registered)
+      console.log('registered at : ', registered_at)
       let notifs        = student.notifs
       let n             = notifs.length
+      
       // get latest 3 notifs
       console.log("notifs awal : ", notifs)
       notifs.sort(function(a,b){
