@@ -110,6 +110,30 @@ html
                     each val in stds
                         li
                             a(href='../message/#{val}') #{val}
+                  p
+                    a(href='#myModal' data-toggle='modal' class='btn btn-success') 
+                        i.icon-plus-sign.icon-white
+                        strong  New message
+                  //- load modal to send message
+                  div(id='myModal' class='modal hide')
+                    div(class='modal-header')
+                      button(data-dismiss='modal' class='close' type='button')&times;
+                      h3 New message to all students
+                    div(class='modal-body')
+                      .span12
+                        form.form-horizontal(method='post' action='send')
+                          .control-group
+                            label.control-label(for='supervisor') To :
+                            .controls
+                              input#focusedInput.input-xlarge.focused(type='text' name='supervisor', value='all students', style='width:80px' readOnly='true' required)
+                          .control-group
+                            label.control-label(for='textarea2') Message :
+                            .controls
+                              textarea.input-xlarge.textarea(placeholder='Enter your message here ...', style='width: 290px; height: 80px', name='msg' required)
+                          .form-actions
+                            button.btn.btn-primary(type='submit') Send
+                            &nbsp;
+                            button.btn(type='reset') Clear
                                    
                 .span9
                   .span9
