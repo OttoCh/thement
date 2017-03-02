@@ -38,7 +38,7 @@ exports.getNotifs = function(req, res){
       notif_seen: true
         },
       }, function(e, seen){
-        res.render('student/notif/notifs', {title:"All Notifications", objNotifs, lect, showDeleteButton, showMsg})
+        res.render('lecturer/notif/notifs', {title:"All Notifications", objNotifs, lect, lec, showDeleteButton, showMsg})
       }
     )
   })

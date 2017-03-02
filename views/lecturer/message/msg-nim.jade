@@ -103,58 +103,60 @@ html
                 .muted.pull-left Messages
               .block-content.collapse.in
                 .span3
-                  
+                  a(href='./all') 
+                    i.icon-arrow-left 
+                    |  Back to all messages
                   hr
-                  strong  List of all students
-                  ul
-                    each val in stds
-                        li
-                            a(href='../message/#{val}') #{val}
+                  p.lead Conversation with #{nim}   
+                  p.lead 
+                  i.icon-time
+                  |  Last seen
+                  p #{last_seen}
                                    
                 .span9
                   .span9
                     
-                    //- inbox message
-                    //- h4(class='#{hideAllMsg}') Inbox Messages
-                    //- table.table.table-hover(class='#{showInbox}')
-                    //-   thead
-                    //-     tr
+                    h4(class='#{showInbox}') Inbox Messages
+                    table.table.table-hover(class='#{showInbox}')
+                      thead
+                        tr
                           
-                    //-       th From
-                    //-       th Body
-                    //-       th Date
+                          th From
+                          th Body
+                          th Date
                           
-                    //-   tbody
-                    //-     each val in inboxMsg
-                    //-       tr
+                      tbody
+                        each val in inboxMsg
+                          tr
                             
-                    //-         td=val.author
-                    //-         td=val.body
-                    //-         td=val.date_created
+                            td
+                                span.label.label-info #{val.author}
+                            td=val.body
+                            td=val.date_created
 
                     //- outbox message
-                    //- h4(class='') Outbox Messages
-                    //- table.table.table-hover(class='#{showOutbox} success')
-                    //-   thead
-                    //-     tr.success
+                    h4(class='#{showOutbox}') Outbox Messages
+                    table.table.table-hover(class='#{showOutbox} success')
+                      thead
+                        tr.success
                           
-                    //-       th From
-                    //-       th Body
-                    //-       th Date
+                          th From
+                          th Body
+                          th Date
                           
-                    //-   tbody
-                    //-     each val in outboxMsg
-                    //-       tr
+                      tbody
+                        each msg in outboxMsg
+                          tr
                             
-                    //-         td
-                    //-           span.label.label-info #{val.author}
-                    //-         td=val.body
-                    //-         td=val.date_created
+                            td
+                              span.label.label-info #{msg.author}
+                            td=msg.body
+                            td=msg.date_created
                   .span3
                     h4 TYPE
                     
                     p
-                    a(href=baseurl+'/message/all') 
+                    a(href='?type=inbox') 
                         button.btn.btn-success
                           i.icon-inbox.icon-white
                           strong  Inbox

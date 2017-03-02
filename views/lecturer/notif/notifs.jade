@@ -46,7 +46,7 @@ html
         #sidebar.span3
           ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
             li
-              a(href='./home')
+              a(href='home')
                 i.icon-chevron-right
                 i.icon-home
                 |  Dashboard
@@ -56,25 +56,31 @@ html
                 i.icon-user
                 |  Profile
             li
-              a(href='lecturers')
+              a(href='candidates')
                 i.icon-chevron-right
-                i.icon-briefcase
-                |  Lecturers
-            li(class='')
-              a(href='reports/all')
+                i.icon-list
+                |  Candidates (#{lec.candidates.length})
+            li
+              a(href='students')
                 i.icon-chevron-right
-                i.icon-book
-                |  Reports
+                i.icon-user
+                |  Fix Students
             li.active
-              a(href='notifications')
-                span.badge.badge-info.pull-right
+              a(href='#')
+                div(class='#{isNotifShow}')
+                  span.badge.badge-info.pull-right #{newNotif}
                 i.icon-volume-up
                 |  Notifications
             li
-              a(href='#')
+              a(href='message/all')
                 span.badge.badge-info.pull-right
                 i.icon-envelope
                 |  Messages
+            li
+              a(href='#')
+                span.badge.badge-info.pull-right
+                i.icon-inbox
+                |  Broadcast
         // /span
         #content.span9
           .row-fluid
