@@ -2,107 +2,202 @@
   "name":"Prof. Abdul Waris, Ph.D",
   "username":"awaris",
   "kk":"Nuclear Physics and Biophysics Research Division",
-  "kk_initial":"nukbio"
+  "kk_initial":"nukbio",
+  "educations":{
+    "undergraduate":"ITB, 1992",
+    "master":"ITB, 1999",
+    "doctoral":"Tokyo Institute of Technology, 2002"
+  }
 },
 {
   "name":"Dr. Acep Purqon",
   "username":"acep",
   "kk":"Physics of Earth and Complex Systems Research Division",
-  "kk_initial":"fisbum"
+  "kk_initial":"fisbum",
+  "educations":{
+    "undergraduate":"ITB, 1998",
+    "master":"ITB, 2001",
+    "doctoral":"Kanazawa University, 2008",
+    "post-doctoral":"Kyoto University, 2010"
+  }
 },
 {
   "name":"Dr. Agoes Soehianie",
   "username":"agoess",
   "kk":"Physics of Magnetism and Photonics Research Division",
-  "kk_initial":"fmf"
+  "kk_initial":"fmf",
+  "educations":{
+    "undergraduate":"ITB, 1988",
+    "master":"",
+    "doctoral":"University of New South Wales, 1995"
+  }
 },
 {
   "name":"Dr. Agus Suroso",
   "username":"agussuroso",
   "kk":"Theoretical High Energy Physics and Instrumentation Research Division",
-  "kk_initial":"fteti"
+  "kk_initial":"fteti",
+  "educations":{
+    "undergraduate":"ITB, 2008",
+    "master":"ITB, 2009",
+    "doctoral":"ITB, 2014"
+  }
 },
 {
   "name":"Dr. Agustinus Agung Nugroho",
   "username":"nugroho",
   "kk":"Physics of Magnetism and Photonics Research Division",
-  "kk_initial":"fmf"
+  "kk_initial":"fmf",
+  "educations":{
+    "undergraduate":"ITB, 1993",
+    "master":"International Center for Theoretical Physics Diploma, Trieste, Italy, 1995",
+    "doctoral":"Universiteit van Amsterdam, 2001",
+    "post-doctoral":"Rijkuniversiteit Groningen, 2002"
+  }
 },
 {
   "name":"Dr. rer.nat Akfiny Hasdi Aimon",
   "username":"akfiny",
-  "kk":""
+  "kk":"",
+  "educations":{
+    "undergraduate":"ITB, 2002",
+    "master":"ITB, 2007",
+    "doctoral":"Universität zu Köln-Germany, 2009"
+  }
 },
 {
   "name":"Dr. Alamta Singarimbun",
   "username":"alamta",
   "kk":"Physics of Earth and Complex Systems Research Division",
-  "kk_initial":"fisbum"
+  "kk_initial":"fisbum",
+  "educations":{
+    "undergraduate":"ITB, 1984",
+    "master":"ITB, 1989",
+    "doctoral":"Kyushu University, Fukuoka - Japan, 1997"
+  }
 },
 {
   "name":"Dr. Eng. Asril Pramutadi Andi Mustari",
   "username":"pramutadi",
-  "kk":""
+  "kk":"",
+  "educations":{
+    "undergraduate":"ITB, 2002",
+    "master":"Tokyo Institute of Technology, 2007",
+    "doctoral":"Tokyo Institute of Technology, 2009",
+    "post-doctoral":"Waseda University, 2012"
+  }
 },
 {
   "name":"Dr. Bagus Endar Nurhandoko",
   "username":"bagus",
   "kk":"Physics of Earth and Complex Systems Research Division",
-  "kk_initial":"fisbum"
+  "kk_initial":"fisbum",
+  "educations":{
+    "undergraduate":"ITB, 1992",
+    "master":"ITB, 1995",
+    "doctoral":"ITB, 2000"
+  },
 },
 {
   "name":"Prof. Dr. Bobby Eka Gunara",
   "username":"bobby",
   "kk":"Theoretical High Energy Physics and Instrumentation Research Division",
-  "kk_initial":"fteti"
+  "kk_initial":"fteti",
+  "educations":{
+    "undergraduate":"ITB, 1996",
+    "master":"ITB, 1999",
+    "doctoral":"Martin Luther Universität HalleWittenberg, Germany, 2003"
+  }
 },
 {
   "name":"Dr. Danieal Kurnia",
   "username":"daniel",
   "kk":"Physics of Magnetism and Photonics Research Division",
-  "kk_initial":"fmf"
+  "kk_initial":"fmf",
+  "educations":{
+    "undergraduate":"ITB, 1984",
+    "master":"",
+    "doctoral":"University College of Swansea, UK, 1990"
+  }
 },
 {
   "name":"Prof. Dr. Doddy Sutarno",
   "username":"sutarno",
   "kk":"Physics of Earth and Complex Systems Research Division",
-  "kk_initial":"fisbum"
+  "kk_initial":"fisbum",
+  "educations":{
+    "undergraduate":"ITB, 1979",
+    "master":"ITB, 1983",
+    "doctoral":"Macquarie University, 1992"
+  }
 },
 {
   "name":"Dr. Eng. Dwi Irwanto",
   "username":"dirwanto",
   "kk":"Nuclear Physics and Biophysics Research Division",
-  "kk_initial":"nukbio"
+  "kk_initial":"nukbio",
+  "educations":{
+    "undergraduate":"ITB, 2004",
+    "master":"ITB, 2006",
+    "doctoral":"Tokyo Institute of Technology, 2012",
+    "post-doctoral":"Japan Atomic Energy Agency, 2014"
+  }
 },
 {
   "name":"Dr. Enjang Jaenal Mustopa",
   "username":"enjang",
   "kk":"Physics of Earth and Complex Systems Research Division",
-  "kk_initial":"fisbum"
+  "kk_initial":"fisbum",
+  "educations":{
+    "undergraduate":"ITB, 1994",
+    "master":"",
+    "doctoral":"Kyushu University, 2003"
+  }
 },
 {
   "name":"Dr. Euis Sustini",
   "username":"euis",
   "kk":"Physics for Electronic Material Research Division",
-  "kk_initial":"fismatel"
+  "kk_initial":"fismatel",
+  "educations":{
+    "undergraduate":"ITB, 1984",
+    "master":"ITB, 1988",
+    "doctoral":"ITB, 2005"
+  }
 },
 {
   "name":"Dr. Fatimah Arofiati Noor",
   "username":"fatimah",
   "kk":"Physics for Electronic Material Research Division",
-  "kk_initial":"fismatel"
+  "kk_initial":"fismatel",
+  "educations":{
+    "undergraduate":"ITB, 2004",
+    "master":"ITB, 2006",
+    "doctoral":"ITB, 2010"
+  }
 },
 {
   "name":"Dr. Ferry Iskandar",
   "username":"ferry",
   "kk":"Physics for Electronic Material Research Division",
-  "kk_initial":"fismatel"
+  "kk_initial":"fismatel",
+  "educations":{
+    "undergraduate":"Kanazawa University, 1993",
+    "master":"",
+    "doctoral":"Hiroshima University, 1999",
+    "post-doctoral":"Hiroshima University, 2006"
+  }
 },
 {
   "name":"Dr. Alexander A.P. Iskandar",
   "username":"iskandar",
   "kk":"Physics of Magnetism and Photonics Research Division",
-  "kk_initial":"fmf"
+  "kk_initial":"fmf",
+  "educations":{
+    "undergraduate":"ITB, 1989",
+    "master":"Durham University, 1995",
+    "doctoral":"(visiting researcher) University of Twente, 2003"
+  }
 },
 {
   "name":"Dr. Berlinson Dominikus Napitu, M.Si",
@@ -114,13 +209,23 @@
   "name":"Dr. Fiki Taufik Akbar Sobar",
   "username":"ftakbar",
   "kk":"Theoretical High Energy Physics and Instrumentation Research Division",
-  "kk_initial":"fteti"
+  "kk_initial":"fteti",
+  "educations":{
+    "undergraduate":"ITB, 2008",
+    "master":"ITB, 2009",
+    "doctoral":"ITB, 2014"
+  }
 },
 {
   "name":"Dr. Fourier Dzar Eljabbar Latief",
   "username":"fourier",
   "kk":"Physics of Earth and Complex Systems Research Division",
-  "kk_initial":"fisbum"
+  "kk_initial":"fisbum",
+  "educations":{
+    "undergraduate":"ITB, 1999",
+    "master":"ITB, 2004",
+    "doctoral":"ITB, 2006"
+  }
 },
 {
   "name":"Gunawan Handayani, M.ScE, Ph.D",
@@ -132,101 +237,189 @@
   "name":"Dr. Freddy Haryanto",
   "username":"freddy",
   "kk":"Nuclear Physics and Biophysics Research Division",
-  "kk_initial":"nukbio"
+  "kk_initial":"nukbio",
+  "educations":{
+    "undergraduate":"ITB, 1994",
+    "master":"ITB, 1996",
+    "doctoral":"Universitaet Tuebingen, 2003"
+  }
 },
 {
   "name":"Prof. Dr. Freddy Permana Zen",
   "username":"fpzen",
   "kk":"Theoretical High Energy Physics and Instrumentation Research Division",
-  "kk_initial":"fteti"
+  "kk_initial":"fteti",
+  "educations":{
+    "undergraduate":"ITB, 1985",
+    "master":"Hiroshima University, 1990",
+    "doctoral":"Hiroshima University, 1994"
+  }
 },
 {
   "name":"Dr. Harry Mahardika",
   "username":"hmahardi",
-  "kk":""
+  "kk":"",
+  "educations":{
+    "undergraduate":"ITB, 2000",
+    "master":"ITB, 2005",
+    "doctoral":"Colorado School of Mines, Golden CO, USA, 2009"
+  }
 },
 {
   "name":"Dr. Hendro",
   "username":"hendro",
   "kk":"Theoretical High Energy Physics and Instrumentation Research Division",
-  "kk_initial":"fteti"
+  "kk_initial":"fteti",
+  "educations":{
+    "undergraduate":"ITB, 1982",
+    "master":"ITB, 1987",
+    "doctoral":"ITB, 2010"
+  }
 },
 {
   "name":"Dr. Herman",
   "username":"herman",
   "kk":"Physics of Magnetism and Photonics Research Division",
-  "kk_initial":"fmf"
+  "kk_initial":"fmf",
+  "educations":{
+    "undergraduate":"ITB, 1986",
+    "master":"ITB, 1989",
+    "doctoral":"Tokyo Institute of Technology, 1997"
+  }
 },
 {
   "name":"Prof. Dr. Idam Arif",
   "username":"idam",
   "kk":"Nuclear Physics and Biophysics Research Division",
-  "kk_initial":"nukbio"
+  "kk_initial":"nukbio",
+  "educations":{
+    "undergraduate":"ITB, 1985",
+    "master":"",
+    "doctoral":"University of Tasmania, 1993"
+  }
 },
 {
   "name":"Dr. Inge Magdalena",
   "username":"inge",
   "kk":"Physics of Magnetism and Photonics Research Division",
-  "kk_initial":"fmf"
+  "kk_initial":"fmf",
+  "educations":{
+    "undergraduate":"ITB, 1996",
+    "master":"ITB, 1998",
+    "doctoral":"Universiteit van Amsterdam, 2003"
+  }
 },
 {
   "name":"Dr. (cand) Irfan Dwi Aditya",
   "username":"irfan",
-  "kk":""
+  "kk":"",
+  "educations":{
+    "undergraduate":"ITB, 2006",
+    "master":"ITB, 2012",
+    "doctoral":""
+  }
 },
 {
   "name":"Dr. Jusak Sali Kosasih",
   "username":"jusak",
   "kk":"Theoretical High Energy Physics and Instrumentation Research Division",
-  "kk_initial":"fteti"
+  "kk_initial":"fteti",
+  "educations":{
+    "undergraduate":"ITB, 1992",
+    "master":"",
+    "doctoral":"University of Tasmania, 1998"
+  }
 },
 {
   "name":"Dr. Khairul Basar",
   "username":"khbasar",
   "kk":"Nuclear Physics and Biophysics Research Division",
-  "kk_initial":"nukbio"
+  "kk_initial":"nukbio",
+  "educations":{
+    "undergraduate":"ITB, 1997",
+    "master":"ITB, 2001",
+    "doctoral":"Ibaraki University, 2007",
+    "post-doctoral":"Ibaraki University, 2008"
+  }
 },
 {
   "name":"Prof. Dr. Khairurrijal",
   "username":"krijal",
   "kk":"Physics for Electronic Material Research Division",
-  "kk_initial":"fismatel"
+  "kk_initial":"fismatel",
+  "educations":{
+    "undergraduate":"ITB, 1989",
+    "master":"ITB, 1993",
+    "doctoral":"Hiroshima University, 2000",
+    "post-doctoral":"Hiroshima University, 2001"
+  }
 },
 {
   "name":"Prof. Lilik Hendrajaya",
   "username":"lilik",
   "kk":"Physics of Earth and Complex Systems Research Division",
-  "kk_initial":"fisbum"
+  "kk_initial":"fisbum",
+  "educations":{
+    "undergraduate":"ITB, 1968",
+    "master":"University of Utah Geophysics, 1974",
+    "doctoral":"Australian National University Geophysics, 1978"
+  }
 },
 {
   "name":"Dr. Linus A Pasasa",
   "username":"lpasasa",
   "kk":"Physics of Earth and Complex Systems Research Division",
-  "kk_initial":"fisbum"
+  "kk_initial":"fisbum",
+  "educations":{
+    "undergraduate":"ITB, 1984",
+    "master":"ITB, 1993",
+    "doctoral":"Karlsruhe University, Germany, 1999"
+  }
 },
 {
   "name":"Dr. Eng. M. Miftahul Munir",
   "username":"miftah",
   "kk":"Theoretical High Energy Physics and Instrumentation Research Division",
-  "kk_initial":"fteti"
+  "kk_initial":"fteti",
+  "educations":{
+    "undergraduate":"ITB, 2003",
+    "master":"ITB, 2005",
+    "doctoral":"Hiroshima University, 2009"
+  }
 },
 {
   "name":"Dr. Maman Budiman",
   "username":"maman",
   "kk":"Theoretical High Energy Physics and Instrumentation Research Division",
-  "kk_initial":"fteti"
+  "kk_initial":"fteti",
+  "educations":{
+    "undergraduate":"ITB, 1990",
+    "master":"Tokyo Institute of Technology",
+    "doctoral":"Tokyo Insitute of Technology, 1998"
+  }
 },
 {
   "name":"Dr. (cand) Maria Evita",
   "username":"maria",
   "kk":"Theoretical High Energy Physics and Instrumentation Research Division",
-  "kk_initial":"fteti"
+  "kk_initial":"fteti",
+  "educations":{
+    "undergraduate":"ITB, 2005",
+    "master":"ITB, 2009",
+    "doctoral":""
+  }
 },
 {
   "name":"Prof. Dr. Mikrajuddin Abdullah",
   "username":"din",
   "kk":"Physics for Electronic Material Research Division",
-  "kk_initial":"fismatel"
+  "kk_initial":"fismatel",
+  "educations":{
+    "undergraduate":"ITB, 1992",
+    "master":"ITB, 1996",
+    "doctoral":"Hiroshima University, 2002",
+    "post-doctoral":"Hiroshima University, 2002"
+  }
 },
 {
   "name":"Neni Surtiyeni, M.Si",
@@ -238,19 +431,34 @@
   "name":"Prof. Dr. Mitra Djamal",
   "username":"mitra",
   "kk":"Theoretical High Energy Physics and Instrumentation Research Division",
-  "kk_initial":"fteti"
+  "kk_initial":"fteti",
+  "educations":{
+    "undergraduate":"ITB, 1984",
+    "master":"",
+    "doctoral":"University of Arm Forces Munich, 1992"
+  }
 },
 {
   "name":"Dr. Neny Kurniasih",
   "username":"neny",
   "kk":"Physics of Earth and Complex Systems Research Division",
-  "kk_initial":"fisbum"
+  "kk_initial":"fisbum",
+  "educations":{
+    "undergraduate":"ITB, 1985",
+    "master":"ITB, 1989",
+    "doctoral":""
+  }
 },
 {
   "name":"Dr. (cand) Nina Siti Aminah",
   "username":"nina",
   "kk":"Theoretical High Energy Physics and Instrumentation Research Division",
-  "kk_initial":"fteti"
+  "kk_initial":"fteti",
+  "educations":{
+    "undergraduate":"ITB, 2002",
+    "master":"ITB, 2009",
+    "doctoral":""
+  }
 },
 {
   "name":"Dr. Eng. Soeparno",
@@ -262,130 +470,240 @@
   "name":"Dr. Novitrian",
   "username":"novit",
   "kk":"Nuclear Physics and Biophysics Research Division",
-  "kk_initial":"nukbio"
+  "kk_initial":"nukbio",
+  "educations":{
+    "undergraduate":"ITB, 1997",
+    "master":"ITB, 2001",
+    "doctoral":"ITB, 2015"
+  }
 },
 {
   "name":"Dr. Nur Asiah Aprianti",
   "username":"nura",
-  "kk":""
+  "kk":"",
+  "educations":{
+    "undergraduate":"ITB, 2007",
+    "master":"ITB, 2010",
+    "doctoral":"Kyushu University, 2014"
+  }
 },
 {
   "name":"Dr. Nurhasan",
   "username":"nurhasan",
   "kk":"Physics of Earth and Complex Systems Research Division",
-  "kk_initial":"fisbum"
+  "kk_initial":"fisbum",
+  "educations":{
+    "undergraduate":"ITB, 1998",
+    "master":"ITB, 2001",
+    "doctoral":"Tokyo Institute of Technology, 2006"
+  }
 },
 {
   "name":"Dr. Pepen Arifin",
   "username":"pepen",
   "kk":"Physics for Electronic Material Research Division",
-  "kk_initial":"fismatel"
+  "kk_initial":"fismatel",
+  "educations":{
+    "undergraduate":"ITB, 1987",
+    "master":"",
+    "doctoral":"Macquarie University, Sydney, Australia, 1997"
+  }
 },
 {
   "name":"Dr. Eng. Sidik Permana",
   "username":"psidik",
   "kk":"Nuclear Physics and Biophysics Research Division",
-  "kk_initial":"nukbio"
+  "kk_initial":"nukbio",
+  "educations":{
+    "undergraduate":"ITB, 2001",
+    "master":"Tokyo Institute of Technology, 2004",
+    "doctoral":"Tokyo Institute of Technology, 2007"
+  }
 },
 {
   "name":"Syeilendra Pramuditya, Ph.D",
   "username":"syeilendra",
   "kk":"Nuclear Physics and Biophysics Research Division",
-  "kk_initial":"nukbio"
+  "kk_initial":"nukbio",
+  "educations":{
+    "undergraduate":"ITB, 2005",
+    "master":"ITB, 2007",
+    "doctoral":"Tokyo Insitute of Technology, 2013"
+  }
 },
 {
   "name":"Dr. Priastuti Wulandari",
   "username":"wulan",
   "kk":"Physics of Magnetism and Photonics Research Division",
-  "kk_initial":"fmf"
+  "kk_initial":"fmf",
+  "educations":{
+    "undergraduate":"Unpad, 2001",
+    "master":"ITB, 2004",
+    "doctoral":"Tokyo Insitute of Technology"
+  }
 },
 {
   "name":"Dr. Rahmat Hidayat",
   "username":"rahmat",
   "kk":"Physics of Magnetism and Photonics Research Division",
-  "kk_initial":"fmf"
+  "kk_initial":"fmf",
+  "educations":{
+    "undergraduate":"ITB, 1993",
+    "master":"ITB, 1998",
+    "doctoral":"Tohoku University, 2005"
+  }
 },
 {
   "name":"Dr. Rena Widita",
   "username":"rena",
   "kk":"Nuclear Physics and Biophysics Research Division",
-  "kk_initial":"nukbio"
+  "kk_initial":"nukbio",
+  "educations":{
+    "undergraduate":"ITB, 1990",
+    "master":"ITB, 1995",
+    "doctoral":"University of New South Wales, 2001"
+  }
 },
 {
   "name":"Dr. Rijal Kurniadi",
   "username":"rijalk",
   "kk":"Nuclear Physics and Biophysics Research Division",
-  "kk_initial":"nukbio"
+  "kk_initial":"nukbio",
+  "educations":{
+    "undergraduate":"ITB, 1995",
+    "master":"ITB, 1997",
+    "doctoral":"ITB, 2004"
+  }
 },
 {
   "name":"Dr. Siti Nurul Khotimah",
   "username":"nurul",
   "kk":"Nuclear Physics and Biophysics Research Division",
-  "kk_initial":"nukbio"
+  "kk_initial":"nukbio",
+  "educations":{
+    "undergraduate":"ITB, 1985",
+    "master":"University of Tasmania, 1992",
+    "doctoral":"ITB, 2005"
+  }
 },
 {
   "name":"Dr. Sparisoma Viridi",
   "username":"dudung",
   "kk":"Nuclear Physics and Biophysics Research Division",
-  "kk_initial":"nukbio"
+  "kk_initial":"nukbio",
+  "educations":{
+    "undergraduate":"ITB, 1998",
+    "master":"ITB, 2001",
+    "doctoral":"Technische Universitat Dortmund, 2007"
+  }
 },
 {
   "name":"Dr. Suprijadi",
   "username":"supri",
   "kk":"Theoretical High Energy Physics and Instrumentation Research Division",
-  "kk_initial":"fteti"
+  "kk_initial":"fteti",
+  "educations":{
+    "undergraduate":"ITB, 1991",
+    "master":"Nagoya University, 1998",
+    "doctoral":"Nagoya University, 2001"
+  }
 },
 {
   "name":"Prof. Dr. Toto Winata",
   "username":"toto",
   "kk":"Physics for Electronic Material Research Division",
-  "kk_initial":"fismatel"
+  "kk_initial":"fismatel",
+  "educations":{
+    "undergraduate":"ITB, 1985",
+    "master":"",
+    "doctoral":"Murdoch University, 1987"
+  }
 },
 {
   "name":"Dr. Triati Dewi Kencana Wungu",
   "username":"triati",
   "kk":"Nuclear Physics and Biophysics Research Division",
-  "kk_initial":"nukbio"
+  "kk_initial":"nukbio",
+  "educations":{
+    "undergraduate":"ITB, 2005",
+    "master":"ITB, 2010",
+    "doctoral":"Osaka University, 2013"
+  }
 },
 {
   "name":"Prof. Dr. Triyanta",
   "username":"triyanta",
   "kk":"Theoretical High Energy Physics and Instrumentation Research Division",
-  "kk_initial":"fteti"
+  "kk_initial":"fteti",
+  "educations":{
+    "undergraduate":"ITB, 1986",
+    "master":"ITB, 1988",
+    "doctoral":"University of Tasmania, 1992"
+  }
 },
 {
   "name":"Prof. Dr. rer.nat Umar Fauzi",
   "username":"umarf",
   "kk":"Physics of Earth and Complex Systems Research Division",
-  "kk_initial":"fisbum"
+  "kk_initial":"fisbum",
+  "educations":{
+    "undergraduate":"ITB, 1988",
+    "master":"",
+    "doctoral":"Universitaet zu Koeln, Germany, 1997"
+  }
 },
 {
   "name":"Dr. (cand) Wahyu Hidayat",
   "username":"wahid",
   "kk":"Theoretical High Energy Physics and Instrumentation Research Division",
-  "kk_initial":"fteti"
+  "kk_initial":"fteti",
+  "educations":{
+    "undergraduate":"ITB, 2002",
+    "master":"ITB, 2004",
+    "doctoral":""
+  }
 },
 {
   "name":"Dr. Wahyu Srigutomo",
   "username":"wahyu",
   "kk":"Physics of Earth and Complex Systems Research Division",
-  "kk_initial":"fisbum"
+  "kk_initial":"fisbum",
+  "educations":{
+    "undergraduate":"ITB, 1995",
+    "master":"ITB, 1997",
+    "doctoral":"University of Tokyo, 2002"
+  }
 },
 {
   "name":"Dr. Widayani",
   "username":"widayani",
   "kk":"Nuclear Physics and Biophysics Research Division",
-  "kk_initial":"nukbio"
+  "kk_initial":"nukbio",
+  "educations":{
+    "undergraduate":"ITB, 1984",
+    "master":"ITB, 1991",
+    "doctoral":"UMIST, Materials Science Centre, Manchester, UK, 2003"
+  }
 },
 {
   "name":"Dr. Yudi Darma",
   "username":"yudi",
   "kk":"Physics for Electronic Material Research Division",
-  "kk_initial":"fismatel"
+  "kk_initial":"fismatel",
+  "educations":{
+    "undergraduate":"ITB, 1998",
+    "master":"ITB, 2001",
+    "doctoral":"Hiroshima University, 2004"
+  }
 },
 {
   "name":"Prof. Dr. Eng. Zaki Su'ud",
   "username":"szaki",
   "kk":"Nuclear Physics and Biophysics Research Division",
-  "kk_initial":"nukbio"
+  "kk_initial":"nukbio",
+  "educations":{
+    "undergraduate":"ITB, 1986",
+    "master":"Tokyo Institute of Technology, 1992",
+    "doctoral":"Tokyo Insitute of Technology, 1995"
+  }
 }]
