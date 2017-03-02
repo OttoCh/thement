@@ -12,6 +12,7 @@ const baseurl = 'http://localhost:3500/student'
 const root_url= 'http://localhost:3500'
 
 exports.getAll = function(req, res){
+  
   let nim = req.session.student
   let hideAllMsg = 'hide', showInbox = 'hide', showOutbox = 'hide'
   student.findOne({nim:nim}, function(err, std){
@@ -29,14 +30,10 @@ exports.getAll = function(req, res){
             // get query
             let quer = req.query.type
             if(quer == 'outbox'){
-              showOutbox = ''
+              showOutbox = '', showInbox = 'hide'
               console.log('outbox message')
-            } else if(quer == 'inbox') {
-              showInbox = ''
-              console.log('inbox message')
             } else {
-              console.log('no detected')
-              hideAllMsg = ''
+              showOutbox = 'hide', showInbox = ''
             }
 
             // get all inbox

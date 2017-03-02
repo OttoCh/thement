@@ -40,6 +40,7 @@ router.get('/notification/delete/:id', notif.removeSingleNotif)
 
 router.get('/message/all?', msg.getAll)
 router.get('/message/:nim', msg.getMsgByNIM)
+router.post('/message/send', msg.sendMessage)
 
 router.use(function(req, res, next){
   res.status(404)

@@ -102,7 +102,31 @@ exports.getMsgByNIM = function(req, res){
             }
         )
     })
+}
 
-    // get query
-
+exports.sendMessage = function(req, res){
+    let lecturer    = req.session.lecturer
+    let nim         = req.body.nim
+    let msgBody     = req.body.msg
+    let supervisor  = req.body.supervisor 
+  console.log('NIM : '+ nim + ' which type is ' + typeof(nim))
+  msg.findOne({nim:Number(nim)}, function(e, m){
+    let msgLength = m.messages.length
+      if(msgLength > 0){
+        msgLength = msgLength
+      } else {
+        msgLength = 0
+      }
+      msg.update({nim:Number(nim)},{$push:{
+      messages:{
+        "id":msgLength+1,
+        "author": lecturer,
+        "body": msgBody,
+        "date_created": new Date()
+      }
+    },}, function(err, sent){
+      console.log('message sent')
+      res.redirect(baseurl+'/message/all')
+    })
+  })
 }
