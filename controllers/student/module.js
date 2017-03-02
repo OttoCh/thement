@@ -247,15 +247,20 @@ exports.getHome = function(req, res){
           }
         } else {
           // student has not created message yet
+          // still hardcode
           allMsgs = 'no message yet'
+          msg = []
+          objMsgs = []
         }
       
       // SHOW or HIDE 'NEW' message
       let msgShow = 'hide', msgNotif, coloredMsg
       if(msg.has_seen_std == true){
         msgShow = 'hide', msgNotif = '', coloredMsg = ''
+      } else if(msg.has_seen_std == false) {
+        msgShow = '', msgNotif = 'NEW', coloredMsg = '#F6E18E'
       } else {
-        msgShow = '', msgNotif = 'NEW', coloredMsg = '#b3d9ff'
+        msgShow = 'hide', msgNotif = '', coloredMsg = ''
       }
 
       // REPORT CHECKING

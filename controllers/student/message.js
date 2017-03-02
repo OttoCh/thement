@@ -17,6 +17,7 @@ exports.getAll = function(req, res){
   let hideAllMsg = 'hide', showInbox = 'hide', showOutbox = 'hide'
   student.findOne({nim:nim}, function(err, std){
     if(std.supervisor !== "" && std.is_accepted == true){
+      // findOne, if not found, create one
       let superv      = std.supervisor
       lecturer.findOne({username:superv}, function(err, full){
         let supervFull = full.name

@@ -64,9 +64,26 @@ exports.postChooseLecturer = function(req, res){
         },
       }, function(e, s){
         if(s){
-          console.log('success choosing lecturer')
-          chooseCode = 'Success choosing lecturer'
-          res.redirect(baseurl+'/lecturers')
+          // add notif to lecturer
+          lecturer.findOne({username:lecturerChosen}, function(e, lec){
+            let nLength = lec.notifs.length
+            lecturer.update({username:lecturerChosen},{$set:{
+              notif_seen:false
+            },
+              $push:{
+                notifs:{
+                  "id":nLength+1,
+                  "notif":"You are chosen by "+nim ,
+                  "date":new Date()
+                }
+              },
+            }, function(e, cb){
+                console.log('success choosing lecturer')
+                chooseCode = 'Success choosing lecturer'
+                res.redirect(baseurl+'/lecturers')
+            }
+           )
+          })
         } else {
           console.log('error writing to lecturer')
           res.send('error writing to lecturer')

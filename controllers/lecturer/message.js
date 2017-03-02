@@ -35,7 +35,13 @@ exports.getMsgByNIM = function(req, res){
 
     // query for student's last seen
     student.findOne({nim:nim}, function(e, std){
-        let last_seen = funcs.friendlyDate(std.last_login)
+        let login = std.last_login
+        let last_seen = ''
+        if(login == null){
+            last_seen = '1st time'
+        } else {
+            last_seen = funcs.friendlyDate(login)
+        }
         let showInbox = 'hide', showOutbox = 'hide'
         
         // set default to inbox

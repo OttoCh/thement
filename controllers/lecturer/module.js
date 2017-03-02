@@ -3,6 +3,7 @@
 var Lect        = require('../../models/lecturer'),
     Student     = require('../../models/student'),
     Std         = require('../../models/student.model'),
+    msg         = require('../../models/message'),
     funcs       = require('../../middlewares/funcs'),
     report      = require('../../models/report')
 
@@ -200,7 +201,7 @@ exports.acceptCandidate = function(req, res){
                 },
               }, function(e, s){
                     let supervisor = f.supervisor
-                    //console.log('NIM : ' + nim + ' and Supervisor is ' + supervisor)
+                    // create initial report
                     var rep         = new report()
                     rep.nim         = nimToAccept
                     rep.supervisor  = supervisor
@@ -208,8 +209,20 @@ exports.acceptCandidate = function(req, res){
                     rep.is_approved = false
                     rep.save(function(err){
                       if(!err){
-                        console.log('is_accepted is true')
-                        res.redirect(baseurl+'/candidates')
+                        // create initial message
+                        var m               = new msg()
+                        m.nim               = nimToAccept
+                        m.members           = [lecturer,nimToAccept.toString()]
+                        m.has_seen_std      = true
+                        m.has_seen_lecturer = true
+                        m.save(function(err){
+                          if(err){
+                            console.log('Error! ', err)
+                          } else {
+                            console.log('is_accepted is true')
+                            res.redirect(baseurl+'/candidates')
+                          }
+                        })
                       }
                     })
                   }
