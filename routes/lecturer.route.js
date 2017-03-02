@@ -5,7 +5,8 @@ var express     = require('express'),
 const baseurl   = 'http://localhost:3500/lecturer'
 
 var lecturer    = require('../controllers/lecturer/module'),
-    notif       = require('../controllers/lecturer/notif')
+    notif       = require('../controllers/lecturer/notif'),
+    msg         = require('../controllers/lecturer/message')
 
 router.get('/', lecturer.getIndex)
 router.get('/login', lecturer.getLoginPage)
@@ -36,6 +37,9 @@ router.get('/notifications', notif.getNotifs)
 router.get('/notifications/delete_all', notif.removeAllNotifs)
 router.get('/notification/:id', notif.getSingleNotif)
 router.get('/notification/delete/:id', notif.removeSingleNotif)
+
+router.get('/message/all?', msg.getAll)
+router.get('/message/:nim', msg.getMsgByNIM)
 
 router.use(function(req, res, next){
   res.status(404)
