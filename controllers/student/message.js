@@ -90,10 +90,17 @@ exports.getAll = function(req, res){
                         return parseFloat(b.index) - parseFloat(a.index)
                       })
                       console.log('ALL OUTBOX : ', outboxMsg)
-                                            
-                      res.render('student/message/all', {title:"All Messages", baseurl, supervFull, nim,
-                        hideAllMsg, showInbox, showOutbox, superv, inboxMsg, outboxMsg
+
+                      // set has_seen_std to true
+                      msg.update({nim:nim},{$set:{
+                        has_seen_std:true
+                      },}, function(e, cb){
+                        if(cb){
+                          res.render('student/message/all', {title:"All Messages", baseurl, supervFull, nim,
+                          hideAllMsg, showInbox, showOutbox, superv, inboxMsg, outboxMsg
                       })
+                        }
+                      }) 
                     } else {
                       console.log('no outgoing message')
                     }

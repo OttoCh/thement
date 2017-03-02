@@ -249,6 +249,14 @@ exports.getHome = function(req, res){
           // student has not created message yet
           allMsgs = 'no message yet'
         }
+      
+      // SHOW or HIDE 'NEW' message
+      let msgShow = 'hide', msgNotif, coloredMsg
+      if(msg.has_seen_std == true){
+        msgShow = 'hide', msgNotif = '', coloredMsg = ''
+      } else {
+        msgShow = '', msgNotif = 'NEW', coloredMsg = '#b3d9ff'
+      }
 
       // REPORT CHECKING
       report.findOne({nim:nim}, function(err, rep){
@@ -281,13 +289,13 @@ exports.getHome = function(req, res){
           res.render('student/home', {title: "Dashboard ", nim, student, login, state, stateColor, supervisor,
             notifs, colored, hideChoosing, reportCreate, nReport, msgReport, reportStatus,
             coloredStatus, statusStyle, divReport, newNotif, registered_at,
-            acceptance, isNotifShow, allMsgs, objMsgs
+            acceptance, isNotifShow, allMsgs, objMsgs, msgShow, msgNotif, coloredMsg
           })
         } else {
           res.render('student/home', {title: "Dashboard ", nim, student, login, state, stateColor, supervisor,
             notifs, colored, hideChoosing, reportCreate, nReport, msgReport, reportStatus,
             coloredStatus, statusStyle, divReport, newNotif, registered_at,
-            acceptance, isNotifShow, allMsgs, objMsgs
+            acceptance, isNotifShow, allMsgs, objMsgs, msgShow, msgNotif, coloredMsg
             })
           }
         })

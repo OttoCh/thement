@@ -117,7 +117,9 @@ exports.sendMessage = function(req, res){
       } else {
         msgLength = 0
       }
-      msg.update({nim:Number(nim)},{$push:{
+      msg.update({nim:Number(nim)},{$set:{
+          has_seen_std:false
+      },$push:{
       messages:{
         "id":msgLength+1,
         "author": lecturer,
