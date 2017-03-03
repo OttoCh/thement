@@ -14,7 +14,8 @@ var lecturerSchema = new Schema ({
   passwordreset_link: String,
   candidates: [],
   students: [],
-  notifs: []
+  notifs: [],
+  educations: {}
 })
 
 module.exports = mongoose.model('Lecturer', lecturerSchema)

@@ -17,20 +17,30 @@ exports.getLecturers = function(req, res){
 }
 
 exports.getDetailLecturer = function(req, res){
-  let nim = req.session.student
-  student.findOne({nim: nim}, function(err, std){
-    if(std.is_choose == true){
-      hiding = 'hide'
-      lect.get(req.params.username, function(err, lecturer){
-        res.render('student/lecturer-detail', {title:"Lecturer detail", nim, lecturer, baseurl, hiding})
+  let nim   = req.session.student
+  let param = req.params.username
+  lecturer.findOne({username:param},function(err, found){
+    if(found){
+      let profile = found
+      console.log('lecturer profile : ', profile)
+      student.findOne({nim: nim}, function(err, std){
+        if(std.is_choose == true){
+          hiding = 'hide'
+          lect.get(req.params.username, function(err, lecturer){
+            res.render('student/lecturer-detail', {title:"Lecturer detail", nim, lecturer, baseurl, hiding, profile})
+          })
+        } else {
+          let n = std.notifs.length
+          console.log(n)
+          hiding = ''
+          lect.get(req.params.username, function(err, lecturer){
+            res.render('student/lecturer-detail', {title:"Lecturer detail", nim, lecturer, baseurl, hiding, profile})
+          })
+        }
       })
-    } else {
-      let n = std.notifs.length
-      console.log(n)
-      hiding = ''
-      lect.get(req.params.username, function(err, lecturer){
-        res.render('student/lecturer-detail', {title:"Lecturer detail", nim, lecturer, baseurl, hiding})
-      })
+    } else{
+      console.log('not found')
+      res.redirect(baseurl)
     }
   })
 }

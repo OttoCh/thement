@@ -96,12 +96,16 @@ html
                       h4 Education
                       p
                         ul
-                          li Bachelor, Institut Teknologi Bandung (1984)
-                          li Magister, University of Wisconsin, Madison-USA (1988)
-                          li Doctor, University of Wisconsin, Madison-USA (1993)
+                          li Bachelor : #{profile.educations.undergraduate} 
+                          li Master : #{profile.educations.master}
+                          li Doctoral : #{profile.educations.doctoral}
                     li
                       h4 Research division
                       p=lecturer.kk
+                    p
+                      a(href=baseurl+'/lecturers')
+                        i.icon-arrow-left
+                        |  Back to all
                       
                     //- button.btn.btn-primary(type='submit' class='#{hiding}')
                     //-   i.icon-ok.icon-white

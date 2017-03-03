@@ -1,5 +1,4 @@
-[
-    /* 1 */
+/* 1 */
 {
     "_id" : ObjectId("58ae833511a3773ef03245bb"),
     "name" : "Dr. Acep Purqon",
@@ -8,11 +7,41 @@
     "kk_initial" : "fisbum",
     "oldpass" : "acep123",
     "candidates" : [],
-    "students" : [],
+    "students" : [ 
+        "10213100", 
+        "10213002", 
+        "10213003"
+    ],
     "newpass" : "98ba03a1af37ba68c966bd08caa96eb69305c4c8f5e1741083892a661bef9033e320955d5d22f57122e9874a82c344acvsIDABHEP1R9yYY5v6f23g==",
-    "last_login" : "",
-    "notifs" : [],
-    "notif_seen" : false
+    "last_login" : ISODate("2017-03-02T17:22:53.498Z"),
+    "notifs" : [ 
+        {
+            "id" : 1,
+            "notif" : "You are chosen by 10213100",
+            "date" : ISODate("2017-03-02T16:34:25.011Z")
+        }, 
+        {
+            "id" : 2,
+            "notif" : "10213100 created a report",
+            "date" : ISODate("2017-03-02T16:47:47.401Z")
+        }, 
+        {
+            "id" : 3,
+            "notif" : "You are chosen by 10213050",
+            "date" : ISODate("2017-03-02T16:55:14.028Z")
+        }, 
+        {
+            "id" : 4,
+            "notif" : "You are chosen by 10213002",
+            "date" : ISODate("2017-03-02T17:05:25.348Z")
+        }, 
+        {
+            "id" : 5,
+            "notif" : "You are chosen by 10213003",
+            "date" : ISODate("2017-03-02T17:15:48.680Z")
+        }
+    ],
+    "notif_seen" : true
 }
 
 /* 2 */
@@ -736,4 +765,3 @@
     "notifs" : [],
     "notif_seen" : false
 }
-]
