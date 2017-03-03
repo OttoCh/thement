@@ -107,9 +107,11 @@ html
                   hr
                   strong  List of all students
                   ul
-                    each val in stds
+                    each val in allNIMS
                         li
-                            a(href='../message/#{val}') #{val}
+                          div
+                            a(href='../message/#{val.nim}') #{val.nim} - #{val.unread}
+                              
                   p
                     a(href='#myModal' data-toggle='modal' class='btn btn-success') 
                         i.icon-plus-sign.icon-white
@@ -175,18 +177,18 @@ html
                     //-         td=val.body
                     //-         td=val.date_created
                   .span3
-                    h4 TYPE
+                    //- h4 TYPE
                     
-                    p
-                    a(href=baseurl+'/message/all') 
-                        button.btn.btn-success
-                          i.icon-inbox.icon-white
-                          strong  Inbox
-                    p
-                    a(href='?type=outbox') 
-                        button.btn.btn-primary
-                          i.icon-envelope.icon-white
-                          strong  Outbox
+                    //- p
+                    //- a(href=baseurl+'/message/all') 
+                    //-     button.btn.btn-success
+                    //-       i.icon-inbox.icon-white
+                    //-       strong  Inbox
+                    //- p
+                    //- a(href='?type=outbox') 
+                    //-     button.btn.btn-primary
+                    //-       i.icon-envelope.icon-white
+                    //-       strong  Outbox
       hr
       footer
         center

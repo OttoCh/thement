@@ -16,8 +16,45 @@ exports.getAll = function(req, res){
     lecturer.findOne({username:lec}, function(err, found){
         if(found){
             let stds = found.students
+            console.log('all nims early : ', stds)
             let objStd = []
-            res.render('lecturer/message/all', {title:"All messages", stds})
+            let allNIMS = []
+            for(var j=0; j<stds.length; j++){
+                allNIMS.push({
+                    id:j,
+                    nim:stds[j],
+                    unread:''
+                })
+            }
+            console.log('All NIMS : ', allNIMS)
+
+            // CHECK IF THERE'S UNREAD MESSAGE
+            msg.find({members:{$all:[lec]}, $and:[{has_seen_lecturer:false}]},
+                function(err, unread){
+                    let msgs = unread.length
+                    console.log('very initial : ', unread)
+                    // get all nim
+                    let unreadNIMS = []
+                    for(var i=0; i<msgs; i++){
+                        unreadNIMS.push({
+                            id:i,
+                            nim:unread[i].nim,
+                            unread:'new unread message'
+                        })
+                    }
+                    console.log('initial UNREAD ', unreadNIMS)
+
+                    // SHOW ONLY READ MESSAGE
+                    while (unreadNIMS.length) {
+                        var nd = unreadNIMS.shift(), nam = nd.id, vie = nd.unread;
+                        if (!allNIMS.some(function(md) {
+                            if (md.id === nam) {md.unread += vie; return true;}
+                        })) allNIMS.push(nd);
+                    }
+                    console.log('final UNREAD : ', allNIMS)
+                    res.render('lecturer/message/all', {title:"All messages", stds, allNIMS})
+                }
+            )
         }
     })
 }
