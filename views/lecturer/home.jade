@@ -23,7 +23,8 @@ html.no-js
           .nav-collapse.collapse
             ul.nav.pull-right
               li.dropdown
-                a.dropdown-toggle(href='#', role='button', data-toggle='dropdown')
+                a.dropdown-toggle(href='#', role='button', data-toggle='dropdown',
+                style='color:#001a33; background:#{coloredMsg}; font-weight:bold;')
                   i.icon-envelope
                   strong  Messages
                   i.caret
@@ -108,7 +109,8 @@ html.no-js
                 |  Notifications
             li
               a(href='message/all')
-                span.badge.badge-info.pull-right
+                div(class='#{showMsgNotif')
+                span.badge.badge-warning.pull-right #{newMsg}
                 i.icon-envelope
                 |  Messages
             li

@@ -1,51 +1,25 @@
-1. STUDENT
-  # backend
-  // 1st milestone
-  [-] registration
-  [-] login
-  [-] settings (email, password)   => email (no need)
-  [-] profile (user detail, image) => image upload still fails => buggy on loading
+[ ] NOTIFICATIONS:
+    - delete one          []
+    
+[ ] MESSAGE:
+    - one-to-one messaging  [-]
+    - one-to-many messaging []
+    - broadcast             []
 
-  // 2nd milestone
-  [ ] db schema
-  [ ] choosing lecturer
-      STATUS :
-      1) none       => not yet choosing, REQUIRED : is_choose is false                                      [-]
-      1.1) rejected => NOTIFICATION                                                                         [-]
-      2) pending    => chosen, not accepted/rejected yet, REQUIRED : is_choose is true && supervisor != ""  [-]
-      3) accepted   => chosen, accepted, REQUIRED : is_accepted is true                                     [-]
+[ ] LECTURERS:
+    - next/previous click   []
+    
+// 3rd milestone
+[ ] broadcast message (admin-student & admin-lecturer & admin-student-lecturer)
+[ ] Sidang 1 & 2 status
+[ ] Pemilihan ruang
 
-  [ ] NOTIFICATIONS:
-        - read all            [-]
-        - delete all          [-]
-        - view one            [-]
-        - delete one          []
-        - read/unread status  [-]
-        - show top latest 3   []
-        BUG : notif date ERROR
-  [ ] verification (done)
-  [ ] Progress report (APIs)
-      ATURAN :
-      1. baru bisa nambah setelah diverifikasi  [-]
-      2. upload file optional                   [-]
-      3. bisa diedit sampai disetujui           [-]
-
-      # FILE uploading
-      1. show message when file is not yet in there
-
-
-  // 3rd milestone
-  [ ] private message (student-lecturer)
-  [ ] broadcast message (admin-student & admin-lecturer & admin-student-lecturer)
-  [ ] Sidang 1 & 2 status
-  [ ] Pemilihan ruang
-
-  // 4th milestone
-  [] ADMIN LEVEL
+// 4th milestone
+[] ADMIN LEVEL
     1. super
     2. operator
     3. kaprodi
 
 # PROBLEMS :
-1. uploading file still buggy
-2. sortir table still fails
+1. upload file
+2. 

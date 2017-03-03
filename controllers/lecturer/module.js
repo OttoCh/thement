@@ -91,8 +91,22 @@ exports.getHome = function(req, res){
         colored = '', isNotifShow = 'hide'
       }
 
-      res.render('lecturer/home', {title: "Home", baseurl, found, hiding, 
-      msgAlert, stds, cans, colored, isNotifShow, newNotif, notifs})
+      msg.find({members:{$all:[lecturer]},$and:[{has_seen_lecturer:false}]},
+        function(err, matched){
+          // CHECK IF LENGTH > 0
+          let docs = matched
+          let coloredMsg = '', showMsgNotif = 'hide', newMsg = ''
+          if(matched.length > 0){
+            console.log('there is UNSEEN MESSAGES')
+            coloredMsg = '#F6E18E', showMsgNotif = '', newMsg = 'NEW'
+          } else {
+            console.log('all messages had been read')
+            coloredMsg = '', showMsgNotif = 'hide', newMsg = ''
+          }
+          res.render('lecturer/home', {title: "Home", baseurl, found, hiding, 
+          msgAlert, stds, cans, colored, isNotifShow, newNotif, notifs, coloredMsg, showMsgNotif, newMsg})
+        }
+      )
     } else {
       console.log('no lecturer found')
     }

@@ -131,7 +131,11 @@ exports.sendMessage = function(req, res){
       } else {
         msgLength = 0
       }
-      msg.update({nim:nim},{$push:{
+      // ADD MESSAGE NOTIF TO LECTURER
+      msg.update({nim:nim},{$set:{
+        has_seen_lecturer:false
+      },
+      $push:{
       messages:{
         "id":msgLength+1,
         "author": nim.toString(),

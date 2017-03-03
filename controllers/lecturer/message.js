@@ -17,12 +17,6 @@ exports.getAll = function(req, res){
         if(found){
             let stds = found.students
             let objStd = []
-            // for(var i=0; i<stds.length; i++){
-            //     objStd.push({
-            //         index:i,
-            //         nim:stds[i]
-            //     })
-            // }
             res.render('lecturer/message/all', {title:"All messages", stds})
         }
     })
@@ -97,8 +91,16 @@ exports.getMsgByNIM = function(req, res){
                                 outboxMsg.sort(function(a,b){
                                     return parseFloat(b.index) - parseFloat(a.index)
                                 })
-                                console.log('FINAL OUTBOX : ', outboxMsg)
-                                res.render('lecturer/message/msg-nim', {title:"Message by NIM", nim, last_seen, inboxMsg, outboxMsg, showInbox, showOutbox})
+
+                                // SET has_seen_lecturer to TRUE
+                                let nimToSet = Number(nim)
+                                msg.update({nim:nim},{$set:{
+                                    has_seen_lecturer: true
+                                },}, function(err, updated){
+                                        console.log('FINAL OUTBOX : ', outboxMsg)
+                                        res.render('lecturer/message/msg-nim', {title:"Message by NIM", nim, last_seen, inboxMsg, outboxMsg, showInbox, showOutbox})
+                                    }
+                                )
                             }
                         }
                     )
@@ -123,6 +125,7 @@ exports.sendMessage = function(req, res){
       } else {
         msgLength = 0
       }
+      // ADD MESSAGE NOTIF TO STUDENT
       msg.update({nim:Number(nim)},{$set:{
           has_seen_std:false
       },$push:{
