@@ -67,6 +67,7 @@ exports.removeAllNotifs = function(req, res){
     notifs: []
   },}, function(err, removed){
     console.log('all notifs removed')
+    req.flash('success','All notifs removed')
     res.redirect(baseurl+'/notifications')
   })
 }

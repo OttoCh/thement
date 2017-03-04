@@ -11,6 +11,7 @@ var express         = require('express'),
     morgan          = require('morgan'),
     winston         = require('winston'),
     compression     = require('compression'),
+    flash           = require('express-flash'),
     app             = express();
 
 mongoose.connect('mongodb://127.0.0.1:27017/tugasakhir');
@@ -27,6 +28,21 @@ app.use(session({
   })
 );
 
+// flash session
+app.use(cookieParser('secret'));
+app.use(session({
+    cookie: { maxAge: 60000 },
+    store: new MongoStore({ url: 'mongodb://127.0.0.1:27017/tugasakhir'}),
+    saveUninitialized: true,
+    resave: 'true',
+    secret: 'secret'
+}));
+app.use(flash());
+app.use(function(req, res, next){
+    res.locals.success = req.flash('success');
+    res.locals.errors = req.flash('error');
+    next();
+});
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());

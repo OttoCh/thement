@@ -176,6 +176,19 @@ html
                             td=val.body
                             td=val.date_created
 
+                    //- flash message
+                    if error && error.length > 0
+                      .alert.alert-danger.alert-dismissible.fade-in(role="alert")
+                        button.close(type="button" data-dismiss="alert" aria-label="Close")
+                          span(aria-hidden="true") ×
+                        p(class='lead')= error
+                    if success && success.length > 0
+                      .alert.alert-success.alert-dismissible.fade-in(role="alert")
+                        button.close(type="button" data-dismiss="alert" aria-label="Close")
+                          span(aria-hidden="true") ×
+                        strong Success!
+                        p= success
+
                     //- outbox message
                     h4(class='#{showOutbox}') Outbox Messages
                     table.table.table-hover(class='#{showOutbox} success')

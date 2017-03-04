@@ -5,6 +5,8 @@ var express   = require('express'),
     router    = express.Router()
 
 router.get('/', function(req, res){
+  // flash message
+  req.flash('info', 'Welcome')
   res.render('static/home', {title:"Homepage"})
 })
 

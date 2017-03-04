@@ -144,6 +144,7 @@ exports.sendMessage = function(req, res){
       }
     },}, function(err, sent){
       console.log('message sent')
+      req.flash('success', 'Message sent')
       res.redirect(baseurl+'/message/all')
     })
   })

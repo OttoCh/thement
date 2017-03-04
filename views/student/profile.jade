@@ -133,13 +133,18 @@ html
                         button.btn.btn-primary(type='submit') Save changes
                         &nbsp;
                         button.btn(type='reset') Cancel
-                    
-                  if(profileCode !== '')
-                    strong
-                      .alert.alert-success(class='#{hiding}') 
-                        button.close(type='button', data-dismiss='alert') ×
-                        h4 
-                        | #{profileCode}
+                  //- flash message
+                  if error && error.length > 0
+                    .alert.alert-danger.alert-dismissible.fade-in(role="alert")
+                      button.close(type="button" data-dismiss="alert" aria-label="Close")
+                        span(aria-hidden="true") ×
+                      p= error
+                  if success && success.length > 0
+                    .alert.alert-success.alert-dismissible.fade-in(role="alert")
+                      button.close(type="button" data-dismiss="alert" aria-label="Close")
+                        span(aria-hidden="true") ×
+                      p= success
+
                 .span3
                   form(method='post' action='profile/imgupload' enctype='multipart/form-data')
                     h4  Image profile 

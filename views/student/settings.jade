@@ -92,7 +92,7 @@ html
                       .control-group
                         label.control-label(for='focusedInput') Current password
                         .controls
-                          input#focusedInput.input-xlarge.focused(type='password', name='old_pass', required)
+                          input#focusedInput.input-xlarge.focused(type='text', name='old_pass', value='#{oldpass}', readOnly='true' required)
                       .control-group
                         label.control-label(for='focusedInput') New password
                         .controls
@@ -106,19 +106,19 @@ html
                         button.btn.btn-primary(type='submit') Save changes
                         &nbsp;
                         button.btn(type='reset') Cancel
+
+                  //- flash message
+                  if error && error.length > 0
+                    .alert.alert-danger.alert-dismissible.fade-in(role="alert")
+                      button.close(type="button" data-dismiss="alert" aria-label="Close")
+                        span(aria-hidden="true") ×
+                      p(class='lead')= error
+                  if success && success.length > 0
+                    .alert.alert-success.alert-dismissible.fade-in(role="alert")
+                      button.close(type="button" data-dismiss="alert" aria-label="Close")
+                        span(aria-hidden="true") ×
+                      p(class='lead')= success
                   
-                  if(settingsCode !== '')
-                    strong
-                      .alert.alert-success(class='#{hiding}') 
-                        button.close(type='button', data-dismiss='alert') ×
-                        h4 
-                        | #{settingsCode}
-                  //- else 
-                  //-   strong
-                  //-     .alert.alert-danger(class='#{hiding}') 
-                  //-       button.close(type='button', data-dismiss='alert') ×
-                  //-       h4 
-                  //-       | #{settingsWrongCode}
             // /block
       hr
     // /.fluid-container

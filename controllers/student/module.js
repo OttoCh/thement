@@ -313,7 +313,7 @@ exports.getProfile = function(req, res){
   let nimToUpdate = req.session.student
   Student.findOne({nim:nimToUpdate}, function(err, found){
     try{
-      res.render('student/profile', {title: "Profile", nimToUpdate, hiding, profileCode, found})
+      res.render('student/profile', {title: "Profile", nimToUpdate, found})
     } catch(err){
       throw err
     }
@@ -323,8 +323,9 @@ exports.getProfile = function(req, res){
 exports.getSettings = function(req, res){
   let nim = req.session.student
   Student.findOne({nim:nim}, function(err, success){
+    let oldpass = funcs.decryptTo(success.password)
     try{
-      res.render('student/settings', {title: "Settings", nim, hiding, code, settingsCode, settingsWrongCode})
+      res.render('student/settings', {title: "Settings", nim, code, oldpass})
     } catch(err){
       throw err
     }
@@ -761,8 +762,7 @@ exports.changePassword = function(req, res){
       oldPass     = req.body.old_pass,
       newPass     = req.body.new_pass,
       rePass      = req.body.re_newpass,
-      nim         = req.session.student,
-      hiding      = 'hide'
+      nim         = req.session.student
 
   if(oldPass !== '' && newPass !== ''){
     Student.findOne({nim: nimToChange}, function(e, s){
@@ -771,21 +771,8 @@ exports.changePassword = function(req, res){
         if(oldPass == decrypted){
         // check if retype password same
         if(newPass !== rePass){
-          hiding = ''
-          settingsWrongCode = 'password not match'
-          console.log('password not same')
-          res.format({
-            json: function(){
-              res.json({
-                status:false,
-                message:'password not the same'
-              })
-            },
-            html: function(){
-              // res.render('student/settings', {title: "Settings", nim:nim, hiding:hiding, settingsCode:settingsCode, settingsWrongCode:settingsWrongCode})
-              res.send('password not the same')
-            }
-          })
+          req.flash('error', 'Confirmation password does not match!')
+          res.redirect('./settings')
         } else {
           let encrypted = funcs.encryptTo(newPass)
             Student.update({nim: nimToChange}, {$set: {
@@ -794,27 +781,12 @@ exports.changePassword = function(req, res){
           },
             function(err, success){
               if(success){
-                settingsCode = 'Update password success'
-                hiding = ''
-                console.log('Password has been changed.')
-                res.format({
-                  json: function(){
-                    res.json({
-                      "Status":"OK",
-                      "Message":"Password has been changed"
-                    })
-                  },
-                  html: function(){
-                    res.render('student/settings', {title: "Settings", nim, settingsCode, hiding, settingsWrongCode})
-                  }
-                })
+                req.flash('success', 'Password updated')
               } else {
                 console.log('Failed to change password')
-                res.json({
-                  "Status":"Error",
-                  "Message":"Failed to change password"
-                })
+                req.flash('error', 'Failed to change password')
               }
+              res.redirect('./settings')
             }
           )
         }
@@ -866,27 +838,19 @@ exports.updateProfile = function(req, res){
       },
     }, function(err, found){
       if(found){
+        // show success message
+        req.flash('success', 'Profile updated')
         console.log('success update profile', req.body.gender)
-        profileCode = 'Update profile success'
-        hiding = ''
-        res.format({
-          json: function(){
-            res.json({
-              "Status":"OK",
-              "Message":"Profile updated"
-            })
-          },
-          html: function(){
-            res.redirect('./profile')
-          }
-        })
       } else {
+        // show error message
+        req.flash('error', 'Failed to update profile')
         console.log('error updating profile', err)
         res.json({
           "Status":"Error",
           "Message":"Error updated profile"
         })
       }
+      res.redirect('./profile')
     }
   )
     } else {
