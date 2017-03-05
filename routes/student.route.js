@@ -57,14 +57,16 @@ router.post('/lecturer/:username/choose', choose.postChooseLecturer)
 
 // report
 router.get('/report/create', report.getCreateReport)
-router.post('/report/create', report.createReport)
+
 router.get('/report/create/file', report.getAddFile)
-router.post('/report/create/file', report.addFile)
 router.get('/report/update', report.getUpdateReport)
-router.post('/report/update', report.updateReport)
 router.get('/reports/all', report.getAllReports)
 router.get('/report/:id', report.getSingleReport)
 router.get('/report/delete/all', report.removeAll)
+
+router.post('/report/create/file', report.addFile)
+router.post('/report/create', report.createReport)
+router.post('/report/update', report.updateReport)
 
 // message
 router.get('/message/all?', msg.getAll)

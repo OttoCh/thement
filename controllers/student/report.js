@@ -6,6 +6,7 @@ var lect          = require('../../models/lecturer.model'),
     lecturer      = require('../../models/lecturer'),
     report        = require('../../models/report'),
     funcs         = require('../../middlewares/funcs'),
+    util          = require('util'),
     multer        = require('multer')
 
 var baseurl       = require('../../config/baseurl'),
@@ -144,33 +145,38 @@ exports.getAddFile = function(req, res){
   res.render('student/report/add-file', {title:"Add file", baseurl})
 }
 
-exports.addFile = function(req, res, next){
-  upload(req, res, function(err){
-    if(err){
-      console.log('error when uploading')
-      return
-    } else {
-      if(req.file == null){
-        res.json({
-          status: false,
-          message: "Please provide a file"
-        })
-      } else {
-        let fileType = req.file.originalname.split('.'),
-            type     = fileType[1]
-        if(type == 'pdf' || type == 'doc' || type == 'docx'){
-          res.status(200)
-          res.redirect(baseurl+'/home')
-          console.log('upload successfull')
-        } else {
-          res.json({
-            status: false,
-            message:"File must pdf/doc/docx"
-          })
-        }
-      }
-    }
-  })
+// exports.addFile = function(req, res, next){
+//   upload(req, res, function(err){
+//     if(err){
+//       console.log('error when uploading')
+//       return
+//     } else {
+//       if(req.file == null){
+//         res.json({
+//           status: false,
+//           message: "Please provide a file"
+//         })
+//       } else {
+//         let fileType = req.file.originalname.split('.'),
+//             type     = fileType[1]
+//         if(type == 'pdf' || type == 'doc' || type == 'docx'){
+//           res.status(200)
+//           res.redirect(baseurl+'/home')
+//           console.log('upload successfull')
+//         } else {
+//           res.json({
+//             status: false,
+//             message:"File must pdf/doc/docx"
+//           })
+//         }
+//       }
+//     }
+//   })
+// }
+
+exports.addFile = function(req, res){
+   console.log('file info : ', req.file)
+   res.send(util.format('task complete'))
 }
 
 exports.getAllReports = function(req, res){

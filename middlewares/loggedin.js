@@ -1,4 +1,5 @@
-var baseurl = 'http://localhost:3500/student'
+var baseurl = require('../config/baseurl'),
+    baseurl = baseurl.root + 'student'
 // still hardcode, check role again
 
 module.exports = function(req, res, next){

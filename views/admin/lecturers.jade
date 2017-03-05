@@ -117,6 +117,7 @@ html
                         th Name
                         th Research Division
                         th Email
+                        th Students
                         
                     tbody
                       each lect in lects
@@ -125,6 +126,7 @@ html
                             a(href='lecturer/#{lect.username}')=lect.name
                           td=lect.kk
                           td=lect.username+'@fi.itb.ac.id'
+                          td=lect.students
                           
                       
             // /block

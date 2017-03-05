@@ -12,6 +12,7 @@ var express         = require('express'),
     winston         = require('winston'),
     compression     = require('compression'),
     flash           = require('express-flash'),
+    util            = require('util'),
     app             = express();
 
 mongoose.connect('mongodb://127.0.0.1:27017/tugasakhir');
@@ -43,6 +44,9 @@ app.use(function(req, res, next){
     res.locals.errors = req.flash('error');
     next();
 });
+
+// file upload 
+
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
