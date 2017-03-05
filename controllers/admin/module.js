@@ -135,6 +135,7 @@ exports.getStudents = function(req, res){
     for(var i=0; i<students.length; i++){
       stds.push({
         nim:students[i].nim,
+        ipk:students[i].ipk,
         last_seen:funcs.friendlyDate(students[i].last_login),
         email:students[i].email
       })

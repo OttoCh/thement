@@ -834,7 +834,8 @@ exports.updateProfile = function(req, res){
         'profile.last_name': req.body.last_name,
         'profile.gender': req.body.gender,
         'profile.address': req.body.address,
-        'profile.birthday': req.body.birthday
+        'profile.birthday': req.body.birthday,
+        ipk:req.body.ipk
       },
     }, function(err, found){
       if(found){

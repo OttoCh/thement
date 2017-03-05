@@ -7,6 +7,7 @@ var studentSchema = new Schema ({
   email: String,
   password: String,
   registered: Date,
+  ipk: Number,
   last_login: Date,
   is_active: Boolean,
   is_choose: Boolean,

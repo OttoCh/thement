@@ -110,6 +110,10 @@ html
                         .controls
                           input#focusedInput.input-xlarge.focused(type='text' value='#{found.nim}' disabled)
                       .control-group
+                        label.control-label(for='focusedInput') IPK
+                        .controls
+                          input#focusedInput.input-xlarge.focused(type='text' value='#{found.ipk}' name='ipk' placeholder='Example : 3.33' required)
+                      .control-group
                         label.control-label(for='focusedInput') Email
                         .controls
                           input#focusedInput.input-xlarge.focused(type='text' value='#{found.email}' disabled)
