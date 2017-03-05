@@ -1,13 +1,16 @@
 "use strict"
 
 // load lecturers
-var lect      = require('../../models/lecturer.model'),
-    student   = require('../../models/student'),
-    lecturer  = require('../../models/lecturer'),
-    report    = require('../../models/report'),
-    funcs     = require('../../middlewares/funcs'),
-    multer    = require('multer')
-const baseurl = 'http://localhost:3500/student'
+var lect          = require('../../models/lecturer.model'),
+    student       = require('../../models/student'),
+    lecturer      = require('../../models/lecturer'),
+    report        = require('../../models/report'),
+    funcs         = require('../../middlewares/funcs'),
+    multer        = require('multer')
+
+var baseurl       = require('../../config/baseurl'),
+    baseurl       = baseurl.root + 'student'
+
 const root_url= 'http://localhost:3500'
 
 var hiding     = 'hide'

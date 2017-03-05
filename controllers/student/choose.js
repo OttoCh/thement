@@ -4,7 +4,9 @@
 var lect      = require('../../models/lecturer.model'),
     student   = require('../../models/student'),
     lecturer  = require('../../models/lecturer')
-const baseurl = 'http://localhost:3500/student'
+
+var baseurl       = require('../../config/baseurl'),
+    baseurl       = baseurl.root + 'student'
 
 var hiding     = 'hide'
 var chooseCode = ''

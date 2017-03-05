@@ -8,7 +8,10 @@ var lect      = require('../../models/lecturer.model'),
     msg       = require('../../models/message'),
     funcs     = require('../../middlewares/funcs'),
     multer    = require('multer')
-const baseurl = 'http://localhost:3500/student'
+
+var baseurl       = require('../../config/baseurl'),
+    baseurl       = baseurl.root + 'student'
+
 const root_url= 'http://localhost:3500'
 
 exports.getAll = function(req, res){

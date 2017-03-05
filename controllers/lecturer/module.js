@@ -7,7 +7,8 @@ var Lect        = require('../../models/lecturer'),
     funcs       = require('../../middlewares/funcs'),
     report      = require('../../models/report')
 
-const baseurl   = 'http://localhost:3500/lecturer'
+var baseurl       = require('../../config/baseurl'),
+    baseurl       = baseurl.root + 'lecturer'
 
 exports.getIndex = function(req, res){
   res.redirect('lecturer/login')

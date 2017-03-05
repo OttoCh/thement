@@ -1,14 +1,15 @@
 "use strict"
 
 // load lecturers
-var lect      = require('../../models/lecturer.model'),
-    student   = require('../../models/student'),
-    lecturer  = require('../../models/lecturer'),
-    report    = require('../../models/report'),
-    msg       = require('../../models/message'),
-    funcs     = require('../../middlewares/funcs'),
-    multer    = require('multer')
-const baseurl = 'http://localhost:3500/lecturer'
+var lect          = require('../../models/lecturer.model'),
+    student       = require('../../models/student'),
+    lecturer      = require('../../models/lecturer'),
+    report        = require('../../models/report'),
+    msg           = require('../../models/message'),
+    funcs         = require('../../middlewares/funcs'),
+    multer        = require('multer')
+var baseurl       = require('../../config/baseurl'),
+    baseurl       = baseurl.root + 'lecturer'
 const root_url= 'http://localhost:3500'
 
 exports.getAll = function(req, res){

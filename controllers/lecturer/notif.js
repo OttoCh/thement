@@ -5,7 +5,9 @@ var lect      = require('../../models/lecturer.model'),
     student   = require('../../models/student'),
     lecturer  = require('../../models/lecturer'),
     funcs     = require('../../middlewares/funcs')
-const baseurl = 'http://localhost:3500/lecturer'
+
+var baseurl       = require('../../config/baseurl'),
+    baseurl       = baseurl.root + 'lecturer'
 
 exports.getNotifs = function(req, res){
   let lect        = req.session.lecturer

@@ -4,8 +4,10 @@ var express       = require('express'),
     request       = require('request'),
     app           = express(),
     funcs         = require('../../middlewares/funcs'),
-    Student       = require('../../models/student'),
-    baseurl       = 'http://localhost:3500/student'
+    Student       = require('../../models/student')
+
+var baseurl       = require('../../config/baseurl'),
+    baseurl       = baseurl.root + 'student'
 
 exports.stdLogin = function(req, res){
   // TODO: Login with token, generate random strings and numbers

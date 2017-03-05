@@ -8,7 +8,8 @@ var express       = require('express'),
     winston       = require('winston'),
     app           = express()
 
-const baseurl     = 'http://localhost:3500/admin'
+var baseurl       = require('../../config/baseurl'),
+    baseurl       = baseurl.root + 'admin'
 const roles       = ['super','operator','kaprodi']
 
 exports.getIndex = function(req, res){
@@ -141,6 +142,14 @@ exports.getStudents = function(req, res){
       })
     }
     res.render('admin/students', {title:"All students", allStds, stds})
+  })
+}
+
+exports.getDetailStudent = function(req, res){
+  let nim = req.params.nim
+  Std.findOne({nim:nim},function(err, found){
+    let profile = found
+    res.render('admin/student-detail', {title:"Student detail", baseurl, profile})
   })
 }
 
