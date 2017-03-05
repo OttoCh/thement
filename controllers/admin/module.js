@@ -70,17 +70,26 @@ exports.getHome = function(req, res){
     Admin.findOne({role:admin}, function(e, a){
       // count all lecturers
           Lect.count({}, function(e, lecturers){
-            let nLects = lecturers      
-            // count all students
-            Std.count({}, function(e, all){
-              let nStd = all
-              console.log("total : ", nStd)
-              // count student where is_accepted is true
-            Std.count({"is_accepted":true}, function(e, count){
-              let nAccepted = count
-              console.log('accepted : ', nAccepted)
-              let precenAccept = (nAccepted/nStd) * 100
-              res.render('admin/home', {title:"Dashboard", admin, a, nStd, nAccepted, precenAccept, nLects})
+            let nLects = lecturers
+
+            // get all lecturers that have student
+            Lect.count({"students":{$exists: true, $ne: []},},
+              function(err, std){
+                console.log('total lecturers have std : ', std)
+                // count all lecturers that has std
+                let lectHasStd = (std/nLects) * 100
+                lectHasStd     = lectHasStd.toFixed(2)
+
+              // count all students
+              Std.count({}, function(e, all){
+                let nStd = all
+                // count student where is_accepted is true
+              Std.count({"is_accepted":true}, function(e, count){
+                let nAccepted = count
+                let precenAccept = (nAccepted/nStd) * 100
+                precenAccept     = precenAccept.toFixed(2)
+                res.render('admin/home', {title:"Dashboard", admin, a, nStd, nAccepted, precenAccept, nLects, std, lectHasStd})
+              })
             })
           })
         })
@@ -109,4 +118,42 @@ exports.postLogout = function(req, res){
         })
     }
   });
+}
+
+exports.getProfile = function(req, res){
+  res.render('admin/profile')
+}
+
+exports.getSettings = function(req, res){
+  res.render('admin/settings')
+}
+
+exports.getStudents = function(req, res){
+  Std.find({}, function(err, students){
+    let allStds = students
+    let stds = []
+    for(var i=0; i<students.length; i++){
+      stds.push({
+        nim:students[i].nim,
+        last_seen:funcs.friendlyDate(students[i].last_login),
+        email:students[i].email
+      })
+    }
+    res.render('admin/students', {title:"All students", allStds, stds})
+  })
+}
+
+exports.getLecturers = function(req, res){
+  Lect.find({}, function(err, lect){
+    let lects = lect
+    res.render('admin/lecturers', {title:"All lecturers", lects})
+  })
+}
+
+exports.getDetailLecturer = function(req, res){
+  let username = req.params.username
+  Lect.findOne({username:username}, function(err, detail){
+    let profile = detail
+    res.render('admin/lecturer-detail',{title:"Lecturer detail", username, profile, baseurl})    
+  })
 }

@@ -8,7 +8,6 @@ var express   = require('express'),
     msg       = require('../controllers/student/message'),
     auth      = require('../controllers/student/auth'),
     loggedin  = require('../middlewares/loggedin'),
-
     Student   = require('../models/student.model')
 
 const baseurl     = 'http://localhost:3500/student'

@@ -1,4 +1,5 @@
 var express   = require('express'),
+    loggedin  = require('../middlewares/loggedin-admin'),
     router    = express.Router()
 
 var admin     = require('../controllers/admin/module')
@@ -15,7 +16,13 @@ router.post('/login', admin.postLogin)
 router.get('/logout', admin.postLogout)
 
 /* LOGGED IN ONLY ACCESS */
-// router.use(loggedin)
+router.use(loggedin)
+
+router.get('/profile', admin.getProfile)
+router.get('/settings', admin.getSettings)
+router.get('/students', admin.getStudents)
+router.get('/lecturers', admin.getLecturers)
+router.get('/lecturer/:username', admin.getDetailLecturer)
 
 router.use(function(req, res, next){
   res.status(404)

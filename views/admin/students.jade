@@ -1,12 +1,14 @@
 doctype html
-html.no-js
+html
   head
-    title Dashboard - #{admin}
+    title #{title} 
     // Bootstrap
     link(href='/static/vendors/bootstrap/css/bootstrap.min.css', rel='stylesheet', media='screen')
     link(href='/static/vendors/bootstrap/css/bootstrap-responsive.min.css', rel='stylesheet', media='screen')
-    link(href='/static/vendors/vendors/easypiechart/jquery.easy-pie-chart.css', rel='stylesheet', media='screen')
     link(href='/static/vendors/assets/styles.css', rel='stylesheet', media='screen')
+    link(href='/static/vendors/assets/DT_bootstrap.css', rel='stylesheet', media='screen')
+    //if lte IE 8
+      script(language='javascript', type='text/javascript', src='/static/vendors/vendors/flot/excanvas.min.js')
     // HTML5 shim, for IE6-8 support of HTML5 elements
     //if lt IE 9
       script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
@@ -19,43 +21,42 @@ html.no-js
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          a.brand(href='#') Lecturer dashboard
+          a.brand(href='#') Student dashboard
           .nav-collapse.collapse
             ul.nav.pull-right
               li.dropdown
                 a.dropdown-toggle(href='#', role='button', data-toggle='dropdown')
-                  i.icon-user 
-                  strong  #{a.role}
-                  | 
+                  i.icon-user
+                  strong  
                   i.caret
                 ul.dropdown-menu
                   li
-                    a(tabindex='-1', href='profile') Profile
+                    a(tabindex='-1', href='#{baseurl}/profile') Profile
                   li
-                    a(tabindex='-1', href='settings') Settings
+                    a(tabindex='-1', href='#{baseurl}/settings') Settings
                   li.divider
                   li
                     a(tabindex='-1', href='logout') Logout
             ul.nav
               li.active
-                a(href='#') Dashboard
+                a(href='#') Lecturers
           // /.nav-collapse
     .container-fluid
       .row-fluid
         #sidebar.span3
           ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
-            li.active
-              a(href='#')
+            li
+              a(href='home')
                 i.icon-chevron-right
                 i.icon-home
                 |  Dashboard
             li
-              a(href='profile')
+              a(href='#')
                 i.icon-chevron-right
                 i.icon-user
                 |  Profile
-            li
-              a(href='students')
+            li.active
+              a(href='#')
                 i.icon-chevron-right
                 i.icon-list
                 |  Students
@@ -79,7 +80,7 @@ html.no-js
               a(href='#')
                 span.badge.badge-info.pull-right
                 i.icon-inbox
-                |  Broadcast 
+                |  Broadcast
         // /span
         #content.span9
           .row-fluid
@@ -91,57 +92,58 @@ html.no-js
                   i.icon-chevron-right.show-sidebar(style='display:none;')
                     a(href='#', title='Show Sidebar', rel='tooltip')  
                   li
-                    a.active(href='#') Dashboard
+                    a(href='home') Dashboard
+                    span.divider /
+                  li Lecturers
           .row-fluid
             // block
             .block
               .navbar.navbar-inner.block-header
-                .muted.pull-left General information
+                .muted.pull-left All lecturers
               .block-content.collapse.in
-                .span3
-                  h4 Stats students
-                  p 
-                    .chart(data-percent='#{precenAccept}') #{precenAccept}%
-                    .chart-bottom-heading
-                      span.label.label-info #{nAccepted}/#{nStd} students accepted
-                      br
-                
-                .span3
-                  h4 Stats Lecturers
-                  p 
-                    .chart(data-percent='#{lectHasStd}') #{lectHasStd}%
-                    .chart-bottom-heading
-                      span.label.label-success #{std}/#{nLects} lecturers have student
-                      br
+                .span12
+                  .table-toolbar
+                    //
+                      <div class="btn-group">
+                      <a href="#"><button class="btn btn-success">Add New <i class="icon-plus icon-white"></i></button></a>
+                      </div>
+                    legend Click student's name to see detail and choose one
+                    .btn-group.pull-right
+                    
+                    br
+                  table#example2.table.table-striped.table-bordered(cellpadding='0', cellspacing='0', border='0')
+                    thead
+                      tr
+                        th NIM
+                        th Email
+                        th Last seen
+                        
+                    tbody
+                      each std in stds
+                        tr
+                          td
+                            a(href='student/#{std.nim}')=std.nim
+                          td=std.email
+                          td=std.last_seen
+                          
                       
-                .span3
-                  h4 Active lecturers
-                  p
-                  span.label.label-success #{nLects}
-                  hr
-                  a(href='candidates?from=general_info')
-                      button.btn.btn-primary
-                        i.icon-search.icon-white
-                        strong  See all
-                .span3
-                  h4 Active students
-                  p
-                  span.label.label-primary #{nStd}
-                  hr
-                  a(href='candidates?from=general_info')
-                      button.btn.btn-info
-                        i.icon-eye-open.icon-white
-                        strong  See all
-
             // /block
       hr
+      footer
+        center
+          | Thesis Management System &copy; 2017 -
+          &nbsp;
+          a(href='https://github.com/wldn/thement' title='Source code' target='_blank')
+            strong v1.0
+            br
+          strong Department of Physics, ITB
+
     // /.fluid-container
-    script(src='/static/vendors/vendors/jquery-1.9.1.min.js')
+    script(src='/static/vendors/vendors/jquery-1.9.1.js')
     script(src='/static/vendors/bootstrap/js/bootstrap.min.js')
-    script(src='/static/vendors/vendors/easypiechart/jquery.easy-pie-chart.js')
+    script(src='/static/vendors/vendors/datatables/js/jquery.dataTables.min.js')
     script(src='/static/vendors/assets/scripts.js')
+    script(src='/static/vendors/assets/DT_bootstrap.js')
     script.
       $(function() {
-      // Easy pie charts
-      $('.chart').easyPieChart({animate: 1000});
       });

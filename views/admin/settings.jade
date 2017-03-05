@@ -1,7 +1,7 @@
 doctype html
 html.no-js
   head
-    title Dashboard - #{admin}
+    title Dashboard - 
     // Bootstrap
     link(href='/static/vendors/bootstrap/css/bootstrap.min.css', rel='stylesheet', media='screen')
     link(href='/static/vendors/bootstrap/css/bootstrap-responsive.min.css', rel='stylesheet', media='screen')
@@ -19,37 +19,37 @@ html.no-js
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          a.brand(href='#') Lecturer dashboard
+          a.brand(href='#') Admin dashboard
           .nav-collapse.collapse
             ul.nav.pull-right
               li.dropdown
                 a.dropdown-toggle(href='#', role='button', data-toggle='dropdown')
-                  i.icon-user 
-                  strong  #{a.role}
-                  | 
+                  i.icon-user
+                  strong  
                   i.caret
                 ul.dropdown-menu
                   li
-                    a(tabindex='-1', href='profile') Profile
+                    a(tabindex='-1', href='#') Profile
                   li
                     a(tabindex='-1', href='settings') Settings
                   li.divider
                   li
                     a(tabindex='-1', href='logout') Logout
+             
             ul.nav
               li.active
-                a(href='#') Dashboard
+                a(href='#') Profile
           // /.nav-collapse
     .container-fluid
       .row-fluid
         #sidebar.span3
           ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
-            li.active
-              a(href='#')
+            li
+              a(href='home')
                 i.icon-chevron-right
                 i.icon-home
                 |  Dashboard
-            li
+            li.active
               a(href='profile')
                 i.icon-chevron-right
                 i.icon-user
@@ -79,7 +79,7 @@ html.no-js
               a(href='#')
                 span.badge.badge-info.pull-right
                 i.icon-inbox
-                |  Broadcast 
+                |  Broadcast
         // /span
         #content.span9
           .row-fluid
@@ -90,49 +90,40 @@ html.no-js
                     a(href='#', title='Hide Sidebar', rel='tooltip')  
                   i.icon-chevron-right.show-sidebar(style='display:none;')
                     a(href='#', title='Show Sidebar', rel='tooltip')  
-                  li
-                    a.active(href='#') Dashboard
+                  li 
+                    a(href='home') Dashboard
+                    span.divider /
+                  li Settings
           .row-fluid
             // block
             .block
               .navbar.navbar-inner.block-header
-                .muted.pull-left General information
+                .muted.pull-left Lecturer's Settings
               .block-content.collapse.in
-                .span3
-                  h4 Stats students
-                  p 
-                    .chart(data-percent='#{precenAccept}') #{precenAccept}%
-                    .chart-bottom-heading
-                      span.label.label-info #{nAccepted}/#{nStd} students accepted
-                      br
-                
-                .span3
-                  h4 Stats Lecturers
-                  p 
-                    .chart(data-percent='#{lectHasStd}') #{lectHasStd}%
-                    .chart-bottom-heading
-                      span.label.label-success #{std}/#{nLects} lecturers have student
-                      br
-                      
-                .span3
-                  h4 Active lecturers
-                  p
-                  span.label.label-success #{nLects}
-                  hr
-                  a(href='candidates?from=general_info')
-                      button.btn.btn-primary
-                        i.icon-search.icon-white
-                        strong  See all
-                .span3
-                  h4 Active students
-                  p
-                  span.label.label-primary #{nStd}
-                  hr
-                  a(href='candidates?from=general_info')
-                      button.btn.btn-info
-                        i.icon-eye-open.icon-white
-                        strong  See all
-
+                .span12
+                  form.form-horizontal(method='post' action='settings')
+                    fieldset
+                      legend Change password
+                      .control-group
+                        label.control-label(for='focusedInput') Current password
+                        .controls
+                          input#focusedInput.input-xlarge.focused(type='text', name='old_pass', value='#{passToChange}' readOnly='true')
+                      .control-group
+                        label.control-label(for='focusedInput') New password
+                        .controls
+                          input#focusedInput.input-xlarge.focused(type='password', name='newpass', required)
+                      .control-group
+                        label.control-label(for='focusedInput') Retype your new password
+                        .controls
+                          input#focusedInput.input-xlarge.focused(type='password', name='renewpass', required)
+                    
+                      .form-actions
+                        button.btn.btn-primary(type='submit') Save changes
+                        &nbsp;
+                        button.btn(type='reset') Cancel
+                  //- .chart(data-percent='13') 13%
+                  //- .chart-bottom-heading
+                  //-   span.label.label-info Orders
             // /block
       hr
     // /.fluid-container
