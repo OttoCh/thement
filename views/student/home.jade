@@ -207,9 +207,9 @@ html.no-js
                 
                 .span12
                   h3 Milestone
-                  div.progress.progress-success.active 
-                    div(style='width: 40%' class='bar') 
-                      strong 40% (approved)               
+                  div(class='progress progress-#{milesStrip}')
+                    div(style='width:#{milesPercen}%' class='bar') 
+                      strong #{milesPercen}% (#{latestMiles})               
                                                                   
                   //- ul(style='list-style:none')
                   //-   li 20% &rarr;

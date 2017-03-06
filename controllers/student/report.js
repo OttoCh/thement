@@ -128,16 +128,21 @@ exports.createReport = function(req, res){
                 }
               },
             }, function(e, notified){
-              // add milestone
-              // student.update({nim:nim}, {$push:{
-              //   milestones:{
-              //     "id":nMiles+1,
-              //     "date":new Date(),
-              //     "category":"report"
-              //   }
-              //   },}, function(err){}
-              // )
-              res.redirect(baseurl+'/report/create/file?from=create')
+              if(nMiles == 3){
+                res.redirect(baseurl+'/report/create/file?from=create')
+              } else {
+                student.update({nim:nim}, {$push:{
+                milestones:{
+                  "id":nMiles+1,
+                  "date":new Date(),
+                  "category":"report"
+                }
+                },}, function(err){
+                  console.log('report milestone added')    
+                  res.redirect(baseurl+'/report/create/file?from=create')
+                  }
+                )
+              }
             }
            )
           })

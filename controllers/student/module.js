@@ -208,6 +208,28 @@ exports.getHome = function(req, res){
         colored = ''
       }
 
+      // get milestones
+      let miles       = student.milestones
+      let milesLength = miles.length
+      let mls         = []
+      let milesStrip  = ''
+      let milesPercen
+      for(var k=0; k<miles.length; k++){
+        mls.push({
+          id:miles[k].id,
+          category:miles[k].category,
+          date:miles[k].date
+        })
+      }
+      let latestMiles = mls[milesLength-1].category
+      switch(latestMiles){
+        case 'registered' : latestMiles = 'registered', milesStrip = 'danger', milesPercen = 20
+          break;
+        case 'accepted'   : latestMiles = 'accepted', milesStrip = 'warning', milesPercen = 40
+          break;
+        case 'report'     : latestMiles = 'progress report', milesStrip = 'success', milesPercen = 60
+      }
+
       // MESSAGE CHECKING
       let allMsgs
       Msg.findOne({nim:nim}, function(e, msg){
@@ -292,16 +314,17 @@ exports.getHome = function(req, res){
           } else {
             console.log('user has no report yet')
           }
+
           res.render('student/home', {title: "Dashboard ", nim, student, login, state, stateColor, supervisor,
             notifs, colored, hideChoosing, reportCreate, nReport, msgReport, reportStatus,
             coloredStatus, statusStyle, divReport, newNotif, registered_at,
-            acceptance, isNotifShow, allMsgs, objMsgs, msgShow, msgNotif, coloredMsg
+            acceptance, isNotifShow, allMsgs, objMsgs, msgShow, msgNotif, coloredMsg, latestMiles, milesStrip, milesPercen
           })
         } else {
           res.render('student/home', {title: "Dashboard ", nim, student, login, state, stateColor, supervisor,
             notifs, colored, hideChoosing, reportCreate, nReport, msgReport, reportStatus,
             coloredStatus, statusStyle, divReport, newNotif, registered_at,
-            acceptance, isNotifShow, allMsgs, objMsgs, msgShow, msgNotif, coloredMsg
+            acceptance, isNotifShow, allMsgs, objMsgs, msgShow, msgNotif, coloredMsg, latestMiles, milesStrip, milesPercen
             })
           }
         })
