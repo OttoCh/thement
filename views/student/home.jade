@@ -7,6 +7,8 @@ html.no-js
     link(href='/static/vendors/bootstrap/css/bootstrap-responsive.min.css', rel='stylesheet', media='screen')
     link(href='/static/vendors/vendors/easypiechart/jquery.easy-pie-chart.css', rel='stylesheet', media='screen')
     link(href='/static/vendors/assets/styles.css', rel='stylesheet', media='screen')
+    link(href='/static/vendors/assets/timeline.less', rel='stylesheet/less', media='screen')
+    
     style.
       .stateStyle {color: #{stateColor}}
     // HTML5 shim, for IE6-8 support of HTML5 elements
@@ -201,6 +203,25 @@ html.no-js
                     br
                     p Report approval :
                     h4(class='#{reportStatus}', style='color:#{statusStyle};') #{coloredStatus}
+                hr
+                
+                .span12
+                  h3 Milestone
+                  div.progress.progress-success.active 
+                    div(style='width: 40%' class='bar') 
+                      strong 40%               
+                                                                  
+                  ul(style='list-style:none')
+                    li 20% &rarr;
+                      strong Registered 
+                    li 40% &rarr;
+                      strong  Approved (supervisor)
+                    li 60% &rarr;
+                      strong  Progress report
+                    li 80% &rarr;
+                      strong  Sidang TA 1
+                    li 100% &rarr;
+                      strong  Sidang TA 2
 
             // /block
       // footer

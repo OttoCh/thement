@@ -204,7 +204,8 @@ exports.acceptCandidate = function(req, res){
             Student.findOne({nim:nimToAccept}, function(e, f){
               let n = f.notifs.length
               Student.findOne({nim:nimToAccept}, function(e, f){
-                let n = f.notifs.length
+                let n       = f.notifs.length
+                let nMiles  = f.milestones.length
                 console.log('current notifs : ', n)
                 Student.update({nim:nimToAccept}, {$push : {
                   notifs: {
@@ -212,6 +213,11 @@ exports.acceptCandidate = function(req, res){
                     "date": new Date(),
                     "notif": "You are ACCEPTED by : " + lecturer,
                     "has_seen": false
+                  },
+                  milestones:{
+                    "id":nMiles+1,
+                    "date":new Date(),
+                    "category":"accepted"
                   }
                 },
               }, function(e, s){
@@ -373,8 +379,11 @@ exports.getDetailStudent = function(req, res){
       let objReports = []
       let reps = report.reports
       let approval = report.is_approved
-      if(approval == true){
-        showAccept = 'hide'
+      // hide Accept report for initial
+
+      console.log('reports length : ', reps.length)
+      if(approval == true || reps.length == 0){
+        showAccept = 'hide' 
       } else {
         showAccept = ''
       }

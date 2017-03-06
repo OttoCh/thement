@@ -546,6 +546,11 @@ exports.activateStudent = function(req, res){
             "date": new Date(),
             "notif": "Your account is now ACTIVE!",
             "has_seen": false
+          },
+          milestones:{
+            "id":1,
+            "date":new Date(),
+            "category":"registered"
           }
         },
       }, function (err, success){

@@ -113,6 +113,7 @@ exports.createReport = function(req, res){
       if(!err){
         student.findOne({nim:nim}, function(e, std){
           let superv = std.supervisor
+          let nMiles = std.milestones.length
           lecturer.findOne({username:superv}, function(e, found){
             console.log('notif : ' + found.name)
             let nNotif = found.notifs.length
@@ -127,6 +128,15 @@ exports.createReport = function(req, res){
                 }
               },
             }, function(e, notified){
+              // add milestone
+              // student.update({nim:nim}, {$push:{
+              //   milestones:{
+              //     "id":nMiles+1,
+              //     "date":new Date(),
+              //     "category":"report"
+              //   }
+              //   },}, function(err){}
+              // )
               res.redirect(baseurl+'/report/create/file?from=create')
             }
            )
