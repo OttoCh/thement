@@ -157,9 +157,19 @@ html
                             div(class='modal-body')
                               .span12
                                 p.lead Are you sure want to DECLINE <strong>#{can.nim}</strong> from your candidates?
-                                a(href='candidates/#{can.nim}' class='btn btn-primary') Yes
-                                &nbsp;
-                                a(data-dismiss='modal' href='#' class='btn') No
+                                form.form-horizontal(method='post' action='#{baseurl}/candidates/#{can.nim}')
+                                  fieldset
+                                    legend 
+                                    .control-group
+                                      label.control-label(for='focusedInput') Reason to reject (OPTIONAL)
+                                      .controls
+                                        textarea.input-xlarge.textarea(placeholder='Enter text ...', style='width: 310px; height: 150px', name='rejectReason')
+                                  //- a(href='candidates/#{can.nim}' class='btn btn-primary') Yes
+                                  //- &nbsp;
+                                  //- a(data-dismiss='modal' href='#' class='btn') No
+                                  button.btn.btn-primary(type='submit') Yes
+                                  &nbsp;
+                                  a(data-dismiss='modal' href='#' class='btn') No
                           
                       
             // /block

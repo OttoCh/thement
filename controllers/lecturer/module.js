@@ -140,8 +140,15 @@ exports.getDetailCandidate = function(req, res){
 }
 
 exports.rejectCandidate = function(req, res){
-  let lecturer = req.session.lecturer
+  let lecturer    = req.session.lecturer
   let nimToRemove = req.params.nim
+  let reason      = req.body.rejectReason
+
+  if(reason == ""){
+    reason = ''
+  } else {
+    reason = " because : " + reason
+  }
   Lect.update({username:lecturer}, {$pull : {
         candidates: nimToRemove
       },
@@ -161,7 +168,7 @@ exports.rejectCandidate = function(req, res){
                 notifs: {
                   "id":n+1,
                   "date": new Date(),
-                  "notif": "You are rejected by : " + lecturer,
+                  "notif": "You are rejected by : " + lecturer + reason,
                   "has_seen": false
                 }
               },

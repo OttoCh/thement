@@ -26,7 +26,7 @@ router.post('/settings', lecturer.postSettings)
 
 router.get('/candidates', lecturer.getCandidates)
 router.get('/candidates/detail/:nim', lecturer.getDetailCandidate)
-router.get('/candidates/:nim', lecturer.rejectCandidate)
+router.post('/candidates/:nim', lecturer.rejectCandidate)
 router.get('/candidates/accept/:nim', lecturer.acceptCandidate)
 
 router.get('/students', lecturer.getFixStudents)
