@@ -7,7 +7,6 @@ var messageSchema = new Schema ({
   messages: [],
   has_seen_std: Boolean,
   has_seen_lecturer: Boolean,
-  has_seen_by: [],
   nim: Number,
   lecturer: String
 })

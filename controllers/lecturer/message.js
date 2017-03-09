@@ -239,15 +239,14 @@ exports.sendToAll = function(req, res){
             } else {
                 bcLength = 0
             }
-            msg.update({lecturer:lec},{$set: {
-                has_seen_by: []
-            },
+            msg.update({lecturer:lec},{
             $push:{
                 messages:{
                     "id":bcLength+1,
                     "author": lec,
                     "body": message,
-                    "date_created": new Date()
+                    "date_created": new Date(),
+                    "has_seen_by": []
                 }
             },}, function(err,sent){
                 console.log('broadcast sent')

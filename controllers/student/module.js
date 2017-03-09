@@ -127,6 +127,7 @@ exports.getHome = function(req, res){
     }
     let state, stateColor, dosen, divReport = 'hide', acceptance
     var supervisor = student.supervisor
+    var superv_username = student.supervisor
     if(supervisor == ""){
       supervisor = 'None'
     }
@@ -315,11 +316,26 @@ exports.getHome = function(req, res){
             console.log('user has no report yet')
           }
 
-          res.render('student/home', {title: "Dashboard ", nim, student, login, state, stateColor, supervisor,
-            notifs, colored, hideChoosing, reportCreate, nReport, msgReport, reportStatus,
-            coloredStatus, statusStyle, divReport, newNotif, registered_at,
-            acceptance, isNotifShow, allMsgs, objMsgs, msgShow, msgNotif, coloredMsg, latestMiles, milesStrip, milesPercen
-          })
+           // check for any new broadcast message
+            Msg.findOne({lecturer:superv_username}, function(err, bc){
+              
+                let bcs = bc.messages
+                let bcLength = bcs.length
+                let nimStr = student.nim.toString()
+                                
+                // check if the latest message contain nimStr
+                if(bcs[bcLength-1].has_seen_by.includes(nimStr) == true){
+                  console.log('has seen')
+                } else {
+                  console.log('not seen by ', nimStr)
+                }
+              
+              res.render('student/home', {title: "Dashboard ", nim, student, login, state, stateColor, supervisor,
+                notifs, colored, hideChoosing, reportCreate, nReport, msgReport, reportStatus,
+                coloredStatus, statusStyle, divReport, newNotif, registered_at,
+                acceptance, isNotifShow, allMsgs, objMsgs, msgShow, msgNotif, coloredMsg, latestMiles, milesStrip, milesPercen
+              })
+            })
         } else {
           res.render('student/home', {title: "Dashboard ", nim, student, login, state, stateColor, supervisor,
             notifs, colored, hideChoosing, reportCreate, nReport, msgReport, reportStatus,

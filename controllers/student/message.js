@@ -143,6 +143,37 @@ exports.getAll = function(req, res){
   })
 }
 
+exports.getDetailBroadcast = function(req, res){
+  let bc_id = req.params.id
+  let nim   = req.session.student
+  console.log('session : ', nim)
+  let nimstr = nim.toString()
+  student.findOne({nim:nim}, function(err,std){
+    let superv = std.supervisor
+    msg.findOne({lecturer:superv}, function(err, bc){
+      var bcDetail
+      let other   = bc.members
+      let index   = other.indexOf(nimstr)
+      if(index > -1){
+        other.splice(index, 1)
+      }
+            
+      let msgs  = bc.messages
+      var found = msgs.filter(function(item){
+        return item.id == bc_id
+      })
+      found = found[0]
+      let timeBC = funcs.friendlyDate(found.date_created)
+      if(found){
+        console.log('found bc at : ', found)
+        res.render('student/message/bc-detail',{title:"Broadcast detail", baseurl, found, timeBC, other})
+      } else {
+        res.redirect(baseurl)
+      }
+    })
+  })
+}
+
 exports.sendMessage = function(req, res){
   let nim         = req.session.student
   let msgBody     = req.body.msg

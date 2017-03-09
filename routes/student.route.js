@@ -70,8 +70,10 @@ router.post('/report/update', report.updateReport)
 
 // message
 router.get('/message/all?', msg.getAll)
-router.post('/message/send', msg.sendMessage)
 router.get('/message/all/delete', msg.removeAll)
+router.get('/message/broadcast/:id', msg.getDetailBroadcast)
+
+router.post('/message/send', msg.sendMessage)
 
 router.use(function(req, res, next){
   res.status(404)
