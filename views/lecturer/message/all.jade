@@ -143,23 +143,23 @@ html
                 .span9
                   .span9
                     
-                    //- inbox message
-                    //- h4(class='#{hideAllMsg}') Inbox Messages
-                    //- table.table.table-hover(class='#{showInbox}')
-                    //-   thead
-                    //-     tr
+                    //- broadcast message
+                    h4(class='#{hideAllMsg}') Broadcast Messages
+                    table.table.table-hover(class='#{showInbox}')
+                      thead
+                        tr
                           
-                    //-       th From
-                    //-       th Body
-                    //-       th Date
+                          th From
+                          th Body
+                          th Date
                           
-                    //-   tbody
-                    //-     each val in inboxMsg
-                    //-       tr
-                            
-                    //-         td=val.author
-                    //-         td=val.body
-                    //-         td=val.date_created
+                      tbody
+                        each bc in bcMsg
+                          tr
+                            td
+                              span.label.label-info YOU
+                            td=bc.body
+                            td=bc.date_created
 
                     //- outbox message
                     //- h4(class='') Outbox Messages

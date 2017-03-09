@@ -53,18 +53,36 @@ exports.getAll = function(req, res){
                         })) allNIMS.push(nd);
                     }
 
+                    // get broadcast message
+                    msg.findOne({lecturer:lec}, function(err, bcsc){
+                        let bcMsg = []
+                        let bcs   = bcsc.messages
+                        for(var l=0; l<bcs.length; l++){
+                            bcMsg.push({
+                            id:l+1,
+                            author:bcs[l].author,
+                            body:bcs[l].body,
+                            date_created:funcs.friendlyDate(bcs[l].date_created)
+                        })
+                        }
+                        bcMsg.sort(function(a,b){
+                            return parseFloat(b.id) - parseFloat(a.id)
+                        })
+                    
+
                     // check if initial broadcast found
                     let bc = 'hide'
                     msg.findOne({lecturer:lec},function(err, broadcast){
                         if(!broadcast){
                             bc = '' 
-                            res.render('lecturer/message/all', {title:"All messages", stds, allNIMS, baseurl, bc})
+                            res.render('lecturer/message/all', {title:"All messages", stds, allNIMS, baseurl, bc, bcMsg})
                         } else {
                             bc = 'hide'
                             console.log('final UNREAD : ', allNIMS)
-                            res.render('lecturer/message/all', {title:"All messages", stds, allNIMS, baseurl, bc})
+                            res.render('lecturer/message/all', {title:"All messages", stds, allNIMS, baseurl, bc, bcMsg})
                         }
                     })
+                })
                 }
             )
         }
