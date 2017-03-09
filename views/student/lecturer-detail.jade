@@ -85,57 +85,61 @@ html
               .navbar.navbar-inner.block-header
                 .muted.pull-left Lecturer's Profile
               .block-content.collapse.in
-                .span12
-                form(method='post' action='#{lecturer.username}/choose')
-                  h3=lecturer.name
-                  ul(style='list-style:none')
-                    li
-                      h4 Email
-                      p=lecturer.username+'@fi.itb.ac.id'
-                    li
-                      h4 Education
+                .span9
+                  form(method='post' action='#{lecturer.username}/choose')
+                    ul(style='list-style:none')
+                      li 
+                        h4 Fullname
+                        p=lecturer.name
+                      li
+                        h4 Email
+                        p=lecturer.username+'@fi.itb.ac.id'
+                      li
+                        h4 Education
+                        p
+                          ul
+                            li Bachelor : #{profile.educations.undergraduate} 
+                            li Master : #{profile.educations.master}
+                            li Doctoral : #{profile.educations.doctoral}
+                      li
+                        h4 Research division
+                        p=lecturer.kk
                       p
-                        ul
-                          li Bachelor : #{profile.educations.undergraduate} 
-                          li Master : #{profile.educations.master}
-                          li Doctoral : #{profile.educations.doctoral}
-                    li
-                      h4 Research division
-                      p=lecturer.kk
-                    p
-                      a(href=baseurl+'/lecturers')
-                        i.icon-arrow-left
-                        |  Back to all
-                      
-                    //- button.btn.btn-primary(type='submit' class='#{hiding}')
-                    //-   i.icon-ok.icon-white
-                    //-   strong  Choose
-                    a(href='#myModal' data-toggle='modal' class='btn btn-primary #{hiding}') 
-                        i.icon-ok.icon-white
-                        strong  Choose
-                      div(id='myModal' class='modal hide')
-                        div(class='modal-header')
-                          button(data-dismiss='modal' class='close' type='button')&times;
-                          h4 Choose lecturer
-                        div(class='modal-body')
-                          .span12
-                            p Are you sure want to choose <strong> #{lecturer.name} </strong> as your supervisor?
-                            button.btn.btn-primary(type='submit') Yes
-                            &nbsp;
-                            a(data-dismiss='modal' href='#' class='btn') No
+                        a(href=baseurl+'/lecturers')
+                          i.icon-arrow-left
+                          |  Back to all
+                        
+                      //- button.btn.btn-primary(type='submit' class='#{hiding}')
+                      //-   i.icon-ok.icon-white
+                      //-   strong  Choose
+                      a(href='#myModal' data-toggle='modal' class='btn btn-primary #{hiding}') 
+                          i.icon-ok.icon-white
+                          strong  Choose
+                        div(id='myModal' class='modal hide')
+                          div(class='modal-header')
+                            button(data-dismiss='modal' class='close' type='button')&times;
+                            h4 Choose lecturer
+                          div(class='modal-body')
+                            .span12
+                              p Are you sure want to choose <strong> #{lecturer.name} </strong> as your supervisor?
+                              button.btn.btn-primary(type='submit') Yes
+                              &nbsp;
+                              a(data-dismiss='modal' href='#' class='btn') No
                   
-                    ul.pager.wizard
-                      li.previous.first(style='display:none;')
-                        a(href='javascript:void(0);') First
-                      li.previous
-                        a(href='javascript:void(0);') Previous
-                      li.next.last(style='display:none;')
-                        a(href='javascript:void(0);') Last
-                      li.next
-                        a(href='javascript:void(0);') Next
-                      li.next.finish(style='display:none;')
-                        a(href='javascript:;') Finish
-                      
+                      ul.pager.wizard
+                        li.previous.first(style='display:none;')
+                          a(href='javascript:void(0);') First
+                        li.previous
+                          a(href='javascript:void(0);') Previous
+                        li.next.last(style='display:none;')
+                          a(href='javascript:void(0);') Last
+                        li.next
+                          a(href='javascript:void(0);') Next
+                        li.next.finish(style='display:none;')
+                          a(href='javascript:;') Finish
+                .span3
+                  p
+                    img(src='#{lecturer.img_url}')      
                     //- if(chooseCode !== '')
                     //-   strong
                     //-     .alert.alert-success(class='#{hiding}') 

@@ -7,6 +7,7 @@ var lecturerSchema = new Schema ({
   username: String,
   kk: String,
   kk_initial: String,
+  img_url: String,
   oldpass: String,
   newpass: String,
   last_login: Date,
