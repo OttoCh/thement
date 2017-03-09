@@ -8,6 +8,19 @@
  * Designed and built with all the love in the world by @mdo and @fat.
  */
 
+ /*customize*/
+ .dataTables_filter {
+   margin-left: -75px;
+ }
+
+ .dataTables_info {
+   display: none;
+ }
+
+ #example2_length {
+   display: none;
+ }
+
 .clearfix {
   *zoom: 1;
 }
@@ -4991,7 +5004,7 @@ input[type="submit"].btn.btn-mini {
 }
 
 .pagination ul > li {
-  display: inline;
+  display: none;
 }
 
 .pagination ul > li > a,
