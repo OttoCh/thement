@@ -38,9 +38,11 @@ router.get('/notifications/delete_all', notif.removeAllNotifs)
 router.get('/notification/:id', notif.getSingleNotif)
 router.get('/notification/delete/:id', notif.removeSingleNotif)
 
+router.get('/message/initial_broadcast', msg.initBroadcast)
 router.get('/message/all?', msg.getAll)
 router.get('/message/:nim', msg.getMsgByNIM)
 router.post('/message/send', msg.sendMessage)
+router.post('/message/send/all', msg.sendToAll)
 
 router.use(function(req, res, next){
   res.status(404)

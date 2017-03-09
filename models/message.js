@@ -7,7 +7,9 @@ var messageSchema = new Schema ({
   messages: [],
   has_seen_std: Boolean,
   has_seen_lecturer: Boolean,
-  nim: Number
+  has_seen_by: [],
+  nim: Number,
+  lecturer: String
 })
 
 module.exports = mongoose.model('Message', messageSchema)

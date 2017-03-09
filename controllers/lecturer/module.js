@@ -248,6 +248,7 @@ exports.acceptCandidate = function(req, res){
                           if(err){
                             console.log('Error! ', err)
                           } else {
+                            // TODO: add nim to broadcast in message collection
                             console.log('is_accepted is true')
                             res.redirect(baseurl+'/candidates')
                           }

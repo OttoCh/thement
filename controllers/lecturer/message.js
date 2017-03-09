@@ -52,8 +52,19 @@ exports.getAll = function(req, res){
                             if (md.id === nam) {md.unread += vie; return true;}
                         })) allNIMS.push(nd);
                     }
-                    console.log('final UNREAD : ', allNIMS)
-                    res.render('lecturer/message/all', {title:"All messages", stds, allNIMS})
+
+                    // check if initial broadcast found
+                    let bc = 'hide'
+                    msg.findOne({lecturer:lec},function(err, broadcast){
+                        if(!broadcast){
+                            bc = '' 
+                            res.render('lecturer/message/all', {title:"All messages", stds, allNIMS, baseurl, bc})
+                        } else {
+                            bc = 'hide'
+                            console.log('final UNREAD : ', allNIMS)
+                            res.render('lecturer/message/all', {title:"All messages", stds, allNIMS, baseurl, bc})
+                        }
+                    })
                 }
             )
         }
@@ -178,4 +189,56 @@ exports.sendMessage = function(req, res){
       res.redirect(baseurl+'/message/all')
     })
   })
+}
+
+exports.initBroadcast = function(req, res){
+    let lec = req.session.lecturer
+    lecturer.findOne({username:lec}, function(err, lect){
+        let members = lect.students
+        members.push(lecturer)
+        var b           = new msg()
+        b.lecturer      = lec
+        b.members       = members
+        b.save(function(err){
+            if(!err){
+                console.log('init broadcast success!')
+                res.redirect(baseurl)
+            }
+        })
+    })
+}
+
+exports.sendToAll = function(req, res){
+    let message   = req.body.msg
+    let lec       = req.session.lecturer
+    // get all students
+    lecturer.findOne({username:lec}, function(err, lect){
+        let stds = lect.students
+        msg.findOne({lecturer:lec},function(err, found){
+            let bcLength = found.messages.length
+            if(bcLength>0){
+                bcLength = bcLength
+            } else {
+                bcLength = 0
+            }
+            msg.update({lecturer:lec},{$set: {
+                has_seen_by: []
+            },
+            $push:{
+                messages:{
+                    "id":bcLength+1,
+                    "author": lec,
+                    "body": message,
+                    "date_created": new Date()
+                }
+            },}, function(err,sent){
+                console.log('broadcast sent')
+                if(sent){
+                    req.flash('success','Broadcast message sent!')
+                    res.redirect(baseurl+'/message/all')
+                }
+            }
+          )
+        })
+    })
 }

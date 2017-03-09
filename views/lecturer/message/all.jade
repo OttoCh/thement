@@ -111,7 +111,10 @@ html
                         li
                           div
                             a(href='../message/#{val.nim}') #{val.nim} - #{val.unread}
-                              
+                  p(class='#{bc}') 
+                    a(href='#{baseurl}/message/initial_broadcast' class='btn btn-info')
+                      i.icon-plus-sign.icon-white
+                      strong  Init broadcast
                   p
                     a(href='#myModal' data-toggle='modal' class='btn btn-success') 
                         i.icon-plus-sign.icon-white
@@ -123,7 +126,7 @@ html
                       h3 New message to all students
                     div(class='modal-body')
                       .span12
-                        form.form-horizontal(method='post' action='send')
+                        form.form-horizontal(method='post' action='#{baseurl}/message/send/all')
                           .control-group
                             label.control-label(for='supervisor') To :
                             .controls
@@ -177,18 +180,12 @@ html
                     //-         td=val.body
                     //-         td=val.date_created
                   .span3
-                    //- h4 TYPE
-                    
-                    //- p
-                    //- a(href=baseurl+'/message/all') 
-                    //-     button.btn.btn-success
-                    //-       i.icon-inbox.icon-white
-                    //-       strong  Inbox
-                    //- p
-                    //- a(href='?type=outbox') 
-                    //-     button.btn.btn-primary
-                    //-       i.icon-envelope.icon-white
-                    //-       strong  Outbox
+                    if success && success.length > 0
+                      .alert.alert-success.alert-dismissible.fade-in(role="alert")
+                        button.close(type="button" data-dismiss="alert" aria-label="Close")
+                          span(aria-hidden="true") ×
+                        strong Success!
+                        p= success
       hr
       footer
         center

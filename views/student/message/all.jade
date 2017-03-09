@@ -207,6 +207,25 @@ html
                               span.label.label-info #{val.author}
                             td=val.body
                             td=val.date_created
+                     
+                    //- broadcast message
+                    h4(class='#{showBroadcast}') Broadcast Messages
+                    table.table.table-hover(class='#{showBroadcast} success')
+                      thead
+                        tr.success
+                          
+                          th From
+                          th Body
+                          th Date
+                          
+                      tbody
+                        each bc in bcMsg
+                          tr
+                            
+                            td
+                              span.label.label-info=bc.author
+                            td=bc.body
+                            td=bc.date_created
                   .span3
                     h4 TYPE
                     
@@ -220,6 +239,13 @@ html
                         button.btn.btn-primary
                           i.icon-envelope.icon-white
                           strong  Outbox
+                    hr
+                    p
+                    a(href='?type=broadcast') 
+                        button.btn.btn-info
+                          i.icon-bullhorn.icon-white
+                          strong  Broadcast message
+                    p(class='' style='color:red') new message!
       hr
       footer
         center

@@ -17,7 +17,7 @@ const root_url= 'http://localhost:3500'
 exports.getAll = function(req, res){
   
   let nim = req.session.student
-  let hideAllMsg = 'hide', showInbox = 'hide', showOutbox = 'hide'
+  let hideAllMsg = 'hide', showInbox = 'hide', showOutbox = 'hide', showBroadcast = 'hide'
   student.findOne({nim:nim}, function(err, std){
     if(std.supervisor !== "" && std.is_accepted == true){
       // findOne, if not found, create one
@@ -33,11 +33,14 @@ exports.getAll = function(req, res){
             
             // get query
             let quer = req.query.type
-            if(quer == 'outbox'){
-              showOutbox = '', showInbox = 'hide'
-              console.log('outbox message')
-            } else {
-              showOutbox = 'hide', showInbox = ''
+            switch(quer){
+              case 'outbox': showInbox = 'hide', showBroadcast = 'hide', showOutbox = ''
+              break;
+
+              case 'broadcast': showInbox = 'hide', showOutbox = 'hide', showBroadcast = ''
+              break;
+
+              default: showInbox = ''
             }
 
             // get all inbox
@@ -100,8 +103,26 @@ exports.getAll = function(req, res){
                         has_seen_std:true
                       },}, function(e, cb){
                         if(cb){
-                          res.render('student/message/all', {title:"All Messages", baseurl, supervFull, nim,
-                          hideAllMsg, showInbox, showOutbox, superv, inboxMsg, outboxMsg
+
+                          // get all broadcast
+                          msg.findOne({lecturer:superv}, function(err, bc){
+                            let bcMsg = []
+                            let bcs   = bc.messages
+                            for(var l=0; l<bcs.length; l++){
+                              bcMsg.push({
+                                id:l+1,
+                                author:bcs[l].author,
+                                body:bcs[l].body,
+                                date_created:funcs.friendlyDate(bcs[l].date_created)
+                              })
+                            }
+
+                            bcMsg.sort(function(a,b){
+                              return parseFloat(b.id) - parseFloat(a.id)
+                            })
+                            res.render('student/message/all', {title:"All Messages", baseurl, supervFull, nim,
+                            hideAllMsg, showInbox, showOutbox, superv, inboxMsg, outboxMsg, showBroadcast, bcMsg
+                          })
                       })
                         }
                       }) 
