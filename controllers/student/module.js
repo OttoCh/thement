@@ -476,6 +476,7 @@ exports.addStudent = function(req, res){
     std.password            = funcs.encryptTo(req.body.password)
     std.registered          = new Date
     std.last_login          = new Date
+    std.ipk                 = 0
     std.has_resetpass       = false
     std.is_active           = false
     std.is_choose           = false
@@ -485,8 +486,8 @@ exports.addStudent = function(req, res){
     std.notif_seen          = true
     std.activation_link     = funcs.maxRandom('398hhces8dh8shd8ah')
     std.passwordreset_link  = funcs.maxRandom('8hasa9hsd8hfdh3294')
-    std.profile.first_name  = ""
-    std.profile.last_name   = ""
+    std.profile.fullname    = ""
+    std.profile.nickname    = ""
     std.profile.gender      = ""
     std.profile.address     = ""
     std.profile.birthday    = ""
@@ -859,8 +860,8 @@ exports.updateProfile = function(req, res){
   Student.findOne({nim: nimToUpdate}, function(err, found){
     if(found){
       Student.update({nim: nimToUpdate}, {$set: {
-        'profile.first_name': req.body.first_name,
-        'profile.last_name': req.body.last_name,
+        'profile.fullname': req.body.fullname,
+        'profile.nickname': req.body.nickname,
         'profile.gender': req.body.gender,
         'profile.address': req.body.address,
         'profile.birthday': req.body.birthday,

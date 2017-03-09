@@ -20,8 +20,8 @@ var studentSchema = new Schema ({
   notifs: [],
   notif_seen: Boolean,
   profile: {
-    first_name: String,
-    last_name: String,
+    fullname: String,
+    nickname: String,
     gender: String,
     birthday: String,
     address: String,

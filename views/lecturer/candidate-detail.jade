@@ -68,30 +68,69 @@ html
                 .muted.pull-left Lecturer's Profile
               .block-content.collapse.in
                 .span12
-                form(method='post' action='#')
+                
                   h3=student.nim
                   ul(style='list-style:none')
                     li
                       h4 Fullname
-                      p #{student.profile.first_name} #{student.profile.last_name}
+                      p #{student.profile.fullname} 
                     li
                       h4 Address
                       p #{student.profile.address}
-                      
-                    a(href='../accept/#{student.nim}' class='btn btn-success') Accept
-                    &nbsp
-                    a(href='../#{student.nim}' class='btn btn-danger') Decline
-                  
+                    li
+                      h4 IPK
+                      p #{student.ipk}
+
+                  div(class='acceptance')  
+                    a(href='#myModal' data-toggle='modal' class='btn btn-success') 
+                      i.icon-ok.icon-white
+                      strong  Accept
+                    div(id='myModal' class='modal hide')
+                      div(class='modal-header')
+                        button(data-dismiss='modal' class='close' type='button')&times;
+                        h4 Accept student
+                      div(class='modal-body')
+                        .span12
+                          p.lead Are you sure want to accept <strong>#{student.nim}</strong> as your student?
+                          a(href='#{baseurl}/candidates/accept/#{student.nim}' class='btn btn-primary') Yes
+                          &nbsp;
+                          a(data-dismiss='modal' href='#' class='btn') No
+                    
+                    &nbsp;
+
+                    a(href='#myModal2' data-toggle='modal' class='btn btn-danger') 
+                      i.icon-remove.icon-white
+                      strong  Decline
+                    div(id='myModal2' class='modal hide')
+                      div(class='modal-header')
+                        button(data-dismiss='modal' class='close' type='button')&times;
+                        h4 Decline student
+                      div(class='modal-body')
+                        .span12
+                          p.lead Are you sure want to DECLINE <strong>#{student.nim}</strong> from your candidates?
+                          form.form-horizontal(method='post' action='#{baseurl}/candidates/#{student.nim}')
+                            fieldset
+                              legend 
+                              .control-group
+                                label.control-label(for='focusedInput') Reason to reject (OPTIONAL)
+                                .controls
+                                  textarea.input-xlarge.textarea(placeholder='Enter text ...', style='width: 310px; height: 150px', name='rejectReason')
+                            button.btn.btn-primary(type='submit') Yes
+                            &nbsp;
+                            a(data-dismiss='modal' href='#' class='btn') No    
+                    .span4               
+                    if success && success.length > 0
+                      .alert.alert-success.alert-dismissible.fade-in(role="alert")
+                        button.close(type="button" data-dismiss="alert" aria-label="Close")
+                          span(aria-hidden="true") ×
+                        p= success        
+                            
                     // pagination
-                    li.next
+                    p
+                    li.next(style='list-style:none')
                       a(href='javascript:void(0);') Next
                       
-                    //- if(chooseCode !== '')
-                    //-   strong
-                    //-     .alert.alert-success(class='#{hiding}') 
-                    //-       button.close(type='button', data-dismiss='alert') ×
-                    //-       h4 
-                    //-       | #{chooseCode}
+             
             // /block
       hr
     // /.fluid-container
