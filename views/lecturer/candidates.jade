@@ -170,6 +170,12 @@ html
                                   button.btn.btn-primary(type='submit') Yes
                                   &nbsp;
                                   a(data-dismiss='modal' href='#' class='btn') No
+                   .span3               
+                    if success && success.length > 0
+                      .alert.alert-success.alert-dismissible.fade-in(role="alert")
+                        button.close(type="button" data-dismiss="alert" aria-label="Close")
+                          span(aria-hidden="true") ×
+                        p= success                
                           
                       
             // /block

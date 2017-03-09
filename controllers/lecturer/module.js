@@ -174,6 +174,7 @@ exports.rejectCandidate = function(req, res){
               },
             }, function(e, r){
               console.log('success rejecting student')
+              req.flash('success', 'User rejected')
               res.redirect(baseurl+'/candidates')
             }
           )
