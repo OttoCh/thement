@@ -319,17 +319,21 @@ exports.getHome = function(req, res){
            // check for any new broadcast message
             Msg.findOne({lecturer:superv_username}, function(err, bc){
               
-                let bcs = bc.messages
-                let bcLength = bcs.length
-                let nimStr = student.nim.toString()
+                let bcs       = bc.messages
+                let bcLength  = bcs.length
+                let nimStr    = student.nim.toString()
+                let newBC     = 'BROADCAST'
+                let showBC    = 'hide'
                                 
                 // check if the latest message contain nimStr
                 if(bc.messages.length > 0){
-                if(bcs[bcLength-1].has_seen_by.includes(nimStr) == true){
-                  console.log('has seen')
-                } else {
-                  console.log('not seen by ', nimStr)
-                }
+                  if(bcs[bcLength-1].has_seen_by.includes(nimStr) == true){
+                    console.log('has seen')
+                  } else {
+                    coloredMsg = '#4FBFE1'
+                    showBC = ''
+                    console.log('not seen by ', nimStr)
+                  }
                 } else {
                   console.log('no bc message yet')
                 }
@@ -337,14 +341,16 @@ exports.getHome = function(req, res){
               res.render('student/home', {title: "Dashboard ", nim, student, login, state, stateColor, supervisor,
                 notifs, colored, hideChoosing, reportCreate, nReport, msgReport, reportStatus,
                 coloredStatus, statusStyle, divReport, newNotif, registered_at,
-                acceptance, isNotifShow, allMsgs, objMsgs, msgShow, msgNotif, coloredMsg, latestMiles, milesStrip, milesPercen
+                acceptance, isNotifShow, allMsgs, objMsgs, msgShow, msgNotif, coloredMsg, latestMiles, milesStrip, milesPercen,
+                newBC, showBC
               })
             })
         } else {
           res.render('student/home', {title: "Dashboard ", nim, student, login, state, stateColor, supervisor,
             notifs, colored, hideChoosing, reportCreate, nReport, msgReport, reportStatus,
             coloredStatus, statusStyle, divReport, newNotif, registered_at,
-            acceptance, isNotifShow, allMsgs, objMsgs, msgShow, msgNotif, coloredMsg, latestMiles, milesStrip, milesPercen
+            acceptance, isNotifShow, allMsgs, objMsgs, msgShow, msgNotif, coloredMsg, latestMiles, milesStrip, milesPercen, newBC,
+            showBC
             })
           }
         })

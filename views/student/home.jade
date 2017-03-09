@@ -45,6 +45,7 @@ html.no-js
                     br
                           
                   li.divider
+                    
                   li
                     a(href='message/all?from=topbar')
                       strong READ FULL CONVERSATION →
@@ -117,6 +118,8 @@ html.no-js
               a(href='message/all')
                 div(class='#{msgShow}')
                   span.badge.badge-warning.pull-right #{msgNotif}
+                div(class='#{showBC}')
+                  span.badge.badge-info.pull-right #{newBC}
                 i.icon-envelope
                 |  Messages
             li
