@@ -324,10 +324,14 @@ exports.getHome = function(req, res){
                 let nimStr = student.nim.toString()
                                 
                 // check if the latest message contain nimStr
+                if(bc.messages.length > 0){
                 if(bcs[bcLength-1].has_seen_by.includes(nimStr) == true){
                   console.log('has seen')
                 } else {
                   console.log('not seen by ', nimStr)
+                }
+                } else {
+                  console.log('no bc message yet')
                 }
               
               res.render('student/home', {title: "Dashboard ", nim, student, login, state, stateColor, supervisor,

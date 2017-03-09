@@ -188,6 +188,7 @@ exports.rejectCandidate = function(req, res){
 
 exports.acceptCandidate = function(req, res){
   let lecturer    = req.session.lecturer
+  let lec         = lecturer
   let nimToAccept = req.params.nim
   // add nim to 'students' field
   Lect.update({username:lecturer}, {$push : {
@@ -249,8 +250,13 @@ exports.acceptCandidate = function(req, res){
                             console.log('Error! ', err)
                           } else {
                             // TODO: add nim to broadcast in message collection
-                            console.log('is_accepted is true')
-                            res.redirect(baseurl+'/candidates')
+                            msg.update({lecturer:lec},{$push:{
+                              members: nimToAccept.toString()
+                            },}, function(err, bc){
+                              console.log('is_accepted is true')
+                              res.redirect(baseurl+'/candidates')
+                            }
+                            )
                           }
                         })
                       }

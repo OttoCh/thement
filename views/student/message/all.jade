@@ -174,7 +174,7 @@ html
                             
                             td=val.author
                             td=val.body
-                            td=val.date_created
+                            td(width='40%')=val.date_created
 
                     //- flash message
                     if error && error.length > 0
@@ -217,7 +217,7 @@ html
                           th From
                           th Body
                           th Date
-                          th Detail
+                          
                           
                       tbody
                         each bc in bcMsg
@@ -227,7 +227,7 @@ html
                             td=bc.body
                               &nbsp;
                               a(href=baseurl+'/message/broadcast/'+bc.id title='See detail') (...)
-                            td=bc.date_created
+                            td(width='40%')=bc.date_created
                             
                   .span3
                     h4 TYPE
@@ -248,7 +248,7 @@ html
                         button.btn.btn-info
                           i.icon-bullhorn.icon-white
                           strong  Broadcast message
-                    p(class='' style='color:red') new message!
+                    p(class='#{newBC}' style='color:red') new message!
       hr
       footer
         center

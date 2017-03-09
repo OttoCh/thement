@@ -112,16 +112,31 @@ exports.getAll = function(req, res){
                               bcMsg.push({
                                 id:l+1,
                                 author:bcs[l].author,
-                                body:bcs[l].body,
-                                date_created:funcs.friendlyDate(bcs[l].date_created)
+                                bodyfull:bcs[l].body,
+                                body:bcs[l].body.substr(0, bcs[l].body.length-5),
+                                date_created:funcs.friendlyDate(bcs[l].date_created),
+                                has_seen_by:bcs[l].has_seen_by
                               })
                             }
-
+                            
                             bcMsg.sort(function(a,b){
                               return parseFloat(b.id) - parseFloat(a.id)
                             })
+                            let newBC = 'hide'
+                            let has_seen = bcMsg[0].has_seen_by
+                            console.log('has seen by : ', has_seen)
+                            if(has_seen.length > 0){
+                              if(has_seen.includes(nimStr) == true){
+                                newBC = 'hide'
+                              } else {
+                                newBC = ''
+                              }
+                            } else {
+                              newBC = ''
+                            }
                             res.render('student/message/all', {title:"All Messages", baseurl, supervFull, nim,
-                            hideAllMsg, showInbox, showOutbox, superv, inboxMsg, outboxMsg, showBroadcast, bcMsg
+                            hideAllMsg, showInbox, showOutbox, superv, inboxMsg, outboxMsg, showBroadcast, bcMsg,
+                            newBC
                           })
                       })
                         }
@@ -146,7 +161,7 @@ exports.getAll = function(req, res){
 exports.getDetailBroadcast = function(req, res){
   let bc_id = req.params.id
   let nim   = req.session.student
-  console.log('session : ', nim)
+  console.log('session : ' + nim + ' and type of id is :', typeof(bc_id))
   let nimstr = nim.toString()
   student.findOne({nim:nim}, function(err,std){
     let superv = std.supervisor
@@ -163,13 +178,27 @@ exports.getDetailBroadcast = function(req, res){
         return item.id == bc_id
       })
       found = found[0]
-      let timeBC = funcs.friendlyDate(found.date_created)
-      if(found){
-        console.log('found bc at : ', found)
-        res.render('student/message/bc-detail',{title:"Broadcast detail", baseurl, found, timeBC, other})
-      } else {
-        res.redirect(baseurl)
-      }
+
+        if(found){
+          let timeBC = funcs.friendlyDate(found.date_created)
+           // check if has_seen_by is filled
+           if(found.has_seen_by.includes(nimstr) == false){
+             msg.update({lecturer:superv, "messages.id":Number(bc_id)},{
+            "$push":{
+              "messages.$.has_seen_by": nimstr
+            },
+          }, function(err, seen){
+            console.log('found bc at : ', found)
+            res.render('student/message/bc-detail',{title:"Broadcast detail", baseurl, found, timeBC, other})
+          })
+           } else {
+             console.log('not seen by ')
+            console.log('found bc at : ', found)
+            res.render('student/message/bc-detail',{title:"Broadcast detail", baseurl, found, timeBC, other})
+           }
+        } else {
+          res.redirect(baseurl)
+        }
     })
   })
 }
