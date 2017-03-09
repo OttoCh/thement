@@ -126,26 +126,23 @@ html
                               &nbsp;
                               a(data-dismiss='modal' href='#' class='btn') No
                   
-                      ul.pager.wizard
-                        li.previous.first(style='display:none;')
-                          a(href='javascript:void(0);') First
-                        li.previous
-                          a(href='javascript:void(0);') Previous
-                        li.next.last(style='display:none;')
-                          a(href='javascript:void(0);') Last
-                        li.next
-                          a(href='javascript:void(0);') Next
-                        li.next.finish(style='display:none;')
-                          a(href='javascript:;') Finish
+                              
                 .span3
                   p
                     img(src='#{lecturer.img_url}')      
-                    //- if(chooseCode !== '')
-                    //-   strong
-                    //-     .alert.alert-success(class='#{hiding}') 
-                    //-       button.close(type='button', data-dismiss='alert') ×
-                    //-       h4 
-                    //-       | #{chooseCode}
+                .span9
+                  ul.pager.wizard
+                    li.previous.first(style='display:none;')
+                      a(href='javascript:void(0);') First
+                    li.previous
+                      a(href='javascript:void(0);') Previous
+                    li.next.last(style='display:none;')
+                      a(href='javascript:void(0);') Last
+                    li.next
+                      a(href='javascript:void(0);') Next
+                    li.next.finish(style='display:none;')
+                      a(href='javascript:;') Finish
+                    
             // /block
       hr
     // /.fluid-container

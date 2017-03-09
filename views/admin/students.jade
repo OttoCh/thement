@@ -115,6 +115,8 @@ html
                     thead
                       tr
                         th NIM
+                        th Fullname
+                        th Nickname
                         th GPA
                         th Email
                         th Last seen
@@ -124,6 +126,8 @@ html
                         tr
                           td
                             a(href='student/#{std.nim}')=std.nim
+                          td=std.fullname
+                          td=std.nickname
                           td=std.ipk
                           td=std.email
                           td=std.last_seen
