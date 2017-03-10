@@ -33,26 +33,27 @@ exports.getAll = function(req, res){
             msg.find({members:{$all:[lec]}, $and:[{has_seen_lecturer:false}]},
                 function(err, unread){
                     let msgs = unread.length
-                    console.log('very initial : ', unread)
+                    
                     // get all nim
                     let unreadNIMS = []
                     for(var i=0; i<msgs; i++){
                         unreadNIMS.push({
                             id:i,
-                            nim:unread[i].nim,
-                            unread:'new unread message'
+                            nim:unread[i].nim.toString(),
+                            unread:'new message'
                         })
                     }
-                    console.log('initial UNREAD ', unreadNIMS)
-
+                    console.log('show all unread : ', unreadNIMS)
+                    
                     // SHOW ONLY READ MESSAGE
                     while (unreadNIMS.length) {
-                        var nd = unreadNIMS.shift(), nam = nd.id, vie = nd.unread;
+                        var nd = unreadNIMS.shift(), nam = nd.nim, vie = nd.unread;
                         if (!allNIMS.some(function(md) {
-                            if (md.id === nam) {md.unread += vie; return true;}
+                            if (md.nim === nam) {md.unread += vie; return true;}
                         })) allNIMS.push(nd);
                     }
-
+                    console.log('UNREAD MESSAGE : ', allNIMS)
+                    
                     // get broadcast message
                     msg.findOne({lecturer:lec}, function(err, bcsc){
                         let bcMsg = []
@@ -78,7 +79,6 @@ exports.getAll = function(req, res){
                             res.render('lecturer/message/all', {title:"All messages", stds, allNIMS, baseurl, bc, bcMsg})
                         } else {
                             bc = 'hide'
-                            console.log('final UNREAD : ', allNIMS)
                             res.render('lecturer/message/all', {title:"All messages", stds, allNIMS, baseurl, bc, bcMsg})
                         }
                     })

@@ -102,19 +102,31 @@ html
               .navbar.navbar-inner.block-header
                 .muted.pull-left Messages
               .block-content.collapse.in
-                .span3
+                .span4
                   
                   hr
                   strong  List of all students
-                  ul
-                    each val in allNIMS
-                        li
-                          div
-                            a(href='../message/#{val.nim}') #{val.nim} - #{val.unread}
+                  table.table.table-striped
+                      thead
+                        tr
+                          th NIM
+                          th Message
+                          
+                      tbody
+                        each val in allNIMS
+                          tr
+                            td
+                              div
+                                a(href='../message/#{val.nim}') #{val.nim} 
+                                
+                            td
+                              span.badge.badge-important #{val.unread}
+                  
                   p(class='#{bc}') 
                     a(href='#{baseurl}/message/initial_broadcast' class='btn btn-info')
                       i.icon-plus-sign.icon-white
                       strong  Init broadcast
+                  hr
                   p
                     a(href='#myModal' data-toggle='modal' class='btn btn-success') 
                         i.icon-plus-sign.icon-white
@@ -140,7 +152,7 @@ html
                             &nbsp;
                             button.btn(type='reset') Clear
                                    
-                .span9
+                .span8
                   .span9
                     
                     //- broadcast message
@@ -159,7 +171,7 @@ html
                             td
                               span.label.label-info YOU
                             td=bc.body
-                            td=bc.date_created
+                            td(width='40%')=bc.date_created
 
                     //- outbox message
                     //- h4(class='') Outbox Messages

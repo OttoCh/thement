@@ -3,14 +3,14 @@
     
 [ ] MESSAGE:
     - one-to-one messaging  [-]
-    - one-to-many messaging []
-    - broadcast             []
+    - one-to-many messaging [] // announcement
+    - broadcast             [-]
 
 [ ] LECTURERS:
-    - next/previous click   []
+    - next/previous click   [-]
     
 // 3rd milestone
-[ ] broadcast message (admin-student & admin-lecturer & admin-student-lecturer)
+[ ] announcement message (admin-student & admin-lecturer & admin-student-lecturer)
 [ ] Sidang 1 & 2 status
 [ ] Pemilihan ruang
 
