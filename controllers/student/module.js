@@ -118,6 +118,8 @@ exports.getRegisterPage = function(req, res){
 exports.getHome = function(req, res){
   var colored, hideChoosing = '', reportCreate = 'hide', reportAll = 'hide', nReport = 'none', msgReport = 'hide', reportStatus = 'hide'
   let nim = req.session.student
+  var newBC
+  let showBC    = 'hide'
   Student.findOne({nim:nim}, function(err, student){
     let login = student.last_login
     if(login == null){
@@ -322,8 +324,7 @@ exports.getHome = function(req, res){
                 let bcs       = bc.messages
                 let bcLength  = bcs.length
                 let nimStr    = student.nim.toString()
-                let newBC     = 'BROADCAST'
-                let showBC    = 'hide'
+                newBC     = 'BROADCAST'
                                 
                 // check if the latest message contain nimStr
                 if(bc.messages.length > 0){
@@ -503,6 +504,9 @@ exports.addStudent = function(req, res){
     std.registered          = new Date
     std.last_login          = new Date
     std.ipk                 = 0
+    std.ta1                 = ""
+    std.ta2                 = ""
+    std.report_status       = false
     std.has_resetpass       = false
     std.is_active           = false
     std.is_choose           = false

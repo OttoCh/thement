@@ -58,18 +58,19 @@ html
                 i.icon-user
                 |  Profile
             li
-              a(href='../lecturers')
+              a(href='../candidates')
                 i.icon-chevron-right
-                i.icon-briefcase
-                |  Lecturers
-            li(class='#{msgReport}')
-              a(href='reports/all')
+                i.icon-list
+                |  Candidates 
+            li
+              a(href='../students')
                 i.icon-chevron-right
-                i.icon-book
-                |  Reports
+                i.icon-user
+                |  Fix Students
             li
               a(href='../notifications')
-                span.badge.badge-info.pull-right
+                div(class='#{isNotifShow}')
+                  span.badge.badge-info.pull-right #{newNotif}
                 i.icon-volume-up
                 |  Notifications
             li.active

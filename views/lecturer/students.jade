@@ -112,18 +112,26 @@ html
                     thead
                       tr
                         th NIM
-                        th Send message
-                        th Delete
+                        th Fullname
+                        th Nickname
+                        th IPK
+                        th Reports
+                        
+                        th Remove students
                         
                     tbody
                       each std in stds
                         tr
                           td
                             a(href='#{baseurl}/student/detail/#{std.nim}') #{std.nim}
+                          td=std.fullname
+                          td=std.nickname
+                          td=std.ipk
                           td
-                            a(href='' class='btn btn-primary') Send message
+                            span(class='badge badge-#{std.notif}')=std.report_status            
                           td
                             a(href='' class='btn btn-danger') Remove student
+                          
                             
                       
             // /block

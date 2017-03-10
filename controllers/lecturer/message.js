@@ -96,8 +96,9 @@ exports.getMsgByNIM = function(req, res){
 
     // query for student's last seen
     student.findOne({nim:nim}, function(e, std){
-        let login = std.last_login
-        let last_seen = ''
+        let login       = std.last_login
+        let last_seen   = ''
+        let nickname    = std.profile.nickname
         if(login == null){
             last_seen = '1st time'
         } else {
@@ -165,7 +166,8 @@ exports.getMsgByNIM = function(req, res){
                                     has_seen_lecturer: true
                                 },}, function(err, updated){
                                         console.log('FINAL OUTBOX : ', outboxMsg)
-                                        res.render('lecturer/message/msg-nim', {title:"Message by NIM", nim, last_seen, inboxMsg, outboxMsg, showInbox, showOutbox})
+                                        res.render('lecturer/message/msg-nim', {title:"Message by NIM", nim, last_seen, inboxMsg, 
+                                        outboxMsg, showInbox, showOutbox, nickname})
                                     }
                                 )
                             }

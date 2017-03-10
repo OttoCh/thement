@@ -143,7 +143,51 @@ html
                         &nbsp;
                         a(data-dismiss='modal' href='#' class='btn') No
                   //- end load modal
-                    
+
+                  //- ta1 and ta2 status
+                  hr
+                  h3(class='#{showTA1}') Sidang TA status
+                  p
+                  a(href='#myModal1' data-toggle='modal' class='btn btn-info #{showTA1}') 
+                    i.icon-ok-circle.icon-white
+                    strong  Sidang TA 1
+                  div(id='myModal1' class='modal hide')
+                    div(class='modal-header')
+                      button(data-dismiss='modal' class='close' type='button')&times;
+                      h3 Set TA 1 DONE
+                    div(class='modal-body')
+                      .span12
+                        p.lead Are you sure want to accept sidang TA 1 to DONE?
+                        a(href='#{baseurl}/student/ta1/accept/#{profile.nim}' class='btn btn-primary') Yes
+                        &nbsp;
+                        a(data-dismiss='modal' href='#' class='btn') No
+
+                  h4(class='#{showTA1status}') TA 1 Status: 
+                  p(class='#{showTA1status}') 
+                    span(class='badge #{badgeTa1}') #{ta1Msg}
+                  
+                  h3(class='#{showTA2}') Sidang TA status
+                  p
+                  a(href='#myModal2' data-toggle='modal' class='btn btn-info #{showTA2}') 
+                    i.icon-ok-circle.icon-white
+                    strong  Sidang TA 2
+                  div(id='myModal2' class='modal hide')
+                    div(class='modal-header')
+                      button(data-dismiss='modal' class='close' type='button')&times;
+                      h3 Set TA 2 DONE
+                    div(class='modal-body')
+                      .span12
+                        p.lead Are you sure want to accept sidang TA 2 to DONE?
+                        a(href='#{baseurl}/student/ta2/accept/#{profile.nim}' class='btn btn-primary') Yes
+                        &nbsp;
+                        a(data-dismiss='modal' href='#' class='btn') No
+                  
+                  
+
+                  h4(class='#{showTA2status}') TA 2 Status: 
+                  p(class='#{showTA2status}') 
+                    span(class='badge #{badgeTa2}') #{ta2Msg}
+
                   hr    
                   p 
                     a(href='#{baseurl}/students') 

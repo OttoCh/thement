@@ -107,7 +107,7 @@ html
                     i.icon-arrow-left 
                     |  Back to all messages
                   hr
-                  p.lead Conversation with #{nim}   
+                  p.lead Conversation with #{nim} / #{nickname}
                   p.lead 
                   i.icon-time
                   |  Last seen
@@ -152,9 +152,8 @@ html
                       tbody
                         each val in inboxMsg
                           tr
-                            
                             td
-                                span.label.label-info #{val.author}
+                                span.label.label-info #{nickname}
                             td=val.body
                             td=val.date_created
 

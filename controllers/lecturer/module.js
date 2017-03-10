@@ -298,15 +298,35 @@ exports.getFixStudents = function(req, res){
   let lecturer = req.session.lecturer
   Lect.findOne({username:lecturer}, function(err, f){
     if(f){
-      let stds = []
-      let std  = f.students
-      for(var i=0; i<std.length; i++){
-        stds.push({
-          index:i,
-          nim:std[i]
-        });
-      }
-      res.render('lecturer/students', {title:"Fix students", baseurl, stds, f})
+      let stds    = []
+      let std     = f.students
+      let intStds = std.map(Number)
+     
+      // get fullname and nickname
+      Student.find({nim:{$in: intStds}}, function(err, found){   
+        for(var j=0; j<found.length; j++){
+          if(found[j].report_status == true){
+              stds.push({
+              nim:found[j].nim,
+              fullname:found[j].profile.fullname,
+              nickname:found[j].profile.nickname,
+              ipk:found[j].ipk,
+              report_status:'NOTHING NEW',
+              notif:'default'
+            })
+          } else {
+              stds.push({
+              nim:found[j].nim,
+              fullname:found[j].profile.fullname,
+              nickname:found[j].profile.nickname,
+              ipk:found[j].ipk,
+              report_status:'NEW REPORT!',
+              notif: 'important'
+            })
+          }
+        }
+          res.render('lecturer/students', {title:"Fix students", baseurl, stds, f})
+      })
     }
   })
 }
@@ -401,6 +421,8 @@ exports.getDetailStudent = function(req, res){
   let param = req.params.nim
   Student.findOne({nim:param}, function(e, std){
     let profile   = std, last_seen
+    let ta1       = std.ta1,
+        ta2       = std.ta2
     // check if student ever login
     if(std.last_login != null){
       last_seen = funcs.friendlyDate(std.last_login)
@@ -408,38 +430,83 @@ exports.getDetailStudent = function(req, res){
       last_seen = 'Never'
     }
     report.findOne({nim:param}, function(e, report){
-      let showAccept = 'hide'
-      let objReports = []
-      let reps = report.reports
-      let approval = report.is_approved
-      // hide Accept report for initial
+      if(report){
+        let showAccept = 'hide', showTA1 = 'hide', showTA2 = 'hide', 
+        showTA1status = 'hide', showTA2status = 'hide', ta1Msg = '', ta2Msg = '', badgeTa1 = '', badgeTa2 = ''
+        let objReports = []
+        let reps = report.reports
+        let approval = report.is_approved
+        // hide Accept report for initial
 
-      console.log('reports length : ', reps.length)
-      if(approval == true || reps.length == 0){
-        showAccept = 'hide' 
-      } else {
-        showAccept = ''
-      }
+        console.log('reports length : ', reps.length)
+        if(approval == true || reps.length == 0){
+          showAccept = 'hide' 
+        } else {
+          showAccept = ''
+        }
 
-      if(reps.length > 0){
-        console.log('there is ONE OR MORE report', reps.length)
-      } else {
-        console.log('NO REPORT', reps.length)
-      }
+        if(reps.length > 0){
+          if(ta1 != ""){
+            // check status ta1
+            let ta1Status = ta1.status
+            let ta2Status = ta2.status
+            switch(ta1Status){
+              case 'waiting': showTA1status = '', ta1Msg = 'waiting', badgeTa1 = 'badge-important'
+              break;
 
-      for(var i=0; i<reps.length; i++){
-        objReports.push({
-          index: reps[i].id,
-          title: reps[i].title,
-          body: reps[i].body,
-          last_edit: funcs.friendlyDate(reps[i].last_edit),
-          file_location: reps[i].file_location,
-          file_name: reps[i].file_name
+              case 'verified': showTA1status = '', ta1Msg = 'verified', showTA2 = '', badgeTa1 = 'badge-success'
+                if(ta2 != ""){
+                  switch(ta2Status){
+                    case 'waiting': showTA2status = '', ta2Msg = 'waiting', showTA2 = 'hide', badgeTa2 = 'badge-important'
+                    break;
+
+                    case 'verified': showTA2status = '', ta2Msg = 'verified', badgeTa2 = 'badge-success'
+                    break;
+
+                    default: showTA2status = '', ta2Msg = 'unknown'
+                    break;
+                  }
+                } else {
+                  showTA2 = ''
+                }
+                break;
+
+              default: showTA1status = '', ta1Msg = 'unknown'
+              break;
+            }
+          } else if(ta1 == '') {
+            showTA1 = ''
+          } else {
+
+          }
+        } else {
+          
+        }
+
+        ta1Msg = ta1Msg.toUpperCase()
+        ta2Msg = ta2Msg.toUpperCase()
+
+        if(reps.length > 0){
+          console.log('there is ONE OR MORE report', reps.length)
+        } else {
+          console.log('NO REPORT', reps.length)
+        }
+
+        for(var i=0; i<reps.length; i++){
+          objReports.push({
+            index: reps[i].id,
+            title: reps[i].title,
+            body: reps[i].body,
+            last_edit: funcs.friendlyDate(reps[i].last_edit),
+            file_location: reps[i].file_location,
+            file_name: reps[i].file_name
+          })
+        }
+        res.render('lecturer/student-detail', {title:"Student detail", baseurl, last_seen, profile,
+          objReports, showAccept, showTA1, showTA2, showTA1status, ta1Msg, showTA2status, ta2Msg,
+          badgeTa1, badgeTa2
         })
       }
-      res.render('lecturer/student-detail', {title:"Student detail", baseurl, last_seen, profile,
-        objReports:objReports, showAccept:showAccept
-      })
     })
   })
 }
@@ -462,6 +529,7 @@ exports.acceptStudentReport = function(req, res){
         Student.findOne({nim:nim}, function(err, std){
           // set notif tp unseen  
           Student.update({nim:nim}, {$set: {
+            report_status: true,
             notif_seen: false
             },}, function(e, seen){
             // add notif to student
@@ -536,4 +604,38 @@ exports.postSettings = function(req, res){
       }
     })
   }
+}
+
+exports.getTa1 = function(req, res){
+  let nim = req.params.nim
+  let supervisor = req.session.lecturer
+  Student.update({nim:nim},{$set:{
+    ta1:{
+      "status":"waiting",
+      "date": new Date(),
+      "supervisor":supervisor
+    }
+  },}, function(err, ta){
+    if(ta){
+      console.log('success set ta1')
+    }
+    res.redirect(baseurl+'/student/detail/'+nim)
+  })
+}
+
+exports.getTa2 = function(req, res){
+  let nim = req.params.nim
+  let supervisor = req.session.lecturer
+  Student.update({nim:nim},{$set:{
+    ta2:{
+      "status":"waiting",
+      "date": new Date(),
+      "supervisor":supervisor
+    }
+  },}, function(err, ta){
+    if(ta){
+      console.log('success set ta2')
+    }
+    res.redirect(baseurl+'/student/detail/'+nim)
+  })
 }

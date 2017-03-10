@@ -112,39 +112,44 @@ exports.createReport = function(req, res){
     }, function(err, created){
       if(!err){
         student.findOne({nim:nim}, function(e, std){
-          let superv = std.supervisor
-          let nMiles = std.milestones.length
-          lecturer.findOne({username:superv}, function(e, found){
-            console.log('notif : ' + found.name)
-            let nNotif = found.notifs.length
-            lecturer.update({username:superv},{$set:{
-              notif_seen: false
-            },
-              $push:{
-                notifs:{
-                  "id":nNotif+1,
-                  "notif":nim + " created a report",
-                  "date":new Date()
-                }
+          student.update({nim:nim}, {$set: {
+            report_status: false
+          },}, function(err, report_updated){
+            let superv = std.supervisor
+            let nMiles = std.milestones.length
+            lecturer.findOne({username:superv}, function(e, found){
+              console.log('notif : ' + found.name)
+              let nNotif = found.notifs.length
+              lecturer.update({username:superv},{$set:{
+                notif_seen: false
               },
-            }, function(e, notified){
-              if(nMiles == 3){
-                res.redirect(baseurl+'/report/create/file?from=create')
-              } else {
-                student.update({nim:nim}, {$push:{
-                milestones:{
-                  "id":nMiles+1,
-                  "date":new Date(),
-                  "category":"report"
-                }
-                },}, function(err){
-                  console.log('report milestone added')    
-                  res.redirect(baseurl+'/report/create/file?from=create')
+                $push:{
+                  notifs:{
+                    "id":nNotif+1,
+                    "notif":nim + " created a report",
+                    "date":new Date()
                   }
-                )
+                },
+              }, function(e, notified){
+                if(nMiles == 3){
+                  res.redirect(baseurl+'/report/create/file?from=create')
+                } else {
+                  student.update({nim:nim},
+                  {$push:{
+                  milestones:{
+                    "id":nMiles+1,
+                    "date":new Date(),
+                    "category":"report"
+                  }
+                },}, function(err){
+                    console.log('report milestone added')    
+                    res.redirect(baseurl+'/report/create/file?from=create')
+                    }
+                  )
+                }
               }
-            }
-           )
+            )
+            })
           })
         })
       } else {

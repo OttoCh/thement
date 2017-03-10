@@ -13,6 +13,7 @@ var lecturerSchema = new Schema ({
   last_login: Date,
   notif_seen: Boolean,
   passwordreset_link: String,
+  std_limit: Number,
   candidates: [],
   students: [],
   notifs: [],
