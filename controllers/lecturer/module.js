@@ -31,15 +31,32 @@ exports.getHome = function(req, res){
     if(found){
       
       // check candidates
+      let candids
       if(found.candidates.length > 0){
+        console.log('all candidates : ', found.candidates)
         cans = ''
+        candids = found.candidates
+        if(candids > 2){
+          
+        } else {
+          candids = candids
+        }
       } else {
         cans = 'hide'
       }
 
       // check students
+      var fixstds
       if(found.students.length > 0){
         stds = ''
+        let fixLength = found.students.length
+        fixstds = found.students
+        if(fixLength > 2){
+          fixstds = fixstds.slice(0,2)
+          console.log("fixstds : ", fixstds)
+        } else {
+          fixstds = fixstds
+        }
       } else {
         stds = 'hide'
       }
@@ -105,7 +122,8 @@ exports.getHome = function(req, res){
             coloredMsg = '', showMsgNotif = 'hide', newMsg = ''
           }
           res.render('lecturer/home', {title: "Home", baseurl, found, hiding, 
-          msgAlert, stds, cans, colored, isNotifShow, newNotif, notifs, coloredMsg, showMsgNotif, newMsg})
+          msgAlert, stds, cans, colored, isNotifShow, newNotif, notifs, coloredMsg, showMsgNotif, newMsg,
+            fixstds})
         }
       )
     } else {
