@@ -37,7 +37,7 @@ exports.getHome = function(req, res){
         cans = ''
         candids = found.candidates
         if(candids > 2){
-          
+          candids = candids.slice(0,2)
         } else {
           candids = candids
         }
@@ -113,17 +113,17 @@ exports.getHome = function(req, res){
         function(err, matched){
           // CHECK IF LENGTH > 0
           let docs = matched
-          let coloredMsg = '', showMsgNotif = 'hide', newMsg = ''
+          let coloredMsg = '', showMsgNotif = 'hide', newMsg = '', contentMsg = ''
           if(matched.length > 0){
             console.log('there is UNSEEN MESSAGES')
-            coloredMsg = '#F6E18E', showMsgNotif = '', newMsg = 'NEW'
+            coloredMsg = '#F6E18E', showMsgNotif = '', newMsg = 'NEW', contentMsg = 'New message!'
           } else {
             console.log('all messages had been read')
-            coloredMsg = '', showMsgNotif = 'hide', newMsg = ''
+            coloredMsg = '', showMsgNotif = 'hide', newMsg = '', contentMsg = ''
           }
           res.render('lecturer/home', {title: "Home", baseurl, found, hiding, 
           msgAlert, stds, cans, colored, isNotifShow, newNotif, notifs, coloredMsg, showMsgNotif, newMsg,
-            fixstds})
+            fixstds, candids, contentMsg})
         }
       )
     } else {

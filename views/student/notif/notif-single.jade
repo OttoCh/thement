@@ -46,21 +46,40 @@ html
         #sidebar.span3
           ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
             li
-              a(href='./home')
+              a(href='../home')
                 i.icon-chevron-right
+                i.icon-home
                 |  Dashboard
             li
-              a(href='./profile')
+              a(href='../profile')
                 i.icon-chevron-right
+                i.icon-user
                 |  Profile
             li
-              a(href='./lecturers')
+              a(href='../lecturers')
                 i.icon-chevron-right
+                i.icon-briefcase
                 |  Lecturers
+            li(class='#{msgReport}')
+              a(href='../reports/all')
+                i.icon-chevron-right
+                i.icon-book
+                |  Reports
             li.active
               a(href='#')
-                i.icon-chevron-right
+                span.badge.badge-info.pull-right
+                i.icon-volume-up
                 |  Notifications
+            li
+              a(href='../message/all')
+                span.badge.badge-info.pull-right
+                i.icon-envelope
+                |  Messages
+            li
+              a(href='#')
+                span.badge.badge-info.pull-right
+                i.icon-inbox
+                |  Broadcast
         // /span
         #content.span9
           .row-fluid
@@ -93,9 +112,13 @@ html
                     p MESSAGE : #{found.notif}
                     p DATE : #{found.date}
                     
-                    a(href='../notifications') Back to all notifs
+                    a(href='../notifications' data-toggle='modal' class='btn btn-info') 
+                      i.icon-arrow-left.icon-white
+                      strong  Back to all notifications
                       
-            // /block
+      // footer
+      center
+        include ../../static/footer           
     // /.fluid-container
     script(src='/static/vendors/vendors/jquery-1.9.1.js')
     script(src='/static/vendors/bootstrap/js/bootstrap.min.js')

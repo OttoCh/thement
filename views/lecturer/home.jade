@@ -31,17 +31,12 @@ html.no-js
                 ul.dropdown-menu
                   li
                     a(tabindex='-1', href='#')
-                      div
-                        strong 1st message
-                      | Jade is a terse and simple templating language with a strong focus
-                  li
-                    a(tabindex='-1', href='#')
-                      div
-                        strong 2nd message
-                      | Jade is a terse and simple templating language with a strong focus
+                      div(class='#{showMsgNotif}')
+                        strong #{contentMsg}
+                  
                   li.divider
                   li
-                    a(tabindex='-1', href='#') Read all messages
+                    a(tabindex='-1', href='message/all') Read all messages
               li.dropdown
                 a.dropdown-toggle(href='#', role='button', data-toggle='dropdown',
                   style='color:#001a33; background:#{colored}; font-weight:bold;')
@@ -156,7 +151,8 @@ html.no-js
                   | &nbsp;
                   strong Some of them : 
                   div(class='#{cans}')
-                    p #{found.candidates}
+                    p #{candids}
+                    a(href='#' title='See all') (...)
                   hr
                   p
                     a(href='candidates?from=general_info')
