@@ -13,6 +13,7 @@ html
     //if lt IE 9
       script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
     script(src='/static/vendors/vendors/modernizr-2.6.2-respond-1.1.0.min.js')
+   
   body
     .navbar.navbar-fixed-top
       .navbar-inner
@@ -105,7 +106,7 @@ html
                     hr
                     h4 Progress report(s)
                     
-                    table#example2.table.table-striped.table-bordered(cellpadding='0', cellspacing='0', border='0')
+                    table#example.table.table-striped.table-bordered(cellpadding='0', cellspacing='0', border='0')
                       thead
                         tr
                           th ID
@@ -127,6 +128,10 @@ html
                             td=report.approved
                             td
                               a(href='') See detail
+                  p
+                  a(href='#{profile.nim}/download' data-toggle='modal' class='btn btn-success') 
+                    i.icon-download-alt.icon-white
+                    strong  Download as PDF
                   //- p(class='#{showAccept}')
                   //-   a(href='#{baseurl}/student/detail/#{profile.nim}/accept' class='btn btn-primary') ACCEPT
 
@@ -204,3 +209,5 @@ html
     script.
       $(function() {
       });
+    //- export as
+    

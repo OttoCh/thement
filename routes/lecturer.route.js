@@ -31,6 +31,7 @@ router.get('/candidates/accept/:nim', lecturer.acceptCandidate)
 
 router.get('/students', lecturer.getFixStudents)
 router.get('/student/detail/:nim', lecturer.getDetailStudent)
+router.get('/student/detail/:nim/download', lecturer.getDetailPdf)
 router.get('/student/detail/:nim/accept', lecturer.acceptStudentReport)
 router.get('/student/ta1/accept/:nim', lecturer.getTa1)
 router.get('/student/ta2/accept/:nim', lecturer.getTa2)

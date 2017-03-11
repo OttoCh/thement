@@ -506,14 +506,27 @@ exports.getDetailStudent = function(req, res){
         }
 
         for(var i=0; i<reps.length; i++){
-          objReports.push({
-            index: reps[i].id,
-            title: reps[i].title,
-            body: reps[i].body,
-            last_edit: funcs.friendlyDate(reps[i].last_edit),
-            file_location: reps[i].file_location,
-            file_name: reps[i].file_name
-          })
+          if(reps[i].approved != ""){
+            objReports.push({
+              index: reps[i].id,
+              title: reps[i].title,
+              body: reps[i].body,
+              last_edit: funcs.friendlyDate(reps[i].last_edit),
+              approved: funcs.friendlyDate(reps[i].approved),
+              file_location: reps[i].file_location,
+              file_name: reps[i].file_name
+            })
+          } else {
+            objReports.push({
+              index: reps[i].id,
+              title: reps[i].title,
+              body: reps[i].body,
+              last_edit: funcs.friendlyDate(reps[i].last_edit),
+              approved:"not yet approved",
+              file_location: reps[i].file_location,
+              file_name: reps[i].file_name
+            })
+          }
         }
         res.render('lecturer/student-detail', {title:"Student detail", baseurl, last_seen, profile,
           objReports, showAccept, showTA1, showTA2, showTA1status, ta1Msg, showTA2status, ta2Msg,
@@ -558,7 +571,7 @@ exports.acceptStudentReport = function(req, res){
                 },
               }, function(e, re){
                 // add approved date to student's report
-                report.update({nim:nim, "reports.id":reportID},{
+                report.update({nim:nim, "reports.id":reportID.toString()},{
                   "$set":{
                     "reports.$.approved":new Date
                   },
@@ -660,4 +673,8 @@ exports.getTa2 = function(req, res){
     }
     res.redirect(baseurl+'/student/detail/'+nim)
   })
+}
+
+exports.getDetailPdf = function(req, res){
+  res.send('tesst')
 }
