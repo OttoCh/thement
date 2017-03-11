@@ -304,6 +304,7 @@ exports.getFixStudents = function(req, res){
      
       // get fullname and nickname
       Student.find({nim:{$in: intStds}}, function(err, found){   
+      
         for(var j=0; j<found.length; j++){
           if(found[j].report_status == true){
               stds.push({

@@ -116,8 +116,7 @@ html
                         th Nickname
                         th IPK
                         th Reports
-                        
-                        th Remove students
+                       
                         
                     tbody
                       each std in stds
@@ -129,8 +128,7 @@ html
                           td=std.ipk
                           td
                             span(class='badge badge-#{std.notif}')=std.report_status            
-                          td
-                            a(href='' class='btn btn-danger') Remove student
+                         
                           
                             
                       

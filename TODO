@@ -4,7 +4,7 @@
 [ ] MESSAGE:
     - one-to-one messaging  [-]
     - one-to-many messaging [-] 
-    - announcement          [-]
+    - announcement          []
 
 [ ] LECTURERS:
     - next/previous click   [-]
@@ -23,9 +23,10 @@
         - s2 = 2
         - s3 = 3
     4. lulus TA 1 & TA 2 button ada di fitur supervisor             [-]
-    5. verifikasi lulus TA 1 & TA 2 oleh operator                   []
+    5. verifikasi lulus TA 1 & TA 2 oleh operator                   [-]
     6. download report, history report, activities, dll             []
     7. Pagination for every table                                   []
+    8. Student's logs                                               []
 
 [] ADMIN LEVEL
     1. super
