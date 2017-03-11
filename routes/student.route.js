@@ -38,9 +38,7 @@ router.use(loggedin)
 
 router.get('/home', student.getHome)
 router.get('/profile', student.getProfile)
-router.get('/profile/imgupload', function(req, res){
-  res.redirect(baseurl+'/profile')
-})
+
 router.get('/notifications', notif.getNotifs)
 router.get('/notifications/delete_all', notif.removeAllNotifs)
 router.get('/notification/:id', notif.getSingleNotif)
@@ -51,8 +49,8 @@ router.get('/lecturers', choose.getLecturers)
 router.get('/lecturer/:username', choose.getDetailLecturer)
 
 router.post('/settings', student.changePassword)
-router.post('/profile', student.updateProfile)
-router.post('/profile/imgupload', student.imgUpload)
+router.post('/profile/update', student.updateProfile)
+router.post('/profile', student.imgUpload)
 router.post('/lecturer/:username/choose', choose.postChooseLecturer)
 
 // report

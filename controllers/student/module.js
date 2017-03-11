@@ -11,6 +11,7 @@ var express       = require('express'),
     email         = require('emailjs/email'),
     app           = express()
 
+
 // load credentials
 var credentials   = require('../../credentials/email'),
     user_mail     = credentials.user,
@@ -58,10 +59,10 @@ var storage = multer.diskStorage({
     cb(null, 'public/images/profiles')
   },
   filename: function(req, file, cb, res){
-    let student = req.session.student;
-    let imgName = funcs.minRandom()+'.png'
+    let student   = req.session.student;
+    let imgName   = funcs.minRandom()+'.png'
     Student.update({nim:student}, {$set: {
-      'profile.img_url': root_url+'/statik/images/profiles/'+imgName
+      'profile.img_url': root_url+'/static/images/profiles/'+imgName
     },
   }, function(err, result){
       if(result){
@@ -918,7 +919,7 @@ exports.updateProfile = function(req, res){
           "Message":"Error updated profile"
         })
       }
-      res.redirect('./profile')
+      res.redirect(baseurl+'/profile')
     }
   )
     } else {
@@ -943,11 +944,12 @@ exports.imgUpload = function(req, res, next){
           message: "Please provide a file"
         })
       } else {
+        console.log('file name : ', req.file)
         let fileType = req.file.originalname.split('.'),
             type     = fileType[1]
         if(type == 'jpg' || type == 'jpeg' || type == 'png'){
-          res.status(200)
-          res.redirect(baseurl+'/profile')
+          req.flash('success', 'Profile photo updated')
+          return res.send('file uploaded')
         } else {
           res.json({
             status: false,
@@ -957,4 +959,5 @@ exports.imgUpload = function(req, res, next){
       }
     }
   })
+  
 }

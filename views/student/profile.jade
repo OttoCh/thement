@@ -12,6 +12,8 @@ html
     //if lt IE 9
       script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
     script(src='/static/vendors/vendors/modernizr-2.6.2-respond-1.1.0.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.1.0/jquery.form.min.js')
+    
   body
     .navbar.navbar-fixed-top
       .navbar-inner
@@ -102,7 +104,7 @@ html
                 .muted.pull-left Your Profile
               .block-content.collapse.in
                 .span9
-                  form.form-horizontal(method='post' action='profile')
+                  form.form-horizontal(method='post' action='profile/update')
                     fieldset
                       legend Fill the form to change your profile
                       .control-group
@@ -150,17 +152,23 @@ html
                       p= success
 
                 .span3
-                  form(method='post' action='profile/imgupload' enctype='multipart/form-data')
+                  form(method='post' ref='uploadForm' id='uploadForm' action='profile' enctype='multipart/form-data')
                     h4  Image profile 
                     img(src='#{found.profile.img_url}' alt='profile-photo')
                     br
                     input(type='file', name='image')
                     br
-                    button(type='submit', value='upload', class='btn btn-primary') Upload file
+                    button(type='submit', id='btnsubmit' value='upload', class='btn btn-primary') Upload file
+                    span(id='status')
                     
                     div.span12
                       div.progress.progress-striped.active.hide
                         div.bar(style='width: 0%')
+                    p 
+                      center
+                        [Reload to take effect]
+                  
+        
       // footer
       center
         include ../static/footer
@@ -177,6 +185,7 @@ html
     script(type='text/javascript', src='/static/vendors/vendors/jquery-validation/dist/jquery.validate.min.js')
     script(src='/static/vendors/assets/form-validation.js')
     script(src='/static/vendors/assets/scripts.js')
+    
     script.
       jQuery(document).ready(function() {
       FormValidation.init();

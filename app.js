@@ -12,7 +12,8 @@ var express         = require('express'),
     winston         = require('winston'),
     compression     = require('compression'),
     flash           = require('express-flash'),
-    util            = require('util'),
+    formidable      = require('formidable'),
+    fs              = require('fs'),
     app             = express();
 
 mongoose.connect('mongodb://127.0.0.1:27017/tugasakhir');
