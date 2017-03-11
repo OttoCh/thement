@@ -292,20 +292,22 @@ exports.getHome = function(req, res){
       // REPORT CHECKING
       report.findOne({nim:nim}, function(err, rep){
         var coloredStatus = '', statusStyle = ''
+        
         if(rep){
-          let status = rep.is_approved
-          let coloredStatus = status.toString()
-          coloredStatus = coloredStatus.toUpperCase()
-          if(status == true){
-            coloredStatus = 'DISETUJUI'
-            statusStyle = 'green'
-          } else {
-            coloredStatus = 'BELUM DISETUJUI'
-            statusStyle = 'red'
-          }
+          
           if(rep){
             // check if user had created a report
             if(rep.reports.length > 0){
+              let status = rep.is_approved
+              coloredStatus = status.toString()
+              coloredStatus = coloredStatus.toUpperCase()
+              if(status == true){
+                coloredStatus = 'DISETUJUI'
+                statusStyle = 'green'
+              } else {
+                coloredStatus = 'BELUM DISETUJUI'
+                statusStyle = 'red'
+              }
               console.log('user has min 1 report')
               nReport = rep.reports.length
               reportCreate = 'hide',
@@ -320,24 +322,29 @@ exports.getHome = function(req, res){
 
            // check for any new broadcast message
             Msg.findOne({lecturer:superv_username}, function(err, bc){
-              
-                let bcs       = bc.messages
-                let bcLength  = bcs.length
-                let nimStr    = student.nim.toString()
-                newBC     = 'BROADCAST'
-                                
-                // check if the latest message contain nimStr
-                if(bc.messages.length > 0){
-                  if(bcs[bcLength-1].has_seen_by.includes(nimStr) == true){
-                    console.log('has seen')
+                if(bc){
+                  var bcs       = bc.messages
+                  var bcLength  = bcs.length
+                  var nimStr    = student.nim.toString()
+                  newBC     = 'BROADCAST'
+                                  
+                  // check if the latest message contain nimStr
+                  if(bc.messages.length > 0){
+                    if(bcs[bcLength-1].has_seen_by.includes(nimStr) == true){
+                      console.log('has seen')
+                      } else {
+                        coloredMsg = '#4FBFE1'
+                        showBC = ''
+                        console.log('not seen by ', nimStr)
+                      }
                   } else {
-                    coloredMsg = '#4FBFE1'
-                    showBC = ''
-                    console.log('not seen by ', nimStr)
+                    console.log('no bc message yet')
                   }
                 } else {
-                  console.log('no bc message yet')
+                  bcs = ''
                 }
+              
+                
               
               res.render('student/home', {title: "Dashboard ", nim, student, login, state, stateColor, supervisor,
                 notifs, colored, hideChoosing, reportCreate, nReport, msgReport, reportStatus,

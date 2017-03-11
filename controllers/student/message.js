@@ -107,33 +107,40 @@ exports.getAll = function(req, res){
                           // get all broadcast
                           msg.findOne({lecturer:superv}, function(err, bc){
                             let bcMsg = []
-                            let bcs   = bc.messages
-                            for(var l=0; l<bcs.length; l++){
-                              bcMsg.push({
-                                id:l+1,
-                                author:bcs[l].author,
-                                bodyfull:bcs[l].body,
-                                body:bcs[l].body.substr(0, bcs[l].body.length-5),
-                                date_created:funcs.friendlyDate(bcs[l].date_created),
-                                has_seen_by:bcs[l].has_seen_by
-                              })
-                            }
-                            
-                            bcMsg.sort(function(a,b){
-                              return parseFloat(b.id) - parseFloat(a.id)
-                            })
                             let newBC = 'hide'
-                            let has_seen = bcMsg[0].has_seen_by
-                            console.log('has seen by : ', has_seen)
-                            if(has_seen.length > 0){
-                              if(has_seen.includes(nimStr) == true){
-                                newBC = 'hide'
+                            console.log(bc)
+                            if(bc.messages.length>0){
+                              let bcs   = bc.messages
+                              for(var l=0; l<bcs.length; l++){
+                                bcMsg.push({
+                                  id:l+1,
+                                  author:bcs[l].author,
+                                  bodyfull:bcs[l].body,
+                                  body:bcs[l].body.substr(0, bcs[l].body.length-5),
+                                  date_created:funcs.friendlyDate(bcs[l].date_created),
+                                  has_seen_by:bcs[l].has_seen_by
+                                })
+                              }
+                              
+                              bcMsg.sort(function(a,b){
+                                return parseFloat(b.id) - parseFloat(a.id)
+                              })
+                              
+                              let has_seen = bcMsg[0].has_seen_by
+                              console.log('has seen by : ', has_seen)
+                              if(has_seen.length > 0){
+                                if(has_seen.includes(nimStr) == true){
+                                  newBC = 'hide'
+                                } else {
+                                  newBC = ''
+                                }
                               } else {
                                 newBC = ''
                               }
                             } else {
-                              newBC = ''
+                              bcMsg = ''
                             }
+                            
                             res.render('student/message/all', {title:"All Messages", baseurl, supervFull, nim,
                             hideAllMsg, showInbox, showOutbox, superv, inboxMsg, outboxMsg, showBroadcast, bcMsg,
                             newBC

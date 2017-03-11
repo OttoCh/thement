@@ -105,6 +105,7 @@ exports.createReport = function(req, res){
           "title": reportTitle,
           "body": reportBody,
           "last_edit": new Date(),
+          "approved":"",
           "file_name":"There is not file, yet!",
           "file_location":"#"
         }

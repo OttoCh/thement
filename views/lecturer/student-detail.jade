@@ -113,6 +113,7 @@ html
                           th Body
                           th Last Edit
                           th File Attachment
+                          th Approved at
                           th Detail
                           
                       tbody
@@ -123,6 +124,7 @@ html
                             td=report.body
                             td=report.last_edit
                             td=report.file_location
+                            td=report.approved
                             td
                               a(href='') See detail
                   //- p(class='#{showAccept}')

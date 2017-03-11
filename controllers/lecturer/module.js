@@ -257,7 +257,7 @@ exports.acceptCandidate = function(req, res){
                     rep.is_approved = false
                     rep.save(function(err){
                       if(!err){
-                        // create initial message
+                        // create initial message between lecturer and student
                         var m               = new msg()
                         m.nim               = nimToAccept
                         m.members           = [lecturer,nimToAccept.toString()]
@@ -267,12 +267,24 @@ exports.acceptCandidate = function(req, res){
                           if(err){
                             console.log('Error! ', err)
                           } else {
-                            // TODO: add nim to broadcast in message collection
+                            
                             msg.update({lecturer:lec},{$push:{
                               members: nimToAccept.toString()
                             },}, function(err, bc){
-                              console.log('is_accepted is true')
-                              res.redirect(baseurl+'/candidates')
+                              Lect.findOne({username:lec}, function(err, lect){
+                                let members = lect.students
+                                members.push(lecturer)
+                                var b           = new msg()
+                                b.lecturer      = lec
+                                b.members       = members
+                                b.save(function(err){
+                                    if(!err){
+                                        console.log('init broadcast success!')
+                                        res.redirect(baseurl+'/candidates')
+                                    }
+                                })
+                            })
+                              
                             }
                             )
                           }
@@ -544,8 +556,17 @@ exports.acceptStudentReport = function(req, res){
                     "has_seen": false
                   }
                 },
-              }, function(e, report){
-                res.redirect(baseurl+'/students')
+              }, function(e, re){
+                // add approved date to student's report
+                report.update({nim:nim, "reports.id":reportID},{
+                  "$set":{
+                    "reports.$.approved":new Date
+                  },
+                },
+                  function(err, approved){
+                    res.redirect(baseurl+'/students')
+                  }
+                )
               }
             )
           })

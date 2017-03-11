@@ -14,77 +14,76 @@ const root_url= 'http://localhost:3500'
 
 exports.getAll = function(req, res){
     let lec = req.session.lecturer
+    console.log('baseurl is : ', baseurl)
     lecturer.findOne({username:lec}, function(err, found){
         if(found){
+            
             let stds = found.students
-            console.log('all nims early : ', stds)
-            let objStd = []
-            let allNIMS = []
-            for(var j=0; j<stds.length; j++){
-                allNIMS.push({
-                    id:j,
-                    nim:stds[j],
-                    unread:''
-                })
-            }
-            console.log('All NIMS : ', allNIMS)
-
-            // CHECK IF THERE'S UNREAD MESSAGE
-            msg.find({members:{$all:[lec]}, $and:[{has_seen_lecturer:false}]},
-                function(err, unread){
-                    let msgs = unread.length
-                    
-                    // get all nim
-                    let unreadNIMS = []
-                    for(var i=0; i<msgs; i++){
-                        unreadNIMS.push({
-                            id:i,
-                            nim:unread[i].nim.toString(),
-                            unread:'new message'
-                        })
-                    }
-                    console.log('show all unread : ', unreadNIMS)
-                    
-                    // SHOW ONLY READ MESSAGE
-                    while (unreadNIMS.length) {
-                        var nd = unreadNIMS.shift(), nam = nd.nim, vie = nd.unread;
-                        if (!allNIMS.some(function(md) {
-                            if (md.nim === nam) {md.unread += vie; return true;}
-                        })) allNIMS.push(nd);
-                    }
-                    console.log('UNREAD MESSAGE : ', allNIMS)
-                    
-                    // get broadcast message
-                    msg.findOne({lecturer:lec}, function(err, bcsc){
-                        let bcMsg = []
-                        let bcs   = bcsc.messages
-                        for(var l=0; l<bcs.length; l++){
-                            bcMsg.push({
-                            id:l+1,
-                            author:bcs[l].author,
-                            body:bcs[l].body,
-                            date_created:funcs.friendlyDate(bcs[l].date_created)
-                        })
-                        }
-                        bcMsg.sort(function(a,b){
-                            return parseFloat(b.id) - parseFloat(a.id)
-                        })
-                    
-
-                    // check if initial broadcast found
-                    let bc = 'hide'
-                    msg.findOne({lecturer:lec},function(err, broadcast){
-                        if(!broadcast){
-                            bc = '' 
-                            res.render('lecturer/message/all', {title:"All messages", stds, allNIMS, baseurl, bc, bcMsg})
-                        } else {
-                            bc = 'hide'
-                            res.render('lecturer/message/all', {title:"All messages", stds, allNIMS, baseurl, bc, bcMsg})
-                        }
+            if(stds.length > 0){
+                console.log('all nims early : ', stds)
+                let objStd = []
+                let allNIMS = []
+                for(var j=0; j<stds.length; j++){
+                    allNIMS.push({
+                        id:j,
+                        nim:stds[j],
+                        unread:''
                     })
-                })
                 }
-            )
+                console.log('All NIMS : ', allNIMS)
+
+                // CHECK IF THERE'S UNREAD MESSAGE
+                msg.find({members:{$all:[lec]}, $and:[{has_seen_lecturer:false}]},
+                    function(err, unread){
+                        let msgs = unread.length
+                        
+                        // get all nim
+                        let unreadNIMS = []
+                        for(var i=0; i<msgs; i++){
+                            unreadNIMS.push({
+                                id:i,
+                                nim:unread[i].nim.toString(),
+                                unread:'new message'
+                            })
+                        }
+                        console.log('show all unread : ', unreadNIMS)
+                        
+                        // SHOW ONLY READ MESSAGE
+                        while (unreadNIMS.length) {
+                            var nd = unreadNIMS.shift(), nam = nd.nim, vie = nd.unread;
+                            if (!allNIMS.some(function(md) {
+                                if (md.nim === nam) {md.unread += vie; return true;}
+                            })) allNIMS.push(nd);
+                        }
+                        console.log('UNREAD MESSAGE : ', allNIMS)
+                        
+                        // get broadcast message
+                        msg.findOne({lecturer:lec}, function(err, bcsc){
+                            let bcMsg = []
+                            if(bcsc){
+                                let bcs   = bcsc.messages
+                                for(var l=0; l<bcs.length; l++){
+                                    bcMsg.push({
+                                    id:l+1,
+                                    author:bcs[l].author,
+                                    body:bcs[l].body,
+                                    date_created:funcs.friendlyDate(bcs[l].date_created)
+                                })
+                                }
+                                bcMsg.sort(function(a,b){
+                                    return parseFloat(b.id) - parseFloat(a.id)
+                                })
+                            } else {
+                                bcMsg = ''
+                            }
+                            res.render('lecturer/message/all', {title:"All messages", stds, allNIMS, baseurl, bcMsg})
+                        })
+                    }
+                )
+            } else {
+                console.log('no students')
+                res.redirect(baseurl+'/home')
+            }
         }
     })
 }
