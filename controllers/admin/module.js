@@ -130,28 +130,170 @@ exports.getSettings = function(req, res){
 }
 
 exports.getStudents = function(req, res){
+  let admin = req.session.admin
+  let kaprodiShow = 'hide', operatorShow = 'hide', superShow = 'hide'
+  switch(admin){
+      case 'kaprodi': 
+        console.log('role : ', admin)
+        kaprodiShow = ''
+      break;
+
+      case 'operator': 
+        console.log('role : ', admin)
+        operatorShow = ''
+      break;
+
+      case 'super': 
+        console.log('role : ', admin)
+        superShow = ''
+      break;
+    }
   Std.find({}, function(err, students){
     let allStds = students
     let stds = []
     for(var i=0; i<students.length; i++){
-      stds.push({
-        nim:students[i].nim,
-        fullname:students[i].profile.fullname,
-        nickname:students[i].profile.nickname,
-        ipk:students[i].ipk,
-        last_seen:funcs.friendlyDate(students[i].last_login),
-        email:students[i].email
-      })
+      if(students[i].ta1 != ""){
+        let ta1status = students[i].ta1.status
+          switch(ta1status){
+            case 'waiting':
+              stds.push({
+                    nim:students[i].nim,
+                    fullname:students[i].profile.fullname,
+                    nickname:students[i].profile.nickname,
+                    ipk:students[i].ipk,
+                    last_seen:funcs.friendlyDate(students[i].last_login),
+                    email:students[i].email,
+                    ta1:'NEW',
+                    ta2:'nothing',
+                    notifta1:'important',
+                    notifta2:'default'
+                  })
+            break;
+
+            case 'verified':
+              if(students[i].ta2 != ""){
+                let ta2status = students[i].ta2.status
+                switch(ta2status){
+                case 'waiting':
+                  stds.push({
+                    nim:students[i].nim,
+                    fullname:students[i].profile.fullname,
+                    nickname:students[i].profile.nickname,
+                    ipk:students[i].ipk,
+                    last_seen:funcs.friendlyDate(students[i].last_login),
+                    email:students[i].email,
+                    ta1:'VERIFIED',
+                    ta2:'NEW',
+                    notifta1:'success',
+                    notifta2:'important'
+                  })
+                break;
+
+                case 'verified':
+                  stds.push({
+                    nim:students[i].nim,
+                    fullname:students[i].profile.fullname,
+                    nickname:students[i].profile.nickname,
+                    ipk:students[i].ipk,
+                    last_seen:funcs.friendlyDate(students[i].last_login),
+                    email:students[i].email,
+                    ta1:'VERIFIED',
+                    ta2:'VERIFIED',
+                    notifta1:'success',
+                    notifta2:'success'
+                  })
+                break;
+              }
+              } else {
+                stds.push({
+                  nim:students[i].nim,
+                  fullname:students[i].profile.fullname,
+                  nickname:students[i].profile.nickname,
+                  ipk:students[i].ipk,
+                  last_seen:funcs.friendlyDate(students[i].last_login),
+                  email:students[i].email,
+                  ta1:'VERIFIED',
+                  ta2:'nothing',
+                  notifta1:'success',
+                  notifta2:'default'
+                })
+              }
+            break;
+          }
+      } else {
+        stds.push({
+          nim:students[i].nim,
+          fullname:students[i].profile.fullname,
+          nickname:students[i].profile.nickname,
+          ipk:students[i].ipk,
+          last_seen:funcs.friendlyDate(students[i].last_login),
+          email:students[i].email,
+          ta1:'nothing',
+          ta2:'nothing',
+          notifta1:'default',
+          notifta2:'default'
+        })
+      } 
     }
-    res.render('admin/students', {title:"All students", allStds, stds})
+    res.render('admin/students', {title:"All students", allStds, stds, kaprodiShow, operatorShow, superShow, admin})
   })
 }
 
 exports.getDetailStudent = function(req, res){
   let nim = req.params.nim
+  let admin = req.session.admin
+  let kaprodiShow = 'hide', operatorShow = 'hide', superShow = 'hide'
+  switch(admin){
+      case 'kaprodi': 
+        console.log('role : ', admin)
+        kaprodiShow = ''
+      break;
+
+      case 'operator': 
+        console.log('role : ', admin)
+        operatorShow = ''
+      break;
+
+      case 'super': 
+        console.log('role : ', admin)
+        superShow = ''
+      break;
+    }
   Std.findOne({nim:nim},function(err, found){
+    let ta1Button = 'hide', ta1Message = '', ta2Button = 'hide', ta2Message = ''
     let profile = found
-    res.render('admin/student-detail', {title:"Student detail", baseurl, profile})
+    let ta1 = found.ta1
+    let ta2 = found.ta2
+    if(ta1 != ""){
+      let ta1status = ta1.status
+      switch(ta1status){
+        case 'waiting':
+          ta1Message = 'waiting for verification', ta1Button = ''
+        break;
+
+        case 'verified':
+          ta1Message = 'verified'
+          if(ta2 != ""){
+            let ta2status = ta2.status
+            switch(ta2status){
+              case 'waiting':
+                ta2Button = ''
+              break;
+
+              case 'verified':
+                ta2Message = 'verified'
+              break;
+            }
+          } else {
+            ta2Message = 'unknown'
+          }
+        break;
+      }
+    } else {  
+      ta1Message = 'not yet'
+    }
+    res.render('admin/student-detail', {title:"Student detail", baseurl, profile, kaprodiShow, 
+    operatorShow, superShow, ta1Button, ta1Message, ta2Button, ta2Message})
   })
 }
 
@@ -167,5 +309,43 @@ exports.getDetailLecturer = function(req, res){
   Lect.findOne({username:username}, function(err, detail){
     let profile = detail
     res.render('admin/lecturer-detail',{title:"Lecturer detail", username, profile, baseurl})    
+  })
+}
+
+exports.getTa1 = function(req, res){
+  let nim = req.params.nim
+  Std.findOne({nim:nim}, function(err, std){
+    let superv = std.supervisor
+      Std.update({nim:nim},{$set:{
+      ta1:{
+        "status":"verified",
+        "date": new Date(),
+        "supervisor":superv
+      }
+    },}, function(err, ta){
+      if(ta){
+        console.log('success verify ta1')
+      }
+      res.redirect(baseurl+'/student/'+nim)
+    })
+  })
+}
+
+exports.getTa2 = function(req, res){
+  let nim = req.params.nim
+  Std.findOne({nim:nim}, function(err, std){
+    let superv = std.supervisor
+      Std.update({nim:nim},{$set:{
+      ta2:{
+        "status":"verified",
+        "date": new Date(),
+        "supervisor":superv
+      }
+    },}, function(err, ta){
+      if(ta){
+        console.log('success verify ta2')
+      }
+      res.redirect(baseurl+'/student/'+nim)
+    })
   })
 }

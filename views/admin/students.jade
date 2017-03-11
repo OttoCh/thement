@@ -21,7 +21,7 @@ html
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          a.brand(href='#') Student dashboard
+          a.brand(href='#') #{admin} dashboard
           .nav-collapse.collapse
             ul.nav.pull-right
               li.dropdown
@@ -111,27 +111,54 @@ html
                     .btn-group.pull-right
                     
                     br
-                  table#example2.table.table-striped.table-bordered(cellpadding='0', cellspacing='0', border='0')
-                    thead
-                      tr
-                        th NIM
-                        th Fullname
-                        th Nickname
-                        th GPA
-                        th Email
-                        th Last seen
-                        
-                    tbody
-                      each std in stds
+                  //- KAPRODI
+                  div(class='#{kaprodiShow}')
+                    table(id='example2' class='table table-striped table-bordered #{kaprodiShow}' cellpadding='0', cellspacing='0', border='0')
+                      thead
                         tr
-                          td
-                            a(href='student/#{std.nim}')=std.nim
-                          td=std.fullname
-                          td=std.nickname
-                          td=std.ipk
-                          td=std.email
-                          td=std.last_seen
+                          th NIM
+                          th Fullname
+                          th Nickname
+                          th GPA
+                          th Email
+                          th Last seen
                           
+                      tbody
+                        each std in stds
+                          tr
+                            td
+                              a(href='student/#{std.nim}')=std.nim
+                            td=std.fullname
+                            td=std.nickname
+                            td=std.ipk
+                            td=std.email
+                            td=std.last_seen
+                          
+                  //- OPERATOR      
+                  div(class='#{operatorShow}')  
+                    table(id='example' class='table table-striped table-bordered #{operatorShow}' cellpadding='0', cellspacing='0', border='0')
+                      thead
+                        tr
+                          th NIM
+                          th Fullname
+                          th Nickname
+                          th GPA
+                          th TA 1
+                          th TA 2
+                          
+                          
+                      tbody
+                        each std in stds
+                          tr
+                            td
+                              a(href='student/#{std.nim}')=std.nim
+                            td=std.fullname
+                            td=std.nickname
+                            td=std.ipk
+                            td
+                              span(class='badge badge-#{std.notifta1}')=std.ta1
+                            td
+                              span(class='badge badge-#{std.notifta2}')=std.ta2
                       
             // /block
       hr

@@ -460,7 +460,7 @@ exports.getDetailStudent = function(req, res){
                     case 'waiting': showTA2status = '', ta2Msg = 'waiting', showTA2 = 'hide', badgeTa2 = 'badge-important'
                     break;
 
-                    case 'verified': showTA2status = '', ta2Msg = 'verified', badgeTa2 = 'badge-success'
+                    case 'verified': showTA2status = '', ta2Msg = 'verified', badgeTa2 = 'badge-success', showTA2 = 'hide'
                     break;
 
                     default: showTA2status = '', ta2Msg = 'unknown'

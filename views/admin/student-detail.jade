@@ -89,17 +89,55 @@ html
                   h3 
                   ul(style='list-style:none')
                     li
-                      h4 Firstname
-                      p=profile.profile.first_name
+                      h3=profile.nim
                     li
-                      h4 Last name
-                      p=profile.profile.last_name
+                      h4 Fullname
+                      p=profile.profile.fullname
+                    li
+                      h4 Nickname
+                      p=profile.profile.nickname
                     li
                       h4 GPA
                       p=profile.ipk
                     li
                       h4 Supervisor 
                       p=profile.supervisor
+                    
+                    div(class='#{operatorShow}')
+                      h4(class='') TA 1 Status :
+                      p(class='') 
+                        span.badge.badge-info #{ta1Message}
+                      a(href='#myModal1' data-toggle='modal' class='btn btn-info #{ta1Button}') 
+                        i.icon-ok-circle.icon-white
+                        strong  Verify TA 1
+                      div(id='myModal1' class='modal hide')
+                        div(class='modal-header')
+                          button(data-dismiss='modal' class='close' type='button')&times;
+                          h3 Verify TA 1
+                        div(class='modal-body')
+                          .span12
+                            p.lead Are you sure want to verify sidang TA 1 to DONE?
+                            a(href='#{baseurl}/student/accept/ta1/#{profile.nim}' class='btn btn-primary') Yes
+                            &nbsp;
+                            a(data-dismiss='modal' href='#' class='btn') No
+
+                      h4(class='') TA 2 Status :
+                      p(class='') 
+                        span.badge.badge-info #{ta2Message}
+                      a(href='#myModal2' data-toggle='modal' class='btn btn-info #{ta2Button}') 
+                        i.icon-ok-circle.icon-white
+                        strong  Verify TA 2
+                      div(id='myModal2' class='modal hide')
+                        div(class='modal-header')
+                          button(data-dismiss='modal' class='close' type='button')&times;
+                          h3 Verify TA 2
+                        div(class='modal-body')
+                          .span12
+                            p.lead Are you sure want to verify sidang TA 2 to DONE?
+                            a(href='#{baseurl}/student/accept/ta2/#{profile.nim}' class='btn btn-primary') Yes
+                            &nbsp;
+                            a(data-dismiss='modal' href='#' class='btn') No      
+                    hr    
                     p
                       a(href=baseurl+'/students')
                         i.icon-arrow-left

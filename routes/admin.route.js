@@ -20,8 +20,12 @@ router.use(loggedin)
 
 router.get('/profile', admin.getProfile)
 router.get('/settings', admin.getSettings)
+
 router.get('/students', admin.getStudents)
 router.get('/student/:nim', admin.getDetailStudent)
+router.get('/student/accept/ta1/:nim', admin.getTa1)
+router.get('/student/accept/ta2/:nim', admin.getTa2)
+
 router.get('/lecturers', admin.getLecturers)
 router.get('/lecturer/:username', admin.getDetailLecturer)
 
