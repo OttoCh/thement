@@ -120,9 +120,9 @@ exports.getLoginPage = function(req, res){
 }
 
 exports.getHome = function(req, res){
-  var colored, hideChoosing = '', reportCreate = 'hide', reportAll = 'hide', nReport = 'none', msgReport = 'hide', reportStatus = 'hide'
+  let colored, hideChoosing = '', reportCreate = 'hide', reportAll = 'hide', nReport = 'none', msgReport = 'hide', reportStatus = 'hide'
   let nim = req.session.student
-  var newBC
+  let newBC
   let showBC    = 'hide'
   let showHint  = 'show'
   queries.getStudentByNIM(nim, function(err, student){      

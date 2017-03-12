@@ -22,9 +22,9 @@ router.get('/upload', function(req, res){
   res.render('static/upload')
 })
 
-router.get('/test/:nim', function(req, res){
-  queries.getStudentByNIM(req.params.nim, function(err, student){
-    res.send(student)
+router.get('/test', function(req, res){
+  queries.getAllStudents(function(err, students){
+    res.json(students)
   })
 })
 

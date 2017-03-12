@@ -12,7 +12,6 @@ module.exports = {
     // get all students
     getAllStudents: function(cb){
         Std.find({}, cb)
-        return cb
     },
 
     // get student by NIM
