@@ -121,7 +121,14 @@ exports.getHome = function(req, res){
   let nim = req.session.student
   var newBC
   let showBC    = 'hide'
+  let showHint  = 'show'
   Student.findOne({nim:nim}, function(err, student){
+    if(student.last_login = student.registered){
+      showHint = 'show'
+    } else {
+      showHint = ''
+    }
+    
     let login = student.last_login
     if(login == null){
       login = '1st time'
@@ -154,16 +161,16 @@ exports.getHome = function(req, res){
 
       // NOTIF CHECKING
       let registered_at = funcs.friendlyDate(student.registered)
-      console.log('registered at : ', registered_at)
+      
       let notifs        = student.notifs
       let n             = notifs.length
       
       // get latest 3 notifs
-      console.log("notifs awal : ", notifs)
+      
       notifs.sort(function(a,b){
         return parseInt(b.id) - parseInt(a.id)
       })      
-      console.log("notifs akhir : ", notifs)
+      
       let objNotifs = []
       if(n > 0){
         if(n < 3){
@@ -189,7 +196,7 @@ exports.getHome = function(req, res){
         notifs = ''
       }
       notifs = objNotifs
-      console.log("TOP 3 NOTIFS : ", objNotifs)
+      
       let newNotif      = notifs.length
       let isNotifShow   = ''
       
@@ -309,7 +316,7 @@ exports.getHome = function(req, res){
                 coloredStatus = 'BELUM DISETUJUI'
                 statusStyle = 'red'
               }
-              console.log('user has min 1 report')
+              
               nReport = rep.reports.length
               reportCreate = 'hide',
               msgReport = '',
@@ -344,14 +351,12 @@ exports.getHome = function(req, res){
                 } else {
                   bcs = ''
                 }
-              
-                
-              
+                 
               res.render('student/home', {title: "Dashboard ", nim, student, login, state, stateColor, supervisor,
                 notifs, colored, hideChoosing, reportCreate, nReport, msgReport, reportStatus,
                 coloredStatus, statusStyle, divReport, newNotif, registered_at,
                 acceptance, isNotifShow, allMsgs, objMsgs, msgShow, msgNotif, coloredMsg, latestMiles, milesStrip, milesPercen,
-                newBC, showBC
+                newBC, showBC, showHint
               })
             })
         } else {
@@ -359,7 +364,7 @@ exports.getHome = function(req, res){
             notifs, colored, hideChoosing, reportCreate, nReport, msgReport, reportStatus,
             coloredStatus, statusStyle, divReport, newNotif, registered_at,
             acceptance, isNotifShow, allMsgs, objMsgs, msgShow, msgNotif, coloredMsg, latestMiles, milesStrip, milesPercen, newBC,
-            showBC
+            showBC, showHint
             })
           }
         })
