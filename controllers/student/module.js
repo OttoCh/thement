@@ -18,7 +18,7 @@ const credentials   = require('../../credentials/email'),
 
 // load middlewares
     funcs         = require('../../middlewares/funcs'),
-    queries       = require('../../middlewares/queries')
+    queries       = require('../../models/query.student')
 
 // constants
 const caption       = 'Student'

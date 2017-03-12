@@ -2,7 +2,7 @@
 
 var express   = require('express'),
     funcs     = require('../middlewares/funcs'),
-    queries   = require('../middlewares/queries'),
+    queries   = require('../models/query.student'),
     std       = require('../models/student'),
     app       = express(),
     router    = express.Router()

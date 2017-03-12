@@ -1,9 +1,7 @@
 "use strict"
 
-// load all modals
-const   Adm    = require('../models/admin'),
-        Lec    = require('../models/lecturer'),
-        Std    = require('../models/student'),
+// load all models
+const   Std    = require('../models/student'),
         Msg    = require('../models/message'),
         Rep    = require('../models/report')
 
