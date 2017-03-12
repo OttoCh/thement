@@ -12,9 +12,10 @@ var express       = require('express'),
 
 
 // load credentials
-var credentials   = require('../../credentials/email'),
+const credentials   = require('../../credentials/email'),
     user_mail     = credentials.user,
     user_pass     = credentials.pass,
+
 // load middlewares
     funcs         = require('../../middlewares/funcs'),
     queries       = require('../../middlewares/queries')
@@ -38,12 +39,8 @@ var settingsCode      = ''
 var settingsWrongCode = ''
 
 /* TODO:
-  URGENT : in this file, should not calling database directly!
-  [ ] Function        : Beautify way to fetch data from mongodb
-  [ ] Repetitive      : Make the functions!
-  [ ] Authentication  : user credentials
-  [ ] Authorization   : user role, access level
-  [ ] StatusCode      : each message in json should include statusCode
+  [ ] StatusCode : each message in json should include statusCode
+
 */
 
 // emailjs config
@@ -75,30 +72,50 @@ var storage = multer.diskStorage({
     })
   }
 })
+
 var upload  = multer({storage:storage}).single('image')
 
+/* STATIC ROUTE HANDLER */
 exports.getIndex = function(req,res){
   res.redirect('student/login')
 }
+
+exports.getRegisterSuccess = function(req, res){
+  res.render('student/register-success', {title:"Register success!", baseurl})
+}
+
+exports.getForgetPassPage = function(req, res){
+  res.render('student/forget-pass', {title:"Forget password", caption, baseurl, forgetCode, hiding})
+}
+
+exports.getPassResetSuccess = function(req, res){
+  res.render('student/password_sent', {title:"Password sent", caption, baseurl})
+}
+
+exports.getResendActivation = function(req, res){
+  res.render('student/resend-activation', {title:"Resend activation link", caption, baseurl, code, hiding})
+}
+
+exports.getResendSuccess = function(req, res){
+  res.render('student/activation_sent', {title:"Reactivation link sent", caption, baseurl})
+}
+
+exports.getImageUploaded = function(req, res){
+  res.render('student/profile_sent', {title:"Image profile updated"})
+}
+
+exports.getRegisterPage = function(req, res){
+  res.render('student/register', {title:"Register yourself", caption, baseurl, registerCode, hiding})
+}
+/* STATIC ROUTE HANDLER */
 
 exports.getLoginPage = function(req, res){
   if(req.session.student){
     res.redirect('./home')
   } else {
-    res.format({
-      json: function(){
-
-      },
-      html: function(){
-        let caption = "Student", code = ''
-        res.render('student/login', {title:"Student login", caption, code, baseurl, hiding})
-      }
-    })
+    let caption = "Student", code = ''
+    res.render('student/login', {title:"Student login", caption, code, baseurl, hiding})
   }
-}
-
-exports.getRegisterPage = function(req, res){
-  res.render('student/register', {title:"Register yourself", caption, baseurl, registerCode, hiding})
 }
 
 exports.getHome = function(req, res){
@@ -107,7 +124,7 @@ exports.getHome = function(req, res){
   var newBC
   let showBC    = 'hide'
   let showHint  = 'show'
-  Student.findOne({nim:nim}, function(err, student){        
+  queries.getStudentByNIM(nim, function(err, student){      
     let last_login = funcs.friendlyDate(student.last_login)
     let registered_at = funcs.friendlyDate(student.registered)
     if(last_login == registered_at){
@@ -277,9 +294,7 @@ exports.getHome = function(req, res){
       // REPORT CHECKING
       report.findOne({nim:nim}, function(err, rep){
         var coloredStatus = '', statusStyle = ''
-        
         if(rep){
-          
           if(rep){
             // check if user had created a report
             if(rep.reports.length > 0){
@@ -293,7 +308,6 @@ exports.getHome = function(req, res){
                 coloredStatus = 'BELUM DISETUJUI'
                 statusStyle = 'red'
               }
-              
               nReport = rep.reports.length
               reportCreate = 'hide',
               msgReport = '',
@@ -361,7 +375,7 @@ exports.getProfile = function(req, res){
 
 exports.getSettings = function(req, res){
   let nim = req.session.student
-  Student.findOne({nim:nim}, function(err, success){
+  queries.getStudentByNIM(nim, function(err, success){
     let oldpass = funcs.decryptTo(success.password)
     try{
       res.render('student/settings', {title: "Settings", nim, code, oldpass})
@@ -369,30 +383,6 @@ exports.getSettings = function(req, res){
       throw err
     }
   })
-}
-
-exports.getRegisterSuccess = function(req, res){
-  res.render('student/register-success', {title:"Register success!", baseurl})
-}
-
-exports.getForgetPassPage = function(req, res){
-  res.render('student/forget-pass', {title:"Forget password", caption, baseurl, forgetCode, hiding})
-}
-
-exports.getPassResetSuccess = function(req, res){
-  res.render('student/password_sent', {title:"Password sent", caption, baseurl})
-}
-
-exports.getResendActivation = function(req, res){
-  res.render('student/resend-activation', {title:"Resend activation link", caption, baseurl, code, hiding})
-}
-
-exports.getResendSuccess = function(req, res){
-  res.render('student/activation_sent', {title:"Reactivation link sent", caption, baseurl})
-}
-
-exports.getImageUploaded = function(req, res){
-  res.render('student/profile_sent', {title:"Image profile updated"})
 }
 
 exports.addStudent = function(req, res){
@@ -433,56 +423,26 @@ exports.addStudent = function(req, res){
   // Email validation
   else if(s1 < 0 && s2 < 0){
     console.log('Invalid email', email)
-    res.format({
-      html: function(){
-        hiding = ''
-        registerCode  = 'Email should be : yourname@students.itb.ac.id or yourname@s.itb.ac.id'
-        res.render('student/register', {title:"Register yourself", caption, registerCode, hiding})
-      },
-      json: function(){
-        res.json({
-          status:false,
-          message: 'Email not valid'
-        })
-      }
-    })
+    hiding = ''
+    registerCode  = 'Email should be : yourname@students.itb.ac.id or yourname@s.itb.ac.id'
+    res.render('student/register', {title:"Register yourself", caption, registerCode, hiding})
   }
 
   // Same password validation
   else if(pass1 !== pass2){
-    res.format({
-      html: function(){
-        hiding = ''
-        registerCode  = 'Password does not match!'
-        res.render('student/register', {title:"Register yourself", caption, registerCode, hiding})
-      },
-      json: function(){
-        res.json({
-          status:false,
-          message: 'password does not match'
-        })
-      }
-    })
+    hiding = ''
+    registerCode  = 'Password does not match!'
+    res.render('student/register', {title:"Register yourself", caption, registerCode, hiding})
   }
 
   // Security check
   else if (str.length <= 5 || matches == null){
-    res.format({
-      html: function(){
-        hiding = ''
-        registerCode  = 'Password not secure! Your password must contains strings and numbers in 5 characters length'
-        res.render('student/register', {title:"Register yourself", caption, registerCode, hiding})
-      },
-      json: function(){
-        res.json({
-          status:false,
-          message: 'password not secure'
-        })
-      }
-    })
+    hiding = ''
+    registerCode  = 'Password not secure! Your password must contains strings and numbers in 5 characters length'
+    res.render('student/register', {title:"Register yourself", caption, registerCode, hiding})
   }
   else {
-    var std                 = new Student()
+    let std                 = new Student()
     std.nim                 = req.body.nim
     std.email               = req.body.email
     std.password            = funcs.encryptTo(req.body.password)
@@ -511,19 +471,9 @@ exports.addStudent = function(req, res){
 
     Student.findOne({nim: std.nim}, function(err, exist){
       if(exist){
-        res.format({
-          json: function(){
-            res.json({
-              "Status":"Error",
-              "Message":"NIM exist! Try another one"
-            })
-          },
-          html: function(){
-            hiding = ''
-            registerCode  = 'NIM exist!'
-            res.render('student/register', {title:"Register yourself", caption, registerCode, hiding})
-          }
-        })
+        hiding = ''
+        registerCode  = 'NIM exist!'
+        res.render('student/register', {title:"Register yourself", caption, registerCode, hiding})
       } else {
         std.save(function(err){
           if(err){
@@ -546,17 +496,7 @@ exports.addStudent = function(req, res){
             server.send(message, function(err, message){
               console.log(err || message)
             })
-            res.format({
-              json: function(){
-                res.json({
-                  status: true,
-                  message: 'Student created'
-                })
-              },
-              html: function(){
-                res.redirect('./register/success')
-              }
-            })
+            res.redirect('./register/success')
           }
         })
       }
@@ -565,8 +505,8 @@ exports.addStudent = function(req, res){
 }
 
 exports.activateStudent = function(req, res){
-  var link = req.params.link
-  Student.findOne({activation_link: link}, function(err, found){
+  let link = req.params.link
+  queries.getStudentByLink(link, function(err, found){
     if(found){
       // check if already activate
       if(found.is_active == true){
@@ -605,17 +545,7 @@ exports.activateStudent = function(req, res){
             }
           },
         }, function(e, p){
-          res.format({
-            json: function(){
-              res.json({
-                "Status":"OK",
-                "Message":"Account activated"
-              })
-            },
-            html: function(){
-              res.render('student/activation-success', {title:"Your account is active!", nim_success, baseurl})
-            }
-          })
+          res.render('student/activation-success', {title:"Your account is active!", nim_success, baseurl})
         }
       )
         } else {
@@ -639,7 +569,6 @@ exports.activateStudent = function(req, res){
 exports.resendConfirmation = function(req, res){
   let nim   = req.body.nim,
       email = req.body.email
-
   Student.findOne({$and : [{nim: nim}, {email: email}]}, function(err, found){
     if(found){
         if(found.is_active == true){
@@ -655,31 +584,11 @@ exports.resendConfirmation = function(req, res){
             to:"<"+email+">",
             from:"[FISIKA ITB] <notification@fi.itb.ac.id>"
           })
-          res.format({
-            json: function(){
-              res.json({
-                status:true,
-                message: 'Resend activated link'
-              })
-            },
-            html: function(){
-              res.redirect('./resend_activation/sent')
-            }
-          })
+          res.redirect('./resend_activation/sent')
         }
       } else {
       code = 'NIM / email not found'
-      res.format({
-        json: function(){
-          res.json({
-            "Status":"Error",
-            "Message":"NIM / email not found"
-          })
-        },
-        html: function(){
-          res.render('student/resend-activation', {title:"Resend activation link", caption, baseurl, code})
-        }
-      })
+      res.render('student/resend-activation', {title:"Resend activation link", caption, baseurl, code})
     }
   })
 }
@@ -687,7 +596,6 @@ exports.resendConfirmation = function(req, res){
 exports.requestPasswordChange = function(req, res){
   let nim   = req.body.nim,
       email = req.body.email
-
   Student.findOne({$and : [{nim: nim}, {email: email}]}, function(err, found){
     if(found){
         if(found.is_active == true){
@@ -715,40 +623,20 @@ exports.requestPasswordChange = function(req, res){
             }
           )
         } else {
-           
            forgetCode = 'Student not activated. Please activate your account first'
-           res.format({
-             json: function(){
-               res.json({
-                 "Status":"Error",
-                 "Message":"Student not activated. Please activate your account first"
-               })
-             },
-             html: function(){
-               res.render('student/forget-pass', {title:"Forget password", caption, baseurl, forgetCode})
-             }
-           })
+           res.render('student/forget-pass', {title:"Forget password", caption, baseurl, forgetCode})
         }
       } else {
       forgetCode = 'NIM / email not found'
-      res.format({
-        json: function(){
-          res.json({
-            "Status":"Error",
-            "Message":"NIM / email not found"
-          })
-        },
-        html: function(){
-          res.render('student/forget-pass', {title:"Forget password", caption, baseurl, forgetCode})
-        }
-      })
+      res.render('student/forget-pass', {title:"Forget password", caption, baseurl, forgetCode})
     }
   })
 }
 
 exports.activateResetPass = function(req, res){
   let link = req.params.link
-  Student.findOne({passwordreset_link: link}, function(err, found){
+  // not tested, yet
+  queries.getStudentByPassLink(link, function(err, found){
     if(found){
       let nimToReset  = found.nim,
           newPass     = found.inactive_password,
@@ -759,17 +647,7 @@ exports.activateResetPass = function(req, res){
       },
     }, function(err, success){
       if(success){
-        res.format({
-          json: function(){
-            res.json({
-              "Status":"OK",
-              "Message":"Succeed reset password. New password : " + newPass
-            })
-          },
-          html: function(){
-            res.render('student/resetpassword', {title: "Password has been reset", caption, baseurl, newPass})
-          }
-        })
+        res.render('student/resetpassword', {title: "Password has been reset", caption, baseurl, newPass})
       } else {
         res.json({
           "Status":"Error",
@@ -795,7 +673,7 @@ exports.changePassword = function(req, res){
       nim         = req.session.student
 
   if(oldPass !== '' && newPass !== ''){
-    Student.findOne({nim: nimToChange}, function(e, s){
+    queries.getStudentByNIM(nim, function(e,s){
       if(s){
         let decrypted = funcs.decryptTo(s.password)
         if(oldPass == decrypted){
@@ -822,17 +700,7 @@ exports.changePassword = function(req, res){
       } else {
           settingsWrongCode = 'Old password is wrong'
           hiding = ''
-          res.format({
-            json: function(){
-              res.json({
-                "Status":"Error",
-                "Message":"Wrong old password"
-              })
-            },
-            html: function(){
-              res.send('Old password is wrong.')
-            }
-          })
+          res.send('Old password is wrong.')
         }
       } else {
         console.log('NIM not found')
@@ -854,7 +722,7 @@ exports.changePassword = function(req, res){
 exports.updateProfile = function(req, res){
   let nimToUpdate = req.session.student
   let nim = req.session.student
-  Student.findOne({nim: nimToUpdate}, function(err, found){
+  queries.getStudentByNIM(nimToUpdate, function(err, found){
     if(found){
       Student.update({nim: nimToUpdate}, {$set: {
         'profile.fullname': req.body.fullname,

@@ -8,7 +8,7 @@ const   Adm    = require('../models/admin'),
         Rep    = require('../models/report')
 
 module.exports = {
-    // STUDENTS
+    /* STUDENTS */
     // get all students
     getAllStudents: function(cb){
         Std.find({}, cb)
@@ -18,6 +18,20 @@ module.exports = {
     // get student by NIM
     getStudentByNIM: function(nim, cb){
         Std.find({nim:nim}, function(err, student){
+            cb(null, student[0])
+        })
+    },
+
+    // get student by activation link
+    getStudentByLink: function(link, cb){
+        Std.find({activation_link:link}, function(err, student){
+            cb(null, student[0])
+        })
+    },
+
+    // get student by password reset link
+    getStudentByPassLink: function(link, cb){
+        Std.find({passwordreset_link:link}, function(err, student){
             cb(null, student[0])
         })
     }
