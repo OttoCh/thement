@@ -23,11 +23,11 @@ const credentials   = require('../../credentials/email'),
 // constants
 const caption       = 'Student'
 const baseurl_api   = 'http://localhost:3500/api/v1/student/'
-var baseurl         = require('../../config/baseurl'),
-    baseurl         = baseurl.root + 'student'
 const statik        = 'http://localhost:3500/static'
 const root_url      = 'http://localhost:3500'
 const FOOTER_EMAIL  = 'Admin Thement ITB \n  ---------------------- \n  Copyright (c) 2017 | All rights reserved'
+var baseurl         = require('../../config/baseurl'),
+    baseurl         = baseurl.root + 'student'
 
 // statusCode
 var code
@@ -109,6 +109,7 @@ exports.getRegisterPage = function(req, res){
 }
 /* STATIC ROUTE HANDLER */
 
+/* DYNAMIC ROUTES */
 exports.getLoginPage = function(req, res){
   if(req.session.student){
     res.redirect('./home')
@@ -783,3 +784,4 @@ exports.imgUpload = function(req, res, next){
     }
   })
 }
+/* DYNAMIC ROUTES */
