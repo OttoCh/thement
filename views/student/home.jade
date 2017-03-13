@@ -159,7 +159,7 @@ html.no-js
                 .span3
                   h4 Last login
                   i.icon-time
-                  |  #{login}
+                  |  #{last_login}
                   hr
                   p
                     a(href='activities?from=general_info')
@@ -236,29 +236,7 @@ html.no-js
                       p(class='lead') Help center
                       | This article will guide you to get ready as a newbie
                       ul.nav.nav-tabs
-                        li.active
-                            a(data-toggle='tab', href='#home') Home
-                          |   
-                          li
-                            a(data-toggle='tab', href='#menu1') Menu 1
-                          |   
-                          li
-                            a(data-toggle='tab', href='#menu2') Menu 2
-                        .tab-content
-                          #home.tab-pane.fade.in.active
-                            h3 HOME
-                            |     
-                            p Some content.
-                          |   
-                          #menu1.tab-pane.fade
-                            h3 Menu 1
-                            |     
-                            p Some content in menu 1.
-                          |   
-                          #menu2.tab-pane.fade
-                            h3 Menu 2
-                            |     
-                            p Some content in menu 2.
+                        li(class)
 
 
             // /block

@@ -123,18 +123,16 @@ exports.getHome = function(req, res){
   let showBC    = 'hide'
   let showHint  = 'show'
   Student.findOne({nim:nim}, function(err, student){
-    if(student.last_login = student.registered){
+    console.log('LAST LOGIN : ' + student.last_login + ' AND REGISTERED AT : ' + student.registered)
+        
+    let last_login = funcs.friendlyDate(student.last_login)
+    let registered_at = funcs.friendlyDate(student.registered)
+    if(last_login == registered_at){
       showHint = 'show'
     } else {
       showHint = ''
     }
     
-    let login = student.last_login
-    if(login == null){
-      login = '1st time'
-    } else {
-      login = funcs.friendlyDate(login)
-    }
     let state, stateColor, dosen, divReport = 'hide', acceptance
     var supervisor = student.supervisor
     var superv_username = student.supervisor
@@ -160,8 +158,6 @@ exports.getHome = function(req, res){
         }
 
       // NOTIF CHECKING
-      let registered_at = funcs.friendlyDate(student.registered)
-      
       let notifs        = student.notifs
       let n             = notifs.length
       
@@ -352,7 +348,7 @@ exports.getHome = function(req, res){
                   bcs = ''
                 }
                  
-              res.render('student/home', {title: "Dashboard ", nim, student, login, state, stateColor, supervisor,
+              res.render('student/home', {title: "Dashboard ", nim, student, last_login, state, stateColor, supervisor,
                 notifs, colored, hideChoosing, reportCreate, nReport, msgReport, reportStatus,
                 coloredStatus, statusStyle, divReport, newNotif, registered_at,
                 acceptance, isNotifShow, allMsgs, objMsgs, msgShow, msgNotif, coloredMsg, latestMiles, milesStrip, milesPercen,
@@ -360,7 +356,7 @@ exports.getHome = function(req, res){
               })
             })
         } else {
-          res.render('student/home', {title: "Dashboard ", nim, student, login, state, stateColor, supervisor,
+          res.render('student/home', {title: "Dashboard ", nim, student, last_login, state, stateColor, supervisor,
             notifs, colored, hideChoosing, reportCreate, nReport, msgReport, reportStatus,
             coloredStatus, statusStyle, divReport, newNotif, registered_at,
             acceptance, isNotifShow, allMsgs, objMsgs, msgShow, msgNotif, coloredMsg, latestMiles, milesStrip, milesPercen, newBC,

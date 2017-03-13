@@ -29,8 +29,6 @@ exports.postLogin = function(req, res){
   let pass = req.body.password
   let user = req.body.username
   let message
-  console.log('login with user : ' + user + ' and pass : ' + pass)
-  winston.log('info', 'Hi in login post')
   Admin.findOne({role:user}, function(err, found){
     if(found){
       switch (user) {
@@ -47,18 +45,18 @@ exports.postLogin = function(req, res){
       }
       // check if initial pass is correct
       let init_pass = found.role + '123'
-      console.log('init pass : ', init_pass)
+      
       if(pass == init_pass){
         // correct, redirect to change pass with the secure one
         req.session.admin = user
-        console.log('Login as ', req.session.admin)
+        
         res.redirect(baseurl+'/home')
       } else {
         res.status(400).send('wrong password')
       }
       message = 'welcome to Dashboard' + user
     } else {
-      console.log('ADMIN NOT DETECTED')
+      console.log('[ADMIN] Unauthorized access!')
       message = 'NOT AUTHORIZED ACCESS!'
       res.status(400).send('admin not found')
     }
@@ -76,7 +74,7 @@ exports.getHome = function(req, res){
             // get all lecturers that have student
             Lect.count({"students":{$exists: true, $ne: []},},
               function(err, std){
-                console.log('total lecturers have std : ', std)
+                
                 // count all lecturers that has std
                 let lectHasStd = (std/nLects) * 100
                 lectHasStd     = lectHasStd.toFixed(2)
