@@ -3,7 +3,6 @@
 // load packages
 var express       = require('express'),
     Student       = require('../../models/student'),
-    stdModel      = require('../../models/student.model'),
     report        = require('../../models/report'),
     Lect          = require('../../models/lecturer'),
     Msg           = require('../../models/message'),
@@ -16,7 +15,9 @@ var express       = require('express'),
 var credentials   = require('../../credentials/email'),
     user_mail     = credentials.user,
     user_pass     = credentials.pass,
-    funcs         = require('../../middlewares/funcs')
+// load middlewares
+    funcs         = require('../../middlewares/funcs'),
+    queries       = require('../../middlewares/queries')
 
 // constants
 const caption       = 'Student'
@@ -76,22 +77,6 @@ var storage = multer.diskStorage({
 })
 var upload  = multer({storage:storage}).single('image')
 
-
-// restructure
-exports.getAll = function(req, res){
-  stdModel.all(function(err, students){
-    res.send(students)
-  })
-}
-
-exports.getByNIM = function(req, res){
-  stdModel.get(req.params.nim, function(err, student){
-    res.send(student)
-  })
-}
-
-// --------------------------------- //
-
 exports.getIndex = function(req,res){
   res.redirect('student/login')
 }
@@ -122,9 +107,7 @@ exports.getHome = function(req, res){
   var newBC
   let showBC    = 'hide'
   let showHint  = 'show'
-  Student.findOne({nim:nim}, function(err, student){
-    console.log('LAST LOGIN : ' + student.last_login + ' AND REGISTERED AT : ' + student.registered)
-        
+  Student.findOne({nim:nim}, function(err, student){        
     let last_login = funcs.friendlyDate(student.last_login)
     let registered_at = funcs.friendlyDate(student.registered)
     if(last_login == registered_at){
@@ -162,7 +145,6 @@ exports.getHome = function(req, res){
       let n             = notifs.length
       
       // get latest 3 notifs
-      
       notifs.sort(function(a,b){
         return parseInt(b.id) - parseInt(a.id)
       })      
@@ -277,7 +259,6 @@ exports.getHome = function(req, res){
           }
         } else {
           // student has not created message yet
-          // still hardcode
           allMsgs = 'no message yet'
           msg = []
           objMsgs = []
@@ -335,11 +316,9 @@ exports.getHome = function(req, res){
                   // check if the latest message contain nimStr
                   if(bc.messages.length > 0){
                     if(bcs[bcLength-1].has_seen_by.includes(nimStr) == true){
-                      console.log('has seen')
                       } else {
                         coloredMsg = '#4FBFE1'
                         showBC = ''
-                        console.log('not seen by ', nimStr)
                       }
                   } else {
                     console.log('no bc message yet')
@@ -370,10 +349,10 @@ exports.getHome = function(req, res){
 }
 
 exports.getProfile = function(req, res){
-  let nimToUpdate = req.session.student
-  Student.findOne({nim:nimToUpdate}, function(err, found){
+  let nim = req.session.student
+  queries.getStudentByNIM(nim, function(err, found){
     try{
-      res.render('student/profile', {title: "Profile", nimToUpdate, found})
+      res.render('student/profile', {title: "Profile", nim, found})
     } catch(err){
       throw err
     }
@@ -435,7 +414,7 @@ exports.addStudent = function(req, res){
 
   // NIM validation
   if(!isPhysics(nim) || nim.length !== 8){
-    console.log('Not a physics student', str)
+    
     res.format({
       html: function(){
         hiding = ''
@@ -471,7 +450,6 @@ exports.addStudent = function(req, res){
 
   // Same password validation
   else if(pass1 !== pass2){
-    console.log('password does not match : ' + pass1 + 'type of : ' + typeof(pass1))
     res.format({
       html: function(){
         hiding = ''
@@ -489,7 +467,6 @@ exports.addStudent = function(req, res){
 
   // Security check
   else if (str.length <= 5 || matches == null){
-    console.log('not secure! your password : ', str)
     res.format({
       html: function(){
         hiding = ''
@@ -505,7 +482,6 @@ exports.addStudent = function(req, res){
     })
   }
   else {
-
     var std                 = new Student()
     std.nim                 = req.body.nim
     std.email               = req.body.email
@@ -535,7 +511,6 @@ exports.addStudent = function(req, res){
 
     Student.findOne({nim: std.nim}, function(err, exist){
       if(exist){
-        console.log('NIM exist')
         res.format({
           json: function(){
             res.json({
@@ -559,7 +534,6 @@ exports.addStudent = function(req, res){
             let link          = std.activation_link
             let activate_link = baseurl+'/account/activation/'+link
             let email         = std.email
-            console.log('link to activate : ', activate_link)
             let message = {
               text: "Please click here to activate your account : "+activate_link + "\n \n " + FOOTER_EMAIL,
               from: "[FISIKA ITB] <notification@fi.itb.ac.id>",
@@ -596,7 +570,6 @@ exports.activateStudent = function(req, res){
     if(found){
       // check if already activate
       if(found.is_active == true){
-        console.log('account already activated')
         res.send('account already activate. click here to login')
       } else {
         let nimToUpdate = found.nim
@@ -646,7 +619,6 @@ exports.activateStudent = function(req, res){
         }
       )
         } else {
-          console.log('actiovation failed, reason ', err)
           res.json({
             "Status":"Error",
             "Message":"Activation failed"
@@ -656,7 +628,6 @@ exports.activateStudent = function(req, res){
     )
       }
     } else {
-      console.log('activation_link not found')
       res.send({
         "Status":"Error",
         "Message":"activation_link not found"
@@ -676,7 +647,6 @@ exports.resendConfirmation = function(req, res){
           code = 'Your account was actived. No need to reactivate.'
           res.render('student/resend-activation', {title:"Resend activation link", caption, baseurl, code, hiding})
         } else {
-          console.log('nim and email found ' + nim + ' ' + email)
           let reactivate = found.activation_link
           let link       = baseurl+'/account/activation/'+reactivate
           server.send({
@@ -685,7 +655,6 @@ exports.resendConfirmation = function(req, res){
             to:"<"+email+">",
             from:"[FISIKA ITB] <notification@fi.itb.ac.id>"
           })
-          console.log('A reactivate email was sent to ', email)
           res.format({
             json: function(){
               res.json({
@@ -699,7 +668,6 @@ exports.resendConfirmation = function(req, res){
           })
         }
       } else {
-      console.log('NIM / email not found')
       code = 'NIM / email not found'
       res.format({
         json: function(){
@@ -723,7 +691,6 @@ exports.requestPasswordChange = function(req, res){
   Student.findOne({$and : [{nim: nim}, {email: email}]}, function(err, found){
     if(found){
         if(found.is_active == true){
-          console.log('user is : ' + found.nim + ' email : ' + found.email)
           let url = baseurl + '/account/resetpassword/' + found.passwordreset_link
           let nimToReset = found.nim
 
@@ -734,14 +701,13 @@ exports.requestPasswordChange = function(req, res){
             }, function(err, success){
               if(success){
                 let email = found.email
-                console.log('inactive_pass : ' + inactive_pass + 'reset link : ' + url)
                 server.send({
                   subject:"[Reset Password] - "+nim,
                   text:"Here is your new password : " + inactive_pass + " \n Click here to reset your password : "+url + "\n \n " + FOOTER_EMAIL,
                   to:"<"+email+">",
                   from:"[FISIKA ITB] <notification@fi.itb.ac.id>"
                 })
-                console.log('An reset password email was sent to', email)
+                
                 res.redirect('./forget_pass/sent')
               } else {
                 console.log('error creating inactive_password')
@@ -749,7 +715,7 @@ exports.requestPasswordChange = function(req, res){
             }
           )
         } else {
-           console.log('account not activated yet')
+           
            forgetCode = 'Student not activated. Please activate your account first'
            res.format({
              json: function(){
@@ -764,7 +730,6 @@ exports.requestPasswordChange = function(req, res){
            })
         }
       } else {
-      console.log('NIM / email not found')
       forgetCode = 'NIM / email not found'
       res.format({
         json: function(){
@@ -788,14 +753,12 @@ exports.activateResetPass = function(req, res){
       let nimToReset  = found.nim,
           newPass     = found.inactive_password,
           encrypted   = funcs.encryptTo(newPass)
-      console.log('new pass : ', newPass)
       Student.update({nim: nimToReset}, {$set: {
         password: encrypted,
         has_resetpass: true
       },
     }, function(err, success){
       if(success){
-        console.log('success reset password, new password : ', newPass)
         res.format({
           json: function(){
             res.json({
@@ -808,7 +771,6 @@ exports.activateResetPass = function(req, res){
           }
         })
       } else {
-        console.log('failed to reset password, reason : ', err)
         res.json({
           "Status":"Error",
           "Message":"Failed to reset password"
@@ -817,7 +779,6 @@ exports.activateResetPass = function(req, res){
     }
   )
     } else {
-      console.log('reset password link incorrect')
       res.json({
         "Status":"Error",
         "Message":"Reset password link incorrect"
@@ -852,7 +813,6 @@ exports.changePassword = function(req, res){
               if(success){
                 req.flash('success', 'Password updated')
               } else {
-                console.log('Failed to change password')
                 req.flash('error', 'Failed to change password')
               }
               res.redirect('./settings')
@@ -860,7 +820,6 @@ exports.changePassword = function(req, res){
           )
         }
       } else {
-          console.log('Old password is wrong. Try again')
           settingsWrongCode = 'Old password is wrong'
           hiding = ''
           res.format({
@@ -871,7 +830,6 @@ exports.changePassword = function(req, res){
               })
             },
             html: function(){
-              // res.render('student/settings', {title: "Settings", nim:nim, settingsCode:settingsCode, hiding:hiding, settingsWrongCode:settingsWrongCode})
               res.send('Old password is wrong.')
             }
           })
@@ -910,11 +868,9 @@ exports.updateProfile = function(req, res){
       if(found){
         // show success message
         req.flash('success', 'Profile updated')
-        console.log('success update profile', req.body.gender)
       } else {
         // show error message
         req.flash('error', 'Failed to update profile')
-        console.log('error updating profile', err)
         res.json({
           "Status":"Error",
           "Message":"Error updated profile"
@@ -924,7 +880,6 @@ exports.updateProfile = function(req, res){
     }
   )
     } else {
-      console.log('cannot find student')
       res.json({
         "Status":"Error",
         "Message":"Student not found"
@@ -945,7 +900,6 @@ exports.imgUpload = function(req, res, next){
           message: "Please provide a file"
         })
       } else {
-        console.log('file name : ', req.file)
         let fileType = req.file.originalname.split('.'),
             type     = fileType[1]
         if(type == 'jpg' || type == 'jpeg' || type == 'png'){
@@ -960,5 +914,4 @@ exports.imgUpload = function(req, res, next){
       }
     }
   })
-  
 }

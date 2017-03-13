@@ -23,14 +23,14 @@ exports.stdLogin = function(req, res){
     if(found){
       var code
       if (found.is_active == true){
-        console.log('check for decrypting')
+        
         let decrypted = funcs.decryptTo(found.password)
         if(pass == decrypted){
           let nim = found.nim
           req.session.student = nim
           res.redirect('./home')
         } else {
-          console.log('password wrong')
+          
           res.format({
             json: function(){
               res.json({
@@ -45,7 +45,7 @@ exports.stdLogin = function(req, res){
           })
         }
       } else {
-        console.log('Student not activated')
+        
         res.format({
           json: function(){
             res.json({

@@ -35,11 +35,11 @@ exports.getDetailLecturer = function(req, res){
       })
     }
 
-    console.log('NEW all lecturers : ', arrLecturers)
+    
     lecturer.findOne({username:param},function(err, found){
       if(found){
         let profile = found
-        console.log('lecturer profile : ', profile)
+        
         student.findOne({nim: nim}, function(err, std){
           if(std.is_choose == true){
             hiding = 'hide'
@@ -48,7 +48,7 @@ exports.getDetailLecturer = function(req, res){
             })
           } else {
             let n = std.notifs.length
-            console.log(n)
+            
             hiding = ''
             lect.get(req.params.username, function(err, lecturer){
               res.render('student/lecturer-detail', {title:"Lecturer detail", nim, lecturer, baseurl, hiding, profile, arrLecturers})
@@ -106,20 +106,20 @@ exports.postChooseLecturer = function(req, res){
                 }
               },
             }, function(e, cb){
-                console.log('success choosing lecturer')
+                
                 chooseCode = 'Success choosing lecturer'
                 res.redirect(baseurl+'/lecturers')
             }
            )
           })
         } else {
-          console.log('error writing to lecturer')
+          
           res.send('error writing to lecturer')
             }
           }
         )
       } else {
-        console.log('failed to choose')
+        
         res.send('failed to choose')
       }
     }

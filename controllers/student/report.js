@@ -27,7 +27,6 @@ var storage = multer.diskStorage({
     report.findOne({nim:student}, function(e, found){
       let reportID   = found.reports.length.toString()
       let reportName = student.toString()+'-'+reportID
-      console.log('report ID : '+ reportID + ' and name : ' + reportName)
       report.update({nim:student, "reports.id": reportID}, {"$set": {
         "reports.$.file_location": root_url+'/static/reports/'+reportName,
         "reports.$.file_name": reportName,
@@ -35,7 +34,6 @@ var storage = multer.diskStorage({
       },
     }, function(err, result){
         if(result){
-          console.log('success')
           cb(null, reportName)
         } else {
           console.log('nothing found')
@@ -56,23 +54,18 @@ exports.getCreateReport = function(req, res){
         let idReport  = nReport+1
         if(nReport == 0){
           // create report without approval check
-          console.log('initial report has been set! n Report : ', nReport)
           res.render('student/report/create', {title:"Create report", baseurl, nim, idReport})
         } else if(nReport > 0){
           if(exist.is_approved == true){
-            console.log('initial report has been set! n Report : ', nReport)
             res.render('student/report/create', {title:"Create report", baseurl, nim, idReport})
           } else if(exist.is_approved == false) {
-            console.log('latest report has not approved yet')
             res.redirect(baseurl+'#')
           }
         } else {
-          console.log('error')
           res.send('PLEASE REVIEW YOUR REPORT')
         }
       } else {
         let supervisor = s.supervisor
-        console.log('NIM : ' + nim + ' and Supervisor is ' + supervisor)
         var rep         = new report()
         rep.nim         = nim
         rep.supervisor  = supervisor
@@ -80,7 +73,6 @@ exports.getCreateReport = function(req, res){
 
         rep.save(function(err){
           if(!err){
-            console.log('create initial report bio, NIM : ', nim)
             res.render('student/report/create', {title:"Create report", baseurl, nim})
           }
         })
@@ -119,7 +111,6 @@ exports.createReport = function(req, res){
             let superv = std.supervisor
             let nMiles = std.milestones.length
             lecturer.findOne({username:superv}, function(e, found){
-              console.log('notif : ' + found.name)
               let nNotif = found.notifs.length
               lecturer.update({username:superv},{$set:{
                 notif_seen: false
@@ -142,8 +133,7 @@ exports.createReport = function(req, res){
                     "date":new Date(),
                     "category":"report"
                   }
-                },}, function(err){
-                    console.log('report milestone added')    
+                },}, function(err){ 
                     res.redirect(baseurl+'/report/create/file?from=create')
                     }
                   )
@@ -265,7 +255,6 @@ exports.getSingleReport = function(req, res){
   let nim   = req.session.student
   report.findOne({nim:nim}, function(err, std){
     let reports = std.reports
-    console.log('all reports : ', reports)
     var found = reports.filter(function(item){
       return item.id == idTo
     })
@@ -281,7 +270,6 @@ exports.getUpdateReport = function(req, res){
     let reportID = update.reports.length.toString()
     report.findOne({nim:nim}, {"reports":{"$elemMatch":{"id":reportID}}}, function(e, found){
       let reps = found.reports[0]
-      console.log(reps.body)
       res.render('student/report/edit', {title:"Edit latest report", baseurl, nim, reps})
     })
   })
@@ -306,7 +294,6 @@ exports.removeAll = function(req, res){
   report.update({nim:nim},{$set:{
     reports: []
   },}, function(err, removed){
-    console.log('removed')
     res.redirect(baseurl+'/reports/all')
   })
 }

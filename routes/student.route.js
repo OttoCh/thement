@@ -31,9 +31,6 @@ router.post('/register', student.addStudent)
 router.post('/account/forget_pass', student.requestPasswordChange)
 router.post('/account/resend_activation', student.resendConfirmation)
 
-router.get('/all', student.getAll)
-// router.get('/:nim', student.getByNIM)
-
 router.use(loggedin)
 
 router.get('/home', student.getHome)

@@ -68,7 +68,6 @@ exports.removeAllNotifs = function(req, res){
   student.update({nim:nim},{$set: {
     notifs: []
   },}, function(err, removed){
-    console.log('all notifs removed')
     req.flash('success','All notifs removed')
     res.redirect(baseurl+'/notifications')
   })
@@ -81,7 +80,6 @@ exports.removeSingleNotif = function(req, res){
   student.update({nim:nim},{$pull : {"notifs.id": id
       },
     }, function(err, removed){
-      console.log('removed')
       res.send('removed')
     }
   )

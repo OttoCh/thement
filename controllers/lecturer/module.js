@@ -33,7 +33,7 @@ exports.getHome = function(req, res){
       // check candidates
       let candids
       if(found.candidates.length > 0){
-        console.log('all candidates : ', found.candidates)
+        
         cans = ''
         candids = found.candidates
         if(candids > 2){
@@ -53,7 +53,7 @@ exports.getHome = function(req, res){
         fixstds = found.students
         if(fixLength > 2){
           fixstds = fixstds.slice(0,2)
-          console.log("fixstds : ", fixstds)
+          
         } else {
           fixstds = fixstds
         }
@@ -72,7 +72,7 @@ exports.getHome = function(req, res){
       let notifs = found.notifs
       let n      = notifs.length
       // get latest 3 notifs
-      console.log("notifs awal : ", notifs)
+      
       notifs.sort(function(a,b){
         return parseInt(b.id) - parseInt(a.id)
       })      
@@ -115,10 +115,10 @@ exports.getHome = function(req, res){
           let docs = matched
           let coloredMsg = '', showMsgNotif = 'hide', newMsg = '', contentMsg = ''
           if(matched.length > 0){
-            console.log('there is UNSEEN MESSAGES')
+            
             coloredMsg = '#F6E18E', showMsgNotif = '', newMsg = 'NEW', contentMsg = 'New message!'
           } else {
-            console.log('all messages had been read')
+            
             coloredMsg = '', showMsgNotif = 'hide', newMsg = '', contentMsg = ''
           }
           res.render('lecturer/home', {title: "Home", baseurl, found, hiding, 
@@ -172,7 +172,7 @@ exports.rejectCandidate = function(req, res){
       },
     }, function(e, s){
       if(s){
-        console.log('success remove student')
+        
         nimToRemove = Number(nimToRemove)
         Student.findOne({nim: nimToRemove}, function(e, found){
           let n = found.notifs.length
@@ -191,7 +191,7 @@ exports.rejectCandidate = function(req, res){
                 }
               },
             }, function(e, r){
-              console.log('success rejecting student')
+              
               req.flash('success', 'User rejected')
               res.redirect(baseurl+'/candidates')
             }
@@ -233,7 +233,7 @@ exports.acceptCandidate = function(req, res){
               Student.findOne({nim:nimToAccept}, function(e, f){
                 let n       = f.notifs.length
                 let nMiles  = f.milestones.length
-                console.log('current notifs : ', n)
+                
                 Student.update({nim:nimToAccept}, {$push : {
                   notifs: {
                     "id":n+1,
@@ -350,7 +350,7 @@ exports.postLogin = function(req, res){
   let pass  = req.body.password
   Lect.findOne({username:user}, function(e, found){
     if(!found){
-      console.log('user not found')
+      
       res.redirect('#')
     } else {
       if(found.newpass !== ""){
@@ -359,7 +359,7 @@ exports.postLogin = function(req, res){
           req.session.lecturer = user
           res.redirect(baseurl+'/home')
         } else {
-          console.log('newpass wrong!')
+          
           res.redirect('#')
         }
       } else {
@@ -367,7 +367,7 @@ exports.postLogin = function(req, res){
           req.session.lecturer = user
           res.redirect(baseurl+'/home')
         } else {
-          console.log('oldpass wrong')
+          
           res.redirect('#')
         }
       }
@@ -385,7 +385,7 @@ exports.postLogout = function(req, res){
           last_login: new Date()
             },
           }, function(e, u){
-              console.log('last login updated')
+              
               res.format({
               json: function(){
                 res.send({
@@ -418,7 +418,7 @@ exports.changeInitPass = function(req, res){
       },
     }, function(e, success){
       if(success){
-        console.log('success')
+        
         res.json({
           status: true,
           message: 'change initial pass success'

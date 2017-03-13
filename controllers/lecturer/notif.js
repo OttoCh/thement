@@ -65,19 +65,19 @@ exports.removeAllNotifs = function(req, res){
   lecturer.update({username:lect},{$set: {
     notifs: []
   },}, function(err, removed){
-    console.log('all notifs removed')
+    
     res.redirect(baseurl+'/notifications')
   })
 }
 
 exports.removeSingleNotif = function(req, res){
-  let id         = req.params.id
+  let id     = req.params.id
   let lect   = req.session.lecturer
-  console.log(id)
+  
   lecturer.update({username:lect},{$pull : {"notifs.id": id
       },
     }, function(err, removed){
-      console.log('removed')
+      onsole.log('removed')
       res.send('removed')
     }
   )

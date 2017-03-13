@@ -2,6 +2,7 @@
 
 var express   = require('express'),
     funcs     = require('../middlewares/funcs'),
+    queries   = require('../middlewares/queries'),
     std       = require('../models/student'),
     app       = express(),
     router    = express.Router()
@@ -19,6 +20,12 @@ router.get('/', function(req, res){
 
 router.get('/upload', function(req, res){
   res.render('static/upload')
+})
+
+router.get('/test/:nim', function(req, res){
+  queries.getStudentByNIM(req.params.nim, function(err, student){
+    res.send(student)
+  })
 })
 
 router.post('/upload', function(req,res){

@@ -68,10 +68,7 @@ exports.getAll = function(req, res){
                     return parseFloat(b.index) - parseFloat(a.index)
                   })                  
 
-                  console.log('from hendro : ', agg.length)
-                  console.log('CONVERTED INBOXES :', inboxMsg)
-
-                   // get all outbox
+                  // get all outbox
                   let nimStr = nim.toString()
                   var outboxMsg = []
                   msg.aggregate({$match:{"nim":nim}},
@@ -96,8 +93,7 @@ exports.getAll = function(req, res){
                       outboxMsg.sort(function(a,b){
                         return parseFloat(b.index) - parseFloat(a.index)
                       })
-                      console.log('ALL OUTBOX : ', outboxMsg)
-
+                      
                       // set has_seen_std to true
                       msg.update({nim:nim},{$set:{
                         has_seen_std:true
@@ -108,7 +104,7 @@ exports.getAll = function(req, res){
                           msg.findOne({lecturer:superv}, function(err, bc){
                             let bcMsg = []
                             let newBC = 'hide'
-                            console.log(bc)
+                            
                             if(bc.messages.length>0){
                               let bcs   = bc.messages
                               for(var l=0; l<bcs.length; l++){
@@ -127,7 +123,7 @@ exports.getAll = function(req, res){
                               })
                               
                               let has_seen = bcMsg[0].has_seen_by
-                              console.log('has seen by : ', has_seen)
+                              
                               if(has_seen.length > 0){
                                 if(has_seen.includes(nimStr) == true){
                                   newBC = 'hide'
@@ -168,7 +164,7 @@ exports.getAll = function(req, res){
 exports.getDetailBroadcast = function(req, res){
   let bc_id = req.params.id
   let nim   = req.session.student
-  console.log('session : ' + nim + ' and type of id is :', typeof(bc_id))
+  
   let nimstr = nim.toString()
   student.findOne({nim:nim}, function(err,std){
     let superv = std.supervisor
@@ -195,13 +191,11 @@ exports.getDetailBroadcast = function(req, res){
               "messages.$.has_seen_by": nimstr
             },
           }, function(err, seen){
-            console.log('found bc at : ', found)
+            
             res.render('student/message/bc-detail',{title:"Broadcast detail", baseurl, found, timeBC, other})
           })
            } else {
-             console.log('not seen by ')
-            console.log('found bc at : ', found)
-            res.render('student/message/bc-detail',{title:"Broadcast detail", baseurl, found, timeBC, other})
+             res.render('student/message/bc-detail',{title:"Broadcast detail", baseurl, found, timeBC, other})
            }
         } else {
           res.redirect(baseurl)
@@ -234,7 +228,7 @@ exports.sendMessage = function(req, res){
         "date_created": new Date()
       }
     },}, function(err, sent){
-      console.log('message sent')
+      
       req.flash('success', 'Message sent')
       res.redirect(baseurl+'/message/all')
     })
@@ -247,9 +241,8 @@ exports.removeAll = function(req, res){
     messages:[]
   },}, function(err, deleted){
     if(deleted){
-      console.log('all messages deleted')
-      res.redirect(baseurl+'/message/all')
+        res.redirect(baseurl+'/message/all')
+      }
     }
-  }
   )
 }
