@@ -27,13 +27,13 @@ html
               li.dropdown
                 a.dropdown-toggle(href='#', role='button', data-toggle='dropdown')
                   i.icon-user
-                  strong #{nim}
+                  strong  #{nim} 
                   i.caret
                 ul.dropdown-menu
                   li
-                    a(tabindex='-1', href='#') Profile
+                    a(tabindex='-1', href='profile') Profile
                   li
-                    a(tabindex='-1', href='#') Settings
+                    a(tabindex='-1', href='settings') Settings
                   li.divider
                   li
                     a(tabindex='-1', href='logout') Logout
@@ -47,22 +47,22 @@ html
           ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
             li
               a(href='./home')
-                i.icon-chevron-right
+                
                 i.icon-home
                 |  Dashboard
             li
               a(href='profile')
-                i.icon-chevron-right
+                
                 i.icon-user
                 |  Profile
             li
               a(href='lecturers')
-                i.icon-chevron-right
+                
                 i.icon-briefcase
                 |  Lecturers
             li(class='#{msgReport}')
               a(href='reports/all')
-                i.icon-chevron-right
+                
                 i.icon-book
                 |  Reports
             li.active

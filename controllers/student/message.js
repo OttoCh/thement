@@ -24,6 +24,7 @@ exports.getAll = function(req, res){
       let superv      = std.supervisor
       lecturer.findOne({username:superv}, function(err, full){
         let supervFull = full.name
+        let last_seen  = funcs.friendlyDate(full.last_login)
         let nimStr     = nim.toString()
         nimStr         = JSON.parse("[" + nimStr + "]")
         msg.findOne({members: {$in: [superv]},},
@@ -66,8 +67,10 @@ exports.getAll = function(req, res){
 
                   inboxMsg.sort(function(a,b){
                     return parseFloat(b.index) - parseFloat(a.index)
-                  })                  
+                  })
 
+                  console.log('all inbox : ', inboxMsg)  
+                  
                   // get all outbox
                   let nimStr = nim.toString()
                   var outboxMsg = []
@@ -139,7 +142,7 @@ exports.getAll = function(req, res){
                             
                             res.render('student/message/all', {title:"All Messages", baseurl, supervFull, nim,
                             hideAllMsg, showInbox, showOutbox, superv, inboxMsg, outboxMsg, showBroadcast, bcMsg,
-                            newBC
+                            newBC, last_seen
                           })
                       })
                         }
@@ -168,6 +171,9 @@ exports.getDetailBroadcast = function(req, res){
   let nimstr = nim.toString()
   student.findOne({nim:nim}, function(err,std){
     let superv = std.supervisor
+    lecturer.findOne({username:superv}, function(err, found){
+      let last_seen   = funcs.friendlyDate(found.last_login)
+      let supervFull  = found.name
     msg.findOne({lecturer:superv}, function(err, bc){
       var bcDetail
       let other   = bc.members
@@ -192,14 +198,15 @@ exports.getDetailBroadcast = function(req, res){
             },
           }, function(err, seen){
             
-            res.render('student/message/bc-detail',{title:"Broadcast detail", baseurl, found, timeBC, other})
+            res.render('student/message/bc-detail',{title:"Broadcast detail", baseurl, found, timeBC, other, nim, supervFull, last_seen})
           })
            } else {
-             res.render('student/message/bc-detail',{title:"Broadcast detail", baseurl, found, timeBC, other})
+             res.render('student/message/bc-detail',{title:"Broadcast detail", baseurl, found, timeBC, other, nim, supervFull, last_seen})
            }
         } else {
           res.redirect(baseurl)
         }
+      })
     })
   })
 }

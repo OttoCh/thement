@@ -36,6 +36,16 @@
     2. operator
     3. kaprodi
 
+# DEMO : 
+1. Index lecturer's in lecturer's detail                            [-]
+2. Upload file (photo/progress report)                              []
+3. Download report as pdf                                           []
+4. Pembobotan s1/s2/s3, di database dan dashboard lecturer          []
+5. s1/s2/s3 can register (show specific error at register)          []
+6. message broadcast from lecturer                                  [-]
+7. one-to-one messaging (lecturer-student)                          [-]
+8. announcement from operator (to students, to lecturers, or both)  []
+
 # PROBLEMS :
 1. upload file
 2. 

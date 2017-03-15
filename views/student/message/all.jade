@@ -49,22 +49,22 @@ html
           ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
             li
               a(href='../home')
-                i.icon-chevron-right
+                
                 i.icon-home
                 |  Dashboard
             li
               a(href='../profile')
-                i.icon-chevron-right
+                
                 i.icon-user
                 |  Profile
             li
               a(href='../lecturers')
-                i.icon-chevron-right
+                
                 i.icon-briefcase
                 |  Lecturers
             li(class='#{msgReport}')
               a(href='../reports/all')
-                i.icon-chevron-right
+                
                 i.icon-book
                 |  Reports
             li
@@ -109,7 +109,7 @@ html
                   p
                   h5 Last seen
                   i.icon-time
-                  |  Today
+                  |  #{last_seen}
                   p
                   
                   hr
@@ -160,6 +160,7 @@ html
                     
                     //- inbox message
                     h4(class='#{showInbox}') Inbox Messages
+                    
                     table.table.table-hover(class='#{showInbox}')
                       thead
                         tr

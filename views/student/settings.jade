@@ -47,22 +47,18 @@ html
           ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
             li
               a(href='./home')
-                i.icon-chevron-right
                 i.icon-home
                 |  Dashboard
             li
               a(href='profile')
-                i.icon-chevron-right
                 i.icon-user
                 |  Profile
             li
               a(href='lecturers')
-                i.icon-chevron-right
                 i.icon-briefcase
                 |  Lecturers
             li(class='#{msgReport}')
               a(href='reports/all')
-                i.icon-chevron-right
                 i.icon-book
                 |  Reports
             li
@@ -75,6 +71,11 @@ html
                 span.badge.badge-info.pull-right
                 i.icon-envelope
                 |  Messages
+            li
+              a(href='#')
+                span.badge.badge-info.pull-right
+                i.icon-inbox
+                |  Broadcast
         // /span
         #content.span9
           // TODO: validation input

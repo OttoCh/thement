@@ -27,16 +27,16 @@ html
               li.dropdown
                 a.dropdown-toggle(href='#', role='button', data-toggle='dropdown')
                   i.icon-user
-                  |   
+                  strong  #{nim} 
                   i.caret
                 ul.dropdown-menu
                   li
-                    a(tabindex='-1', href='#') Profile
+                    a(tabindex='-1', href=baseurl+'/profile') Profile
                   li
-                    a(tabindex='-1', href='#') Settings
+                    a(tabindex='-1', href=baseurl+'/settings') Settings
                   li.divider
                   li
-                    a(tabindex='-1', href='logout') Logout
+                    a(tabindex='-1', href=baseurl+'/logout') Logout
             ul.nav
               li.active
                 a(href='#') Notifications
@@ -47,22 +47,22 @@ html
           ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
             li
               a(href='../home')
-                i.icon-chevron-right
+                
                 i.icon-home
                 |  Dashboard
             li
               a(href='../profile')
-                i.icon-chevron-right
+                
                 i.icon-user
                 |  Profile
             li
               a(href='../lecturers')
-                i.icon-chevron-right
+                
                 i.icon-briefcase
                 |  Lecturers
             li(class='#{msgReport}')
               a(href='../reports/all')
-                i.icon-chevron-right
+                
                 i.icon-book
                 |  Reports
             li.active
@@ -82,6 +82,21 @@ html
                 |  Broadcast
         // /span
         #content.span9
+          .row-fluid
+            .navbar
+              .navbar-inner
+                ul.breadcrumb
+                  i.icon-chevron-left.hide-sidebar
+                    a(href='#', title='Hide Sidebar', rel='tooltip')  
+                  i.icon-chevron-right.show-sidebar(style='display:none;')
+                    a(href='#', title='Show Sidebar', rel='tooltip')  
+                  li
+                    a(href=baseurl+'/home') Dashboard
+                    span.divider /
+                  li
+                    a(href=baseurl+'/notifications') Notifications
+                    span.divider /
+                  li Notif detail
           .row-fluid
             // block
             .block

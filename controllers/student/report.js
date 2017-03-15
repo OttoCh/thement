@@ -260,7 +260,7 @@ exports.getSingleReport = function(req, res){
     })
     found = found[0]
     found.last_edit = funcs.friendlyDate(found.last_edit)
-    res.render('student/report/report-single', {title:"Report single", baseurl, found, idTo})
+    res.render('student/report/report-single', {title:"Report single", baseurl, found, idTo, nim})
   })
 }
 

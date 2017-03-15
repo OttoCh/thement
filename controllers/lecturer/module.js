@@ -267,26 +267,34 @@ exports.acceptCandidate = function(req, res){
                           if(err){
                             console.log('Error! ', err)
                           } else {
-                            
-                            msg.update({lecturer:lec},{$push:{
-                              members: nimToAccept.toString()
-                            },}, function(err, bc){
+                              // BROADCAST MESSAGE
                               Lect.findOne({username:lec}, function(err, lect){
-                                let members = lect.students
-                                members.push(lecturer)
-                                var b           = new msg()
-                                b.lecturer      = lec
-                                b.members       = members
-                                b.save(function(err){
-                                    if(!err){
-                                        console.log('init broadcast success!')
-                                        res.redirect(baseurl+'/candidates')
-                                    }
-                                })
-                            })
-                              
-                            }
-                            )
+                                // check if document exist
+                                msg.findOne({lecturer:lec}, function(err, exist){
+                                  if(exist){
+                                    console.log('bc exist!')
+                                    // update
+                                    msg.update({lecturer:lec}, {$push:{
+                                      members: nimToAccept.toString()
+                                    },}, function(err, bc){
+                                      console.log('BC updated')
+                                      res.redirect(baseurl+'/candidates')
+                                    })
+                                  } else {
+                                    // create new document
+                                    let members = lect.students
+                                    var b           = new msg()
+                                    b.lecturer      = lec
+                                    b.members       = members
+                                    b.save(function(err){
+                                        if(!err){
+                                            console.log('init broadcast success!')
+                                            res.redirect(baseurl+'/candidates')
+                                        }
+                                    })
+                                  }
+                              })
+                            }) 
                           }
                         })
                       }

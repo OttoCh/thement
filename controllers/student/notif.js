@@ -59,7 +59,7 @@ exports.getSingleNotif = function(req, res){
     })
     found = found[0]
     found.date = funcs.friendlyDate(found.date)
-    res.render('student/notif/notif-single', {title:"Single notif", found, idToFind})
+    res.render('student/notif/notif-single', {title:"Single notif", found, idToFind, nim, baseurl})
   })
 }
 
