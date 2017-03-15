@@ -124,14 +124,14 @@ exports.getHome = function(req, res){
   let nim = req.session.student
   let newBC
   let showBC    = 'hide'
-  let showHint  = 'show'
+  let showHint  = 'hide'
   queries.getStudentByNIM(nim, function(err, student){      
     let last_login = funcs.friendlyDate(student.last_login)
     let registered_at = funcs.friendlyDate(student.registered)
     if(last_login == registered_at){
-      showHint = 'show'
-    } else {
       showHint = ''
+    } else {
+      showHint = 'hide'
     }
     
     let state, stateColor, dosen, divReport = 'hide', acceptance

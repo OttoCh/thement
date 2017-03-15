@@ -126,6 +126,12 @@ html.no-js
                 
         // /span
         #content.span9
+          center
+            div(class='alert alert-success alert-block #{showHint}')
+              a(class='close' data-dismiss='alert' href='#')&times;
+              h2(class='alert-heading') Welcome for the first time!
+              p(class='lead') Please read docs 
+                a(class='lead' href='') here
           .row-fluid
             .navbar
               .navbar-inner
@@ -208,33 +214,10 @@ html.no-js
                   h3 Milestone
                   div(class='progress progress-#{milesStrip}')
                     div(style='width:#{milesPercen}%' class='bar') 
-                      strong #{milesPercen}% (#{latestMiles})               
-                                                                  
-                  //- ul(style='list-style:none')
-                  //-   li 20% &rarr;
-                  //-     strong Registered ./st
-                  //-   li 40% &rarr;
-                  //-     strong  Approved (supervisor)
-                  //-   li 60% &rarr;
-                  //-     strong  Progress report
-                  //-   li 80% &rarr;
-                  //-     strong  Sidang TA 1
-                  //-   li 100% &rarr;
-                  //-     strong  Sidang TA 2
+                      strong #{milesPercen}% (#{latestMiles})
+                  hr               
                   
-                  //- model hint
-
-                  div(class='modal hide fade' id='hintModal')
-                    div(class='modal-header')
-                      a(class='close' data-dismiss='modal' type='button') &times;
-                      h4 Welcome to Thesis Management System !
-                    div(class='modal-body')
-                      p(class='lead') Help center
-                      | This article will guide you to get ready as a newbie
-                      ul.nav.nav-tabs
-                        li(class)
-
-
+                  
             // /block
       // footer
       center
@@ -249,10 +232,6 @@ html.no-js
       // Easy pie charts
       $('.chart').easyPieChart({animate: 1000});
       });
-    script.
-      $(window).load(function(){
-        $('#hintModal').modal('#{showHint}')
-      })
     script.
       $('#myCarousel').on('slide.bs.carousel', function () {
         // do something…
