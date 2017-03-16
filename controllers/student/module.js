@@ -26,9 +26,10 @@ const credentials   = require('../../credentials/email'),
 const caption       = 'Student'
 const baseurl_api   = 'http://localhost:3500/api/v1/student/'
 const statik        = 'http://localhost:3500/static'
-const root_url      = 'http://localhost:3500'
+
 const FOOTER_EMAIL  = 'Admin Thement ITB \n  ---------------------- \n  Copyright (c) 2017 | All rights reserved'
 var baseurl         = require('../../config/baseurl'),
+    root_url        = baseurl.root,
     baseurl         = baseurl.root + 'student'
 
 // statusCode
@@ -129,6 +130,7 @@ exports.getHome = function(req, res){
   let showBC    = 'hide'
   let showHint  = 'hide'
   let showAnn   = 'hide'
+
   queries.getStudentByNIM(nim, function(err, student){      
     let last_login = funcs.friendlyDate(student.last_login)
     let registered_at = funcs.friendlyDate(student.registered)
@@ -137,6 +139,27 @@ exports.getHome = function(req, res){
     } else {
       showHint = 'hide'
     }
+
+    // study level
+    let studyLevel
+    let nimLevel  = student.nim.toString()
+    String.prototype.startsWith = function(str){
+      return (this.indexOf(str) === 0)
+    }
+    switch(true){
+      case nimLevel.startsWith('102') : studyLevel = 'undegraduate'
+      break;
+
+      case nimLevel.startsWith('202') : studyLevel = 'master'
+      break;
+
+      case nimLevel.startsWith('202') : studyLevel = 'master'
+      break;
+
+      default: studyLevel ='undetected'
+      break;
+    }
+    studyLevel = studyLevel.toUpperCase()
     
     let state, stateColor, dosen, divReport = 'hide', acceptance
     var supervisor = student.supervisor
@@ -286,6 +309,7 @@ exports.getHome = function(req, res){
           }
         } else {
           // student has not created message yet
+          
           allMsgs = 'no message yet'
           msg = []
           objMsgs = []
@@ -305,8 +329,6 @@ exports.getHome = function(req, res){
       let stdMsg  = []
       Adm.aggregate({$match:{"role":"operator"}},{$unwind:"$announcements"},{$match:{$or:[{"announcements.to":"students"}, {"announcements.to":"all"}]}},
         function(err, anns){
-
-          console.log('IN')
           if(anns.length > 0){
           for(var m=0; m<anns.length; m++){
             stdMsg.push({
@@ -315,8 +337,7 @@ exports.getHome = function(req, res){
               seen_by:anns[m].announcements.seen_by
             })
           }
-          console.log('anns : ', stdMsg)
-          console.log('latest ann is : ', stdMsg[anns.length-1])
+          
           let latestMsg = stdMsg[anns.length-1]
           let has_seen  = latestMsg.seen_by 
           
@@ -358,7 +379,7 @@ exports.getHome = function(req, res){
               console.log('user has report initial, but not created yet')
             }
           } else {
-            console.log('user has no report yet')
+            
           }
 
            // check for any new broadcast message
@@ -387,15 +408,16 @@ exports.getHome = function(req, res){
                 notifs, colored, hideChoosing, reportCreate, nReport, msgReport, reportStatus,
                 coloredStatus, statusStyle, divReport, newNotif, registered_at,
                 acceptance, isNotifShow, allMsgs, objMsgs, msgShow, msgNotif, coloredMsg, latestMiles, milesStrip, milesPercen,
-                newBC, showBC, showHint, showAnn
+                newBC, showBC, showHint, showAnn, studyLevel, baseurl, root_url
               })
             })
         } else {
+          
           res.render('student/home', {title: "Dashboard ", nim, student, last_login, state, stateColor, supervisor,
             notifs, colored, hideChoosing, reportCreate, nReport, msgReport, reportStatus,
             coloredStatus, statusStyle, divReport, newNotif, registered_at,
             acceptance, isNotifShow, allMsgs, objMsgs, msgShow, msgNotif, coloredMsg, latestMiles, milesStrip, milesPercen, newBC,
-            showBC, showHint, showAnn
+            showBC, showHint, showAnn, studyLevel, baseurl, root_url
               })
             }
           })

@@ -629,6 +629,16 @@ exports.getDetailStudent = function(req, res){
             approved: objReports[n].approved
           })
         }
+        // show latest report if not approved, yet
+        let latestReport, showLatestReport = 'hide'
+        if(report.is_create == true && report.is_approved == false){
+          // show latest report
+          latestReport = objReports[objReports.length-1]
+          showLatestReport = ''
+        } else {
+          latestReport = ''
+        }
+        
         // convert objReports to array/rows
         
         var output = input.map(function(obj) {
@@ -636,11 +646,11 @@ exports.getDetailStudent = function(req, res){
             return obj[key];
           });
         });
-        console.log('arrays : ', output)
+        
 
         res.render('lecturer/student-detail', {title:"Student detail", baseurl, last_seen, profile,
           objReports, showAccept, showTA1, showTA2, showTA1status, ta1Msg, showTA2status, ta2Msg,
-          badgeTa1, badgeTa2, output, lect
+          badgeTa1, badgeTa2, output, lect, latestReport, showLatestReport
         })
       }
     })

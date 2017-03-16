@@ -131,7 +131,10 @@ html.no-js
           hr
           a(href='logout?from=sidebar' class='btn btn-danger')
             strong Log out &nbsp;
-            i.icon-arrow-right.icon-white      
+            i.icon-arrow-right.icon-white
+          hr
+          p.lead Level study :      
+            span.label.label-info=studyLevel
         // /span
         #content.span9
           center
@@ -139,7 +142,7 @@ html.no-js
               a(class='close' data-dismiss='alert' href='#')&times;
               h2(class='alert-heading') Welcome for the first time!
               p(class='lead') Please read docs 
-                a(class='lead' href='') here
+                a(class='lead' href=root_url+'help/student') here
               p
               span This message will disappear right after you logged out :)
           .row-fluid
@@ -225,7 +228,18 @@ html.no-js
                   div(class='progress progress-#{milesStrip}')
                     div(style='width:#{milesPercen}%' class='bar') 
                       strong #{milesPercen}% (#{latestMiles})
-                  hr               
+                  hr
+                  //- flash message
+                  if error && error.length > 0
+                    .alert.alert-danger.alert-dismissible.fade-in(role="alert")
+                      button.close(type="button" data-dismiss="alert" aria-label="Close")
+                        span(aria-hidden="true") ×
+                      p= error
+                  if success && success.length > 0
+                    .alert.alert-success.alert-dismissible.fade-in(role="alert")
+                      button.close(type="button" data-dismiss="alert" aria-label="Close")
+                        span(aria-hidden="true") ×
+                      p= success               
                   
                   
             // /block

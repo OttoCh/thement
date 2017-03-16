@@ -242,6 +242,7 @@ exports.getAllReports = function(req, res){
         })
       }
     } else {
+      req.flash('error', 'You must select a supervisor first!')
       res.redirect(baseurl)
     }
   })

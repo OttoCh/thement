@@ -108,8 +108,34 @@ html
                     p Nickname : #{profile.profile.nickname}
                     p NIM : #{profile.nim}
                     p Last seen : #{last_seen}
+
+                    h4(class='#{showLatestReport}') Progress report (NOT ACCEPTED YET)
+                    table(id='' class='table table-hover #{showLatestReport}' cellspacing='0' width='100%')
+                      thead
+                        tr
+                          th ID
+                          th Title
+                          th Body
+                          th Last Edit
+                          th File Attachment
+                          th Approved at
+                          th Detail
+                          
+                      tbody
+                          tr
+                            td #{latestReport.index}
+                            td #{latestReport.title}
+                            td #{latestReport.body}
+                            td #{latestReport.last_edit}
+                            td
+                              a(href='#{latestReport.file_location}' target='_blank') attachment
+                            td
+                              span(class='badge badge-#{report.badge}') #{latestReport.approved}
+                            td
+                              a(href='') See detail  
+
                     hr
-                    h4 Progress report(s)
+                    h4 ALL REPORTS
                     
                     table(id='example' class='display nowrap' cellspacing='0' width='100%')
                       thead
