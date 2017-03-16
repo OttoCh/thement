@@ -30,16 +30,16 @@ html.no-js
       .row-fluid
         #sidebar.span3
           ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
-            li.active
-              a(href='#get_started')
+            li
+              a(href=baseurl+'help/student')
                 i.icon-book
                 strong  Getting started
             p    
               ul(style='list-style:none')
                 li 
-                  a(href='#register') # Register an account
+                  a(href=baseurl+'help/student#register') # Register an account
                 li
-                  a(href='#login') # Login to system
+                  a(href=baseurl+'help/student#login') # Login to system
             p
             li
               a(href=baseurl+'help/student/profile')
@@ -48,12 +48,12 @@ html.no-js
             p    
               ul(style='list-style:none')
                 li 
-                  a(href='#profile') # Update profile
+                  a(href=baseurl+'help/student/profile#profile') # Update profile
                 li
-                  a(href='#settings') # Change password
+                  a(href=baseurl+'help/student/profile#settings') # Change password
             p
-            li
-              a(href=baseurl+'help/student/lecturer')
+            li.active
+              a(href='#')
                 i.icon-book
                 strong  Choosing Lecturer
             li
@@ -92,65 +92,57 @@ html.no-js
               .block-content.collapse.in
                 .span12
           
-                  h2 Get Started
-                  p(class='lead') Welcome to Thement (Thesis Management System). This tutorial will help you to get started from register until create progress report in order for final project completion.
+                  h2 Choosing Lecturer
+                  p(class='lead') After completing your profile, you can start choosing lecturer as your supervisor. Below are the steps to do it.
                   hr
                   div(class='target')
-                    div(id='register')
+                    div(id='profile')
                       ul(style='list-style:none')
                         li
-                          h3 1. Register yourself
+                          h3 1. See lecturer's profile
                       center
                         a(href='#' class='thumbnail')
-                            img(src='/static/images/apps/t1_welcome.png')
-                        p(class='img-title') Homepage
-                      ul
-                        li Then click 
-                          strong STUDENT
-                        center
-                          a(href='#' class='thumbnail')
-                              img(src='/static/images/apps/t2_login.png')
-                          p(class='img-title') Student page
-                        br
-                        li After that, click on 
-                          strong Register here
-                        center
-                          a(href='#' class='thumbnail')
-                              img(src='/static/images/apps/t3_register.png')
-                          p(class='img-title') Register student
-                        br
-                        li Please notice that in order to register you have to obey these rules : 
-                          ul
-                            li NIM should started by 102* or 202* or 303*
-                            li Email should use yourname@s.itb.ac.id or yourname@students.itb.ac.id
-                            li Password should use minimal 6 characters and string and number combination
-                      p(class='pull-right')
-                          a(href='#top')
-                              i.icon-arrow-up
-                              strong  Back to top
-                  br
-                  
-                  div(class='target')
-                    div(id='login')
-                      ul(style='list-style:none')
-                        li
-                          h3 2. Login
-                      center
-                        a(href='#' class='thumbnail')
-                            img(src='/static/images/apps/t2_login.png')
-                        p(class='img-title') Login page
-                      ul
-                        li Enter your credentials. 
-                        li Once you successfull logged in, the student's dashboard will be displayed.
-                      center
-                        a(href='#' class='thumbnail')
-                            img(src='/static/images/apps/t4_home.png')
+                            img(src='/static/images/apps/t7_lecturers.png')
                         p(class='img-title') Student's dashboard
+                      ul
+                        li Then click on one of lecturer's name to see detail
+                        center
+                          a(href='#' class='thumbnail')
+                              img(src='/static/images/apps/t8_lecturer_detail.png')
+                          p(class='img-title') Profile page
+                        br
+                        li As you can see, fullname could be added, also profile picture
+                            br
+                            strong  NOTE : 
+                            | Please reload page after changing your profile picture to take effect
                         p(class='pull-right')
                           a(href='#top')
                               i.icon-arrow-up
-                              strong  Back to top
+                              strong  Back to top  
+                        
+                  br
                   
+                  div(class='target')
+                    div(id='settings')
+                      ul(style='list-style:none')
+                        li
+                          h3 2. Choose lecturer
+                      center
+                        a(href='#' class='thumbnail')
+                            img(src='/static/images/apps/t7_lecturers.png')
+                        p(class='img-title') Go to settings
+                        a(href='#' class='thumbnail')
+                            img(src='/static/images/apps/t6_settings.png')
+                        p(class='img-title') Settings page
+                      ul
+                        li Enter your NEW password twice
+                        li 
+                            strong NOTE : 
+                            | You have to enter the same passwords
+                    p(class='pull-right')  
+                        a(href='#top')
+                            i.icon-arrow-up
+                            strong  Back to top
             // /block
       // footer
       center

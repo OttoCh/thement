@@ -45,7 +45,15 @@ router.get('/contact', function(req, res){
 })
 
 router.get('/help/student', function(req,res){
-  res.render('static/apps/guide/student/overview', {title:"Guide for Student"})
+  res.render('static/apps/guide/student/overview', {title:"Guide for Student", baseurl})
+})
+
+router.get('/help/student/profile', function(req, res){
+  res.render('static/apps/guide/student/profile', {title:"Profile", baseurl})
+})
+
+router.get('/help/student/lecturer', function(req, res){
+  res.render('static/apps/guide/student/lecturer', {title:"Choosing Lecturer", baseurl})
 })
 
 router.post('/upload', function(req,res){
