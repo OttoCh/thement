@@ -299,6 +299,22 @@ exports.getDetailAnnouncement = function(req, res){
         return item.id == idAnnouncement
       })
       found = found[0]
-    res.render('student/message/announcement-detail', {title:"Announcement detail", baseurl, nim, found})
+      // check if nim is on the seen_by array
+      let msgLength = stdMsg.length
+      let latestMsg = stdMsg[msgLength-1]
+      let has_seen  = latestMsg.seen_by
+      let idRead    = latestMsg.id
+      if(has_seen.includes(nim) == false){
+        // push to db
+        admin.update({role:"operator", "announcements.id":idRead},{"$push":{
+          "announcements.$.seen_by":nim
+        },}, function(err, add){
+            res.render('student/message/announcement-detail', {title:"Announcement detail", baseurl, nim, found})      
+        })
+      } else {
+        // nothing to push
+        console.log('has read')
+        res.render('student/message/announcement-detail', {title:"Announcement detail", baseurl, nim, found})
+      }
   })
 }

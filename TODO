@@ -46,6 +46,7 @@
 6. message broadcast from lecturer                                  [-]
 7. one-to-one messaging (lecturer-student)                          [-]
 8. announcement from operator (to students, to lecturers, or both)  [-]
+9. milestone                                                        [-]
 
 # BUGS :
 1. upload file
@@ -54,3 +55,4 @@
 # SUGGESTIONS
 - use lodash to manipulate data structure
 - make function for connectin applogic to database
+- make a warning for mongodb document size (max 16mb)

@@ -6,6 +6,7 @@ var express       = require('express'),
     report        = require('../../models/report'),
     Lect          = require('../../models/lecturer'),
     Msg           = require('../../models/message'),
+    Adm           = require('../../models/admin'),
     multer        = require('multer'),
     email         = require('emailjs/email'),
     app           = express()
@@ -122,9 +123,11 @@ exports.getLoginPage = function(req, res){
 exports.getHome = function(req, res){
   let colored, hideChoosing = '', reportCreate = 'hide', reportAll = 'hide', nReport = 'none', msgReport = 'hide', reportStatus = 'hide'
   let nim = req.session.student
+  let nimId = req.session.student
   let newBC
   let showBC    = 'hide'
   let showHint  = 'hide'
+  let showAnn   = 'hide'
   queries.getStudentByNIM(nim, function(err, student){      
     let last_login = funcs.friendlyDate(student.last_login)
     let registered_at = funcs.friendlyDate(student.registered)
@@ -292,6 +295,34 @@ exports.getHome = function(req, res){
         msgShow = 'hide', msgNotif = '', coloredMsg = ''
       }
 
+      // ANNOUNCEMENT CHECKING
+      let stdMsg  = []
+      Adm.aggregate({$match:{"role":"operator"}},{$unwind:"$announcements"},{$match:{"announcements.to":"students"}},
+        function(err, anns){
+          
+          for(var m=0; m<anns.length; m++){
+            stdMsg.push({
+              id:anns[m].announcements.id,
+              body:anns[m].announcements.body,
+              seen_by:anns[m].announcements.seen_by
+            })
+          }
+          console.log('anns : ', stdMsg)
+          console.log('latest ann is : ', stdMsg[anns.length-1])
+          let latestMsg = stdMsg[anns.length-1]
+          let has_seen  = latestMsg.seen_by 
+          
+          // check if latest message has read by nim
+          if(has_seen.includes(nimId) == true){
+            console.log('hide announcement')
+            showAnn = 'hide'
+          } else {
+            showAnn = ''
+            console.log('SHOW ANNOUNCEMENT')
+            // show announcement
+          }
+        
+
       // REPORT CHECKING
       report.findOne({nim:nim}, function(err, rep){
         var coloredStatus = '', statusStyle = ''
@@ -346,7 +377,7 @@ exports.getHome = function(req, res){
                 notifs, colored, hideChoosing, reportCreate, nReport, msgReport, reportStatus,
                 coloredStatus, statusStyle, divReport, newNotif, registered_at,
                 acceptance, isNotifShow, allMsgs, objMsgs, msgShow, msgNotif, coloredMsg, latestMiles, milesStrip, milesPercen,
-                newBC, showBC, showHint
+                newBC, showBC, showHint, showAnn
               })
             })
         } else {
@@ -354,9 +385,10 @@ exports.getHome = function(req, res){
             notifs, colored, hideChoosing, reportCreate, nReport, msgReport, reportStatus,
             coloredStatus, statusStyle, divReport, newNotif, registered_at,
             acceptance, isNotifShow, allMsgs, objMsgs, msgShow, msgNotif, coloredMsg, latestMiles, milesStrip, milesPercen, newBC,
-            showBC, showHint
-            })
-          }
+            showBC, showHint, showAnn
+              })
+            }
+          })
         })
       })
     })
