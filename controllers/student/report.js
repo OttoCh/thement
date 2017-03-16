@@ -12,7 +12,8 @@ var lect          = require('../../models/lecturer.model'),
 var baseurl       = require('../../config/baseurl'),
     baseurl       = baseurl.root + 'student'
 
-const root_url= 'http://localhost:3500'
+var root_url    = require('../../config/baseurl'),
+      root_url    = root_url.root
 
 var hiding     = 'hide'
 var chooseCode = ''
@@ -28,7 +29,7 @@ var storage = multer.diskStorage({
       let reportID   = found.reports.length.toString()
       let reportName = student.toString()+'-'+reportID+'.pdf'
       report.update({nim:student, "reports.id": reportID}, {"$set": {
-        "reports.$.file_location": root_url+'/static/reports/'+reportName,
+        "reports.$.file_location": root_url+'static/reports/'+reportName,
         "reports.$.file_name": reportName,
         "reports.$.last_edit": new Date()
       },

@@ -1,0 +1,23 @@
+
+head
+  link(href='/static/vendors/bootstrap/css/bootstrap.min.css', rel='stylesheet', media='screen')
+  link(href='/static/vendors/bootstrap/css/bootstrap-responsive.min.css', rel='stylesheet', media='screen')
+  link(href='/static/vendors/assets/styles.css', rel='stylesheet', media='screen')
+  link(href='/static/vendors/vendors/jGrowl/jquery.jgrowl.css', rel='stylesheet', media='screen')
+  script(type="text/javascript")
+  title=title
+    
+body
+
+  div(class='container')
+  br
+  center
+    h2 Help center
+    p.lead Click on one of these helps :
+    a(href=baseurl+'help/lecturer' class='btn btn-success') Lecturer
+    &nbsp;    
+    &nbsp;
+    &nbsp;  
+    a(href=baseurl+'help/student' class='btn btn-info') Student
+    include ../footer
+        

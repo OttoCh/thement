@@ -5,6 +5,8 @@ var express   = require('express'),
     queries   = require('../models/query.student'),
     std       = require('../models/student'),
     app       = express(),
+    baseurl   = require('../config/baseurl'),
+    baseurl   = baseurl.root,
     router    = express.Router()
 
 var path = require('path');
@@ -28,20 +30,22 @@ router.get('/test', function(req, res){
   })
 })
 
-router.get('/help/student/guide', function(req, res){
-  res.render('static/apps/guide_student', {title:"Guide for Student"})
+// STATIC ROUTES
+
+router.get('/help', function(req, res){
+  res.render('static/apps/help', {title:"Help", baseurl})
 })
 
-router.get('/help/student/guide', function(req, res){
-  res.render('static/apps/guide_student', {title:"Guide for Student"})
+router.get('/about', function(req, res){
+  res.render('static/apps/about', {title:"About", baseurl})
 })
 
-router.get('/help/student/guide', function(req, res){
-  res.render('static/apps/guide_student', {title:"Guide for Student"})
+router.get('/contact', function(req, res){  
+  res.render('static/apps/contact', {title:"Contact", baseurl})
 })
 
-router.get('/help/student/guide', function(req, res){
-  res.render('static/apps/guide_student', {title:"Guide for Student"})
+router.get('/help/student', function(req,res){
+  res.render('static/apps/guide/student/overview', {title:"Guide for Student"})
 })
 
 router.post('/upload', function(req,res){

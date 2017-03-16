@@ -1,19 +1,6 @@
 [ ] NOTIFICATIONS:
     - delete one          []
     
-[ ] MESSAGE:
-    - one-to-one messaging  [-]
-    - one-to-many messaging [-] 
-    - announcement          []
-
-[ ] LECTURERS:
-    - next/previous click   [-]
-    
-// 3rd milestone
-[ ] announcement message (admin-student & admin-lecturer & admin-student-lecturer)
-[ ] Sidang 1 & 2 status
-
-
 // 4th milestone
 [] HASIL RAPAT :
     1. Default nama di lecturer / admin => Fullname, nickname, NIM  [-]
@@ -38,7 +25,7 @@
 
 # DEMO : 
 1. Index lecturer's in lecturer's detail                            [-]
-2. Upload file (photo/progress report)                              [?] // PR -> ajax
+2. Upload file (photo/progress report)                              [?] // PR -> ajax -> progress not shown, time_out
 3. Download report as pdf                                           [-]
 4. Pembobotan s1/s2/s3, di database dan dashboard lecturer          [-]
 5. s1/s2/s3 can register (show specific error at register)          [-]
@@ -49,7 +36,8 @@
 10. docs for end-user                                               []
 
 # BUGS :
-2. initial report seen as 'NEW REPORT' at lecturer's dashboard      [-]
+1. initial report seen as 'NEW REPORT' at lecturer's dashboard      [-]
+2. CONFIG IP : baseurl.json & footer.jade
 
 # SUGGESTIONS
 - use lodash to manipulate data structure
