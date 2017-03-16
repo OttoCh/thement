@@ -17,8 +17,8 @@
 // 4th milestone
 [] HASIL RAPAT :
     1. Default nama di lecturer / admin => Fullname, nickname, NIM  [-]
-    2. batas bimbingan : 12 (s1, s2, s3)                            [-]
-    3. bobot pembimbingan :                                         [-]
+    2. batas bimbingan : 12 (s1, s2, s3)                            []
+    3. bobot pembimbingan :                                         []
         - s1 = 1
         - s2 = 2
         - s3 = 3
@@ -37,6 +37,7 @@
     3. kaprodi
 
 # DEMO : 
+0. BUG : limit lecturer's notif at home and message                 []
 1. Index lecturer's in lecturer's detail                            [-]
 2. Upload file (photo/progress report)                              []
 3. Download report as pdf                                           []
@@ -44,7 +45,7 @@
 5. s1/s2/s3 can register (show specific error at register)          []
 6. message broadcast from lecturer                                  [-]
 7. one-to-one messaging (lecturer-student)                          [-]
-8. announcement from operator (to students, to lecturers, or both)  []
+8. announcement from operator (to students, to lecturers, or both)  []*
 
 # PROBLEMS :
 1. upload file

@@ -2,7 +2,8 @@ var express   = require('express'),
     loggedin  = require('../middlewares/loggedin-admin'),
     router    = express.Router()
 
-var admin     = require('../controllers/admin/module')
+var admin     = require('../controllers/admin/module'),
+    ann       = require('../controllers/admin/announcement')
 
 router.use(function(req, res, next){
   console.log('%s %s [%s]', req.method, req.url, res.statusCode.toString())
@@ -25,6 +26,9 @@ router.get('/students', admin.getStudents)
 router.get('/student/:nim', admin.getDetailStudent)
 router.get('/student/accept/ta1/:nim', admin.getTa1)
 router.get('/student/accept/ta2/:nim', admin.getTa2)
+
+router.get('/announcements/all', ann.getAll)
+router.post('/announcement/send', ann.sendNew)
 
 router.get('/lecturers', admin.getLecturers)
 router.get('/lecturer/:username', admin.getDetailLecturer)

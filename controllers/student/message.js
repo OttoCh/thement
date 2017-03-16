@@ -65,6 +65,7 @@ exports.getAll = function(req, res){
                     })
                   }
 
+                  // get the latest
                   inboxMsg.sort(function(a,b){
                     return parseFloat(b.index) - parseFloat(a.index)
                   })

@@ -67,6 +67,19 @@ exports.getHome = function(req, res){
   let admin = req.session.admin
   if(admin){
     Admin.findOne({role:admin}, function(e, a){
+      // show or not announcements
+      let show = 'hide'
+      switch(admin){
+          case 'operator' : show = ''
+          break;
+
+          case 'kaprodi'  : show = 'hide'
+          break;
+
+          case 'super'    : show = 'hide'
+          break;
+      }
+
       // count all lecturers
           Lect.count({}, function(e, lecturers){
             let nLects = lecturers
@@ -87,7 +100,8 @@ exports.getHome = function(req, res){
                 let nAccepted = count
                 let precenAccept = (nAccepted/nStd) * 100
                 precenAccept     = precenAccept.toFixed(2)
-                res.render('admin/home', {title:"Dashboard", admin, a, nStd, nAccepted, precenAccept, nLects, std, lectHasStd})
+                res.render('admin/home', {title:"Dashboard", admin, a, nStd, nAccepted, precenAccept, nLects, std, 
+                lectHasStd, show})
               })
             })
           })

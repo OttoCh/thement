@@ -31,7 +31,8 @@ var studentSchema = new Schema ({
     img_path: String,
     img_url: String
   },
-  milestones: []
+  milestones: [],
+  announcements: []
 })
 
 module.exports = mongoose.model('Student', studentSchema)

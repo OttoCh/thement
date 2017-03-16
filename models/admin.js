@@ -6,7 +6,8 @@ var adminSchema = new Schema ({
   id: String,
   role: String,
   pass: String,
-  email: String
+  email: String,
+  announcements: []
 })
 
 module.exports = mongoose.model('Admin', adminSchema)
