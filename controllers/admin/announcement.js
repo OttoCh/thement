@@ -90,7 +90,10 @@ exports.getAll = function(req, res){
                 }
             )
         } else {
-            
+            console.log('no announcements')
+            res.render('admin/announcement/all', {title:"All announcements", baseurl, showStd, showLecturers, showAll, allMsg,
+                stdMsg, lecMsg
+            })
         }
     })
 }
