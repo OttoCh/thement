@@ -114,7 +114,7 @@ exports.getHome = function(req, res){
       let showAnn = 'hide'
       Adm.aggregate({$match:{"role":"operator"}},{$unwind:"$announcements"},{$match:{$or:[{"announcements.to":"lecturers"}, {"announcements.to":"all"}]}},
         function(err, anns){
-          
+          if(anns.length > 0){
           for(var m=0; m<anns.length; m++){
             lecMsg.push({
               id:anns[m].announcements.id,
@@ -134,6 +134,9 @@ exports.getHome = function(req, res){
             showAnn = ''
             console.log('SHOW ANNOUNCEMENT')
             // show announcement
+          }
+          } else {
+
           }
 
       msg.find({members:{$all:[lecturer]},$and:[{has_seen_lecturer:false}]},
@@ -356,22 +359,36 @@ exports.getFixStudents = function(req, res){
         for(var j=0; j<found.length; j++){
           if(found[j].report_status == true){
               stds.push({
-              nim:found[j].nim,
-              fullname:found[j].profile.fullname,
-              nickname:found[j].profile.nickname,
-              ipk:found[j].ipk,
-              report_status:'NOTHING NEW',
-              notif:'default'
-            })
+                nim:found[j].nim,
+                fullname:found[j].profile.fullname,
+                nickname:found[j].profile.nickname,
+                ipk:found[j].ipk,
+                report_status:'NOTHING NEW',
+                notif:'default'
+              })
           } else {
-              stds.push({
-              nim:found[j].nim,
-              fullname:found[j].profile.fullname,
-              nickname:found[j].profile.nickname,
-              ipk:found[j].ipk,
-              report_status:'NEW REPORT!',
-              notif: 'important'
-            })
+              // check if nMiles = 3 && report_status == false
+              // if it's TRUE, NEW REPORT
+              // else NOTHING NEW
+              if(found[j].milestones.length == 3 && found[j].report_status == false){
+                stds.push({
+                  nim:found[j].nim,
+                  fullname:found[j].profile.fullname,
+                  nickname:found[j].profile.nickname,
+                  ipk:found[j].ipk,
+                  report_status:'NEW REPORT!',
+                  notif: 'important'
+                })
+            } else {
+                stds.push({
+                  nim:found[j].nim,
+                  fullname:found[j].profile.fullname,
+                  nickname:found[j].profile.nickname,
+                  ipk:found[j].ipk,
+                  report_status:'NOTHING NEW',
+                  notif:'default'
+                })
+            }
           }
         }
           res.render('lecturer/students', {title:"Fix students", baseurl, stds, f})

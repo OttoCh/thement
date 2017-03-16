@@ -299,7 +299,9 @@ exports.getHome = function(req, res){
       let stdMsg  = []
       Adm.aggregate({$match:{"role":"operator"}},{$unwind:"$announcements"},{$match:{$or:[{"announcements.to":"students"}, {"announcements.to":"all"}]}},
         function(err, anns){
-          
+
+          console.log('IN')
+          if(anns.length > 0){
           for(var m=0; m<anns.length; m++){
             stdMsg.push({
               id:anns[m].announcements.id,
@@ -321,7 +323,9 @@ exports.getHome = function(req, res){
             console.log('SHOW ANNOUNCEMENT')
             // show announcement
           }
+      } else {
         
+      }
 
       // REPORT CHECKING
       report.findOne({nim:nim}, function(err, rep){
@@ -421,6 +425,8 @@ exports.getSettings = function(req, res){
 exports.addStudent = function(req, res){
   var pass1   = req.body.password,
       pass2   = req.body.repassword,
+      nick    = req.body.nickname,
+      full    = req.body.fullname,
       str     = pass1,
       matches = str.match(/\d+/g),
       nim     = req.body.nim
@@ -494,8 +500,8 @@ exports.addStudent = function(req, res){
     std.notif_seen          = true
     std.activation_link     = funcs.maxRandom('398hhces8dh8shd8ah')
     std.passwordreset_link  = funcs.maxRandom('8hasa9hsd8hfdh3294')
-    std.profile.fullname    = ""
-    std.profile.nickname    = ""
+    std.profile.fullname    = full
+    std.profile.nickname    = nick
     std.profile.gender      = ""
     std.profile.address     = ""
     std.profile.birthday    = ""

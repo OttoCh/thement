@@ -37,7 +37,6 @@
     3. kaprodi
 
 # DEMO : 
-0. BUG : limit lecturer's notif at home and message                 []
 1. Index lecturer's in lecturer's detail                            [-]
 2. Upload file (photo/progress report)                              []
 3. Download report as pdf                                           []
@@ -46,11 +45,10 @@
 6. message broadcast from lecturer                                  [-]
 7. one-to-one messaging (lecturer-student)                          [-]
 8. announcement from operator (to students, to lecturers, or both)  [-]
-9. milestone                                                        [-]
+9. milestone                                                        []
 
 # BUGS :
-1. upload file
-2. initial report seen as 'NEW REPORT' at lecturer's dashboard
+2. initial report seen as 'NEW REPORT' at lecturer's dashboard      [-]
 
 # SUGGESTIONS
 - use lodash to manipulate data structure
