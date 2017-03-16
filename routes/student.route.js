@@ -69,6 +69,10 @@ router.get('/message/broadcast/:id', msg.getDetailBroadcast)
 
 router.post('/message/send', msg.sendMessage)
 
+// announcement
+router.get('/announcements', msg.getAnnouncements)
+router.get('/announcement/detail/:id', msg.getDetailAnnouncement)
+
 router.use(function(req, res, next){
   res.status(404)
   res.render('static/404', {title:"404 Not Found"})

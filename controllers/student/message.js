@@ -6,6 +6,7 @@ var lect      = require('../../models/lecturer.model'),
     lecturer  = require('../../models/lecturer'),
     report    = require('../../models/report'),
     msg       = require('../../models/message'),
+    admin     = require('../../models/admin'),
     funcs     = require('../../middlewares/funcs'),
     multer    = require('multer')
 
@@ -253,4 +254,51 @@ exports.removeAll = function(req, res){
       }
     }
   )
+}
+
+exports.getAnnouncements = function(req, res){
+  let nim = req.session.student
+  let stdMsg = []
+  admin.aggregate({$match:{"role":"operator"}},{$unwind:"$announcements"},{$match:{"announcements.to":"students"}},
+          function(err, stds){
+              for(var i=0; i<stds.length; i++){
+                  stdMsg.push({
+                      id:stds[i].announcements.id,
+                      to:stds[i].announcements.to,
+                      body:stds[i].announcements.body,
+                      date:funcs.friendlyDate(stds[i].announcements.date),
+                      seen_by:stds[i].announcements.seen_by
+                  })
+              }
+              stdMsg.sort(function(a,b){
+                  return parseFloat(b.id) - parseFloat(a.id)
+              })
+              console.log('student message : ', stdMsg)
+              res.render('student/message/announcements', {title:"All Announcements", baseurl, nim, stdMsg})
+          }
+      )
+  }
+
+exports.getDetailAnnouncement = function(req, res){
+  let nim             = req.session.student
+  let idAnnouncement  = req.params.id
+  let stdMsg          = []
+  console.log('id chosen : ', idAnnouncement)
+  admin.aggregate({$match:{"role":"operator"}},{$unwind:"$announcements"},{$match:{"announcements.to":"students"}},
+    function(err, stds){
+      for(var i=0; i<stds.length; i++){
+          stdMsg.push({
+              id:stds[i].announcements.id,
+              to:stds[i].announcements.to,
+              body:stds[i].announcements.body,
+              date:funcs.friendlyDate(stds[i].announcements.date),
+              seen_by:stds[i].announcements.seen_by
+          })
+      }
+      var found = stdMsg.filter(function(item){
+        return item.id == idAnnouncement
+      })
+      found = found[0]
+    res.render('student/message/announcement-detail', {title:"Announcement detail", baseurl, nim, found})
+  })
 }

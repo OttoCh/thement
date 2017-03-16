@@ -1,0 +1,214 @@
+doctype html
+html
+  head
+    title #{title} - #{nim}
+    // Bootstrap
+    link(href='/static/vendors/bootstrap/css/bootstrap.min.css', rel='stylesheet', media='screen')
+    link(href='/static/vendors/bootstrap/css/bootstrap-responsive.min.css', rel='stylesheet', media='screen')
+    link(href='/static/vendors/assets/styles.css', rel='stylesheet', media='screen')
+    link(href='/static/vendors/assets/DT_bootstrap.css', rel='stylesheet', media='screen')
+    //if lte IE 8
+      script(language='javascript', type='text/javascript', src='/static/vendors/vendors/flot/excanvas.min.js')
+    // HTML5 shim, for IE6-8 support of HTML5 elements
+    //if lt IE 9
+      script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
+    script(src='/static/vendors/vendors/modernizr-2.6.2-respond-1.1.0.min.js')
+    style.
+      i {color:white}
+  body
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container-fluid
+          a.btn.btn-navbar(data-toggle='collapse', data-target='.nav-collapse')
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.brand(href='#') Student dashboard
+          .nav-collapse.collapse
+            ul.nav.pull-right
+              li.dropdown
+                a.dropdown-toggle(href='#', role='button', data-toggle='dropdown')
+                  i.icon-user
+                  strong  #{nim} 
+                  i.caret
+                ul.dropdown-menu
+                  li
+                    a(tabindex='-1', href='#{baseurl}/profile') Profile
+                  li
+                    a(tabindex='-1', href='#{baseurl}/settings') Settings
+                  li.divider
+                  li
+                    a(tabindex='-1', href='../logout') Logout
+            ul.nav
+              li.active
+                a(href='#') Messages
+          // /.nav-collapse
+    .container-fluid
+      .row-fluid
+        #sidebar.span3
+          ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
+            li
+              a(href=baseurl+'/home')
+                
+                i.icon-home
+                |  Dashboard
+            li
+              a(href=baseurl+'/profile')
+                
+                i.icon-user
+                |  Profile
+            li
+              a(href=baseurl+'/lecturers')
+                
+                i.icon-briefcase
+                |  Lecturers
+            li(class='#{msgReport}')
+              a(href=baseurl+'/reports/all')
+                
+                i.icon-book
+                |  Reports
+            li
+              a(href=baseurl+'/notifications')
+                span.badge.badge-info.pull-right
+                i.icon-volume-up
+                |  Notifications
+            li
+              a(href=baseurl+'/message/all')
+                span.badge.badge-info.pull-right
+                i.icon-envelope
+                |  Messages
+            li.active
+              a(href='#')
+                span.badge.badge-info.pull-right
+                i.icon-inbox
+                |  Announcements
+        // /span
+        #content.span9
+          .row-fluid
+            .navbar
+              .navbar-inner
+                ul.breadcrumb
+                  i.icon-chevron-left.hide-sidebar
+                    a(href='#', title='Hide Sidebar', rel='tooltip')  
+                  i.icon-chevron-right.show-sidebar(style='display:none;')
+                    a(href='#', title='Show Sidebar', rel='tooltip')  
+                  li
+                    a(href='../home') Dashboard
+                    span.divider /
+                  li Messages
+          .row-fluid
+            // block
+            .block
+              .navbar.navbar-inner.block-header
+                .muted.pull-left Messages
+              .block-content.collapse.in
+                .span3
+                  h5 Supervisor
+                  i.icon-user 
+                  |  #{supervFull}
+                  p
+                  h5 Last seen
+                  i.icon-time
+                  |  #{last_seen}
+                  p
+                  
+                  hr
+                  a(href='#myModal' data-toggle='modal' class='btn btn-success') 
+                    i.icon-plus-sign.icon-white
+                    strong  New message
+                  //- load modal to send message
+                  div(id='myModal' class='modal hide')
+                    div(class='modal-header')
+                      button(data-dismiss='modal' class='close' type='button')&times;
+                      h3 New message
+                    div(class='modal-body')
+                      .span12
+                        form.form-horizontal(method='post' action='send')
+                          .control-group
+                            label.control-label(for='supervisor') To :
+                            .controls
+                              input#focusedInput.input-xlarge.focused(type='text' name='supervisor', value='#{superv}', style='width:50px' readOnly='true' required)
+                          .control-group
+                            label.control-label(for='textarea2') Message :
+                            .controls
+                              textarea.input-xlarge.textarea(placeholder='Enter your message here ...', style='width: 290px; height: 80px', name='msg' required)
+                          .form-actions
+                            button.btn.btn-primary(type='submit') Send
+                            &nbsp;
+                            button.btn(type='reset') Clear
+                  //- end load modal
+                  hr
+                  p
+                  //- a(href='#' class='btn btn-danger') 
+                  //-   i.icon-remove.icon-white
+                  //-   strong  Delete all
+                  a(href='#myModal2' data-toggle='modal' class='btn btn-danger') 
+                      i.icon-remove.icon-white
+                      strong  Delete all
+                    div(id='myModal2' class='modal hide')
+                      div(class='modal-header')
+                        button(data-dismiss='modal' class='close' type='button')&times;
+                        h4 DELETE ALL MESSAGES
+                      div(class='modal-body')
+                        .span12
+                          p.lead Are you sure want to delete all of your messages (inbox + outbox)?
+                          a(href=baseurl+'/message/all/delete' class='btn btn-primary') Yes
+                          &nbsp;
+                          a(data-dismiss='modal' href='#' class='btn') No
+                .span9
+                  .span9
+                    
+                    //- inbox message
+                    h4(class='#{showInbox}') Announcements
+                    
+                    table.table.table-hover(class='#{showInbox}')
+                      thead
+                        tr
+                          
+                          th From
+                          th Body
+                          th Date
+                          th Detail
+                          
+                      tbody
+                        each val in stdMsg
+                          tr
+                            
+                            td OPERATOR
+                            td=val.body
+                            td(width='40%')=val.date
+                            td
+                                a(href=baseurl+'/announcement/detail/'+val.id) See detail
+
+                    //- flash message
+                    if error && error.length > 0
+                      .alert.alert-danger.alert-dismissible.fade-in(role="alert")
+                        button.close(type="button" data-dismiss="alert" aria-label="Close")
+                          span(aria-hidden="true") ×
+                        p(class='lead')= error
+                    if success && success.length > 0
+                      .alert.alert-success.alert-dismissible.fade-in(role="alert")
+                        button.close(type="button" data-dismiss="alert" aria-label="Close")
+                          span(aria-hidden="true") ×
+                        strong Success!
+                        p= success
+
+                                                
+                  .span3
+                    h4 TYPE
+                    
+        hr
+        // footer
+        center
+          include ../../static/footer                   
+                      
+            // /block
+    // /.fluid-container
+    script(src='/static/vendors/vendors/jquery-1.9.1.js')
+    script(src='/static/vendors/bootstrap/js/bootstrap.min.js')
+    script(src='/static/vendors/vendors/datatables/js/jquery.dataTables.min.js')
+    script(src='/static/vendors/assets/scripts.js')
+    script(src='/static/vendors/assets/DT_bootstrap.js')
+    script.
+      $(function() {
+      });
