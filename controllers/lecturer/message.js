@@ -6,6 +6,7 @@ var lect          = require('../../models/lecturer.model'),
     lecturer      = require('../../models/lecturer'),
     report        = require('../../models/report'),
     msg           = require('../../models/message'),
+    admin         = require('../../models/admin'),
     funcs         = require('../../middlewares/funcs'),
     multer        = require('multer')
 var baseurl       = require('../../config/baseurl'),
@@ -254,4 +255,67 @@ exports.sendToAll = function(req, res){
           )
         })
     })
+}
+
+exports.getAnnouncements = function(req, res){
+  let lec    = req.session.lecturer
+  let lecMsg = []
+  admin.aggregate({$match:{"role":"operator"}},{$unwind:"$announcements"},{$match:{$or:[{"announcements.to":"lecturers"}, {"announcements.to":"all"}]}},
+          function(err, lecs){
+              for(var i=0; i<lecs.length; i++){
+                  lecMsg.push({
+                      id:lecs[i].announcements.id,
+                      to:lecs[i].announcements.to,
+                      body:lecs[i].announcements.body,
+                      date:funcs.friendlyDate(lecs[i].announcements.date),
+                      seen_by:lecs[i].announcements.seen_by
+                  })
+              }
+              lecMsg.sort(function(a,b){
+                  return parseFloat(b.id) - parseFloat(a.id)
+              })
+              console.log('lecturer message : ', lecMsg)
+              res.render('lecturer/message/announcements', {title:"All Announcements", baseurl, lec, lecMsg})
+          }
+      )
+  }
+
+exports.getDetailAnnouncement = function(req, res){
+  let lec             = req.session.lecturer
+  let idAnnouncement  = req.params.id
+  let lecMsg          = []
+  console.log('id chosen : ', idAnnouncement)
+  admin.aggregate({$match:{"role":"operator"}},{$unwind:"$announcements"},{$match:{$or:[{"announcements.to":"lecturers"}, {"announcements.to":"all"}]}},
+    function(err, lecs){
+      for(var i=0; i<lecs.length; i++){
+          lecMsg.push({
+              id:lecs[i].announcements.id,
+              to:lecs[i].announcements.to,
+              body:lecs[i].announcements.body,
+              date:funcs.friendlyDate(lecs[i].announcements.date),
+              seen_by:lecs[i].announcements.seen_by
+          })
+      }
+      var found = lecMsg.filter(function(item){
+        return item.id == idAnnouncement
+      })
+      found = found[0]
+      // check if nim is on the seen_by array
+      let msgLength = lecMsg.length
+      let latestMsg = lecMsg[msgLength-1]
+      let has_seen  = latestMsg.seen_by
+      let idRead    = latestMsg.id
+      if(has_seen.includes(lec) == false){
+        // push to db
+        admin.update({role:"operator", "announcements.id":idRead},{"$push":{
+          "announcements.$.seen_by":lec
+        },}, function(err, add){
+            res.render('student/message/announcement-detail', {title:"Announcement detail", baseurl, found})      
+        })
+      } else {
+        // nothing to push
+        console.log('has read')
+        res.render('student/message/announcement-detail', {title:"Announcement detail", baseurl, found})
+      }
+  })
 }

@@ -259,7 +259,7 @@ exports.removeAll = function(req, res){
 exports.getAnnouncements = function(req, res){
   let nim = req.session.student
   let stdMsg = []
-  admin.aggregate({$match:{"role":"operator"}},{$unwind:"$announcements"},{$match:{"announcements.to":"students"}},
+  admin.aggregate({$match:{"role":"operator"}},{$unwind:"$announcements"},{$match:{$or:[{"announcements.to":"students"}, {"announcements.to":"all"}]}},
           function(err, stds){
               for(var i=0; i<stds.length; i++){
                   stdMsg.push({
@@ -284,7 +284,7 @@ exports.getDetailAnnouncement = function(req, res){
   let idAnnouncement  = req.params.id
   let stdMsg          = []
   console.log('id chosen : ', idAnnouncement)
-  admin.aggregate({$match:{"role":"operator"}},{$unwind:"$announcements"},{$match:{"announcements.to":"students"}},
+  admin.aggregate({$match:{"role":"operator"}},{$unwind:"$announcements"},{$match:{$or:[{"announcements.to":"students"}, {"announcements.to":"all"}]}},
     function(err, stds){
       for(var i=0; i<stds.length; i++){
           stdMsg.push({

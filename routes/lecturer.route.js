@@ -47,6 +47,9 @@ router.get('/message/:nim', msg.getMsgByNIM)
 router.post('/message/send', msg.sendMessage)
 router.post('/message/send/all', msg.sendToAll)
 
+router.get('/announcements', msg.getAnnouncements)
+router.get('/announcement/detail/:id', msg.getDetailAnnouncement)
+
 router.use(function(req, res, next){
   res.status(404)
   res.render('static/404', {title:"404 Not Found"})

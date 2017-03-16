@@ -44,7 +44,7 @@ html.no-js
                   |  Notifications
                   i.caret
                 ul.dropdown-menu
-                  each notif in notifs
+                  each notif in objNotifs
                     li
                       a(tabindex='-1', href='#')
                         div
@@ -109,10 +109,10 @@ html.no-js
                 i.icon-envelope
                 |  Messages
             li
-              a(href='#')
-                span.badge.badge-info.pull-right
+              a(href='announcements')
+                span.badge.badge-info.pull-right(class='#{showAnn}') NEW
                 i.icon-inbox
-                |  Broadcast
+                |  Announcements
         // /span
         #content.span9
           .row-fluid

@@ -297,7 +297,7 @@ exports.getHome = function(req, res){
 
       // ANNOUNCEMENT CHECKING
       let stdMsg  = []
-      Adm.aggregate({$match:{"role":"operator"}},{$unwind:"$announcements"},{$match:{"announcements.to":"students"}},
+      Adm.aggregate({$match:{"role":"operator"}},{$unwind:"$announcements"},{$match:{$or:[{"announcements.to":"students"}, {"announcements.to":"all"}]}},
         function(err, anns){
           
           for(var m=0; m<anns.length; m++){
@@ -517,6 +517,7 @@ exports.addStudent = function(req, res){
             let link          = std.activation_link
             let activate_link = baseurl+'/account/activation/'+link
             let email         = std.email
+            console.log('activation_link : ', activate_link)
             let message = {
               text: "Please click here to activate your account : "+activate_link + "\n \n " + FOOTER_EMAIL,
               from: "[FISIKA ITB] <notification@fi.itb.ac.id>",

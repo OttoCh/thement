@@ -3,6 +3,7 @@
 var Lect        = require('../../models/lecturer'),
     Student     = require('../../models/student'),
     Std         = require('../../models/student.model'),
+    Adm         = require('../../models/admin'),
     msg         = require('../../models/message'),
     funcs       = require('../../middlewares/funcs'),
     report      = require('../../models/report')
@@ -76,7 +77,6 @@ exports.getHome = function(req, res){
       notifs.sort(function(a,b){
         return parseInt(b.id) - parseInt(a.id)
       })      
-      console.log("notifs akhir : ", notifs)
       let objNotifs = []
       if(n > 0){
         if(n < 3){
@@ -109,6 +109,33 @@ exports.getHome = function(req, res){
         colored = '', isNotifShow = 'hide'
       }
 
+      // ANNOUNCEMENT CHECKING
+      let lecMsg  = []
+      let showAnn = 'hide'
+      Adm.aggregate({$match:{"role":"operator"}},{$unwind:"$announcements"},{$match:{$or:[{"announcements.to":"lecturers"}, {"announcements.to":"all"}]}},
+        function(err, anns){
+          
+          for(var m=0; m<anns.length; m++){
+            lecMsg.push({
+              id:anns[m].announcements.id,
+              body:anns[m].announcements.body,
+              seen_by:anns[m].announcements.seen_by
+            })
+          }
+          
+          let latestMsg = lecMsg[anns.length-1]
+          let has_seen  = latestMsg.seen_by 
+          
+          // check if latest message has read by nim
+          if(has_seen.includes(lecturer) == true){
+            console.log('hide announcement')
+            showAnn = 'hide'
+          } else {
+            showAnn = ''
+            console.log('SHOW ANNOUNCEMENT')
+            // show announcement
+          }
+
       msg.find({members:{$all:[lecturer]},$and:[{has_seen_lecturer:false}]},
         function(err, matched){
           // CHECK IF LENGTH > 0
@@ -123,9 +150,10 @@ exports.getHome = function(req, res){
           }
           res.render('lecturer/home', {title: "Home", baseurl, found, hiding, 
           msgAlert, stds, cans, colored, isNotifShow, newNotif, notifs, coloredMsg, showMsgNotif, newMsg,
-            fixstds, candids, contentMsg})
+            fixstds, candids, contentMsg, showAnn, objNotifs})
         }
       )
+        })
     } else {
       console.log('no lecturer found')
     }
