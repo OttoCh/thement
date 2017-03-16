@@ -33,6 +33,7 @@ exports.getHome = function(req, res){
       
       // check candidates
       let candids
+      let weight = found.std_weight
       if(found.candidates.length > 0){
         
         cans = ''
@@ -152,8 +153,8 @@ exports.getHome = function(req, res){
             coloredMsg = '', showMsgNotif = 'hide', newMsg = '', contentMsg = ''
           }
           res.render('lecturer/home', {title: "Home", baseurl, found, hiding, 
-          msgAlert, stds, cans, colored, isNotifShow, newNotif, notifs, coloredMsg, showMsgNotif, newMsg,
-            fixstds, candids, contentMsg, showAnn, objNotifs})
+          msgAlert, stds, cans, colored, isNotifShow, newNotif, coloredMsg, showMsgNotif, newMsg,
+            fixstds, candids, contentMsg, showAnn, objNotifs, weight})
         }
       )
         })
@@ -239,8 +240,36 @@ exports.acceptCandidate = function(req, res){
   let lecturer    = req.session.lecturer
   let lec         = lecturer
   let nimToAccept = req.params.nim
-  // add nim to 'students' field
-  Lect.update({username:lecturer}, {$push : {
+  let weight      = 0 
+  // check for student's weight
+  let nimStr      = req.params.nim.toString()
+  String.prototype.startsWith = function(str){
+    return (this.indexOf(str) === 0)
+  }
+
+  switch(true){
+    case nimStr.startsWith('102'): console.log('sarjana'), weight = 1
+    break;
+    
+    case nimStr.startsWith('202'): console.log('magister'), weight = 2
+    break;
+    
+    case nimStr.startsWith('302'): console.log('doctoral'), weight = 3
+    break;
+    
+    default: console.log('tidak terdeteksi')
+    break;
+  }
+
+  Lect.findOne({username:lecturer}, function(err, we){
+    let init_we = we.std_weight
+    // check if std_weight is less than or equal 12
+    if(init_we <= 12){
+      // add nim to 'students' field
+  Lect.update({username:lecturer}, {$set: {
+        std_weight: init_we+weight
+      },
+        $push : {
         students: nimToAccept
       },
     }, function(err){
@@ -343,6 +372,11 @@ exports.acceptCandidate = function(req, res){
       }
     }
   )
+    } else {
+      // can't accept candidates any more
+      res.send('Sorry, no space left.')
+    }
+  })
 }
 
 exports.getFixStudents = function(req, res){

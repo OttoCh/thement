@@ -14,6 +14,7 @@ var lecturerSchema = new Schema ({
   notif_seen: Boolean,
   passwordreset_link: String,
   std_limit: Number,
+  std_weight: Number,
   candidates: [],
   students: [],
   notifs: [],
