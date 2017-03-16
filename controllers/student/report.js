@@ -123,7 +123,7 @@ exports.createReport = function(req, res){
                   }
                 },
               }, function(e, notified){
-                if(nMiles == 3){
+                if(nMiles >= 3){
                   res.redirect(baseurl+'/report/create/file?from=create')
                 } else {
                   student.update({nim:nim},

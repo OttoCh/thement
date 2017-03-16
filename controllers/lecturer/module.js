@@ -6,7 +6,8 @@ var Lect        = require('../../models/lecturer'),
     Adm         = require('../../models/admin'),
     msg         = require('../../models/message'),
     funcs       = require('../../middlewares/funcs'),
-    report      = require('../../models/report')
+    report      = require('../../models/report'),
+    queries     = require('../../models/query.student')
 
 var baseurl       = require('../../config/baseurl'),
     baseurl       = baseurl.root + 'lecturer'
@@ -404,7 +405,7 @@ exports.getFixStudents = function(req, res){
               // check if nMiles = 3 && report_status == false
               // if it's TRUE, NEW REPORT
               // else NOTHING NEW
-              if(found[j].milestones.length == 3 && found[j].report_status == false){
+              if(found[j].milestones.length >= 3 && found[j].report_status == false){
                 stds.push({
                   nim:found[j].nim,
                   fullname:found[j].profile.fullname,
@@ -518,6 +519,12 @@ exports.changeInitPass = function(req, res){
 }
 
 exports.getDetailStudent = function(req, res){
+  // dummy
+  let data =[[1, "Denmark", 7.526, "Copenhagen"],
+            [2, "Switzerland", 	7.509, "Bern"],
+            [3, "Iceland", 7.501, "Reykjavík"],
+            [4, "Norway", 7.498, "Oslo"],
+            [5, "Finland", 7.413, "Helsinki"]]
   let param = req.params.nim
   Student.findOne({nim:param}, function(e, std){
     let profile   = std, last_seen
@@ -617,7 +624,7 @@ exports.getDetailStudent = function(req, res){
         }
         res.render('lecturer/student-detail', {title:"Student detail", baseurl, last_seen, profile,
           objReports, showAccept, showTA1, showTA2, showTA1status, ta1Msg, showTA2status, ta2Msg,
-          badgeTa1, badgeTa2
+          badgeTa1, badgeTa2, data
         })
       }
     })
@@ -731,37 +738,86 @@ exports.postSettings = function(req, res){
 exports.getTa1 = function(req, res){
   let nim = req.params.nim
   let supervisor = req.session.lecturer
+  queries.getStudentByNIM(nim, function(err, std){
+    let nMiles  = std.milestones.length
+    let nNotifs = std.notifs.length
+    // add to milestone
+    Student.update({nim:nim}, {$set : {
+      notif_seen:false,
+    },
+    $push:{
+      milestones:{
+        "id":nMiles+1,
+        "date": new Date(),
+        "category": "ta1"
+      }, 
+        notifs:{
+          "id": nNotifs+1,
+          "date": new Date(),
+          "notif":"Your TA 1 has been approved!"
+        }
+    },}, function(err, miles){
   Student.update({nim:nim},{$set:{
     ta1:{
       "status":"waiting",
       "date": new Date(),
       "supervisor":supervisor
-    }
-  },}, function(err, ta){
-    if(ta){
-      console.log('success set ta1')
-    }
-    res.redirect(baseurl+'/student/detail/'+nim)
+        }
+      },}, function(err, ta){
+        if(ta){
+          console.log('success set ta1')
+        }
+       res.redirect(baseurl+'/student/detail/'+nim)
+      })
+    })
   })
 }
 
 exports.getTa2 = function(req, res){
   let nim = req.params.nim
   let supervisor = req.session.lecturer
+  queries.getStudentByNIM(nim, function(err, std){
+    let nMiles  = std.milestones.length
+    let nNotifs = std.notifs.length
+    // add to milestone
+    Student.update({nim:nim}, {$set : {
+      notif_seen:false,
+    },
+    $push:{
+      milestones:{
+        "id":nMiles+1,
+        "date": new Date(),
+        "category": "ta2"
+      }, 
+        notifs:{
+          "id": nNotifs+1,
+          "date": new Date(),
+          "notif":"Your TA 2 has been approved!"
+        }
+    },}, function(err, miles){
   Student.update({nim:nim},{$set:{
     ta2:{
       "status":"waiting",
       "date": new Date(),
       "supervisor":supervisor
-    }
-  },}, function(err, ta){
-    if(ta){
-      console.log('success set ta2')
-    }
-    res.redirect(baseurl+'/student/detail/'+nim)
+        }
+      },}, function(err, ta){
+        if(ta){
+          console.log('success set ta2')
+        }
+       res.redirect(baseurl+'/student/detail/'+nim)
+      })
+    })
   })
 }
 
 exports.getDetailPdf = function(req, res){
-  res.send('tesst')
+  var doc = jsPDF()
+  doc.text(20, 20, 'ini test')
+  doc.save('Test.pdf', function(err){
+    if(!err){
+      console.log('save')
+      res.redirect('#')
+    }
+  })
 }

@@ -38,7 +38,8 @@
     "winston":"2.3.1",
     "express-flash":"0.0.2",
     "util":"0.10.3",
-    "formidable":"^1.0.17"
+    "formidable":"^1.0.17",
+    "node-jspdf":"0.0.3"
   },
   "engines":{
 	  "node":"6.3.0"

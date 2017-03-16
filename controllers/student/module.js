@@ -238,6 +238,11 @@ exports.getHome = function(req, res){
         case 'accepted'   : latestMiles = 'accepted', milesStrip = 'warning', milesPercen = 40
           break;
         case 'report'     : latestMiles = 'progress report', milesStrip = 'success', milesPercen = 60
+          break;
+        case 'ta1'        : latestMiles = 'LULUS TA 1', milesStrip = 'info', milesPercen = 80
+          break;
+        case 'ta2'        : latestMiles = 'LULUS TA 2', milesStrip = 'info', milesPercen = 100
+          break;
       }
 
       // MESSAGE CHECKING

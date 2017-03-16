@@ -7,6 +7,11 @@ html
     link(href='/static/vendors/bootstrap/css/bootstrap-responsive.min.css', rel='stylesheet', media='screen')
     link(href='/static/vendors/assets/styles.css', rel='stylesheet', media='screen')
     link(href='/static/vendors/assets/DT_bootstrap.css', rel='stylesheet', media='screen')
+    //- link(href='https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css' rel='stylesheet' media='screen')
+    //- link(href='https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css' rel='stylesheet' media='screen')
+    script(src='/static/js/jspdf.debug.js')
+    script(src='/static/js/jspdf.plugin.autotable.js')
+
     //if lte IE 8
       script(language='javascript', type='text/javascript', src='/static/vendors/vendors/flot/excanvas.min.js')
     // HTML5 shim, for IE6-8 support of HTML5 elements
@@ -106,7 +111,7 @@ html
                     hr
                     h4 Progress report(s)
                     
-                    table#example.table.table-striped.table-bordered(cellpadding='0', cellspacing='0', border='0')
+                    table(id='example' class='display nowrap' cellspacing='0' width='100%')
                       thead
                         tr
                           th ID
@@ -127,16 +132,14 @@ html
                             td=report.file_location
                             td=report.approved
                             td
-                              a(href='') See detail
-                  p
-                  a(href='#{profile.nim}/download' data-toggle='modal' class='btn btn-success') 
+                              a(href='') See detail          
+                  button(onclick='generate()' class='btn btn-success' id='exportButton')
                     i.icon-download-alt.icon-white
                     strong  Download as PDF
-                  //- p(class='#{showAccept}')
-                  //-   a(href='#{baseurl}/student/detail/#{profile.nim}/accept' class='btn btn-primary') ACCEPT
 
                   //- load modal to accept report
-                  a(href='#myModal' data-toggle='modal' class='btn btn-success #{showAccept}') 
+                  &nbsp; &nbsp;
+                  a(href='#myModal' data-toggle='modal' class='btn btn-info #{showAccept}') 
                     i.icon-ok-circle.icon-white
                     strong  Accept
                   div(id='myModal' class='modal hide')
@@ -210,4 +213,20 @@ html
       $(function() {
       });
     //- export as
-    
+    script.
+      function savePDF(){
+        console.log('save pdf')
+      }
+    script.
+      function generate() {
+        var columns = ["ID", "Title", "Body", "Last Edit"];
+        var data=[[1, "Denmark", 7.526, "Copenhagen"],
+            [2, "Switzerland", 	7.509, "Bern"],
+            [3, "Iceland", 7.501, "Reykjavík"],
+            [4, "Norway", 7.498, "Oslo"],
+            [5, "Finland", 7.413, "Helsinki"]];
+
+        var doc = new jsPDF();
+        doc.autoTable(columns, data);
+        doc.output("dataurlnewwindow");
+      }
