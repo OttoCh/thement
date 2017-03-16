@@ -7,10 +7,13 @@ html
     link(href='/static/vendors/bootstrap/css/bootstrap-responsive.min.css', rel='stylesheet', media='screen')
     link(href='/static/vendors/assets/styles.css', rel='stylesheet', media='screen')
     link(href='/static/vendors/assets/DT_bootstrap.css', rel='stylesheet', media='screen')
-    //- link(href='https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css' rel='stylesheet' media='screen')
-    //- link(href='https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css' rel='stylesheet' media='screen')
+    link(href='https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css' rel='stylesheet' media='screen')
+    link(href='https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css' rel='stylesheet' media='screen')
     script(src='/static/js/jspdf.debug.js')
     script(src='/static/js/jspdf.plugin.autotable.js')
+    script(type='text/javascript')
+      //- if(true)
+      //-   {alert('#{dummy}')}
 
     //if lte IE 8
       script(language='javascript', type='text/javascript', src='/static/vendors/vendors/flot/excanvas.min.js')
@@ -213,20 +216,18 @@ html
       $(function() {
       });
     //- export as
-    script.
-      function savePDF(){
-        console.log('save pdf')
-      }
+
     script.
       function generate() {
-        var columns = ["ID", "Title", "Body", "Last Edit"];
-        var data=[[1, "Denmark", 7.526, "Copenhagen"],
-            [2, "Switzerland", 	7.509, "Bern"],
-            [3, "Iceland", 7.501, "Reykjavík"],
-            [4, "Norway", 7.498, "Oslo"],
-            [5, "Finland", 7.413, "Helsinki"]];
+        var columns = ["Date Approved", "Content", "ID","Last edit","Title"];
+        var rows = !{JSON.stringify(output)}
 
         var doc = new jsPDF();
-        doc.autoTable(columns, data);
+        doc.autoTable(columns, rows,{
+          theme:'striped',
+          beforePageContent: function(data) {
+          doc.text("Reports Mahasiswa Bimbingan", 10, 10);
+          }
+        });
         doc.output("dataurlnewwindow");
       }

@@ -520,11 +520,11 @@ exports.changeInitPass = function(req, res){
 
 exports.getDetailStudent = function(req, res){
   // dummy
-  let data =[[1, "Denmark", 7.526, "Copenhagen"],
+  let dummy = [[1, "Denmark", 7.526, "Copenhagen"],
             [2, "Switzerland", 	7.509, "Bern"],
             [3, "Iceland", 7.501, "Reykjavík"],
             [4, "Norway", 7.498, "Oslo"],
-            [5, "Finland", 7.413, "Helsinki"]]
+            [5, "Finland", 7.413, "Helsinki"]];
   let param = req.params.nim
   Student.findOne({nim:param}, function(e, std){
     let profile   = std, last_seen
@@ -543,8 +543,7 @@ exports.getDetailStudent = function(req, res){
         let objReports = []
         let reps = report.reports
         let approval = report.is_approved
-        // hide Accept report for initial
-
+        
         console.log('reports length : ', reps.length)
         if(approval == true || reps.length == 0){
           showAccept = 'hide' 
@@ -622,9 +621,29 @@ exports.getDetailStudent = function(req, res){
             })
           }
         }
+
+        let input = []
+        for(var n=0; n<objReports.length; n++){
+          input.push({
+            id: objReports[n].index,
+            title: objReports[n].title,
+            body: objReports[n].body,
+            last_edit: objReports[n].last_edit,
+            approved: objReports[n].approved
+          })
+        }
+        // convert objReports to array/rows
+        
+        var output = input.map(function(obj) {
+          return Object.keys(obj).sort().map(function(key) { 
+            return obj[key];
+          });
+        });
+        console.log('arrays : ', output)
+
         res.render('lecturer/student-detail', {title:"Student detail", baseurl, last_seen, profile,
           objReports, showAccept, showTA1, showTA2, showTA1status, ta1Msg, showTA2status, ta2Msg,
-          badgeTa1, badgeTa2, data
+          badgeTa1, badgeTa2, dummy, output
         })
       }
     })
