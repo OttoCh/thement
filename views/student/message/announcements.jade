@@ -33,12 +33,12 @@ html
                   i.caret
                 ul.dropdown-menu
                   li
-                    a(tabindex='-1', href='#{baseurl}/profile') Profile
+                    a(tabindex='-1', href='#{baseurl}/profile?from=topbar') Profile
                   li
                     a(tabindex='-1', href='#{baseurl}/settings') Settings
                   li.divider
                   li
-                    a(tabindex='-1', href='../logout') Logout
+                    a(tabindex='-1', href='../logout?from=topbar') Logout
             ul.nav
               li.active
                 a(href='#') Messages
@@ -48,32 +48,32 @@ html
         #sidebar.span3
           ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
             li
-              a(href=baseurl+'/home')
+              a(href=baseurl+'/home?from=announcements')
                 
                 i.icon-home
                 |  Dashboard
             li
-              a(href=baseurl+'/profile')
+              a(href=baseurl+'/profile?from=announcements')
                 
                 i.icon-user
                 |  Profile
             li
-              a(href=baseurl+'/lecturers')
+              a(href=baseurl+'/lecturers?from=announcements')
                 
                 i.icon-briefcase
                 |  Lecturers
             li(class='#{msgReport}')
-              a(href=baseurl+'/reports/all')
+              a(href=baseurl+'/reports/all?from=announcements')
                 
                 i.icon-book
                 |  Reports
             li
-              a(href=baseurl+'/notifications')
+              a(href=baseurl+'/notifications?from=announcements')
                 span.badge.badge-info.pull-right
                 i.icon-volume-up
                 |  Notifications
             li
-              a(href=baseurl+'/message/all')
+              a(href=baseurl+'/message/all?from=announcements')
                 span.badge.badge-info.pull-right
                 i.icon-envelope
                 |  Messages
@@ -82,6 +82,10 @@ html
                 span.badge.badge-info.pull-right
                 i.icon-inbox
                 |  Announcements
+          hr
+          a(href=baseurl+'/logout?from=sidebar' class='btn btn-danger')
+            strong Log out &nbsp;
+            i.icon-arrow-right.icon-white
         // /span
         #content.span9
           .row-fluid
@@ -93,7 +97,7 @@ html
                   i.icon-chevron-right.show-sidebar(style='display:none;')
                     a(href='#', title='Show Sidebar', rel='tooltip')  
                   li
-                    a(href=baseurl+'/home') Dashboard
+                    a(href=baseurl+'/home?from=panel') Dashboard
                     span.divider /
                   li Announcements
           .row-fluid
@@ -137,7 +141,7 @@ html
                             td=val.body
                             td(width='40%')=val.date
                             td
-                                a(href=baseurl+'/announcement/detail/'+val.id) See detail
+                                a(href=baseurl+'/announcement/detail/'+val.id+'?from=announcements') See detail
 
                     //- flash message
                     if error && error.length > 0

@@ -100,7 +100,31 @@ html.no-js
               .navbar.navbar-inner.block-header
                 .muted.pull-left Lecturer's Profile
               .block-content.collapse.in
-                
+                .span9
+                  form.form-horizontal(method='post' action='profile/update')
+                    fieldset
+                      legend Fill the form to change your profile
+                      .control-group
+                        label.control-label(for='focusedInput') Name
+                        .controls
+                          input#focusedInput.input-xlarge.focused(type='text' value=found.name required)
+                      .control-group
+                        label.control-label(for='focusedInput') Undergraduate
+                        .controls
+                          input#focusedInput.input-xlarge.focused(type='text' value=found.educations.undergraduate name='ipk' required)
+                      .control-group
+                        label.control-label(for='focusedInput') Master
+                        .controls
+                          input#focusedInput.input-xlarge.focused(type='text' value=found.educations.master required)
+                      .control-group
+                        label.control-label(for='focusedInput') Doctoral
+                        .controls
+                          input#focusedInput.input-xlarge.focused(type='text' value=found.educations.doctoral, name='fullname' required)
+                      
+                      .form-actions
+                        button.btn.btn-primary(type='submit') Save changes
+                        &nbsp;
+                        button.btn(type='reset') Cancel
                 
                   //- .chart(data-percent='13') 13%
                   //- .chart-bottom-heading

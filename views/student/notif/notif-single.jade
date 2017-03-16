@@ -31,12 +31,12 @@ html
                   i.caret
                 ul.dropdown-menu
                   li
-                    a(tabindex='-1', href=baseurl+'/profile') Profile
+                    a(tabindex='-1', href=baseurl+'/profile?from=topbar') Profile
                   li
                     a(tabindex='-1', href=baseurl+'/settings') Settings
                   li.divider
                   li
-                    a(tabindex='-1', href=baseurl+'/logout') Logout
+                    a(tabindex='-1', href=baseurl+'/logout?from=topbar') Logout
             ul.nav
               li.active
                 a(href='#') Notifications
@@ -46,22 +46,22 @@ html
         #sidebar.span3
           ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
             li
-              a(href='../home')
+              a(href='../home?from=notif-detail')
                 
                 i.icon-home
                 |  Dashboard
             li
-              a(href='../profile')
+              a(href='../profile?from=notif-detail')
                 
                 i.icon-user
                 |  Profile
             li
-              a(href='../lecturers')
+              a(href='../lecturers?from=notif-detail')
                 
                 i.icon-briefcase
                 |  Lecturers
             li(class='#{msgReport}')
-              a(href='../reports/all')
+              a(href='../reports/all?from=notif-detail')
                 
                 i.icon-book
                 |  Reports
@@ -71,15 +71,19 @@ html
                 i.icon-volume-up
                 |  Notifications
             li
-              a(href='../message/all')
+              a(href='../message/all?from=notif-detail')
                 span.badge.badge-info.pull-right
                 i.icon-envelope
                 |  Messages
             li
-              a(href='#')
+              a(href='../announcements?from=notif-detail')
                 span.badge.badge-info.pull-right
                 i.icon-inbox
-                |  Broadcast
+                |  Announcements
+          hr
+          a(href=baseurl+'/logout?from=sidebar' class='btn btn-danger')
+            strong Log out &nbsp;
+            i.icon-arrow-right.icon-white
         // /span
         #content.span9
           .row-fluid
@@ -91,10 +95,10 @@ html
                   i.icon-chevron-right.show-sidebar(style='display:none;')
                     a(href='#', title='Show Sidebar', rel='tooltip')  
                   li
-                    a(href=baseurl+'/home') Dashboard
+                    a(href=baseurl+'/home?from=panel') Dashboard
                     span.divider /
                   li
-                    a(href=baseurl+'/notifications') Notifications
+                    a(href=baseurl+'/notifications?from=panel') Notifications
                     span.divider /
                   li Notif detail
           .row-fluid
@@ -127,7 +131,7 @@ html
                     p MESSAGE : #{found.notif}
                     p DATE : #{found.date}
                     
-                    a(href='../notifications' data-toggle='modal' class='btn btn-info') 
+                    a(href='../notifications?from=notif-detail' data-toggle='modal' class='btn btn-info') 
                       i.icon-arrow-left.icon-white
                       strong  Back to all notifications
                       

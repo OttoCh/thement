@@ -31,12 +31,12 @@ html
                   i.caret
                 ul.dropdown-menu
                   li
-                    a(tabindex='-1', href='#{baseurl}/profile') Profile
+                    a(tabindex='-1', href='#{baseurl}/profile?from=topbar') Profile
                   li
                     a(tabindex='-1', href='#{baseurl}/settings') Settings
                   li.divider
                   li
-                    a(tabindex='-1', href='logout') Logout
+                    a(tabindex='-1', href='logout?from=topbar') Logout
             ul.nav
               li.active
                 a(href='#') Lecturers
@@ -46,40 +46,43 @@ html
         #sidebar.span3
           ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
             li
-              a(href='./home')
+              a(href='./home?from=lecturers')
                 
                 i.icon-home
                 |  Dashboard
             li
-              a(href='profile')
+              a(href='profile?from=lecturers')
                 
                 i.icon-user
                 |  Profile
             li.active
               a(href='#')
-                
                 i.icon-briefcase
                 |  Lecturers
             li(class='#{msgReport}')
-              a(href='reports/all')
-                
+              a(href='reports/all?from=lecturers')
                 i.icon-book
                 |  Reports
             li
-              a(href='notifications')
+              a(href='notifications?from=lecturers')
                 span.badge.badge-info.pull-right
                 i.icon-volume-up
                 |  Notifications
             li
-              a(href='message/all')
+              a(href='message/all?from=lecturers')
                 span.badge.badge-info.pull-right
                 i.icon-envelope
                 |  Messages
             li
-              a(href='announcements')
+              a(href='announcements?from=lecturers')
                 span.badge.badge-info.pull-right
                 i.icon-inbox
                 |  Announcements
+          hr
+          a(href='logout?from=sidebar' class='btn btn-danger')
+            strong Log out &nbsp;
+            i.icon-arrow-right.icon-white
+            
         // /span
         #content.span9
           .row-fluid
@@ -91,7 +94,7 @@ html
                   i.icon-chevron-right.show-sidebar(style='display:none;')
                     a(href='#', title='Show Sidebar', rel='tooltip')  
                   li
-                    a(href='home') Dashboard
+                    a(href='home?from=panel') Dashboard
                     span.divider /
                   li Lecturers
           .row-fluid
@@ -121,7 +124,7 @@ html
                       each lecturer in lecturers
                         tr
                           td
-                            a(href='lecturer/#{lecturer.username}')=lecturer.name
+                            a(href='lecturer/#{lecturer.username}?from=lecturers')=lecturer.name
                           td=lecturer.kk
                           td=lecturer.username+'@fi.itb.ac.id'
                           

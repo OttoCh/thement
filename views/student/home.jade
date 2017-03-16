@@ -74,12 +74,16 @@ html.no-js
                   i.caret
                 ul.dropdown-menu
                   li
-                    a(tabindex='-1', href='profile') Profile
+                    a(tabindex='-1', href='profile?from=topbar') 
+                      
+                      |  Profile
                   li
-                    a(tabindex='-1', href='settings') Settings
+                    a(tabindex='-1', href='settingsr') 
+                      
+                      |  Settings
                   li.divider
                   li
-                    a(tabindex='-1', href='logout') Logout
+                    a(tabindex='-1', href='logout?from=topbar') Logout
             ul.nav
               li.active
                 a(href='#') Dashboard
@@ -93,25 +97,25 @@ html.no-js
                 i.icon-home
                 |  Dashboard
             li
-              a(href='profile')
+              a(href='profile?from=home')
                 i.icon-user
                 |  Profile
             li
-              a(href='lecturers')
+              a(href='lecturers?from=home')
                 i.icon-briefcase
                 |  Lecturers
             li
-              a(href='reports/all')
+              a(href='reports/all?from=home')
                 i.icon-book
                 |  Reports
             li
-              a(href='notifications')
+              a(href='notifications?from=home')
                 div(class='#{isNotifShow}')
                   span.badge.badge-info.pull-right #{newNotif}
                 i.icon-volume-up
                 |  Notifications
             li
-              a(href='message/all')
+              a(href='message/all?from=home')
                 div(class='#{msgShow}')
                   span.badge.badge-warning.pull-right #{msgNotif}
                 div(class='#{showBC}')
@@ -119,12 +123,15 @@ html.no-js
                 i.icon-envelope
                 |  Messages
             li
-              a(href='announcements')
+              a(href='announcements?from=home')
                 div(class='#{showAnn}')
                   span.badge.badge-info.pull-right NEW
                 i.icon-inbox
                 |  Announcements
-                
+          hr
+          a(href='logout?from=sidebar' class='btn btn-danger')
+            strong Log out &nbsp;
+            i.icon-arrow-right.icon-white      
         // /span
         #content.span9
           center
@@ -157,7 +164,7 @@ html.no-js
                   |  #{registered_at}
                   hr
                   p
-                    a(href='profile?from=general_info')
+                    a(href='profile?from=home')
                       button.btn.btn-info
                         i.icon-refresh.icon-white
                         strong  Update my profile
@@ -167,12 +174,12 @@ html.no-js
                   |  #{last_login}
                   hr
                   p
-                    a(href='activities?from=general_info')
+                    a(href='activities?from=home')
                       button.btn.btn-danger
                         i.icon-zoom-in.icon-white
                         strong  See all my activities
                 .span3
-                  h4 Dosen pembimbing
+                  h4 Supervisor
                   p(class='stateStyle') 
                   span(class='#{acceptance}') #{state}
                   h5 #{supervisor}
@@ -180,7 +187,7 @@ html.no-js
                     a(href='lecturers')  here
                   hr
                   p
-                    a(href='lecturers?from=general_info')
+                    a(href='lecturers?from=home')
                       button.btn.btn-warning
                         i.icon-user.icon-white
                         strong  See all active lecturers
@@ -194,7 +201,7 @@ html.no-js
                     hr
                     p(class='#{msgReport}')
                     
-                    a(href='reports/all?from=general_info')
+                    a(href='reports/all?from=home')
                       button.btn.btn-primary
                         i.icon-eye-open.icon-white
                         strong  View report(s)
@@ -202,7 +209,7 @@ html.no-js
                     br
                     p(class='#{reportCreate}')
                     
-                    a(href='report/create?from=general_info')
+                    a(href='report/create?from=home')
                       button.btn.btn-success
                         i.icon-plus-sign.icon-white  
                         strong  Add report

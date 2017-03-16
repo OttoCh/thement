@@ -31,12 +31,12 @@ html
                   i.caret
                 ul.dropdown-menu
                   li
-                    a(tabindex='-1', href=baseurl+'/profile') Profile
+                    a(tabindex='-1', href=baseurl+'/profile?from=topbar') Profile
                   li
                     a(tabindex='-1', href=baseurl+'/settings') Settings
                   li.divider
                   li
-                    a(tabindex='-1', href=baseurl+'/logout') Logout
+                    a(tabindex='-1', href=baseurl+'/logout?from=topbar') Logout
             ul.nav
               li.active
                 a(href='#') Report's detail
@@ -46,17 +46,17 @@ html
         #sidebar.span3
           ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
             li
-              a(href='../home')
+              a(href='../home?from=report-detail')
                 
                 i.icon-home
                 |  Dashboard
             li
-              a(href='../profile')
+              a(href='../profile?from=report-detail')
                 
                 i.icon-user
                 |  Profile
             li
-              a(href='../lecturers')
+              a(href='../lecturers?from=report-detail')
                 
                 i.icon-briefcase
                 |  Lecturers
@@ -66,20 +66,20 @@ html
                 i.icon-book
                 |  Reports
             li
-              a(href='../notifications')
+              a(href='../notifications?from=report-detail')
                 span.badge.badge-info.pull-right
                 i.icon-volume-up
                 |  Notifications
             li
-              a(href='../message/all')
+              a(href='../message/all?from=report-detail')
                 span.badge.badge-info.pull-right
                 i.icon-envelope
                 |  Messages
             li
-              a(href='#')
+              a(href='../announcements?from=report-detail')
                 span.badge.badge-info.pull-right
                 i.icon-inbox
-                |  Broadcast
+                |  Announcements
         // /span
         #content.span9
           .row-fluid
@@ -91,10 +91,10 @@ html
                   i.icon-chevron-right.show-sidebar(style='display:none;')
                     a(href='#', title='Show Sidebar', rel='tooltip')  
                   li
-                    a(href='../home') Dashboard
+                    a(href='../home?from=panel') Dashboard
                     span.divider /
                   li
-                    a(href='#{baseurl}/reports/all') Reports
+                    a(href='#{baseurl}/reports/all?from=panel') Reports
                     span.divider /
                   li Single report
           .row-fluid
@@ -131,7 +131,7 @@ html
                     |  #{found.file_location}
                                         
                     p 
-                     a(href='#{baseurl}/reports/all') 
+                     a(href='#{baseurl}/reports/all?from=footer') 
                       h4 ← Back to all reports
                       
             // /block

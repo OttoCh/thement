@@ -33,12 +33,12 @@ html
                   i.caret
                 ul.dropdown-menu
                   li
-                    a(tabindex='-1', href='#{baseurl}/profile') Profile
+                    a(tabindex='-1', href='#{baseurl}/profile?from=topbar') Profile
                   li
                     a(tabindex='-1', href='#{baseurl}/settings') Settings
                   li.divider
                   li
-                    a(tabindex='-1', href='../logout') Logout
+                    a(tabindex='-1', href='../logout?from=topbar') Logout
             ul.nav
               li.active
                 a(href='#') Announcement
@@ -48,32 +48,32 @@ html
         #sidebar.span3
           ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
             li
-              a(href=baseurl+'/home')
+              a(href=baseurl+'/home?from=announcement-detail')
                 
                 i.icon-home
                 |  Dashboard
             li
-              a(href=baseurl+'/profile')
+              a(href=baseurl+'/profile?from=announcement-detail')
                 
                 i.icon-user
                 |  Profile
             li
-              a(href=baseurl+'/lecturers')
+              a(href=baseurl+'/lecturers?from=announcement-detail')
                 
                 i.icon-briefcase
                 |  Lecturers
             li(class='#{msgReport}')
-              a(href=baseurl+'/reports/all')
+              a(href=baseurl+'/reports/all?from=announcement-detail')
                 
                 i.icon-book
                 |  Reports
             li
-              a(href=baseurl+'/notifications')
+              a(href=baseurl+'/notifications?from=announcement-detail')
                 span.badge.badge-info.pull-right
                 i.icon-volume-up
                 |  Notifications
             li
-              a(href=baseurl+'/message/all')
+              a(href=baseurl+'/message/all?from=announcement-detail')
                 span.badge.badge-info.pull-right
                 i.icon-envelope
                 |  Messages
@@ -82,6 +82,10 @@ html
                 span.badge.badge-info.pull-right
                 i.icon-inbox
                 |  Announcements
+          hr
+          a(href=baseurl+'/logout?from=sidebar' class='btn btn-danger')
+            strong Log out &nbsp;
+            i.icon-arrow-right.icon-white
         // /span
         #content.span9
           .row-fluid
@@ -93,17 +97,17 @@ html
                   i.icon-chevron-right.show-sidebar(style='display:none;')
                     a(href='#', title='Show Sidebar', rel='tooltip')  
                   li
-                    a(href=baseurl+'/home') Dashboard
+                    a(href=baseurl+'/home?from=panel') Dashboard
                     span.divider /
                   li 
-                    a(href=baseurl+'/announcements') Announcements
+                    a(href=baseurl+'/announcements?from=panel') Announcements
                     span.divider /
                   li Detail
           .row-fluid
             // block
             .block
               .navbar.navbar-inner.block-header
-                .muted.pull-left Messages
+                .muted.pull-left Announcement
               .block-content.collapse.in
                 .span3
                   h5 Supervisor
@@ -116,48 +120,7 @@ html
                   p
                   
                   hr
-                  a(href='#myModal' data-toggle='modal' class='btn btn-success') 
-                    i.icon-plus-sign.icon-white
-                    strong  New message
-                  //- load modal to send message
-                  div(id='myModal' class='modal hide')
-                    div(class='modal-header')
-                      button(data-dismiss='modal' class='close' type='button')&times;
-                      h3 New message
-                    div(class='modal-body')
-                      .span12
-                        form.form-horizontal(method='post' action='send')
-                          .control-group
-                            label.control-label(for='supervisor') To :
-                            .controls
-                              input#focusedInput.input-xlarge.focused(type='text' name='supervisor', value='#{superv}', style='width:50px' readOnly='true' required)
-                          .control-group
-                            label.control-label(for='textarea2') Message :
-                            .controls
-                              textarea.input-xlarge.textarea(placeholder='Enter your message here ...', style='width: 290px; height: 80px', name='msg' required)
-                          .form-actions
-                            button.btn.btn-primary(type='submit') Send
-                            &nbsp;
-                            button.btn(type='reset') Clear
-                  //- end load modal
-                  hr
-                  p
-                  //- a(href='#' class='btn btn-danger') 
-                  //-   i.icon-remove.icon-white
-                  //-   strong  Delete all
-                  a(href='#myModal2' data-toggle='modal' class='btn btn-danger') 
-                      i.icon-remove.icon-white
-                      strong  Delete all
-                    div(id='myModal2' class='modal hide')
-                      div(class='modal-header')
-                        button(data-dismiss='modal' class='close' type='button')&times;
-                        h4 DELETE ALL MESSAGES
-                      div(class='modal-body')
-                        .span12
-                          p.lead Are you sure want to delete all of your messages (inbox + outbox)?
-                          a(href=baseurl+'/message/all/delete' class='btn btn-primary') Yes
-                          &nbsp;
-                          a(data-dismiss='modal' href='#' class='btn') No
+                 
                 .span9
                   .span9
                     h4 Announcement detail

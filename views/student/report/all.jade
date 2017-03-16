@@ -34,12 +34,12 @@ html
                   i.caret
                 ul.dropdown-menu
                   li
-                    a(tabindex='-1', href='#{baseurl}/profile') Profile
+                    a(tabindex='-1', href='#{baseurl}/profile?from=topbar') Profile
                   li
                     a(tabindex='-1', href='#{baseurl}/settings') Settings
                   li.divider
                   li
-                    a(tabindex='-1', href='../logout') Logout
+                    a(tabindex='-1', href='../logout?from=topbar') Logout
             ul.nav
               li.active
                 a(href='#') Reports
@@ -49,40 +49,44 @@ html
         #sidebar.span3
           ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
             li
-              a(href='../home')
+              a(href='../home?from=reports')
                 
                 i.icon-home
                 |  Dashboard
             li
-              a(href='../profile')
+              a(href='../profile?from=reports')
                 
                 i.icon-user
                 |  Profile
             li
-              a(href='../lecturers')
+              a(href='../lecturers?from=reports')
                 
                 i.icon-briefcase
                 |  Lecturers
             li(class='#{msgReport} active')
-              a(href='reports/all')
+              a(href='#')
                 
                 i.icon-book
                 |  Reports
             li
-              a(href='../notifications')
+              a(href='../notifications?from=reports')
                 span.badge.badge-info.pull-right
                 i.icon-volume-up
                 |  Notifications
             li
-              a(href='../message/all')
+              a(href='../message/all?from=reports')
                 span.badge.badge-info.pull-right
                 i.icon-envelope
                 |  Messages
             li
-              a(href='../announcements')
+              a(href='../announcements?from=reports')
                 span.badge.badge-info.pull-right
                 i.icon-inbox
                 |  Announcements
+          hr
+          a(href=baseurl+'/logout?from=sidebar' class='btn btn-danger')
+            strong Log out &nbsp;
+            i.icon-arrow-right.icon-white
         // /span
         #content.span9
           .row-fluid
@@ -94,7 +98,7 @@ html
                   i.icon-chevron-right.show-sidebar(style='display:none;')
                     a(href='#', title='Show Sidebar', rel='tooltip')  
                   li
-                    a(href='../home') Dashboard
+                    a(href='../home?from=panel') Dashboard
                     span.divider /
                   li Reports
           .row-fluid
@@ -140,7 +144,7 @@ html
                       each report in objReports  
                         tr
                           td
-                            a(href='#{baseurl}/report/#{report.index}') #{report.index}
+                            a(href='#{baseurl}/report/#{report.index}?from=reports') #{report.index}
                           td=report.title
                           td=report.body 
                           td
