@@ -18,11 +18,6 @@
     10. ref url                                                     [-]
     11. Unit test                                                   []
 
-[] ADMIN LEVEL
-    1. super
-    2. operator
-    3. kaprodi
-
 # DEMO : 
 1. Index lecturer's in lecturer's detail                            [-]
 2. Upload file (photo/progress report)                              [?] // PR -> ajax -> progress not shown, time_out
@@ -39,7 +34,29 @@
 1. initial report seen as 'NEW REPORT' at lecturer's dashboard      [-]
 2. CONFIG IP : baseurl.json & footer.jade
 
-# SUGGESTIONS
+# SUGGESTIONS :
 - use lodash to manipulate data structure
 - make function for connectin applogic to database
 - make a warning for mongodb document size (max 16mb)
+
+# FEATURES :
+    1) Student :
+        - Register
+        - Login, logout
+        - Update profile, password
+        - See, Choose lecturer
+        - Create report
+        - Get notification
+        - Create message (to supervisor)
+        - Get broadcast (from supervisor), announcement (from operator)
+        - Milestone : [registered, accepted, created, TA1, TA2]
+    
+    2) Lecturer :
+        - Login, logout
+        - Update profile, password
+        - Get candidates
+        - Get students, download progress report
+        - Get notifs
+        - Create personal message, broadcast
+        - Get announcement
+        

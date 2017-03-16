@@ -310,12 +310,12 @@ exports.getDetailAnnouncement = function(req, res){
         admin.update({role:"operator", "announcements.id":idRead},{"$push":{
           "announcements.$.seen_by":lec
         },}, function(err, add){
-            res.render('student/message/announcement-detail', {title:"Announcement detail", baseurl, found})      
+            res.render('lecturer/message/announcement-detail', {title:"Announcement detail", baseurl, found})      
         })
       } else {
         // nothing to push
         console.log('has read')
-        res.render('student/message/announcement-detail', {title:"Announcement detail", baseurl, found})
+        res.render('lecturer/message/announcement-detail', {title:"Announcement detail", baseurl, found})
       }
   })
 }

@@ -110,15 +110,10 @@ html
                 .muted.pull-left Announcement
               .block-content.collapse.in
                 .span3
-                  h5 Supervisor
-                  i.icon-user 
-                  |  #{supervFull}
-                  p
-                  h5 Last seen
-                  i.icon-time
-                  |  #{last_seen}
-                  p
-                  
+                  p.lead 
+                    span.label.label-info Announcement 
+                    br
+                    | "is a one-way communication sent by admin"
                   hr
                  
                 .span9
@@ -146,7 +141,10 @@ html
 
                                                 
                   .span3
-                    h4 TYPE
+                    p.lead 
+                      span.label.label-default Type 
+                      br
+                      | "Sent message is usually about administration things"
                     
         hr
         // footer

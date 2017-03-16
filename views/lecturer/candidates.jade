@@ -8,7 +8,7 @@ html
     link(href='/static/vendors/assets/styles.css', rel='stylesheet', media='screen')
     link(href='/static/vendors/assets/DT_bootstrap.css', rel='stylesheet', media='screen')
     script(language='javascript', type='text/javascript', src='/static/vendors/vendors/flot/excanvas.min.js')
-    script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
+    //- script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
     script(src='/static/vendors/vendors/modernizr-2.6.2-respond-1.1.0.min.js')
   body
     .navbar.navbar-fixed-top
@@ -44,23 +44,23 @@ html
           ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
             li
               a(href='home')
-                i.icon-chevron-right
+                
                 i.icon-home
                 |  Dashboard
             li
               a(href='profile')
-                i.icon-chevron-right
+                
                 i.icon-user
                 |  Profile
             li.active
               a(href='#')
-                i.icon-chevron-right
+                
                 i.icon-list
                 |  Candidates (#{f.candidates.length})
             li
               a(href='students')
-                i.icon-chevron-right
-                i.icon-user
+                
+                i.icon-ok-circle
                 |  Fix Students
              li
               a(href='notifications')
@@ -74,10 +74,10 @@ html
                 i.icon-envelope
                 |  Messages
             li
-              a(href='#')
+              a(href='announcements')
                 span.badge.badge-info.pull-right
                 i.icon-inbox
-                |  Broadcast
+                |  Announcements
         // /span
         #content.span9
          .row-fluid
