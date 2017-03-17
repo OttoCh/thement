@@ -519,13 +519,8 @@ exports.changeInitPass = function(req, res){
 }
 
 exports.getDetailStudent = function(req, res){
-  // dummy
-  let dummy = [[1, "Denmark", 7.526, "Copenhagen"],
-            [2, "Switzerland", 	7.509, "Bern"],
-            [3, "Iceland", 7.501, "Reykjavík"],
-            [4, "Norway", 7.498, "Oslo"],
-            [5, "Finland", 7.413, "Helsinki"]];
-  let param = req.params.nim
+  let param       = req.params.nim
+  let lect        = req.session.lecturer
   Student.findOne({nim:param}, function(e, std){
     let profile   = std, last_seen
     let ta1       = std.ta1,
@@ -643,7 +638,7 @@ exports.getDetailStudent = function(req, res){
 
         res.render('lecturer/student-detail', {title:"Student detail", baseurl, last_seen, profile,
           objReports, showAccept, showTA1, showTA2, showTA1status, ta1Msg, showTA2status, ta2Msg,
-          badgeTa1, badgeTa2, dummy, output
+          badgeTa1, badgeTa2, output, lect
         })
       }
     })

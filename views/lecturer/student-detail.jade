@@ -12,9 +12,6 @@ html
     script(src='/static/js/jspdf.debug.js')
     script(src='/static/js/jspdf.plugin.autotable.js')
     script(type='text/javascript')
-      //- if(true)
-      //-   {alert('#{dummy}')}
-
     //if lte IE 8
       script(language='javascript', type='text/javascript', src='/static/vendors/vendors/flot/excanvas.min.js')
     // HTML5 shim, for IE6-8 support of HTML5 elements
@@ -221,12 +218,14 @@ html
       function generate() {
         var columns = ["Date Approved", "Content", "ID","Last edit","Title"];
         var rows = !{JSON.stringify(output)}
+        var nim  = !{JSON.stringify(profile.nim)}
+        var lect = !{JSON.stringify(lect)}
 
         var doc = new jsPDF();
         doc.autoTable(columns, rows,{
           theme:'striped',
           beforePageContent: function(data) {
-          doc.text("Reports Mahasiswa Bimbingan", 10, 10);
+          doc.text("Reports Mahasiswa Bimbingan : " + nim + " and Supervisor : " + lect, 10, 10);
           }
         });
         doc.output("dataurlnewwindow");
