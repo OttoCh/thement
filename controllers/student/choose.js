@@ -39,19 +39,25 @@ exports.getDetailLecturer = function(req, res){
     lecturer.findOne({username:param},function(err, found){
       if(found){
         let profile = found
-        
+        let weight  = found.std_weight
+        let over    = 'hide', available = 'hide'
         student.findOne({nim: nim}, function(err, std){
-          if(std.is_choose == true){
+          if(std.is_choose == true || weight == 12){
             hiding = 'hide'
+            if(weight == 12){
+              over = ''
+            } else {
+              
+            }
             lect.get(req.params.username, function(err, lecturer){
-              res.render('student/lecturer-detail', {title:"Lecturer detail", nim, lecturer, baseurl, hiding, profile, arrLecturers})
+              res.render('student/lecturer-detail', {title:"Lecturer detail", nim, lecturer, baseurl, hiding, profile, arrLecturers, over})
             })
           } else {
             let n = std.notifs.length
             
             hiding = ''
             lect.get(req.params.username, function(err, lecturer){
-              res.render('student/lecturer-detail', {title:"Lecturer detail", nim, lecturer, baseurl, hiding, profile, arrLecturers})
+              res.render('student/lecturer-detail', {title:"Lecturer detail", nim, lecturer, baseurl, hiding, profile, arrLecturers, over})
             })
           }
         })

@@ -31,8 +31,9 @@
 10. docs for end-user                                               []
 
 # BUGS :
-1. initial report seen as 'NEW REPORT' at lecturer's dashboard      [-]
-2. CONFIG IP : baseurl.json & footer.jade
+1. initial report seen as 'NEW REPORT' at lecturer's dashboard              [-]
+2. CONFIG IP : baseurl.json & footer.jade                                   []
+3. Check if lecturer has reach max kuota (weight == 12), can't be chosen    []
 
 # SUGGESTIONS :
 - use lodash to manipulate data structure

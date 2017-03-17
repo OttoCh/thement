@@ -175,8 +175,13 @@ html
                       .alert.alert-success.alert-dismissible.fade-in(role="alert")
                         button.close(type="button" data-dismiss="alert" aria-label="Close")
                           span(aria-hidden="true") ×
-                        p= success                
-                          
+                        p= success
+                    //- flash message
+                  if error && error.length > 0
+                    .alert.alert-danger.alert-dismissible.fade-in(role="alert")
+                      button.close(type="button" data-dismiss="alert" aria-label="Close")
+                        span(aria-hidden="true") ×
+                      p= error                
                       
             // /block
     // /.fluid-container

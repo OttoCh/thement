@@ -153,7 +153,7 @@ exports.getHome = function(req, res){
       case nimLevel.startsWith('202') : studyLevel = 'master'
       break;
 
-      case nimLevel.startsWith('202') : studyLevel = 'master'
+      case nimLevel.startsWith('302') : studyLevel = 'doctoral'
       break;
 
       default: studyLevel ='undetected'

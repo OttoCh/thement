@@ -265,10 +265,11 @@ exports.acceptCandidate = function(req, res){
   Lect.findOne({username:lecturer}, function(err, we){
     let init_we = we.std_weight
     // check if std_weight is less than or equal 12
-    if(init_we <= 12){
+    let final_we  = init_we + weight
+    if(final_we <= 12){
       // add nim to 'students' field
   Lect.update({username:lecturer}, {$set: {
-        std_weight: init_we+weight
+        std_weight: final_we
       },
         $push : {
         students: nimToAccept
@@ -375,9 +376,14 @@ exports.acceptCandidate = function(req, res){
   )
     } else {
       // can't accept candidates any more
-      res.send('Sorry, no space left.')
+      req.flash('error', 'You has no space left for student!')
+      res.redirect(baseurl+'/candidates/accept_error')
     }
   })
+}
+
+exports.getErrorAccept = function(req, res){
+  res.render('lecturer/error-accept', {title:"Error accept student", baseurl})
 }
 
 exports.getFixStudents = function(req, res){
