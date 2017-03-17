@@ -602,7 +602,8 @@ exports.getDetailStudent = function(req, res){
               last_edit: funcs.friendlyDate(reps[i].last_edit),
               approved: funcs.friendlyDate(reps[i].approved),
               file_location: reps[i].file_location,
-              file_name: reps[i].file_name
+              file_name: reps[i].file_name,
+              badge: 'default'
             })
           } else {
             objReports.push({
@@ -612,7 +613,8 @@ exports.getDetailStudent = function(req, res){
               last_edit: funcs.friendlyDate(reps[i].last_edit),
               approved:"not yet approved",
               file_location: reps[i].file_location,
-              file_name: reps[i].file_name
+              file_name: reps[i].file_name,
+              badge: 'important'
             })
           }
         }

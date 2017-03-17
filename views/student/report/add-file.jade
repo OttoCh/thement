@@ -84,11 +84,13 @@ html
                 .muted.pull-left File Attachment
               .block-content.collapse.in
                 .span9
-                  form(method='post' action='' enctype='multipart/form-data')
+                  form(method='post' action='file' enctype='multipart/form-data')
                     fieldset
                       legend ADD FILE (OPTIONAL)
                       h4  Upload your associated file
-                      input(type='file', name='sample')
+                      h5 File format must be : 
+                        strong .pdf
+                      input(type='file', name='report')
                       br
                       button(type='submit', value='upload', class='btn btn-primary') Upload file
                       hr

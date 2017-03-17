@@ -9,8 +9,9 @@ var express       = require('express'),
     Adm           = require('../../models/admin'),
     multer        = require('multer'),
     email         = require('emailjs/email'),
+    progress      = require('progress-stream'),
+    p             = progress(),
     app           = express()
-
 
 // load credentials
 const credentials   = require('../../credentials/email'),
@@ -816,8 +817,9 @@ exports.imgUpload = function(req, res, next){
         let fileType = req.file.originalname.split('.'),
             type     = fileType[1]
         if(type == 'jpg' || type == 'jpeg' || type == 'png'){
+          console.log(p)
           req.flash('success', 'Profile photo updated')
-          return res.send('file uploaded')
+          res.status(204).end()
         } else {
           res.json({
             status: false,
@@ -827,5 +829,9 @@ exports.imgUpload = function(req, res, next){
       }
     }
   })
+}
+
+exports.getProfileSuccess = function(req, res){
+  res.render('student/profile_sent', {title:"Profile photo updated!", baseurl})
 }
 /* DYNAMIC ROUTES */

@@ -156,21 +156,21 @@ html
                       p= success
 
                 .span3
-                  form(method='post' ref='uploadForm' id='uploadForm' action='profile' enctype='multipart/form-data')
-                    h4  Image profile 
-                    img(src='#{found.profile.img_url}' alt='profile-photo')
-                    br
-                    input(type='file', name='image')
-                    br
-                    button(type='submit', id='btnsubmit' value='upload', class='btn btn-primary') Upload file
-                    span(id='status')
+                    form(method='post' ref='uploadForm' id='uploadForm' action='profile' enctype='multipart/form-data')
+                      h4  Image profile 
+                      img(src='#{found.profile.img_url}' alt='profile-photo')
+                      br
+                      input(type='file', name='image')
+                      br
+                      button(type='submit', id='btnsubmit' value='upload', class='btn btn-primary') Upload file
+                      span(id='status')
                     
-                    div.span12
-                      div.progress.progress-striped.active.hide
-                        div.bar(style='width: 0%')
                     p 
                       center
-                        [Reload to take effect]
+                        div.alert Reload to see the updates
+                        a(href='profile' class='btn btn-success')
+                          i.icon-refresh.icon-white
+                          strong  Reload page
                   
         
       // footer
@@ -188,8 +188,33 @@ html
     script(src='/static/vendors/vendors/wizard/jquery.bootstrap.wizard.min.js')
     script(type='text/javascript', src='/static/vendors/vendors/jquery-validation/dist/jquery.validate.min.js')
     script(src='/static/vendors/assets/form-validation.js')
-    script(src='/static/vendors/assets/scripts.js')
-    
+    //- script(src='/static/js/upload.js')
+    script.
+      var formData  = new FormData();
+      var file      = document.getElementById('uploadForm').files[0];
+      formData.append('uploadForm', file);
+
+      var xhr = new XMLHttpRequest();
+
+      // upload url
+      xhr.open('post', '/profile', true);
+
+      xhr.upload.onprogress = function(e){
+        if (e.lengthComputable){
+          var percentage = (e.loaded / e.total) * 100;
+          console.log(percentage + '%');
+        }
+      };
+
+      xhr.onerror = function(e){
+        console.log('Error');
+        console.log(e);
+      };
+      xhr.onload = function(){
+        console.log(this.statusText);
+      };
+
+      xhr.send(formData);
     script.
       jQuery(document).ready(function() {
       FormValidation.init();

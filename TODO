@@ -17,18 +17,18 @@
 // 4th milestone
 [] HASIL RAPAT :
     1. Default nama di lecturer / admin => Fullname, nickname, NIM  [-]
-    2. batas bimbingan : 12 (s1, s2, s3)                            []
-    3. bobot pembimbingan :                                         []
+    2. batas bimbingan : 12 (s1, s2, s3)                            [-]
+    3. bobot pembimbingan :                                         [-]
         - s1 = 1
         - s2 = 2
         - s3 = 3
     4. lulus TA 1 & TA 2 button ada di fitur supervisor             [-]
     5. verifikasi lulus TA 1 & TA 2 oleh operator                   [-]
-    6. download report, history report, activities, dll             []
+    6. download report, history report, activities, dll             [-]
     7. Pagination for every table                                   []
     8. Student's logs                                               []
     9. overview for 1st login                                       [-]
-    10. ref url                                                     []
+    10. ref url                                                     [-]
     11. Unit test                                                   []
 
 [] ADMIN LEVEL
@@ -38,7 +38,7 @@
 
 # DEMO : 
 1. Index lecturer's in lecturer's detail                            [-]
-2. Upload file (photo/progress report)                              []
+2. Upload file (photo/progress report)                              [?] // PR -> ajax
 3. Download report as pdf                                           [-]
 4. Pembobotan s1/s2/s3, di database dan dashboard lecturer          [-]
 5. s1/s2/s3 can register (show specific error at register)          [-]

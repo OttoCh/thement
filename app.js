@@ -14,6 +14,7 @@ var express         = require('express'),
     flash           = require('express-flash'),
     formidable      = require('formidable'),
     fs              = require('fs'),
+    progress        = require('progress-stream'),
     app             = express();
 
 mongoose.connect('mongodb://127.0.0.1:27017/tugasakhir');

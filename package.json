@@ -39,7 +39,8 @@
     "express-flash":"0.0.2",
     "util":"0.10.3",
     "formidable":"^1.0.17",
-    "node-jspdf":"0.0.3"
+    "node-jspdf":"0.0.3",
+    "progress-stream":"1.2.0"
   },
   "engines":{
 	  "node":"6.3.0"

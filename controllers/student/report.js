@@ -26,7 +26,7 @@ var storage = multer.diskStorage({
       let student    = req.session.student;
     report.findOne({nim:student}, function(e, found){
       let reportID   = found.reports.length.toString()
-      let reportName = student.toString()+'-'+reportID
+      let reportName = student.toString()+'-'+reportID+'.pdf'
       report.update({nim:student, "reports.id": reportID}, {"$set": {
         "reports.$.file_location": root_url+'/static/reports/'+reportName,
         "reports.$.file_name": reportName,
@@ -123,6 +123,7 @@ exports.createReport = function(req, res){
                   }
                 },
               }, function(e, notified){
+                let id_report = nNotif+1
                 if(nMiles >= 3){
                   res.redirect(baseurl+'/report/create/file?from=create')
                 } else {
@@ -156,38 +157,33 @@ exports.getAddFile = function(req, res){
   res.render('student/report/add-file', {title:"Add file", baseurl})
 }
 
-// exports.addFile = function(req, res, next){
-//   upload(req, res, function(err){
-//     if(err){
-//       console.log('error when uploading')
-//       return
-//     } else {
-//       if(req.file == null){
-//         res.json({
-//           status: false,
-//           message: "Please provide a file"
-//         })
-//       } else {
-//         let fileType = req.file.originalname.split('.'),
-//             type     = fileType[1]
-//         if(type == 'pdf' || type == 'doc' || type == 'docx'){
-//           res.status(200)
-//           res.redirect(baseurl+'/home')
-//           console.log('upload successfull')
-//         } else {
-//           res.json({
-//             status: false,
-//             message:"File must pdf/doc/docx"
-//           })
-//         }
-//       }
-//     }
-//   })
-// }
-
-exports.addFile = function(req, res){
-   console.log('file info : ', req.file)
-   res.send(util.format('task complete'))
+exports.addFile = function(req, res, next){
+  upload(req, res, function(err){
+    if(err){
+      console.log('error when uploading')
+      return
+    } else {
+      if(req.file == null){
+        res.json({
+          status: false,
+          message: "Please provide a file"
+        })
+      } else {
+        let fileType = req.file.originalname.split('.'),
+            type     = fileType[1]
+        if(type == 'pdf' || type == 'doc' || type == 'docx'){
+          res.status(200)
+          res.redirect(baseurl+'/home')
+          console.log('upload successfull')
+        } else {
+          res.json({
+            status: false,
+            message:"File must pdf/doc/docx"
+          })
+        }
+      }
+    }
+  })
 }
 
 exports.getAllReports = function(req, res){
