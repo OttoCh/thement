@@ -1,0 +1,141 @@
+doctype html
+html.no-js
+  head
+    title=title
+    // Bootstrap
+    link(href='/static/vendors/bootstrap/css/bootstrap.min.css', rel='stylesheet', media='screen')
+    link(href='/static/vendors/bootstrap/css/bootstrap-responsive.min.css', rel='stylesheet', media='screen')
+    link(href='/static/vendors/vendors/easypiechart/jquery.easy-pie-chart.css', rel='stylesheet', media='screen')
+    link(href='/static/vendors/assets/styles.css', rel='stylesheet', media='screen')
+    link(href='/static/vendors/assets/timeline.less', rel='stylesheet/less', media='screen')
+    
+    style.
+      .stateStyle {color: #{stateColor}}
+    // HTML5 shim, for IE6-8 support of HTML5 elements
+    //if lt IE 9
+      script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
+    script(src='/static/vendors/vendors/modernizr-2.6.2-respond-1.1.0.min.js')
+  body
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container-fluid
+          a.btn.btn-navbar(data-toggle='collapse', data-target='.nav-collapse')
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.brand(href='#') HELP
+          
+    // SIDEBAR
+    .container-fluid
+      .row-fluid
+        #sidebar.span3
+          ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
+            li.active
+              a(href='#get_started')
+                i.icon-book
+                strong  Getting started
+            li
+              a(href='#update_profile')
+                i.icon-book
+                strong  Updating Profile
+            li
+              a(href='#choosing_lecturer')
+                i.icon-book
+                strong  Choosing Lecturer
+            li
+              a(href='#progress_reports')
+                i.icon-book
+                strong  Progress Reports
+            li
+              a(href='#messaging')
+                i.icon-book
+                strong  Messaging
+            li
+              a(href='#notifications')
+                i.icon-book
+                strong  Notifications
+          hr
+          a(href='logout?from=sidebar' class='btn btn-danger')
+            strong Log out &nbsp;
+            i.icon-arrow-right.icon-white      
+        // /span
+        #content.span9
+          .row-fluid
+            .navbar
+              .navbar-inner
+                ul.breadcrumb
+                  i.icon-chevron-left.hide-sidebar
+                    a(href='#', title='Hide Sidebar', rel='tooltip')  
+                  i.icon-chevron-right.show-sidebar(style='display:none;')
+                    a(href='#', title='Show Sidebar', rel='tooltip')  
+                  li Dashboard
+          
+          .row-fluid
+            // block
+            .block
+              .navbar.navbar-inner.block-header
+                .muted.pull-left Guide for Student
+              .block-content.collapse.in
+                .span12
+                  div(class='target')
+                    div(id='get_started')
+                  h2 Get Started
+                  p(class='lead') Welcome to Thement (Thesis Management System). This tutorial will help you to get started from register until create progress report in order for final project completion.
+                  hr
+                  ul(style='list-style:none')
+                    li
+                      h3 1. Register yourself
+                  center
+                    a(href='#' class='thumbnail')
+                        img(src='/static/images/apps/t1_welcome.png')
+                    p(class='img-title') Homepage
+                  ul
+                    li Then click 
+                      strong STUDENT
+                    center
+                      a(href='#' class='thumbnail')
+                          img(src='/static/images/apps/t2_login.png')
+                      p(class='img-title') Student page
+                    br
+                    li After that, click on 
+                      strong Register here
+                    center
+                      a(href='#' class='thumbnail')
+                          img(src='/static/images/apps/t3_register.png')
+                      p(class='img-title') Register student
+                    br
+                    li Please notice that in order to register you have to obey these rules : 
+                      ul
+                        li NIM should started by 102* or 202* or 303*
+                        li Email should use yourname@s.itb.ac.id or yourname@students.itb.ac.id
+                        li Password should use minimal 6 characters and string and number combination
+                  p(class='pull-right')
+                      a(href='#top')
+                          i.icon-arrow-up
+                          strong  Back to top
+                  br
+                  hr
+                  ul(style='list-style:none')
+                    li
+                      h3 2. Login
+                    
+                            
+                  
+            // /block
+      // footer
+      center
+        
+    // /.fluid-container
+    script(src='/static/vendors/vendors/jquery-1.9.1.min.js')
+    script(src='/static/vendors/bootstrap/js/bootstrap.min.js')
+    script(src='/static/vendors/vendors/easypiechart/jquery.easy-pie-chart.js')
+    script(src='/static/vendors/assets/scripts.js')
+    script.
+      $(function() {
+      // Easy pie charts
+      $('.chart').easyPieChart({animate: 1000});
+      });
+    script.
+      $('#myCarousel').on('slide.bs.carousel', function () {
+        // do something…
+      })

@@ -28,6 +28,22 @@ router.get('/test', function(req, res){
   })
 })
 
+router.get('/help/student/guide', function(req, res){
+  res.render('static/apps/guide_student', {title:"Guide for Student"})
+})
+
+router.get('/help/student/guide', function(req, res){
+  res.render('static/apps/guide_student', {title:"Guide for Student"})
+})
+
+router.get('/help/student/guide', function(req, res){
+  res.render('static/apps/guide_student', {title:"Guide for Student"})
+})
+
+router.get('/help/student/guide', function(req, res){
+  res.render('static/apps/guide_student', {title:"Guide for Student"})
+})
+
 router.post('/upload', function(req,res){
   console.log('filename : ', req.file)
   // create an incoming form object
