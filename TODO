@@ -23,7 +23,7 @@
 2. Upload file (photo/progress report)                              [?] // PR -> ajax -> progress not shown, time_out
 3. Download report as pdf                                           [-]
 4. Pembobotan s1/s2/s3, di database dan dashboard lecturer          [-]
-5. s1/s2/s3 can register (show specific error at register)          [-]
+5. s1/s2/s3 can register (show specific error at register)          [-] 
 6. message broadcast from lecturer                                  [-]
 7. one-to-one messaging (lecturer-student)                          [-]
 8. announcement from operator (to students, to lecturers, or both)  [-]
@@ -34,6 +34,7 @@
 1. initial report seen as 'NEW REPORT' at lecturer's dashboard              [-]
 2. CONFIG IP : baseurl.json & footer.jade                                   []
 3. Check if lecturer has reach max kuota (weight == 12), can't be chosen    []
+4. std_weight need to define in model (database)                            []
 
 # SUGGESTIONS :
 - use lodash to manipulate data structure
@@ -69,4 +70,3 @@
     4) Operator :
 
     5) Super : 
-

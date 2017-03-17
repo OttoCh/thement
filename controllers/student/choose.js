@@ -21,6 +21,27 @@ exports.getLecturers = function(req, res){
 exports.getDetailLecturer = function(req, res){
   let nim   = req.session.student
   let param = req.params.username
+  console.log('type of nim : ', typeof(nim))
+  let nimLevel  = nim.toString()
+  let stdWeight
+  let studyLevel
+    String.prototype.startsWith = function(str){
+      return (this.indexOf(str) === 0)
+    }
+    switch(true){
+      case nimLevel.startsWith('102') : studyLevel = 'undegraduate', stdWeight = 1
+      break;
+
+      case nimLevel.startsWith('202') : studyLevel = 'master', stdWeight = 2
+      break;
+
+      case nimLevel.startsWith('302') : studyLevel = 'doctoral', stdWeight = 3
+      break;
+
+      default: studyLevel ='undetected'
+      break;
+    }
+
   // pagination
   lecturer.find({},function(err, all){
     let allLecturers = all
@@ -38,26 +59,35 @@ exports.getDetailLecturer = function(req, res){
     
     lecturer.findOne({username:param},function(err, found){
       if(found){
-        let profile = found
-        let weight  = found.std_weight
-        let over    = 'hide', available = 'hide'
+        let init_we   = found.std_weight
+        let final_we  = init_we + stdWeight
+        let profile   = found
+        let weight    = found.std_weight
+        let over      = 'hide', available = 'hide'
+        
         student.findOne({nim: nim}, function(err, std){
-          if(std.is_choose == true || weight == 12){
+          if(std.is_choose == true || weight == 12 || final_we > 12){
             hiding = 'hide'
             if(weight == 12){
               over = ''
             } else {
               
             }
+
+            if (final_we >= 12){
+              available = ''
+            } else {
+
+            }
             lect.get(req.params.username, function(err, lecturer){
-              res.render('student/lecturer-detail', {title:"Lecturer detail", nim, lecturer, baseurl, hiding, profile, arrLecturers, over})
+              res.render('student/lecturer-detail', {title:"Lecturer detail", nim, lecturer, baseurl, hiding, profile, arrLecturers, over, available})
             })
           } else {
             let n = std.notifs.length
             
             hiding = ''
             lect.get(req.params.username, function(err, lecturer){
-              res.render('student/lecturer-detail', {title:"Lecturer detail", nim, lecturer, baseurl, hiding, profile, arrLecturers, over})
+              res.render('student/lecturer-detail', {title:"Lecturer detail", nim, lecturer, baseurl, hiding, profile, arrLecturers, over, available})
             })
           }
         })
