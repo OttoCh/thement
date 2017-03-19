@@ -31,5 +31,13 @@ module.exports = {
         Std.find({passwordreset_link:link}, function(err, student){
             cb(null, student[0])
         })
+    },
+
+    // update student last login
+    updateLastLogin: function(nim, cb){
+        Std.update({nim:nim}, {last_login: new Date()}, function(err, updated){
+            if(err) return cb(err)
+            cb(null, updated)
+        })
     }
 }

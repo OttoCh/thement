@@ -709,26 +709,18 @@ exports.activateResetPass = function(req, res){
       let nimToReset  = found.nim,
           newPass     = found.inactive_password,
           encrypted   = funcs.encryptTo(newPass)
-      Student.update({nim: nimToReset}, {$set: {
-        password: encrypted,
-        has_resetpass: true
-      },
-    }, function(err, success){
-      if(success){
-        res.render('student/resetpassword', {title: "Password has been reset", caption, baseurl, newPass})
-      } else {
-        res.json({
-          "Status":"Error",
-          "Message":"Failed to reset password"
-        })
-      }
-    }
-  )
+          Student.update({nim: nimToReset}, {$set: {
+            password: encrypted,
+            has_resetpass: true
+          },
+        }, function(err){
+          if(!err){
+            res.render('student/resetpassword', {title: "Password has been reset", caption, baseurl, newPass})
+          }
+        }
+      )
     } else {
-      res.json({
-        "Status":"Error",
-        "Message":"Reset password link incorrect"
-      })
+      console.log('Error occured : ', err)
     }
   })
 }
@@ -792,34 +784,25 @@ exports.updateProfile = function(req, res){
   let nim = req.session.student
   queries.getStudentByNIM(nimToUpdate, function(err, found){
     if(found){
-      Student.update({nim: nimToUpdate}, {$set: {
-        'profile.fullname': req.body.fullname,
-        'profile.nickname': req.body.nickname,
-        'profile.gender': req.body.gender,
-        'profile.address': req.body.address,
-        'profile.birthday': req.body.birthday,
-        ipk:req.body.ipk
-      },
-    }, function(err, found){
-      if(found){
-        // show success message
-        req.flash('success', 'Profile updated')
-      } else {
-        // show error message
-        req.flash('error', 'Failed to update profile')
-        res.json({
-          "Status":"Error",
-          "Message":"Error updated profile"
-        })
-      }
-      res.redirect(baseurl+'/profile')
-    }
-  )
+          Student.update({nim: nimToUpdate}, {$set: {
+            'profile.fullname': req.body.fullname,
+            'profile.nickname': req.body.nickname,
+            'profile.gender': req.body.gender,
+            'profile.address': req.body.address,
+            'profile.birthday': req.body.birthday,
+            ipk:req.body.ipk
+          },
+        }, function(err, found){
+          if(found){
+            req.flash('success', 'Profile updated')
+          } else {
+            req.flash('error', 'Failed to update profile')
+          }
+          res.redirect(baseurl+'/profile')
+        }
+      )
     } else {
-      res.json({
-        "Status":"Error",
-        "Message":"Student not found"
-      })
+      console.log('Error occured : ', err)
     }
   })
 }
@@ -851,9 +834,5 @@ exports.imgUpload = function(req, res, next){
       }
     }
   })
-}
-
-exports.getProfileSuccess = function(req, res){
-  res.render('student/profile_sent', {title:"Profile photo updated!", baseurl})
 }
 /* DYNAMIC ROUTES */

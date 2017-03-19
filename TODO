@@ -34,12 +34,14 @@
 1. initial report seen as 'NEW REPORT' at lecturer's dashboard              [-]
 2. CONFIG IP : baseurl.json & footer.jade                                   []
 3. Check if lecturer has reach max kuota (weight == 12), can't be chosen    []
-4. std_weight need to define in model (database)                            []
+
 
 # SUGGESTIONS :
+- AVOID CALLBACK HELL FOR ALL QUERIES!
 - use lodash to manipulate data structure
 - make function for connectin applogic to database
 - make a warning for mongodb document size (max 16mb)
+- delete session document on mongodb
 
 # FEATURES :
     1) Student :
