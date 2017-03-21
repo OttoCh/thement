@@ -4,8 +4,7 @@ var express       = require('express'),
     request       = require('request'),
     app           = express(),
     funcs         = require('../../middlewares/funcs'),
-    queries       = require('../../models/query.student'),
-    Student       = require('../../models/student')
+    queries       = require('../../models/query.student')
 
 var baseurl       = require('../../config/baseurl'),
     baseurl       = baseurl.root + 'student'
@@ -63,6 +62,3 @@ exports.stdLogout = function(req, res){
 function postError(err){
   console.log('Error occured : ', err)
 }
-
-
-

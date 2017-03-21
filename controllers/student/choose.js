@@ -21,7 +21,7 @@ exports.getLecturers = function(req, res){
 exports.getDetailLecturer = function(req, res){
   let nim   = req.session.student
   let param = req.params.username
-  console.log('type of nim : ', typeof(nim))
+  
   let nimLevel  = nim.toString()
   let stdWeight
   let studyLevel
@@ -36,6 +36,9 @@ exports.getDetailLecturer = function(req, res){
       break;
 
       case nimLevel.startsWith('302') : studyLevel = 'doctoral', stdWeight = 3
+      break;
+
+      case nimLevel.startsWith('902') : studyLevel = 'teaching master', stdWeight = 2
       break;
 
       default: studyLevel ='undetected'

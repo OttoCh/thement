@@ -156,6 +156,9 @@ exports.getHome = function(req, res){
       case nimLevel.startsWith('302') : studyLevel = 'doctoral'
       break;
 
+      case nimLevel.startsWith('902') : studyLevel = 'teaching master'
+      break;
+
       default: studyLevel ='undetected'
       break;
     }
@@ -459,7 +462,7 @@ exports.addStudent = function(req, res){
       matches = str.match(/\d+/g),
       nim     = req.body.nim
   function isPhysics(nim){
-    if((nim.startsWith('102')) || (nim.startsWith('202')) || (nim.startsWith('302'))){
+    if((nim.startsWith('102')) || (nim.startsWith('202')) || (nim.startsWith('302')) || (nim.startsWith('902'))){
       return true;
     } else {
       return false;
@@ -475,7 +478,7 @@ exports.addStudent = function(req, res){
     res.format({
       html: function(){
         hiding = ''
-        registerCode  = 'NIM should started by 102* or 202* or 302* and length is 8'
+        registerCode  = 'NIM should started by 102* or 202* or 302* or 902* and length is 8'
         res.render('student/register', {title:"Register yourself", caption, registerCode, hiding})
       },
       json: function(){
