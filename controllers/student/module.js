@@ -20,7 +20,8 @@ const credentials   = require('../../credentials/email'),
 
 // load middlewares
     funcs         = require('../../middlewares/funcs'),
-    queries       = require('../../models/query.student')
+    queries       = require('../../models/query.student'),
+    stdLevel      = require('../../helpers/student-level')
 
 // constants
 const caption       = 'Student'
@@ -163,6 +164,9 @@ exports.getHome = function(req, res){
       break;
     }
     studyLevel = studyLevel.toUpperCase()
+
+    // get student level
+    // stdLevel.getStudentLevel()
     
     let state, stateColor, dosen, divReport = 'hide', acceptance
     var supervisor = student.supervisor
@@ -837,5 +841,9 @@ exports.imgUpload = function(req, res, next){
       }
     }
   })
+}
+
+exports.getCourses = function(req, res){
+  res.render('student/courses/overview', {title:"Courses overview", baseurl})
 }
 /* DYNAMIC ROUTES */

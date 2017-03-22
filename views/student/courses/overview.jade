@@ -39,7 +39,7 @@ html
                     a(tabindex='-1', href='logout?from=topbar') Logout
             ul.nav
               li.active
-                a(href='#') Notifications
+                a(href='#') Courses
           // /.nav-collapse
     .container-fluid
       .row-fluid
@@ -55,8 +55,8 @@ html
                 
                 i.icon-user
                 |  Profile
-            li
-              a(href='courses?from=notifications')
+            li.active
+              a(href='#')
                 i.icon-ok-sign
                 |  Courses
             li
@@ -69,8 +69,8 @@ html
                 
                 i.icon-book
                 |  Reports
-            li.active
-              a(href='#')
+            li
+              a(href='notifications')
                 span.badge.badge-info.pull-right
                 i.icon-volume-up
                 |  Notifications
@@ -101,12 +101,12 @@ html
                   li
                     a(href='home?from=panel') Dashboard
                     span.divider /
-                  li Notifications
+                  li Courses
           .row-fluid
             // block
             .block
               .navbar.navbar-inner.block-header
-                .muted.pull-left All notifications
+                .muted.pull-left All Courses
               .block-content.collapse.in
                 .span12
                   .table-toolbar
@@ -114,7 +114,7 @@ html
                       <div class="btn-group">
                       <a href="#"><button class="btn btn-success">Add New <i class="icon-plus icon-white"></i></button></a>
                       </div>
-                    legend ALL NOTIFICATIONS
+                    legend ALL COURSES
                     h4(class='#{showMsg}') There is no notification, yet
 
                     a(href='#myModal' data-toggle='modal' class='btn btn-danger #{showDeleteButton}') 
@@ -132,22 +132,22 @@ html
                           a(data-dismiss='modal' href='#' class='btn') No
                     
                     br
-                  table.table.table-striped.table-bordered(cellpadding='0', cellspacing='0', border='0')
-                    thead
-                      tr
-                        th ID
-                        th Notification
-                        th Date
-                        th Detail
+                //-   table.table.table-striped.table-bordered(cellpadding='0', cellspacing='0', border='0')
+                //-     thead
+                //-       tr
+                //-         th ID
+                //-         th Notification
+                //-         th Date
+                //-         th Detail
                         
-                    tbody
-                      each val in objNotifs
-                        tr
-                          td=val.index
-                          td=val.notif
-                          td=val.date
-                          td
-                            a(href='notification/#{val.index}?from=notifications') See detail
+                //-     tbody
+                //-       each val in objNotifs
+                //-         tr
+                //-           td=val.index
+                //-           td=val.notif
+                //-           td=val.date
+                //-           td
+                //-             a(href='notification/#{val.index}?from=notifications') See detail
                           
       // footer
       center

@@ -1,9 +1,10 @@
 "use strict"
 
 // load lecturers
-var lect      = require('../../models/lecturer.model'),
+var lect      = require('../../models/query.lecturer'),
     student   = require('../../models/student'),
-    lecturer  = require('../../models/lecturer')
+    lecturer  = require('../../models/lecturer'),
+    queries   = require('../../models/query.student')
 
 var baseurl       = require('../../config/baseurl'),
     baseurl       = baseurl.root + 'student'
@@ -46,7 +47,7 @@ exports.getDetailLecturer = function(req, res){
     }
 
   // pagination
-  lecturer.find({},function(err, all){
+  lect.all(function(err, all){
     let allLecturers = all
     let currentLecturer = param
     // console.log('array of lecturers username : ', all)
@@ -71,25 +72,25 @@ exports.getDetailLecturer = function(req, res){
         student.findOne({nim: nim}, function(err, std){
           if(std.is_choose == true || weight == 12 || final_we > 12){
             hiding = 'hide'
-            if(weight == 12){
-              over = ''
-            } else {
+            // if(weight == 12){
+            //   over = ''
+            // } else {
               
-            }
+            // }
 
             if (final_we >= 12){
               available = ''
             } else {
 
             }
-            lect.get(req.params.username, function(err, lecturer){
+            lect.getLecturerByUsername(req.params.username, function(err, lecturer){
               res.render('student/lecturer-detail', {title:"Lecturer detail", nim, lecturer, baseurl, hiding, profile, arrLecturers, over, available})
             })
           } else {
             let n = std.notifs.length
             
             hiding = ''
-            lect.get(req.params.username, function(err, lecturer){
+            lect.getLecturerByUsername(req.params.username, function(err, lecturer){
               res.render('student/lecturer-detail', {title:"Lecturer detail", nim, lecturer, baseurl, hiding, profile, arrLecturers, over, available})
             })
           }
@@ -107,7 +108,7 @@ exports.postChooseLecturer = function(req, res){
   let chosen = req.url
   // get lecturer's name from url
   let lecturerChosen = chosen.split('/lecturer')[1].split('/')[1]
-  student.findOne({nim:nim}, function(err, std){
+  queries.getStudentByNIM(nim, function(err, std){
   let n = std.notifs.length
   student.update({nim: nim}, {$set : {
         is_choose: true,
@@ -131,8 +132,9 @@ exports.postChooseLecturer = function(req, res){
         },
       }, function(e, s){
         if(s){
+          
           // add notif to lecturer
-          lecturer.findOne({username:lecturerChosen}, function(e, lec){
+          lect.getLecturerByUsername(lecturerChosen, function(e, lec){
             let nLength = lec.notifs.length
             lecturer.update({username:lecturerChosen},{$set:{
               notif_seen:false
@@ -145,23 +147,20 @@ exports.postChooseLecturer = function(req, res){
                 }
               },
             }, function(e, cb){
-                
-                chooseCode = 'Success choosing lecturer'
-                res.redirect(baseurl+'/lecturers')
+                  chooseCode = 'Success choosing lecturer'
+                  res.redirect(baseurl+'/lecturers')
+              }
+            )
+            })
+          } else {
+            res.send('error writing to lecturer')
+              }
             }
-           )
-          })
+          )
         } else {
-          
-          res.send('error writing to lecturer')
-            }
-          }
-        )
-      } else {
-        
-        res.send('failed to choose')
+          res.send('failed to choose')
+        }
       }
-    }
-  )
+    )
   })
 }

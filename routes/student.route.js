@@ -35,6 +35,8 @@ router.use(loggedin)
 router.get('/home', student.getHome)
 router.get('/profile', student.getProfile)
 
+router.get('/courses', student.getCourses)
+
 router.get('/notifications', notif.getNotifs)
 router.get('/notifications/delete_all', notif.removeAllNotifs)
 router.get('/notification/:id', notif.getSingleNotif)

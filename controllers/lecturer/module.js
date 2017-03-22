@@ -257,6 +257,9 @@ exports.acceptCandidate = function(req, res){
     
     case nimStr.startsWith('302'): console.log('doctoral'), weight = 3
     break;
+
+    case nimStr.startsWith('902'): console.log('teaching master'), weight = 2
+    break;
     
     default: console.log('tidak terdeteksi')
     break;

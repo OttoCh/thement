@@ -1,8 +1,7 @@
 "use strict"
 
 // load lecturers
-var lect          = require('../../models/lecturer.model'),
-    student       = require('../../models/student'),
+var student       = require('../../models/student'),
     lecturer      = require('../../models/lecturer'),
     report        = require('../../models/report'),
     funcs         = require('../../middlewares/funcs'),
