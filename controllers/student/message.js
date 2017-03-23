@@ -1,3 +1,9 @@
+/*
+  REFACTOR :
+  1. model distinguish  []
+  2. async              []
+*/
+
 "use strict"
 
 // load lecturers

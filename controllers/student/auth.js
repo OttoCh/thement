@@ -1,3 +1,9 @@
+/*
+  REFACTOR :
+  1. model distinguish  [-]
+  2. async              [-]
+*/
+
 "use strict"
 
 var express       = require('express'),
@@ -20,23 +26,26 @@ exports.stdLogin = function(req, res){
       pass    = req.body.password, 
       caption = 'Student'
   queries.getStudentByNIM(nim, function(err, found){
+    let error
     if(found){
-      let code
       if (found.is_active == true){
         let decrypted = funcs.decryptTo(found.password)
         if(pass == decrypted){
           let nim = found.nim
           req.session.student = nim
+          // all is good, redirect to homepage
           res.redirect('./home')
+          } else {
+            error = 'Wrong password'
+            res.render('student/login', {title:"Student login", caption, error, baseurl})
+          }
         } else {
-          res.render('student/login', {title:"Student login", caption, code, baseurl})
+          error = 'Account not activated, yet'
+          res.render('student/login', {title:"Student login", caption, error, baseurl})
         }
       } else {
-        res.render('student/login', {title:"Student login", caption, code, baseurl})
-      }
-    } else {
-      console.log('NIM not found')
-      res.render('student/login', {title:"Student login", caption, code, baseurl})
+        error = 'User not found'
+        res.render('student/login', {title:"Student login", caption, error, baseurl})
     }
   })
 }
@@ -45,7 +54,7 @@ exports.stdLogout = function(req, res){
   let nim = req.session.student
   req.session.destroy(function(err){
     if(!err){
-     queries.updateLastLogin(nim, function(err, updated){
+     queries.updateLastLogin(nim, function(err){
         try{
           res.redirect('./login')
         } catch(err){

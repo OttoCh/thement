@@ -1,10 +1,17 @@
+/*
+  REFACTOR :
+  1. model distinguish  [-]
+  2. async              []
+*/
+
 "use strict"
 
 // load lecturers
 var lect      = require('../../models/query.lecturer'),
     student   = require('../../models/student'),
     lecturer  = require('../../models/lecturer'),
-    queries   = require('../../models/query.student')
+    queries   = require('../../models/query.student'),
+    async     = require('async')
 
 var baseurl       = require('../../config/baseurl'),
     baseurl       = baseurl.root + 'student'
@@ -61,7 +68,7 @@ exports.getDetailLecturer = function(req, res){
     }
 
     
-    lecturer.findOne({username:param},function(err, found){
+    lect.getLecturerByUsername(param, function(err, found){
       if(found){
         let init_we   = found.std_weight
         let final_we  = init_we + stdWeight
@@ -69,7 +76,7 @@ exports.getDetailLecturer = function(req, res){
         let weight    = found.std_weight
         let over      = 'hide', available = 'hide'
         
-        student.findOne({nim: nim}, function(err, std){
+        queries.getStudentByNIM(nim, function(err, std){
           if(std.is_choose == true || weight == 12 || final_we > 12){
             hiding = 'hide'
             // if(weight == 12){
@@ -106,61 +113,47 @@ exports.getDetailLecturer = function(req, res){
 exports.postChooseLecturer = function(req, res){
   let nim = req.session.student
   let chosen = req.url
-  // get lecturer's name from url
+  let candidate = nim.toString()
   let lecturerChosen = chosen.split('/lecturer')[1].split('/')[1]
-  queries.getStudentByNIM(nim, function(err, std){
-  let n = std.notifs.length
-  student.update({nim: nim}, {$set : {
-        is_choose: true,
-        is_accepted: false,
-        supervisor: lecturerChosen,
-        notif_seen:false
-      },
-      $push: {
-        notifs: {
-          "id":n+1,
-          "date": new Date(),
-          "notif": "You are choosing : " + lecturerChosen + "\n Status : PENDING",
-          "has_seen": false
-        }
-      },
-    }, function(err, success){
-      if(success){
-        // update lecturer's document
-        lecturer.update({username: lecturerChosen}, {$push : {
-            candidates: nim.toString()
-        },
-      }, function(e, s){
-        if(s){
-          
-          // add notif to lecturer
-          lect.getLecturerByUsername(lecturerChosen, function(e, lec){
-            let nLength = lec.notifs.length
-            lecturer.update({username:lecturerChosen},{$set:{
-              notif_seen:false
-            },
-              $push:{
-                notifs:{
-                  "id":nLength+1,
-                  "notif":"You are chosen by "+nim ,
-                  "date":new Date()
-                }
-              },
-            }, function(e, cb){
-                  chooseCode = 'Success choosing lecturer'
-                  res.redirect(baseurl+'/lecturers')
-              }
-            )
-            })
-          } else {
-            res.send('error writing to lecturer')
-              }
-            }
-          )
-        } else {
-          res.send('failed to choose')
-        }
-      }
-    )
+  let username = lecturerChosen
+  let notifLength, msg, nLength, msgLec
+
+  async.waterfall([
+    function(callback){
+      queries.getStudentByNIM(nim, function(err, std){
+        msg = 'You are choosing ' + lecturerChosen + ' STATUS : PENDING'
+        notifLength = std.notifs.length+1
+        callback(std[0])
+      })
+    },
+    function(callback){
+      queries.addNotif(nim, msg, notifLength, function(err){
+        callback(null)
+      })
+    },
+    function(callback){
+      queries.chooseLecturer(nim, lecturerChosen, function(err){
+        callback(null)
+      })
+    },
+    function(callback){
+      lect.getLecturerByUsername(username, function(err, lec){
+        nLength = lec.notifs.length
+        msgLec = 'You are chosen by '+ nim
+        callback(lec[0])
+      })
+    },
+    function(callback){
+      lect.updateLecturerCandidates(username, candidate, function(err){
+        callback(null)
+      })
+    },
+    function(callback){
+      lect.addNotif(username, nLength, msgLec, function(err){
+        callback(null)
+      })
+    }
+  ], function(err, results){
+    if(!err) res.redirect(baseurl+'/lecturers')
   })
 }

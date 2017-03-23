@@ -33,12 +33,12 @@ body
         a(href='#{baseurl}/account/resend_activation') here
       p
         center
-        if code && code.length > 0
+        if error && error.length > 0
           .alert.alert-danger.alert-dismissible.fade-in(role="alert")
             button.close(type="button" data-dismiss="alert" aria-label="Close")
               span(aria-hidden="true") ×
-            p 
-            strong=code
+            p.lead=error
+            
             
       
       hr

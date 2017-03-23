@@ -39,5 +39,21 @@ module.exports = {
             if(err) return cb(err)
             cb(null, updated)
         })
+    },
+
+    // choose lecturer
+    chooseLecturer: function(nim, lecturerChosen, cb){
+        Std.update({nim:nim},{$set:{is_choose:true,is_accepted:false,supervisor:lecturerChosen},},function(err, updated){
+            if(err) return cb(err)
+            cb(null, updated>0)
+        })
+    },
+
+    // add notif
+    addNotif: function(nim, notifLength, msg, cb){
+        Std.update({nim:nim},{$set:{notif_seen:false},$push:{notifs:{"id":msg, "notif":notifLength, "date":new Date()}},},function(err,updated){
+            if(err) return cb(err)
+            cb(null, updated>0)
+        })
     }
 }
