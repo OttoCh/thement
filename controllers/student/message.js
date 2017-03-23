@@ -1,18 +1,16 @@
 /*
   REFACTOR :
-  1. model distinguish  []
+  1. model distinguish  [-]
   2. async              []
 */
 
 "use strict"
 
 // load lecturers
-var student   = require('../../models/student'),
-    lecturer  = require('../../models/lecturer'),
-    report    = require('../../models/report'),
-    msg       = require('../../models/message'),
-    admin     = require('../../models/admin'),
+var admin     = require('../../models/admin'),
     funcs     = require('../../middlewares/funcs'),
+    queries   = require('../../models/query.student'),
+    lect      = require('../../models/query.lecturer'),
     multer    = require('multer')
 
 var baseurl       = require('../../config/baseurl'),
@@ -21,22 +19,19 @@ var baseurl       = require('../../config/baseurl'),
 const root_url= 'http://localhost:3500'
 
 exports.getAll = function(req, res){
-  
   let nim = req.session.student
   let hideAllMsg = 'hide', showInbox = 'hide', showOutbox = 'hide', showBroadcast = 'hide'
-  student.findOne({nim:nim}, function(err, std){
+  queries.getStudentByNIM(nim, function(err, std){
     if(std.supervisor !== "" && std.is_accepted == true){
-      // findOne, if not found, create one
-      let superv      = std.supervisor
-      lecturer.findOne({username:superv}, function(err, full){
+      let username      = std.supervisor
+      lect.getLecturerByUsername(username, function(err, full){
         let supervFull = full.name
         let last_seen  = funcs.friendlyDate(full.last_login)
         let nimStr     = nim.toString()
         nimStr         = JSON.parse("[" + nimStr + "]")
-        msg.findOne({members: {$in: [superv]},},
-          function(err, strs){
-            let msgs        = strs.messages
-            let _id         = strs._id
+        queries.getAllMessages(nim, function(err, strs){
+          let msgs     = strs.messages
+          let _id      = strs._id
             
             // get query
             let quer = req.query.type
@@ -52,11 +47,7 @@ exports.getAll = function(req, res){
 
             // get all inbox
             var inboxMsg = []
-            msg.aggregate({$match:{"nim":nim}},
-                {$unwind:"$messages"},
-              {$match:{"messages.author":superv}
-            },
-              function(err, agg){
+            queries.aggregateInbox(nim, username, function(err, agg){
                 if(agg){
                 // convert to array
                   let inboxs   = agg
@@ -74,20 +65,13 @@ exports.getAll = function(req, res){
                   // get the latest
                   inboxMsg.sort(function(a,b){
                     return parseFloat(b.index) - parseFloat(a.index)
-                  })
-
-                  console.log('all inbox : ', inboxMsg)  
+                  })  
                   
                   // get all outbox
                   let nimStr = nim.toString()
                   var outboxMsg = []
-                  msg.aggregate({$match:{"nim":nim}},
-                    {$unwind:"$messages"},
-                    {$match:{"messages.author":nimStr}
-                  },
-                  function(err, out){
+                  queries.aggregateOutbox(nim, nimStr,function(err, out){
                     if(out){
-                      
                       let outboxs   = out
                       let outboxLen = out.length
                       
@@ -105,13 +89,11 @@ exports.getAll = function(req, res){
                       })
                       
                       // set has_seen_std to true
-                      msg.update({nim:nim},{$set:{
-                        has_seen_std:true
-                      },}, function(e, cb){
+                      queries.updateHasSeen(nim, function(e, cb){
                         if(cb){
 
                           // get all broadcast
-                          msg.findOne({lecturer:superv}, function(err, bc){
+                          queries.getAllBroadcast(username, function(err, bc){
                             let bcMsg = []
                             let newBC = 'hide'
                             
@@ -148,14 +130,16 @@ exports.getAll = function(req, res){
                             }
                             
                             res.render('student/message/all', {title:"All Messages", baseurl, supervFull, nim,
-                            hideAllMsg, showInbox, showOutbox, superv, inboxMsg, outboxMsg, showBroadcast, bcMsg,
+                            hideAllMsg, showInbox, showOutbox, username, inboxMsg, outboxMsg, showBroadcast, bcMsg,
                             newBC, last_seen
                           })
                       })
+                        } else {
+                          
                         }
                       }) 
                     } else {
-                      console.log('no outgoing message')
+                      
                     }
                   })
                 }
@@ -165,7 +149,7 @@ exports.getAll = function(req, res){
         )
       })
     } else {
-      console.log('please choose supervisor first')
+      
       res.redirect(baseurl)
     }
   })
@@ -176,12 +160,12 @@ exports.getDetailBroadcast = function(req, res){
   let nim   = req.session.student
   
   let nimstr = nim.toString()
-  student.findOne({nim:nim}, function(err,std){
-    let superv = std.supervisor
-    lecturer.findOne({username:superv}, function(err, found){
+  queries.getStudentByNIM(nim, function(err,std){
+    let username = std.supervisor
+    lect.getLecturerByUsername(username, function(err, found){
       let last_seen   = funcs.friendlyDate(found.last_login)
       let supervFull  = found.name
-    msg.findOne({lecturer:superv}, function(err, bc){
+    queries.getAllBroadcast(username, function(err, bc){
       var bcDetail
       let other   = bc.members
       let index   = other.indexOf(nimstr)
@@ -194,19 +178,13 @@ exports.getDetailBroadcast = function(req, res){
         return item.id == bc_id
       })
       found = found[0]
-
         if(found){
           let timeBC = funcs.friendlyDate(found.date_created)
            // check if has_seen_by is filled
            if(found.has_seen_by.includes(nimstr) == false){
-             msg.update({lecturer:superv, "messages.id":Number(bc_id)},{
-            "$push":{
-              "messages.$.has_seen_by": nimstr
-            },
-          }, function(err, seen){
-            
-            res.render('student/message/bc-detail',{title:"Broadcast detail", baseurl, found, timeBC, other, nim, supervFull, last_seen})
-          })
+             queries.seenBy(username, bc_id, nimstr, function(err, seen){
+              res.render('student/message/bc-detail',{title:"Broadcast detail", baseurl, found, timeBC, other, nim, supervFull, last_seen})
+            })
            } else {
              res.render('student/message/bc-detail',{title:"Broadcast detail", baseurl, found, timeBC, other, nim, supervFull, last_seen})
            }
@@ -222,27 +200,14 @@ exports.sendMessage = function(req, res){
   let nim         = req.session.student
   let msgBody     = req.body.msg
   let supervisor  = req.body.supervisor
-
-  msg.findOne({nim:nim}, function(e, m){
+  queries.getAllMessages(nim, function(e, m){
     let msgLength = m.messages.length
       if(msgLength > 0){
-        msgLength = msgLength
+        msgLength = msgLength+1
       } else {
         msgLength = 0
       }
-      // ADD MESSAGE NOTIF TO LECTURER
-      msg.update({nim:nim},{$set:{
-        has_seen_lecturer:false
-      },
-      $push:{
-      messages:{
-        "id":msgLength+1,
-        "author": nim.toString(),
-        "body": msgBody,
-        "date_created": new Date()
-      }
-    },}, function(err, sent){
-      
+      queries.sendMessage(nim, msgLength, msgBody, function(err, sent){
       req.flash('success', 'Message sent')
       res.redirect(baseurl+'/message/all')
     })
@@ -251,9 +216,7 @@ exports.sendMessage = function(req, res){
 
 exports.removeAll = function(req, res){
   let nim = req.session.student
-  msg.update({nim:nim},{$set:{
-    messages:[]
-  },}, function(err, deleted){
+  queries.removeAllMessages(nim, function(err, deleted){
     if(deleted){
         res.redirect(baseurl+'/message/all')
       }
@@ -264,33 +227,29 @@ exports.removeAll = function(req, res){
 exports.getAnnouncements = function(req, res){
   let nim = req.session.student
   let stdMsg = []
-  admin.aggregate({$match:{"role":"operator"}},{$unwind:"$announcements"},{$match:{$or:[{"announcements.to":"students"}, {"announcements.to":"all"}]}},
-          function(err, stds){
-              for(var i=0; i<stds.length; i++){
-                  stdMsg.push({
-                      id:stds[i].announcements.id,
-                      to:stds[i].announcements.to,
-                      body:stds[i].announcements.body,
-                      date:funcs.friendlyDate(stds[i].announcements.date),
-                      seen_by:stds[i].announcements.seen_by
-                  })
-              }
-              stdMsg.sort(function(a,b){
-                  return parseFloat(b.id) - parseFloat(a.id)
+  queries.getAllAnnouncements(function(err, stds){
+          for(var i=0; i<stds.length; i++){
+              stdMsg.push({
+                  id:stds[i].announcements.id,
+                  to:stds[i].announcements.to,
+                  body:stds[i].announcements.body,
+                  date:funcs.friendlyDate(stds[i].announcements.date),
+                  seen_by:stds[i].announcements.seen_by
               })
-              console.log('student message : ', stdMsg)
-              res.render('student/message/announcements', {title:"All Announcements", baseurl, nim, stdMsg})
           }
-      )
+          stdMsg.sort(function(a,b){
+              return parseFloat(b.id) - parseFloat(a.id)
+          })
+          res.render('student/message/announcements', {title:"All Announcements", baseurl, nim, stdMsg})
+      }
+    )
   }
 
 exports.getDetailAnnouncement = function(req, res){
   let nim             = req.session.student
   let idAnnouncement  = req.params.id
   let stdMsg          = []
-  console.log('id chosen : ', idAnnouncement)
-  admin.aggregate({$match:{"role":"operator"}},{$unwind:"$announcements"},{$match:{$or:[{"announcements.to":"students"}, {"announcements.to":"all"}]}},
-    function(err, stds){
+  queries.getAllAnnouncements(function(err, stds){
       for(var i=0; i<stds.length; i++){
           stdMsg.push({
               id:stds[i].announcements.id,
@@ -310,16 +269,16 @@ exports.getDetailAnnouncement = function(req, res){
       let has_seen  = latestMsg.seen_by
       let idRead    = latestMsg.id
       if(has_seen.includes(nim) == false){
-        // push to db
-        admin.update({role:"operator", "announcements.id":idRead},{"$push":{
-          "announcements.$.seen_by":nim
-        },}, function(err, add){
+        queries.seenByAnnouncement(idRead, nim, function(err, add){
             res.render('student/message/announcement-detail', {title:"Announcement detail", baseurl, nim, found})      
         })
       } else {
         // nothing to push
-        console.log('has read')
         res.render('student/message/announcement-detail', {title:"Announcement detail", baseurl, nim, found})
       }
   })
+}
+
+function sendError(res, err){
+  res.redirect(baseurl)
 }

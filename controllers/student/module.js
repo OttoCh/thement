@@ -117,6 +117,10 @@ exports.getImageUploaded = function(req, res){
 exports.getRegisterPage = function(req, res){
   res.render('student/register', {title:"Register yourself", caption, baseurl, registerCode, hiding})
 }
+
+exports.getCourses = function(req, res){
+  res.render('student/courses/overview', {title:"Courses overview", baseurl})
+}
 /* STATIC ROUTE HANDLER */
 
 /* DYNAMIC ROUTES */
@@ -549,7 +553,9 @@ exports.addStudent = function(req, res){
     std.profile.img_url     = ""
     std.profile.img_path    = ""
 
-    Student.findOne({nim: std.nim}, function(err, exist){
+    let nim = std.nim
+
+    queries.getStudentByNIM(nim, function(err, exist){
       if(exist){
         hiding = ''
         registerCode  = 'NIM exist!'
@@ -593,50 +599,21 @@ exports.activateStudent = function(req, res){
       if(found.is_active == true){
         res.send('account already activate. click here to login')
       } else {
-        let nimToUpdate = found.nim
-        Student.update({nim: nimToUpdate},{$set: {
-          is_active: true,
-          notif_seen: false
-        }, $push: {
-          notifs: {
-            "id":1,
-            "date": new Date(),
-            "notif": "Your account is now ACTIVE!",
-            "has_seen": false
-          },
-          milestones:{
-            "id":1,
-            "date":new Date(),
-            "category":"registered"
-          }
-        },
-      }, function (err, success){
-        if(success){
-          let nim_success = nimToUpdate
-          let link_profile = "http://localhost:3500/student/profile"
-          Student.update({nim:nimToUpdate}, {$set: {
-            notif_seen:false
-          },
-          $push: {
-            notifs: {
-              "id":2,
-              "date": new Date(),
-              "notif": "Please update your profile. Click here " + link_profile ,
-              "has_seen": false
-            }
-          },
-        }, function(e, p){
-          res.render('student/activation-success', {title:"Your account is active!", nim_success, baseurl})
-        }
-      )
-        } else {
-          res.json({
-            "Status":"Error",
-            "Message":"Activation failed"
+        let nimToUpdate = found.nim,
+            nim         = found.nim
+        let msg         = 'Your account is now ACTIVE',
+            notifLength = 1,
+            milesLength = 1
+        let category    = 'registered'
+        let link_profile= 'http://localhost:3500/student/profile'
+
+        queries.activateStudent(nim, function(err,activated){
+          queries.addNotif(nim, msg, notifLength, function(err){
+            queries.addMilestone(nim, category, milesLength, function(err){
+              res.render('student/activation-success', {title:"Your account is active!", nim, baseurl})
+            })
           })
-        }
-      }
-    )
+        }) 
       }
     } else {
       res.send({
@@ -644,13 +621,14 @@ exports.activateStudent = function(req, res){
         "Message":"activation_link not found"
       })
     }
-  })
+})
 }
+
 
 exports.resendConfirmation = function(req, res){
   let nim   = req.body.nim,
       email = req.body.email
-  Student.findOne({$and : [{nim: nim}, {email: email}]}, function(err, found){
+  queries.getStudentByNIMorEmail(nim, email, function(err, found){
     if(found){
         if(found.is_active == true){
           hiding = ''
@@ -677,17 +655,15 @@ exports.resendConfirmation = function(req, res){
 exports.requestPasswordChange = function(req, res){
   let nim   = req.body.nim,
       email = req.body.email
-  Student.findOne({$and : [{nim: nim}, {email: email}]}, function(err, found){
+  queries.getStudentByNIMorEmail(nim, email,function(err, found){
     if(found){
         if(found.is_active == true){
-          let url = baseurl + '/account/resetpassword/' + found.passwordreset_link
-          let nimToReset = found.nim
-
+          
+          let url           = baseurl + '/account/resetpassword/' + found.passwordreset_link
+          let nimToReset    = found.nim
           let inactive_pass = funcs.minRandom()
-              Student.update({nim: nimToReset}, {$set: {
-                inactive_password : inactive_pass
-              },
-            }, function(err, success){
+
+              queries.sendResetPasswordLink(nimToReset, inactive_pass,function(err, success){
               if(success){
                 let email = found.email
                 server.send({
@@ -696,7 +672,6 @@ exports.requestPasswordChange = function(req, res){
                   to:"<"+email+">",
                   from:"[FISIKA ITB] <notification@fi.itb.ac.id>"
                 })
-                
                 res.redirect('./forget_pass/sent')
               } else {
                 console.log('error creating inactive_password')
@@ -715,26 +690,18 @@ exports.requestPasswordChange = function(req, res){
 }
 
 exports.activateResetPass = function(req, res){
-  let link = req.params.link
-  // not tested, yet
-  queries.getStudentByPassLink(link, function(err, found){
-    if(found){
-      let nimToReset  = found.nim,
-          newPass     = found.inactive_password,
-          encrypted   = funcs.encryptTo(newPass)
-          Student.update({nim: nimToReset}, {$set: {
-            password: encrypted,
-            has_resetpass: true
-          },
-        }, function(err){
-          if(!err){
-            res.render('student/resetpassword', {title: "Password has been reset", caption, baseurl, newPass})
-          }
+  let link = req.params.link,
+      nim  = req.session.student
+    queries.getStudentByPassLink(link, function(err, found){
+        nim         = found.nim
+        let newPass = found.inactive_password,
+        encrypted   = funcs.encryptTo(newPass)
+        queries.resetPassword(nim, encrypted, function(err){
+        if(!err){
+          res.render('student/resetpassword', {title: "Password has been reset", caption, baseurl, newPass})
         }
-      )
-    } else {
-      console.log('Error occured : ', err)
-    }
+      }
+    )
   })
 }
 
@@ -747,7 +714,6 @@ exports.changePassword = function(req, res){
 
   if(oldPass !== '' && newPass !== ''){
     queries.getStudentByNIM(nim, function(e,s){
-      if(s){
         let decrypted = funcs.decryptTo(s.password)
         if(oldPass == decrypted){
         // check if retype password same
@@ -756,11 +722,7 @@ exports.changePassword = function(req, res){
           res.redirect('./settings')
         } else {
           let encrypted = funcs.encryptTo(newPass)
-            Student.update({nim: nimToChange}, {$set: {
-              password: encrypted
-            },
-          },
-            function(err, success){
+            queries.updatePassword(nim, encrypted,function(err, success){
               if(success){
                 req.flash('success', 'Password updated')
               } else {
@@ -775,13 +737,6 @@ exports.changePassword = function(req, res){
           hiding = ''
           res.send('Old password is wrong.')
         }
-      } else {
-        console.log('NIM not found')
-        res.json({
-          "Status":"Error",
-          "Message":"NIM not found"
-        })
-      }
     })
   } else {
     console.log('empty')
@@ -793,30 +748,19 @@ exports.changePassword = function(req, res){
 }
 
 exports.updateProfile = function(req, res){
-  let nimToUpdate = req.session.student
-  let nim = req.session.student
-  queries.getStudentByNIM(nimToUpdate, function(err, found){
-    if(found){
-          Student.update({nim: nimToUpdate}, {$set: {
-            'profile.fullname': req.body.fullname,
-            'profile.nickname': req.body.nickname,
-            'profile.gender': req.body.gender,
-            'profile.address': req.body.address,
-            'profile.birthday': req.body.birthday,
-            ipk:req.body.ipk
-          },
-        }, function(err, found){
-          if(found){
-            req.flash('success', 'Profile updated')
-          } else {
-            req.flash('error', 'Failed to update profile')
-          }
-          res.redirect(baseurl+'/profile')
-        }
-      )
-    } else {
-      console.log('Error occured : ', err)
-    }
+  let nimToUpdate = req.session.student,
+  nim             = req.session.student,
+  formFullname    = req.body.fullname,
+  formNickname    = req.body.nickname,
+  formGender      = req.body.gender,
+  formAddress     = req.body.address,
+  formBirthday    = req.body.birthday,
+  formIpk         = req.body.ipk   
+  queries.getStudentByNIM(nimToUpdate, function(err){
+    queries.updateProfile(nim, formFullname, formNickname, formGender, formAddress, formBirthday, formIpk, function(err){
+      req.flash('success', 'Profile updated')
+    res.redirect(baseurl+'/profile')
+    })
   })
 }
 
@@ -847,9 +791,5 @@ exports.imgUpload = function(req, res, next){
       }
     }
   })
-}
-
-exports.getCourses = function(req, res){
-  res.render('student/courses/overview', {title:"Courses overview", baseurl})
 }
 /* DYNAMIC ROUTES */

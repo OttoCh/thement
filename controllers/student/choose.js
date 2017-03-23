@@ -1,7 +1,7 @@
 /*
   REFACTOR :
   1. model distinguish  [-]
-  2. async              []
+  2. async              [-]
 */
 
 "use strict"
