@@ -143,13 +143,10 @@ exports.getAll = function(req, res){
                     }
                   })
                 }
-              }            
-            )
-          }
-        )
+              })
+          })
       })
     } else {
-      
       res.redirect(baseurl)
     }
   })

@@ -68,7 +68,7 @@ exports.getHome = function(req, res){
   if(admin){
     Admin.findOne({role:admin}, function(e, a){
       // show or not announcements
-      let show = 'hide'
+      let show = 'hide', superShow = 'hide'
       switch(admin){
           case 'operator' : show = ''
           break;
@@ -76,7 +76,7 @@ exports.getHome = function(req, res){
           case 'kaprodi'  : show = 'hide'
           break;
 
-          case 'super'    : show = 'hide'
+          case 'super'    : show = 'hide', superShow = ''
           break;
       }
 
@@ -101,7 +101,7 @@ exports.getHome = function(req, res){
                 let precenAccept = (nAccepted/nStd) * 100
                 precenAccept     = precenAccept.toFixed(2)
                 res.render('admin/home', {title:"Dashboard", admin, a, nStd, nAccepted, precenAccept, nLects, std, 
-                lectHasStd, show})
+                lectHasStd, show, superShow})
               })
             })
           })
