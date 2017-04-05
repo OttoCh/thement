@@ -70,6 +70,9 @@ exports.getDetailLecturer = function(req, res){
     
     lect.getLecturerByUsername(param, function(err, found){
       if(found){
+        // increment lecturer's pageviews
+        lect.incrementViews(param, function(err, incremented){
+        let views     = found.pageviews+1
         let init_we   = found.std_weight
         let final_we  = init_we + stdWeight
         let profile   = found
@@ -91,17 +94,18 @@ exports.getDetailLecturer = function(req, res){
 
             }
             lect.getLecturerByUsername(req.params.username, function(err, lecturer){
-              res.render('student/lecturer-detail', {title:"Lecturer detail", nim, lecturer, baseurl, hiding, profile, arrLecturers, over, available})
+              res.render('student/lecturer-detail', {title:"Lecturer detail", nim, lecturer, baseurl, hiding, profile, arrLecturers, over, available, views})
             })
           } else {
             let n = std.notifs.length
             
             hiding = ''
             lect.getLecturerByUsername(req.params.username, function(err, lecturer){
-              res.render('student/lecturer-detail', {title:"Lecturer detail", nim, lecturer, baseurl, hiding, profile, arrLecturers, over, available})
+              res.render('student/lecturer-detail', {title:"Lecturer detail", nim, lecturer, baseurl, hiding, profile, arrLecturers, over, available, views})
             })
           }
         })
+      })
       } else{
         console.log('not found')
         res.redirect(baseurl)

@@ -11,6 +11,32 @@ html.no-js
     //if lt IE 9
       script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
     script(src='/static/vendors/vendors/modernizr-2.6.2-respond-1.1.0.min.js')
+    style.
+      .KW_progressContainer {
+        left:0;
+        width: 100%;
+        height: 0.4em;
+        margin-bottom: 0px;
+        position: fixed;
+        bottom: 0px;
+        overflow: hidden;
+        background-color: white;
+        content: "";
+        display: table;
+        table-layout: fixed;
+      }
+
+      .KW_progressBar {
+        width: 0%;
+        float: left;
+        height: 100%;
+        z-index:99;
+        max-width: 100%;
+        background-color:orange;
+        -webkit-transition: width .6s ease;
+        -o-transition: width .6s ease;
+        transition: width .6s ease;
+      }
   body
     .navbar.navbar-fixed-top
       .navbar-inner
@@ -156,6 +182,8 @@ html.no-js
                       button.btn.btn-info
                         i.icon-eye-open.icon-white
                         strong  See all
+          div(class='KW_progressContainer')
+            div(class='KW_progressBar')
 
             // /block
       hr
@@ -168,4 +196,14 @@ html.no-js
       $(function() {
       // Easy pie charts
       $('.chart').easyPieChart({animate: 1000});
+      });
+    script.
+      $(window).load(function(){
+        $(window).scroll(function() {
+          var wintop = $(window).scrollTop(), docheight = $('article').height(), winheight = $(window).height();
+          console.log(wintop);
+          var totalScroll = (wintop/(docheight-winheight))*100;
+          console.log("total scroll" + totalScroll);
+          $(".KW_progressBar").css("width",totalScroll+"%");
+        });
       });

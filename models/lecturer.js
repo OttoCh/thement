@@ -19,7 +19,8 @@ var lecturerSchema = new Schema ({
   students: [],
   notifs: [],
   educations: {},
-  announcements: []
+  announcements: [],
+  pageviews: Number
 })
 
 module.exports = mongoose.model('Lecturer', lecturerSchema)

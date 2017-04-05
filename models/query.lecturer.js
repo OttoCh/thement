@@ -29,6 +29,14 @@ module.exports = {
       if(err) return cb(err)
       cb(null, updated>0)
     })
+  },
+
+  // increment page views
+  incrementViews: function(username, cb){
+    db.update({username:username},{"$inc":{pageviews:1},},function(err, updated){
+      if(err) return cb(err)
+      cb(null, updated)
+    })
   }
 }
 
