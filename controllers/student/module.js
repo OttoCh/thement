@@ -249,7 +249,6 @@ exports.getHome = function(req, res){
         notifs = notifs
       }
       else {
-        console.log('no notifs yet')
       }
       if (student.notif_seen == false) {
         colored = '#b3d9ff'
@@ -354,12 +353,9 @@ exports.getHome = function(req, res){
           
           // check if latest message has read by nim
           if(has_seen.includes(nimId) == true){
-            console.log('hide announcement')
             showAnn = 'hide'
           } else {
             showAnn = ''
-            console.log('SHOW ANNOUNCEMENT')
-            // show announcement
           }
       } else {
         
@@ -387,7 +383,6 @@ exports.getHome = function(req, res){
               msgReport = '',
               reportStatus = ''
             } else {
-              console.log('user has report initial, but not created yet')
             }
           } else {
             
@@ -408,7 +403,6 @@ exports.getHome = function(req, res){
                         showBC = ''
                       }
                   } else {
-                    console.log('no bc message yet')
                   }
                 } else {
                   bcs = ''
@@ -498,7 +492,6 @@ exports.addStudent = function(req, res){
 
   // Email validation
   else if(s1 < 0 && s2 < 0){
-    console.log('Invalid email', email)
     hiding = ''
     registerCode  = 'Email should be : yourname@students.itb.ac.id or yourname@s.itb.ac.id'
     res.render('student/register', {title:"Register yourself", caption, registerCode, hiding})
@@ -565,7 +558,6 @@ exports.addStudent = function(req, res){
             sendEmail(title, content, email, function(err){
               if(err) console.log('Email sent error, reason : ', err)
               else {
-                console.log('email sent!')
                 res.send('email sent')
               }
             })
@@ -602,14 +594,10 @@ exports.activateStudent = function(req, res){
         }) 
       }
     } else {
-      res.send({
-        "Status":"Error",
-        "Message":"activation_link not found"
-      })
+      res.send('activation link not found')
     }
   })
 }
-
 
 exports.resendConfirmation = function(req, res){
   let nim   = req.body.nim,
@@ -628,7 +616,6 @@ exports.resendConfirmation = function(req, res){
           sendEmail(title, content, email, function(err){
               if(err) console.log('Email sent error, reason : ', err)
               else {
-                console.log('email sent!')
                 res.send('email sent')
               }
             })
@@ -660,13 +647,11 @@ exports.requestPasswordChange = function(req, res){
                 sendEmail(title, content, email, function(err){
                   if(err) console.log('Email sent error, reason : ', err)
                   else {
-                    console.log('email sent!')
                     res.send('email sent')
                   }
                 })
                 res.redirect('./forget_pass/sent')
               } else {
-                console.log('error creating inactive_password')
               }
             }
           )
@@ -731,11 +716,7 @@ exports.changePassword = function(req, res){
         }
     })
   } else {
-    console.log('empty')
-    res.json({
-      "Status":"Error",
-      "Message":"Body should not left empty"
-    })
+    res.send('body should not left empty!')
   }
 }
 

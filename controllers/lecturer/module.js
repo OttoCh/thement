@@ -130,12 +130,9 @@ exports.getHome = function(req, res){
           
           // check if latest message has read by nim
           if(has_seen.includes(lecturer) == true){
-            console.log('hide announcement')
             showAnn = 'hide'
           } else {
             showAnn = ''
-            console.log('SHOW ANNOUNCEMENT')
-            // show announcement
           }
           } else {
 
@@ -147,10 +144,8 @@ exports.getHome = function(req, res){
           let docs = matched
           let coloredMsg = '', showMsgNotif = 'hide', newMsg = '', contentMsg = ''
           if(matched.length > 0){
-            
             coloredMsg = '#F6E18E', showMsgNotif = '', newMsg = 'NEW', contentMsg = 'New message!'
           } else {
-            
             coloredMsg = '', showMsgNotif = 'hide', newMsg = '', contentMsg = ''
           }
           res.render('lecturer/home', {title: "Home", baseurl, found, hiding, 
@@ -179,7 +174,6 @@ exports.getCandidates = function(req, res){
       }
       res.render('lecturer/candidates', {title:"All candidates", baseurl, cans, f})
     } else {
-      console.log('lecturer not found')
     }
   })
 }
@@ -194,7 +188,6 @@ exports.rejectCandidate = function(req, res){
   let lecturer    = req.session.lecturer
   let nimToRemove = req.params.nim
   let reason      = req.body.rejectReason
-
   if(reason == ""){
     reason = ''
   } else {
@@ -205,7 +198,6 @@ exports.rejectCandidate = function(req, res){
       },
     }, function(e, s){
       if(s){
-        
         nimToRemove = Number(nimToRemove)
         Student.findOne({nim: nimToRemove}, function(e, found){
           let n = found.notifs.length
@@ -548,7 +540,7 @@ exports.getDetailStudent = function(req, res){
         let reps = report.reports
         let approval = report.is_approved
         
-        console.log('reports length : ', reps.length)
+        
         if(approval == true || reps.length == 0){
           showAccept = 'hide' 
         } else {
