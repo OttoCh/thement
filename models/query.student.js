@@ -122,6 +122,14 @@ module.exports = {
         })
     },
 
+    // get message by supervisor (broadcast)
+    getMsgBySupervisor: function(supervisor, cb){
+        Msg.findOne({lecturer:supervisor}, function(err, msg){
+            if(err) return cb(err)
+            cb(null, msg)
+        })
+    },
+
     // set has_seen_std to true
     updateHasSeen: function(nim, cb){
         Msg.update({nim:nim},{$set:{has_seen_std:true},},function(err, updated){
@@ -191,6 +199,14 @@ module.exports = {
         Adm.update({role:"operator", "announcements.id":idRead},{"$push":{"announcements.$.seen_by":nim},},function(err, read){
             if(err) return cb(err)
             cb(null, read)
+        })
+    },
+
+    // get all reports
+    getAllReports: function(nim, cb){
+        Rep.findOne({nim:nim}, function(err, reps){
+            if(err) return cb(err)
+            cb(null, reps)
         })
     }
 }

@@ -82,11 +82,6 @@ exports.getDetailLecturer = function(req, res){
         queries.getStudentByNIM(nim, function(err, std){
           if(std.is_choose == true || weight == 12 || final_we > 12){
             hiding = 'hide'
-            // if(weight == 12){
-            //   over = ''
-            // } else {
-              
-            // }
 
             if (final_we >= 12){
               available = ''

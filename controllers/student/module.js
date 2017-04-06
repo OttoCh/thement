@@ -1,6 +1,6 @@
 /*
   REFACTOR :
-  1. model distinguish  []
+  1. model distinguish  [-]
   2. async              []
 */
 
@@ -27,6 +27,7 @@ const credentials   = require('../../credentials/email'),
 // load middlewares
     funcs         = require('../../middlewares/funcs'),
     queries       = require('../../models/query.student'),
+    lect_query    = require('../../models/query.lecturer'),
     stdLevel      = require('../../helpers/student-level')
 
 // constants
@@ -174,9 +175,6 @@ exports.getHome = function(req, res){
       break;
     }
     studyLevel = studyLevel.toUpperCase()
-
-    // get student level
-    // stdLevel.getStudentLevel()
     
     let state, stateColor, dosen, divReport = 'hide', acceptance
     var supervisor = student.supervisor
@@ -194,7 +192,7 @@ exports.getHome = function(req, res){
     }
 
       // convert username to fullname supervisor
-      Lect.findOne({username:supervisor}, function(err, superv){
+      lect_query.getLecturerByUsername(supervisor, function(err, superv){
         if(superv){
           supervisor = superv.name
         }
@@ -288,11 +286,9 @@ exports.getHome = function(req, res){
 
       // MESSAGE CHECKING
       let allMsgs
-      Msg.findOne({nim:nim}, function(e, msg){
+      queries.getAllMessages(nim, function(e, msg){
         if(msg){
           allMsgs = msg.messages
-          // get latest 3 notifs
-          
           allMsgs.sort(function(a,b){
             return parseInt(b.id) - parseInt(a.id)
           })
@@ -326,7 +322,6 @@ exports.getHome = function(req, res){
           }
         } else {
           // student has not created message yet
-          
           allMsgs = 'no message yet'
           msg = []
           objMsgs = []
@@ -344,8 +339,7 @@ exports.getHome = function(req, res){
 
       // ANNOUNCEMENT CHECKING
       let stdMsg  = []
-      Adm.aggregate({$match:{"role":"operator"}},{$unwind:"$announcements"},{$match:{$or:[{"announcements.to":"students"}, {"announcements.to":"all"}]}},
-        function(err, anns){
+      queries.getAllAnnouncements(function(err, anns){
           if(anns.length > 0){
           for(var m=0; m<anns.length; m++){
             stdMsg.push({
@@ -372,7 +366,7 @@ exports.getHome = function(req, res){
       }
 
       // REPORT CHECKING
-      report.findOne({nim:nim}, function(err, rep){
+      queries.getAllReports(nim, function(err, rep){
         var coloredStatus = '', statusStyle = ''
         if(rep){
           if(rep){
@@ -398,9 +392,8 @@ exports.getHome = function(req, res){
           } else {
             
           }
-
-           // check for any new broadcast message
-            Msg.findOne({lecturer:superv_username}, function(err, bc){
+            // check for any new broadcast message
+            queries.getMsgBySupervisor(superv_username, function(err, bc){
                 if(bc){
                   var bcs       = bc.messages
                   var bcLength  = bcs.length
@@ -429,7 +422,6 @@ exports.getHome = function(req, res){
               })
             })
         } else {
-          
           res.render('student/home', {title: "Dashboard ", nim, student, last_login, state, stateColor, supervisor,
             notifs, colored, hideChoosing, reportCreate, nReport, msgReport, reportStatus,
             coloredStatus, statusStyle, divReport, newNotif, registered_at,
@@ -552,9 +544,7 @@ exports.addStudent = function(req, res){
     std.profile.birthday    = ""
     std.profile.img_url     = ""
     std.profile.img_path    = ""
-
     let nim = std.nim
-
     queries.getStudentByNIM(nim, function(err, exist){
       if(exist){
         hiding = ''
@@ -570,18 +560,14 @@ exports.addStudent = function(req, res){
             let link          = std.activation_link
             let activate_link = baseurl+'/account/activation/'+link
             let email         = std.email
-            console.log('activation_link : ', activate_link)
-            let message = {
-              text: "Please click here to activate your account : "+activate_link + "\n \n " + FOOTER_EMAIL,
-              from: "[FISIKA ITB] <notification@fi.itb.ac.id>",
-              to: "<"+email+">",
-              subject: "[Welcome to thement] - "+nim,
-              attachment: [
-                {data: "<html> <strong> Fisika ITB </strong> </html>"}
-              ]
-            }
-            server.send(message, function(err, message){
-              console.log(err || message)
+            let title   = '[Welcome to thement] - '+nim,
+                content = 'Please click here to activate your account : '+activate_link + '\n \n ' + FOOTER_EMAIL
+            sendEmail(title, content, email, function(err){
+              if(err) console.log('Email sent error, reason : ', err)
+              else {
+                console.log('email sent!')
+                res.send('email sent')
+              }
             })
             res.redirect('./register/success')
           }
@@ -605,7 +591,7 @@ exports.activateStudent = function(req, res){
             notifLength = 1,
             milesLength = 1
         let category    = 'registered'
-        let link_profile= 'http://localhost:3500/student/profile'
+        let link_profile= baseurl+'/profile'
 
         queries.activateStudent(nim, function(err,activated){
           queries.addNotif(nim, msg, notifLength, function(err){
@@ -621,7 +607,7 @@ exports.activateStudent = function(req, res){
         "Message":"activation_link not found"
       })
     }
-})
+  })
 }
 
 
@@ -635,14 +621,17 @@ exports.resendConfirmation = function(req, res){
           code = 'Your account was actived. No need to reactivate.'
           res.render('student/resend-activation', {title:"Resend activation link", caption, baseurl, code, hiding})
         } else {
-          let reactivate = found.activation_link
-          let link       = baseurl+'/account/activation/'+reactivate
-          server.send({
-            subject:"[Resend activate_link] - "+nim,
-            text:"Please click here to activate your account : "+ link + "\n \n " + FOOTER_EMAIL,
-            to:"<"+email+">",
-            from:"[FISIKA ITB] <notification@fi.itb.ac.id>"
-          })
+          let reactivate  = found.activation_link
+          let link        = baseurl+'/account/activation/'+reactivate,
+              title       = "[Resend activate_link] - "+nim,
+              content     = "Please click here to activate your account : "+ link + "\n \n " + FOOTER_EMAIL
+          sendEmail(title, content, email, function(err){
+              if(err) console.log('Email sent error, reason : ', err)
+              else {
+                console.log('email sent!')
+                res.send('email sent')
+              }
+            })
           res.redirect('./resend_activation/sent')
         }
       } else {
@@ -665,12 +654,15 @@ exports.requestPasswordChange = function(req, res){
 
               queries.sendResetPasswordLink(nimToReset, inactive_pass,function(err, success){
               if(success){
-                let email = found.email
-                server.send({
-                  subject:"[Reset Password] - "+nim,
-                  text:"Here is your new password : " + inactive_pass + " \n Click here to reset your password : "+url + "\n \n " + FOOTER_EMAIL,
-                  to:"<"+email+">",
-                  from:"[FISIKA ITB] <notification@fi.itb.ac.id>"
+                let email   = found.email,
+                    title   = "[Reset Password] - "+nim,
+                    content = "Here is your new password : " + inactive_pass + " \n Click here to reset your password : "+url + "\n \n " + FOOTER_EMAIL
+                sendEmail(title, content, email, function(err){
+                  if(err) console.log('Email sent error, reason : ', err)
+                  else {
+                    console.log('email sent!')
+                    res.send('email sent')
+                  }
                 })
                 res.redirect('./forget_pass/sent')
               } else {
@@ -793,3 +785,18 @@ exports.imgUpload = function(req, res, next){
   })
 }
 /* DYNAMIC ROUTES */
+
+function sendEmail(title, content, email){
+  let message = {
+    text: content,
+    from: "[FISIKA ITB] <notification@fi.itb.ac.id>",
+    to: "<"+email+">",
+    subject: title,
+    attachment: [
+      {data: "<html> <strong> Fisika ITB </strong> </html>"}
+    ]
+  }
+  server.send(message, function(err, message){
+    console.log(err || message)
+  })
+}

@@ -43,6 +43,7 @@
 1. increment : $inc
 2. avoid duplicate : $ne / $addToSet
 3. avoid $push as possible 
+4. mongo replication to secondary server (mlab)
 
 # SUGGESTIONS :
 - AVOID CALLBACK HELL FOR ALL QUERIES!

@@ -16,9 +16,17 @@ var express         = require('express'),
     fs              = require('fs'),
     progress        = require('progress-stream'),
     async           = require('async'),
+    config          = require('./config/db.json'),
     app             = express();
 
-mongoose.connect('mongodb://127.0.0.1:27017/tugasakhir');
+mongoose.connect(config.local, function(err){
+    if(!err){
+        console.log('CONNECTED to DB')
+    } else {
+        // send telegram bot
+        console.log('Cant connect to mongodb server')
+    }
+});
 
 app.all('/api/v1/*', [require('./middlewares/auth')]);
 
@@ -28,7 +36,7 @@ app.use(session({
   proxy: true,
   resave: true,
   saveUninitialized: true,
-  store: new MongoStore({ url: 'mongodb://127.0.0.1:27017/tugasakhir'})
+  store: new MongoStore({ url: config.local})
   })
 );
 
@@ -36,7 +44,7 @@ app.use(session({
 app.use(cookieParser('secret'));
 app.use(session({
     cookie: { maxAge: 60000 },
-    store: new MongoStore({ url: 'mongodb://127.0.0.1:27017/tugasakhir'}),
+    store: new MongoStore({ url: config.local}),
     saveUninitialized: true,
     resave: 'true',
     secret: 'secret'
