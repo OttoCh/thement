@@ -5,6 +5,7 @@ var express       = require('express'),
     Std           = require('../../models/student'),
     Lect          = require('../../models/lecturer'),
     funcs         = require('../../middlewares/funcs'),
+    adm_query     = require('../../models/query.admin'),
     winston       = require('winston'),
     app           = express()
 
@@ -29,27 +30,13 @@ exports.postLogin = function(req, res){
   let pass = req.body.password
   let user = req.body.username
   let message
-  Admin.findOne({role:user}, function(err, found){
+  adm_query.getAdminByRole(user, function(err, found){
     if(found){
-      switch (user) {
-        case 'super': console.log('admin login as', user)
-
-          break;
-        case 'kaprodi': console.log('admin login as', user)
-
-          break;
-        case 'operator': console.log('admin login as', user)
-
-          break;
-        default: console.log('admin not detected')
-      }
       // check if initial pass is correct
       let init_pass = found.role + '123'
-      
       if(pass == init_pass){
         // correct, redirect to change pass with the secure one
         req.session.admin = user
-        
         res.redirect(baseurl+'/home')
       } else {
         res.status(400).send('wrong password')
@@ -66,14 +53,14 @@ exports.postLogin = function(req, res){
 exports.getHome = function(req, res){
   let admin = req.session.admin
   if(admin){
-    Admin.findOne({role:admin}, function(e, a){
+    adm_query.getAdminByRole(admin, function(e, a){
       // show or not announcements
-      let show = 'hide', superShow = 'hide'
+      let show = 'hide', superShow = 'hide', adminShow = 'hide', operatorShow = 'hide', kaprodiShow = 'hide'
       switch(admin){
-          case 'operator' : show = ''
+          case 'operator' : show = '', operatorShow = ''
           break;
 
-          case 'kaprodi'  : show = 'hide'
+          case 'kaprodi'  : show = 'hide', kaprodiShow = ''
           break;
 
           case 'super'    : show = 'hide', superShow = ''
@@ -101,7 +88,7 @@ exports.getHome = function(req, res){
                 let precenAccept = (nAccepted/nStd) * 100
                 precenAccept     = precenAccept.toFixed(2)
                 res.render('admin/home', {title:"Dashboard", admin, a, nStd, nAccepted, precenAccept, nLects, std, 
-                lectHasStd, show, superShow})
+                lectHasStd, show, superShow, operatorShow, kaprodiShow})
               })
             })
           })

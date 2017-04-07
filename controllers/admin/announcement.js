@@ -41,7 +41,7 @@ exports.getAll = function(req, res){
                     to:message[i].to,
                     body:message[i].body,
                     date:funcs.friendlyDate(message[i].date),
-                    seen_by:message[i].seen_by
+                    seen_by:message[i].seen_by.length
                 })
                 allMsg.sort(function(a,b){
                     return parseFloat(b.id) - parseFloat(a.id)
@@ -58,7 +58,7 @@ exports.getAll = function(req, res){
                             to:stds[j].announcements.to,
                             body:stds[j].announcements.body,
                             date:funcs.friendlyDate(stds[j].announcements.date),
-                            seen_by:stds[j].announcements.seen_by
+                            seen_by:stds[j].announcements.seen_by.length
                         })
                     }
                     stdMsg.sort(function(a,b){
@@ -75,7 +75,7 @@ exports.getAll = function(req, res){
                                     to:lecs[k].announcements.to,
                                     body:lecs[k].announcements.body,
                                     date:funcs.friendlyDate(lecs[k].announcements.date),
-                                    seen_by:lecs[k].announcements.seen_by
+                                    seen_by:lecs[k].announcements.seen_by.length
                                 })
                             }
                             lecMsg.sort(function(a,b){

@@ -176,7 +176,9 @@ html
                             td=val.to
                             td=val.body
                             td=val.date
-                            td=val.seen_by
+                            td(width='30%')=val.seen_by+' people'
+                              &nbsp;
+                              a(href='#') See all
 
                     //- flash message
                     if error && error.length > 0
@@ -208,7 +210,9 @@ html
                             td=lec.to
                             td=lec.body
                             td=lec.date
-                            td(width='10%')=lec.seen_by
+                            td(width='10%')=lec.seen_by+' lecturers'
+                              &nbsp;
+                              a(href='#') See all
                      
                     //- to students
                     h4(class='#{showStd}') Send to students
@@ -226,8 +230,10 @@ html
                           tr
                             td=std.to
                             td=std.body
-                            td(width='40%')=std.date
-                            td=std.seen_by
+                            td=std.date
+                            td=std.seen_by+' students'
+                              &nbsp;
+                              a(href='#') See all
                             
                   .span3
                     h4 TYPE

@@ -69,7 +69,8 @@ html.no-js
     .container-fluid
       .row-fluid
         #sidebar.span3
-          ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
+          //- operator
+          ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse(class=operatorShow)
             li.active
               a(href='#')
                 
@@ -106,10 +107,56 @@ html.no-js
                 span.badge.badge-info.pull-right
                 i.icon-inbox
                 |  Announcement
-            
-            //- super
-          
+
+          //- kaprodi
+          ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse(class=kaprodiShow)
+            li.active
+              a(href='#')
+                
+                i.icon-home
+                |  Dashboard
+            li
+              a(href='profile')
+                
+                i.icon-user
+                |  Profile
+            li
+              a(href='students')
+                
+                i.icon-list
+                |  Students
+            li
+              a(href='lecturers')
+                
+                i.icon-user
+                |  Lecturers
+            li
+              a(href='notifications')
+                div(class='')
+                  span.badge.badge-info.pull-right
+                i.icon-volume-up
+                |  Notifications
+            li
+              a(href='message/all')
+                span.badge.badge-info.pull-right
+                i.icon-envelope
+                |  Messages
+            li(class='#{show}')
+              a(href='announcements/all')
+                span.badge.badge-info.pull-right
+                i.icon-inbox
+                |  Announcement
+
+          //- super
           ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse(class=superShow)
+            li.active
+              a(href='#')    
+                i.icon-home
+                |  Dashboard
+            li
+              a(href='profile')
+                i.icon-user
+                |  Profile
             li
               a(href='#')
                 span.badge.badge-info.pull-right
@@ -120,6 +167,7 @@ html.no-js
                 span.badge.badge-info.pull-right
                 i.icon-briefcase
                 |  Lecturer's Account
+          ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse(class=superShow)
             li
               a(href='#')
                 span.badge.badge-info.pull-right
@@ -129,7 +177,17 @@ html.no-js
               a(href='#')
                 span.badge.badge-info.pull-right
                 i.icon-tasks
-                |  Logs 
+                |  Logs
+            li
+              a(href='#')
+                span.badge.badge-info.pull-right
+                i.icon-print
+                |  Server
+            li
+              a(href='#')
+                span.badge.badge-info.pull-right
+                i.icon-repeat
+                |  Feedback 
         // /span
         #content.span9
           .row-fluid
