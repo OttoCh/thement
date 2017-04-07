@@ -1,6 +1,6 @@
 /*
   REFACTOR :
-  1. model distinguish  []
+  1. model distinguish  [-]
   2. async              []
 */
 
@@ -172,7 +172,6 @@ exports.getHome = function(req, res){
 exports.getCandidates = function(req, res){
   let lecturer = req.session.lecturer
   lect_query.getLecturerByUsername(lecturer, function(e, f){
-    if(f){
       let cans    = []
       let calons  = f.candidates
       for(var i=0; i<calons.length; i++){
@@ -181,9 +180,7 @@ exports.getCandidates = function(req, res){
           nim:calons[i]
         });
       }
-      res.render('lecturer/candidates', {title:"All candidates", baseurl, cans, f})
-    } else {
-    }
+    res.render('lecturer/candidates', {title:"All candidates", baseurl, cans, f})
   })
 }
 
@@ -204,7 +201,6 @@ exports.rejectCandidate = function(req, res){
     reason = " because : " + reason
   }
   lect_query.removeCandidate(lecturer, nimToRemove, function(e, s){
-  if(s){
     nimToRemove = Number(nimToRemove)
     let nim     = nimToRemove
     queries.getStudentByNIM(nimToRemove, function(e, found){
@@ -212,18 +208,12 @@ exports.rejectCandidate = function(req, res){
       notifLength = n+1,
       msg         = 'You are rejected by ' + lecturer + ' ' + reason
       queries.removedFromCandidates(nimToRemove, function(err){
-        if(!err){
-          // add notif
-          queries.addNotif(nim, notifLength, msg, function(err){
-            if(!err){
-              req.flash('success', 'User rejected')
-              res.redirect(baseurl+'/candidates')
-              }
-            })
-          }
+        queries.addNotif(nim, notifLength, msg, function(err){
+          req.flash('success', 'User rejected')
+          res.redirect(baseurl+'/candidates')
         })
       })
-    }
+    })
   })
 }
 
@@ -430,7 +420,7 @@ exports.postLogout = function(req, res){
 exports.getDetailStudent = function(req, res){
   let param       = req.params.nim
   let lect        = req.session.lecturer
-  Student.findOne({nim:param}, function(e, std){
+  queries.getStudentByNIM(param, function(e, std){
     let profile   = std, last_seen
     let ta1       = std.ta1,
         ta2       = std.ta2
@@ -440,7 +430,7 @@ exports.getDetailStudent = function(req, res){
     } else {
       last_seen = 'Never'
     }
-    report.findOne({nim:param}, function(e, report){
+    queries.getReportbyNIM(param, function(e, report){
       if(report){
         let showAccept = 'hide', showTA1 = 'hide', showTA2 = 'hide', 
         showTA1status = 'hide', showTA2status = 'hide', ta1Msg = '', ta2Msg = '', badgeTa1 = '', badgeTa2 = ''
@@ -547,15 +537,11 @@ exports.getDetailStudent = function(req, res){
         } else {
           latestReport = ''
         }
-        
-        // convert objReports to array/rows
-        
         var output = input.map(function(obj) {
           return Object.keys(obj).sort().map(function(key) { 
             return obj[key];
           });
         })
-
         res.render('lecturer/student-detail', {title:"Student detail", baseurl, last_seen, profile,
           objReports, showAccept, showTA1, showTA2, showTA1status, ta1Msg, showTA2status, ta2Msg,
           badgeTa1, badgeTa2, output, lect, latestReport, showLatestReport
@@ -570,63 +556,35 @@ exports.acceptStudentReport = function(req, res){
   let url   = req.url
   let nims  = url.split('/')
   let nim   = Number(nims[3])
-  console.log('accept report for ' + nim + ' type : ' + typeof(nim))
-  report.update({nim:nim},{$set: {
-      is_approved: true,
-      is_create: false
-    },
-  }, function(e, accepted){
-      // find reportID
-      report.findOne({nim:nim}, function(e,r){
-        let reportID = r.reports.length
-        
-        Student.findOne({nim:nim}, function(err, std){
-          // set notif tp unseen  
-          Student.update({nim:nim}, {$set: {
-            report_status: true,
-            notif_seen: false
-            },}, function(e, seen){
-            // add notif to student
-            let n = std.notifs.length
-            Student.update({nim:nim},
-                {$push: {
-                  notifs: {
-                    "id":n+1,
-                    "date": new Date(),
-                    "notif": "Your report #"+ reportID +" had approved by : " + lecturer,
-                    "has_seen": false
-                  }
-                },
-              }, function(e, re){
-                // add approved date to student's report
-                report.update({nim:nim, "reports.id":reportID.toString()},{
-                  "$set":{
-                    "reports.$.approved":new Date
-                  },
-                },
-                  function(err, approved){
-                    res.redirect(baseurl+'/students')
-                  }
-                )
-              }
-            )
+  lect_query.approveReport(nim, function(e, accepted){
+  queries.getReportbyNIM(nim, function(e,r){
+    let reportID = r.reports.length
+    queries.getStudentByNIM(nim, function(err, std){
+    let notifLength = std.notifs.length+1,
+                msg = 'Your report #'+reportID+' had approved by your supervisor'
+        queries.updateReportStatus(nim, function(err){    
+          queries.addNotif(nim, notifLength, msg, function(err){      
+            reportID = reportID.toString()
+              queries.approvedAt(nim, reportID, function(err){      
+                res.redirect(baseurl+'/students')      
+            })   
           })
         })
       })
-    }
-  )
-}
+    })
+  })
+} 
 
 exports.getProfile = function(req, res){
   let lecturer = req.session.lecturer
-  Lect.findOne({username:lecturer}, function(err, found){
+  lect_query.getLecturerByUsername(lecturer, function(err, found){
     res.render('lecturer/profile', {title:"Lecturer's Profile", found})
   })
 }
 
 exports.getSettings = function(req, res){
   let lecturer = req.session.lecturer
-  Lect.findOne({username:lecturer}, function(err, found){
+  lect_query.getLecturerByUsername(lecturer, function(err, found){
     let passToChange = ''
     if(found.newpass !== ""){
       passToChange = funcs.decryptTo(found.newpass)
@@ -642,23 +600,21 @@ exports.postSettings = function(req, res){
   let lecturer = req.session.lecturer
   let newpass  = req.body.newpass
   let renew    = req.body.renewpass
-
   // check if newpass & renew is the same
   if(renew !== newpass){
     console.log('confirmation password is different. try again')
     res.redirect('#')
   } else {
     // check if new pass is different to oldpass
-    Lect.findOne({username:lecturer}, function(e, found){
+    lect_query.getLecturerByUsername(lecturer, function(e, found){
       if(found.oldpass == newpass){
         console.log('password is same as the old one. use different one')
         res.redirect('#')
       } else {
         // set newpass to oldpass in database
         console.log('SUCCESS!') 
-        Lect.update({username:lecturer}, {$set: {
-          newpass: funcs.encryptTo(newpass)
-        },}, function(err, succeed){
+        newpass = funcs.encryptTo(newpass)
+        lect_query.updatePassword(lecturer, newpass, function(err, succeed){
           if(succeed){
             console.log('success changing password')
             res.redirect('#')
@@ -673,35 +629,15 @@ exports.getTa1 = function(req, res){
   let nim = req.params.nim
   let supervisor = req.session.lecturer
   queries.getStudentByNIM(nim, function(err, std){
-    let nMiles  = std.milestones.length
-    let nNotifs = std.notifs.length
-    // add to milestone
-    Student.update({nim:nim}, {$set : {
-      notif_seen:false,
-    },
-    $push:{
-      milestones:{
-        "id":nMiles+1,
-        "date": new Date(),
-        "category": "ta1"
-      }, 
-        notifs:{
-          "id": nNotifs+1,
-          "date": new Date(),
-          "notif":"Your TA 1 has been approved!"
-        }
-    },}, function(err, miles){
-  Student.update({nim:nim},{$set:{
-    ta1:{
-      "status":"waiting",
-      "date": new Date(),
-      "supervisor":supervisor
-        }
-      },}, function(err, ta){
-        if(ta){
-          console.log('success set ta1')
-        }
-       res.redirect(baseurl+'/student/detail/'+nim)
+    let notifsLength  = std.notifs.length+1,
+        milesLength   = std.milestones.length+1,
+        category      = 'ta1',
+        msg           = 'Your TA 1 has been approved!'
+    queries.addNotif(nim, notifsLength, msg, function(err){
+      queries.addMilestone(nim, milesLength, category, function(err){    
+        queries.setTa1(nim, supervisor, function(err){
+          res.redirect(baseurl+'/student/detail/'+nim)
+        })
       })
     })
   })
@@ -711,35 +647,15 @@ exports.getTa2 = function(req, res){
   let nim = req.params.nim
   let supervisor = req.session.lecturer
   queries.getStudentByNIM(nim, function(err, std){
-    let nMiles  = std.milestones.length
-    let nNotifs = std.notifs.length
-    // add to milestone
-    Student.update({nim:nim}, {$set : {
-      notif_seen:false,
-    },
-    $push:{
-      milestones:{
-        "id":nMiles+1,
-        "date": new Date(),
-        "category": "ta2"
-      }, 
-        notifs:{
-          "id": nNotifs+1,
-          "date": new Date(),
-          "notif":"Your TA 2 has been approved!"
-        }
-    },}, function(err, miles){
-  Student.update({nim:nim},{$set:{
-    ta2:{
-      "status":"waiting",
-      "date": new Date(),
-      "supervisor":supervisor
-        }
-      },}, function(err, ta){
-        if(ta){
-          console.log('success set ta2')
-        }
-       res.redirect(baseurl+'/student/detail/'+nim)
+    let notifsLength  = std.notifs.length+1,
+        milesLength   = std.milestones.length+1,
+        category      = 'ta2',
+        msg           = 'Your TA 2 has been approved!'
+    queries.addNotif(nim, notifsLength, msg, function(err){
+      queries.addMilestone(nim, milesLength, category, function(err){
+        queries.setTa2(nim, supervisor, function(err){
+          res.redirect(baseurl+'/student/detail/'+nim)
+        })
       })
     })
   })

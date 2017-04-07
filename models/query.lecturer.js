@@ -1,7 +1,8 @@
 var db        = require('./lecturer'),
     Adm       = require('./admin'),
     Std       = require('./student'),
-    Msg       = require('./message')
+    Msg       = require('./message'),
+    Rep       = require('./report')
 
 
 module.exports = {
@@ -109,6 +110,22 @@ module.exports = {
   // update last login
   updateLastLogin: function(username, cb){
     db.update({username:username},{$set:{last_login:new Date()},},function(err, updated){
+      if(err) return cb(err)
+      cb(null, updated)
+    })
+  },
+
+  // approve student's report
+  approveReport: function(nim, cb){
+    Rep.update({nim:nim},{$set:{is_create:false, is_approved:true},},function(err, approved){
+      if(err) return cb(err)
+      cb(null, approved)
+    })
+  },
+
+  // update password
+  updatePassword: function(username, newpass, cb){
+    db.update({username:username},{$set:{newpass:newpass},},function(err, updated){
       if(err) return cb(err)
       cb(null, updated)
     })

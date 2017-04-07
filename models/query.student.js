@@ -153,6 +153,28 @@ module.exports = {
             cb(null, profile)
         })
     },
+
+    // update report status
+    updateReportStatus: function(nim, cb){
+        Std.update({nim:nim},{$set:{report_status:true},},function(err, updated){
+            if(err) return cb(err)
+            cb(null, updated)
+        })
+    },
+
+    setTa1: function(nim, supervisor, cb){
+        Std.update({nim:nim},{$set:{ta1:{"status":"waiting","date": new Date(),"supervisor":supervisor}},},function(err, updated){
+            if(err) return cb(err)
+            cb(null, updated)
+        })
+    },
+
+    setTa2: function(nim, supervisor, cb){
+        Std.update({nim:nim},{$set:{ta2:{"status":"waiting","date": new Date(),"supervisor":supervisor}},},function(err, updated){
+            if(err) return cb(err)
+            cb(null, updated)
+        })
+    },
     /* == ACCOUNT ENDS == */
 
     /* == MESSAGE STARTS == */
@@ -274,6 +296,13 @@ module.exports = {
         Rep.update({nim:nim},{$set:{reports:[]},},function(err, removed){
             if(err) return cb(err)
             cb(null, removed)
+        })
+    },
+
+    approvedAt: function(nim, reportID, cb){
+        Rep.update({nim:nim,"reports.id":reportID},{"$set":{"reports.$.approved":new Date()},},function(err, updated){
+            if(err) return cb(err)
+            cb(null, updated)
         })
     },
     /* == REPORT ENDS == */
