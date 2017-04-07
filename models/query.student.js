@@ -7,7 +7,7 @@ const   Std    = require('../models/student'),
         Adm    = require('../models/admin')
 
 module.exports = {
-    /* == ACCOUNT STARTS == */
+    /* ACCOUNT */
     // get all students
     getAllStudents: function(cb){
         Std.find({}, cb)
@@ -175,9 +175,8 @@ module.exports = {
             cb(null, updated)
         })
     },
-    /* == ACCOUNT ENDS == */
 
-    /* == MESSAGE STARTS == */
+    /* MESSAGE */
     // get message by NIM
     getMessageByNIM: function(nim, cb){
         Msg.findOne({nim:nim},function(err, msgs){
@@ -249,9 +248,8 @@ module.exports = {
             cb(null, seen)
         })
     },
-    /* == MESSAGE ENDS == */
 
-    /* == REPORT STARTS == */
+    /* REPORT */
     // get report by nim
     getReportbyNIM: function(nim, cb){
         Rep.findOne({nim:nim}, function(err, reps){
@@ -305,9 +303,8 @@ module.exports = {
             cb(null, updated)
         })
     },
-    /* == REPORT ENDS == */
 
-    /* == ADMIN STARTS == */
+    /* ADMIN */
     // get al announcements
     getAllAnnouncements: function(cb){
         Adm.aggregate({$match:{"role":"operator"}},{$unwind:"$announcements"},{$match:{$or:[{"announcements.to":"students"},{"announcements.to":"all"}]}},function(err, anns){
@@ -323,5 +320,4 @@ module.exports = {
             cb(null, read)
         })
     }
-    /* == ADMIN ENDS == */
 }

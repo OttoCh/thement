@@ -6,6 +6,7 @@ var db        = require('./lecturer'),
 
 
 module.exports = {
+  /* ACCOUNTS */
   // get all lecturers
   all: function(cb){
     db.find({}, cb)
@@ -59,19 +60,11 @@ module.exports = {
     })
   },
 
-  // get all announcements
-  getAllAnnouncements: function(cb){
-        Adm.aggregate({$match:{"role":"operator"}},{$unwind:"$announcements"},{$match:{$or:[{"announcements.to":"lecturers"},{"announcements.to":"all"}]}},function(err, anns){
-            if(err) return cb(err)
-            cb(null, anns)
-        })
-    },
-
-  // get message by lecturer
-  getMessageByLecturer: function(lecturer, cb){
-    Msg.find({members:{$all:[lecturer]},$and:[{has_seen_lecturer:false}]},function(err, found){
+  // update password
+  updatePassword: function(username, newpass, cb){
+    db.update({username:username},{$set:{newpass:newpass},},function(err, updated){
       if(err) return cb(err)
-      cb(null, found)
+      cb(null, updated)
     })
   },
 
@@ -91,6 +84,23 @@ module.exports = {
     })
   },
 
+  // update last login
+  updateLastLogin: function(username, cb){
+    db.update({username:username},{$set:{last_login:new Date()},},function(err, updated){
+      if(err) return cb(err)
+      cb(null, updated)
+    })
+  },
+
+  /* MESSAGE */
+  // get message by lecturer
+  getMessageByLecturer: function(lecturer, cb){
+    Msg.find({members:{$all:[lecturer]},$and:[{has_seen_lecturer:false}]},function(err, found){
+      if(err) return cb(err)
+      cb(null, found)
+    })
+  },
+
   // get broadcast message by lecturer
   getBroadcastByLecturer: function(lecturer, cb){
     Msg.findOne({lecturer:lecturer},function(err, bc){
@@ -102,30 +112,6 @@ module.exports = {
   // update broadcast message's member
   updateBroadcast: function(lecturer, nimToAdd, cb){
     Msg.update({lecturer:lecturer},{$push:{members:nimToAdd},},function(err, updated){
-      if(err) return cb(err)
-      cb(null, updated)
-    })
-  },
-
-  // update last login
-  updateLastLogin: function(username, cb){
-    db.update({username:username},{$set:{last_login:new Date()},},function(err, updated){
-      if(err) return cb(err)
-      cb(null, updated)
-    })
-  },
-
-  // approve student's report
-  approveReport: function(nim, cb){
-    Rep.update({nim:nim},{$set:{is_create:false, is_approved:true},},function(err, approved){
-      if(err) return cb(err)
-      cb(null, approved)
-    })
-  },
-
-  // update password
-  updatePassword: function(username, newpass, cb){
-    db.update({username:username},{$set:{newpass:newpass},},function(err, updated){
       if(err) return cb(err)
       cb(null, updated)
     })
@@ -167,6 +153,24 @@ module.exports = {
       cb(null, sent)
     })
   },
+
+  /* REPORT */
+  // approve student's report
+  approveReport: function(nim, cb){
+    Rep.update({nim:nim},{$set:{is_create:false, is_approved:true},},function(err, approved){
+      if(err) return cb(err)
+      cb(null, approved)
+    })
+  },
+
+  /* ADMIN */
+  // get all announcements
+  getAllAnnouncements: function(cb){
+        Adm.aggregate({$match:{"role":"operator"}},{$unwind:"$announcements"},{$match:{$or:[{"announcements.to":"lecturers"},{"announcements.to":"all"}]}},function(err, anns){
+            if(err) return cb(err)
+            cb(null, anns)
+        })
+    },
 
   seenByAnnouncement: function(idRead, lec, cb){
     Adm.update({role:"operator", "announcements.id":idRead},{"$push":{"announcements.$.seen_by":lec},},function(err, seen){
