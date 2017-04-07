@@ -3,11 +3,18 @@ var Adm = require('./admin'),
     Lec = require('./lecturer')
 
 module.exports = {
-    
+    /* ALL */
     getAdminByRole: function(role, cb){
         Adm.findOne({role:role},function(err, found){
             if(err) return cb(err)
             cb(null, found)
         })
     }
+
+    /* OPERATOR */
+
+    /* KAPRODI */
+
+    /* SUPER */
+    
 }
