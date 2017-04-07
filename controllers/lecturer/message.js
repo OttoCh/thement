@@ -1,3 +1,9 @@
+/*
+  REFACTOR :
+  1. model distinguish  []
+  2. async              []
+*/
+
 "use strict"
 
 // load lecturers
@@ -7,6 +13,8 @@ var student       = require('../../models/student'),
     msg           = require('../../models/message'),
     admin         = require('../../models/admin'),
     funcs         = require('../../middlewares/funcs'),
+    queries       = require('../../models/query.student'),
+    lect_query    = require('../../models/query.lecturer'),
     multer        = require('multer')
 var baseurl       = require('../../config/baseurl'),
     baseurl       = baseurl.root + 'lecturer'
@@ -14,13 +22,10 @@ const root_url= 'http://localhost:3500'
 
 exports.getAll = function(req, res){
     let lec = req.session.lecturer
-    
-    lecturer.findOne({username:lec}, function(err, found){
+    lect_query.getLecturerByUsername(lec, function(err, found){
         if(found){
-            
             let stds = found.students
             if(stds.length > 0){
-                
                 let objStd = []
                 let allNIMS = []
                 for(var j=0; j<stds.length; j++){
@@ -30,12 +35,9 @@ exports.getAll = function(req, res){
                         unread:''
                     })
                 }
-                
                 // CHECK IF THERE'S UNREAD MESSAGE
-                msg.find({members:{$all:[lec]}, $and:[{has_seen_lecturer:false}]},
-                    function(err, unread){
+                lect_query.getMessageByLecturer(lec,function(err, unread){
                         let msgs = unread.length
-                        
                         // get all nim
                         let unreadNIMS = []
                         for(var i=0; i<msgs; i++){
@@ -44,18 +46,16 @@ exports.getAll = function(req, res){
                                 nim:unread[i].nim.toString(),
                                 unread:'new message'
                             })
-                        }
-                                                
+                        }                                               
                         // SHOW ONLY READ MESSAGE
                         while (unreadNIMS.length) {
                             var nd = unreadNIMS.shift(), nam = nd.nim, vie = nd.unread;
                             if (!allNIMS.some(function(md) {
                                 if (md.nim === nam) {md.unread += vie; return true;}
                             })) allNIMS.push(nd);
-                        }
-                                                
+                        }                                        
                         // get broadcast message
-                        msg.findOne({lecturer:lec}, function(err, bcsc){
+                        lect_query.getBroadcastByLecturer(lec, function(err, bcsc){
                             let bcMsg = []
                             if(bcsc){
                                 let bcs   = bcsc.messages
@@ -90,7 +90,7 @@ exports.getMsgByNIM = function(req, res){
     let nim = req.params.nim
     
     // query for student's last seen
-    student.findOne({nim:nim}, function(e, std){
+    queries.getStudentByNIM(nim, function(e, std){
         let login       = std.last_login
         let last_seen   = ''
         let nickname    = std.profile.nickname
@@ -104,9 +104,8 @@ exports.getMsgByNIM = function(req, res){
         // set default to inbox
         let superv = std.supervisor
         var inboxMsg = [], outboxMsg = []
-        msg.aggregate({$match:{"nim":Number(nim)}}, {$unwind:"$messages"},
-        {$match:{"messages.author":nim.toString()}},
-            function(e, inb){
+        nim = Number(nim)
+        lect_query.getMessageByStudent(nim, function(e, inb){
                 if(inb){
                     // convert to array of objects
                     let inboxs  = inb
@@ -134,8 +133,7 @@ exports.getMsgByNIM = function(req, res){
                     }
 
                     // get outbox
-                    msg.aggregate({$match:{"nim":Number(nim)}},{$unwind:"$messages"},{$match:{"messages.author":superv}},
-                        function(e, outb){
+                    lect_query.getMessageFromLecturer(nim, superv, function(e, outb){
                             if(outb){
                                 // convert to array of objects
                                 let outboxs   = outb
@@ -153,105 +151,56 @@ exports.getMsgByNIM = function(req, res){
                                 outboxMsg.sort(function(a,b){
                                     return parseFloat(b.index) - parseFloat(a.index)
                                 })
-
-                                // SET has_seen_lecturer to TRUE
                                 let nimToSet = Number(nim)
-                                msg.update({nim:nim},{$set:{
-                                    has_seen_lecturer: true
-                                },}, function(err, updated){
-                                        
+                                lect_query.seenByLecturer(nim, function(err, updated){
                                         res.render('lecturer/message/msg-nim', {title:"Message by NIM", nim, last_seen, inboxMsg, 
                                         outboxMsg, showInbox, showOutbox, nickname})
-                                    }
-                                )
-                            }
-                        }
-                    )
-                } else {
-                    console.log('no inbox')
-                }
+                        })
+                    }
+                })
+            } else {
+             console.log('no inbox')
             }
-        )
+        })
     })
 }
 
 exports.sendMessage = function(req, res){
     let lecturer    = req.session.lecturer
-    let nim         = req.body.nim
+    let nim         = Number(req.body.nim)
     let msgBody     = req.body.msg
     let supervisor  = req.body.supervisor 
-  
-  msg.findOne({nim:Number(nim)}, function(e, m){
+    queries.getMessageByNIM(nim, function(e, m){
     let msgLength = m.messages.length
       if(msgLength > 0){
-        msgLength = msgLength
+        msgLength = msgLength +1
       } else {
-        msgLength = 0
+        msgLength = 0+1
       }
-      // ADD MESSAGE NOTIF TO STUDENT
-      msg.update({nim:Number(nim)},{$set:{
-          has_seen_std:false
-      },$push:{
-      messages:{
-        "id":msgLength+1,
-        "author": lecturer,
-        "body": msgBody,
-        "date_created": new Date()
-      }
-    },}, function(err, sent){
+      lect_query.sendMessage(nim, msgLength, lecturer, msgBody, function(err){
       console.log('message sent')
       res.redirect(baseurl+'/message/all')
     })
   })
 }
 
-exports.initBroadcast = function(req, res){
-    let lec = req.session.lecturer
-    lecturer.findOne({username:lec}, function(err, lect){
-        let members = lect.students
-        members.push(lecturer)
-        var b           = new msg()
-        b.lecturer      = lec
-        b.members       = members
-        b.save(function(err){
-            if(!err){
-                console.log('init broadcast success!')
-                res.redirect(baseurl)
-            }
-        })
-    })
-}
-
 exports.sendToAll = function(req, res){
     let message   = req.body.msg
     let lec       = req.session.lecturer
     // get all students
-    lecturer.findOne({username:lec}, function(err, lect){
+    lect_query.getLecturerByUsername(lec, function(err, lect){
         let stds = lect.students
-        msg.findOne({lecturer:lec},function(err, found){
+        queries.getMessageBySupervisor(lec, function(err, found){
             let bcLength = found.messages.length
             if(bcLength>0){
-                bcLength = bcLength
+                bcLength = bcLength+1
             } else {
-                bcLength = 0
+                bcLength = 0+1
             }
-            msg.update({lecturer:lec},{
-            $push:{
-                messages:{
-                    "id":bcLength+1,
-                    "author": lec,
-                    "body": message,
-                    "date_created": new Date(),
-                    "has_seen_by": []
-                }
-            },}, function(err,sent){
-                
-                if(sent){
-                    req.flash('success','Broadcast message sent!')
-                    res.redirect(baseurl+'/message/all')
-                }
-            }
-          )
+            lect_query.sendBroadcast(lec, bcLength, message, function(err){
+                req.flash('success','Broadcast message sent!')
+                res.redirect(baseurl+'/message/all')
+            })
         })
     })
 }
@@ -259,8 +208,7 @@ exports.sendToAll = function(req, res){
 exports.getAnnouncements = function(req, res){
   let lec    = req.session.lecturer
   let lecMsg = []
-  admin.aggregate({$match:{"role":"operator"}},{$unwind:"$announcements"},{$match:{$or:[{"announcements.to":"lecturers"}, {"announcements.to":"all"}]}},
-          function(err, lecs){
+  lect_query.getAllAnnouncements(function(err, lecs){
               for(var i=0; i<lecs.length; i++){
                   lecMsg.push({
                       id:lecs[i].announcements.id,
@@ -273,7 +221,6 @@ exports.getAnnouncements = function(req, res){
               lecMsg.sort(function(a,b){
                   return parseFloat(b.id) - parseFloat(a.id)
               })
-              console.log('lecturer message : ', lecMsg)
               res.render('lecturer/message/announcements', {title:"All Announcements", baseurl, lec, lecMsg})
           }
       )
@@ -283,9 +230,7 @@ exports.getDetailAnnouncement = function(req, res){
   let lec             = req.session.lecturer
   let idAnnouncement  = req.params.id
   let lecMsg          = []
-  console.log('id chosen : ', idAnnouncement)
-  admin.aggregate({$match:{"role":"operator"}},{$unwind:"$announcements"},{$match:{$or:[{"announcements.to":"lecturers"}, {"announcements.to":"all"}]}},
-    function(err, lecs){
+  lect_query.getAllAnnouncements(function(err, lecs){
       for(var i=0; i<lecs.length; i++){
           lecMsg.push({
               id:lecs[i].announcements.id,
@@ -306,13 +251,10 @@ exports.getDetailAnnouncement = function(req, res){
       let idRead    = latestMsg.id
       if(has_seen.includes(lec) == false){
         // push to db
-        admin.update({role:"operator", "announcements.id":idRead},{"$push":{
-          "announcements.$.seen_by":lec
-        },}, function(err, add){
+        lect_query.seenByAnnouncement(idRead, lec, function(err){
             res.render('lecturer/message/announcement-detail', {title:"Announcement detail", baseurl, found})      
         })
       } else {
-        // nothing to push
         console.log('has read')
         res.render('lecturer/message/announcement-detail', {title:"Announcement detail", baseurl, found})
       }

@@ -129,8 +129,50 @@ module.exports = {
       if(err) return cb(err)
       cb(null, updated)
     })
+  },
+
+  // get message by author
+  getMessageByStudent: function(nim, cb){
+    Msg.aggregate({$match:{"nim":nim}}, {$unwind:"$messages"},{$match:{"messages.author":nim.toString()}},function(err, found){
+      if(err) return cb(err)
+      cb(null, found)
+    })
+  },
+
+  // get message where author is lecturer
+  getMessageFromLecturer: function(nim, superv, cb){
+    Msg.aggregate({$match:{"nim":nim}}, {$unwind:"$messages"},{$match:{"messages.author":superv}},function(err, found){
+      if(err) return cb(err)
+      cb(null, found)
+    })
+  },
+
+  seenByLecturer: function(nim, cb){
+    Msg.update({nim:nim},{$set:{has_seen_lecturer:true},},function(err, seen){
+      if(err) return cb(err)
+      cb(null, seen)
+    })
+  },
+
+  sendMessage: function(nim, msgLength, lecturer, msgBody, cb){
+    Msg.update({nim:nim},{$set:{has_seen_std:false},$push:{messages:{"id":msgLength,"author":lecturer,"body":msgBody, "date_created":new Date()}},},function(err, sent){
+      if(err) return cb(err)
+      cb(null, sent)
+    })
+  },
+
+  sendBroadcast: function(lecturer, bcLength, message, cb){
+    Msg.update({lecturer:lecturer},{$push:{messages:{"id":bcLength,"author": lecturer, "body": message,"date_created": new Date(),"has_seen_by": []}},},function(err, sent){
+      if(err) return cb(err)
+      cb(null, sent)
+    })
+  },
+
+  seenByAnnouncement: function(idRead, lec, cb){
+    Adm.update({role:"operator", "announcements.id":idRead},{"$push":{"announcements.$.seen_by":lec},},function(err, seen){
+      if(err) return cb(err)
+      cb(null, seen)
+    })
   }
+
 }
-
-
-

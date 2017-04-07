@@ -34,10 +34,11 @@
 1. initial report seen as 'NEW REPORT' at lecturer's dashboard              [-]
 2. CONFIG IP : baseurl.json & footer.jade                                   [-]
 3. Check if lecturer has reach max kuota (weight == 12), can't be chosen    [-]
-4. add open lecturer choosing periodically ?
-5. sks completion
+4. add open lecturer choosing periodically ?                                []
+5. sks completion                                                           []
 6. lecturer's detail page view                                              [-]
-7. define initial schema for all collections
+7. define initial schema for all collections                                []
+8. BROADCAST + MESSAGE at once (frontend)                                   []
 
 # MONGOTIPS
 1. increment : $inc
