@@ -40,7 +40,7 @@ router.get('/courses', student.getCourses)
 router.get('/notifications', notif.getNotifs)
 router.get('/notifications/delete_all', notif.removeAllNotifs)
 router.get('/notification/:id', notif.getSingleNotif)
-router.get('/notification/delete/:id', notif.removeSingleNotif)
+//router.get('/notification/delete/:id', notif.removeSingleNotif)
 
 router.get('/settings', student.getSettings)
 router.get('/lecturers', choose.getLecturers)

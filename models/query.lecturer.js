@@ -1,4 +1,7 @@
-var db        = require('./lecturer')
+var db        = require('./lecturer'),
+    Adm       = require('./admin'),
+    Std       = require('./student'),
+    Msg       = require('./message')
 
 
 module.exports = {
@@ -34,6 +37,78 @@ module.exports = {
   // increment page views
   incrementViews: function(username, cb){
     db.update({username:username},{"$inc":{pageviews:1},},function(err, updated){
+      if(err) return cb(err)
+      cb(null, updated)
+    })
+  },
+
+  // set notif to seen
+  seenNotif: function(username, cb){
+    db.update({username:username},{$set:{notif_seen:true},},function(err, updated){
+      if(err) return cb(err)
+      cb(null, updated)
+    })
+  },
+
+  // remove all notifs
+  removeAllNotifs: function(username, cb){
+    db.update({username:username},{$set:{notifs:[]},},function(err, removed){
+      if(err) return cb(err)
+      cb(null, removed)
+    })
+  },
+
+  // get all announcements
+  getAllAnnouncements: function(cb){
+        Adm.aggregate({$match:{"role":"operator"}},{$unwind:"$announcements"},{$match:{$or:[{"announcements.to":"lecturers"},{"announcements.to":"all"}]}},function(err, anns){
+            if(err) return cb(err)
+            cb(null, anns)
+        })
+    },
+
+  // get message by lecturer
+  getMessageByLecturer: function(lecturer, cb){
+    Msg.find({members:{$all:[lecturer]},$and:[{has_seen_lecturer:false}]},function(err, found){
+      if(err) return cb(err)
+      cb(null, found)
+    })
+  },
+
+  // remove a candidate
+  removeCandidate: function(username, nimToRemove, cb){
+    db.update({username:username},{$pull:{candidates:nimToRemove},},function(err, removed){
+      if(err) return cb(err)
+      cb(null, removed)
+    })
+  },
+
+  // accept a student
+  acceptStudent: function(username, final_we, nimToAccept, cb){
+    db.update({username:username},{$set:{std_weight:final_we},$push:{students:nimToAccept},},function(err, accepted){
+      if(err) return cb(err)
+      cb(null, accepted)
+    })
+  },
+
+  // get broadcast message by lecturer
+  getBroadcastByLecturer: function(lecturer, cb){
+    Msg.findOne({lecturer:lecturer},function(err, bc){
+      if(err) return cb(err)
+      cb(null, bc)
+    })
+  },
+
+  // update broadcast message's member
+  updateBroadcast: function(lecturer, nimToAdd, cb){
+    Msg.update({lecturer:lecturer},{$push:{members:nimToAdd},},function(err, updated){
+      if(err) return cb(err)
+      cb(null, updated)
+    })
+  },
+
+  // update last login
+  updateLastLogin: function(username, cb){
+    db.update({username:username},{$set:{last_login:new Date()},},function(err, updated){
       if(err) return cb(err)
       cb(null, updated)
     })

@@ -1,13 +1,20 @@
+/*
+  REFACTOR :
+  1. model distinguish  []
+  2. async              []
+*/
+
 "use strict"
 
 var Lect        = require('../../models/lecturer'),
     Student     = require('../../models/student'),
     Std         = require('../../models/student.model'),
     Adm         = require('../../models/admin'),
-    msg         = require('../../models/message'),
+    Msg         = require('../../models/message'),
     funcs       = require('../../middlewares/funcs'),
     report      = require('../../models/report'),
-    queries     = require('../../models/query.student')
+    queries     = require('../../models/query.student'),
+    lect_query  = require('../../models/query.lecturer')
 
 var baseurl       = require('../../config/baseurl'),
     baseurl       = baseurl.root + 'lecturer'
@@ -24,19 +31,21 @@ exports.getForgetPassPage = function(req, res){
   res.render('lecturer/forget-pass', {title:"Forget password", baseurl})
 }
 
+exports.getErrorAccept = function(req, res){
+  res.render('lecturer/error-accept', {title:"Error accept student", baseurl})
+}
+
 exports.getHome = function(req, res){
   let cans = 'hide'
   let stds = 'hide'
   let lecturer  = req.session.lecturer
   let colored, isNotifShow = 'hide', newNotif
-  Lect.findOne({username:lecturer}, function(e, found){
+  lect_query.getLecturerByUsername(lecturer, function(e, found){
     if(found){
-      
       // check candidates
       let candids
       let weight = found.std_weight
       if(found.candidates.length > 0){
-        
         cans = ''
         candids = found.candidates
         if(candids > 2){
@@ -114,8 +123,7 @@ exports.getHome = function(req, res){
       // ANNOUNCEMENT CHECKING
       let lecMsg  = []
       let showAnn = 'hide'
-      Adm.aggregate({$match:{"role":"operator"}},{$unwind:"$announcements"},{$match:{$or:[{"announcements.to":"lecturers"}, {"announcements.to":"all"}]}},
-        function(err, anns){
+      lect_query.getAllAnnouncements(function(err, anns){
           if(anns.length > 0){
           for(var m=0; m<anns.length; m++){
             lecMsg.push({
@@ -137,10 +145,9 @@ exports.getHome = function(req, res){
           } else {
 
           }
-
-      msg.find({members:{$all:[lecturer]},$and:[{has_seen_lecturer:false}]},
-        function(err, matched){
-          // CHECK IF LENGTH > 0
+      lect_query.getMessageByLecturer(lecturer, function(err, matched){
+          if(matched){
+            // CHECK IF LENGTH > 0
           let docs = matched
           let coloredMsg = '', showMsgNotif = 'hide', newMsg = '', contentMsg = ''
           if(matched.length > 0){
@@ -151,9 +158,11 @@ exports.getHome = function(req, res){
           res.render('lecturer/home', {title: "Home", baseurl, found, hiding, 
           msgAlert, stds, cans, colored, isNotifShow, newNotif, coloredMsg, showMsgNotif, newMsg,
             fixstds, candids, contentMsg, showAnn, objNotifs, weight})
-        }
-      )
+          } else {
+            console.log('error fetch message')
+          }
         })
+      })
     } else {
       console.log('no lecturer found')
     }
@@ -162,7 +171,7 @@ exports.getHome = function(req, res){
 
 exports.getCandidates = function(req, res){
   let lecturer = req.session.lecturer
-  Lect.findOne({username:lecturer}, function(e, f){
+  lect_query.getLecturerByUsername(lecturer, function(e, f){
     if(f){
       let cans    = []
       let calons  = f.candidates
@@ -179,7 +188,8 @@ exports.getCandidates = function(req, res){
 }
 
 exports.getDetailCandidate = function(req, res){
-  Std.get(req.params.nim, function(err, student){
+  let student = req.params.nim
+  queries.getStudentByNIM(student, function(err, student){
     res.render('lecturer/candidate-detail', {title:"Candidate detail", baseurl, student})
   })
 }
@@ -193,40 +203,28 @@ exports.rejectCandidate = function(req, res){
   } else {
     reason = " because : " + reason
   }
-  Lect.update({username:lecturer}, {$pull : {
-        candidates: nimToRemove
-      },
-    }, function(e, s){
-      if(s){
-        nimToRemove = Number(nimToRemove)
-        Student.findOne({nim: nimToRemove}, function(e, found){
-          let n = found.notifs.length
-          Student.update({nim:nimToRemove}, {$set: {
-            supervisor: "",
-            is_choose: false,
-            is_accepted: false,
-            notif_seen: false
-              },
-              $push : {
-                notifs: {
-                  "id":n+1,
-                  "date": new Date(),
-                  "notif": "You are rejected by : " + lecturer + reason,
-                  "has_seen": false
-                }
-              },
-            }, function(e, r){
-              
+  lect_query.removeCandidate(lecturer, nimToRemove, function(e, s){
+  if(s){
+    nimToRemove = Number(nimToRemove)
+    let nim     = nimToRemove
+    queries.getStudentByNIM(nimToRemove, function(e, found){
+      let n       = found.notifs.length,
+      notifLength = n+1,
+      msg         = 'You are rejected by ' + lecturer + ' ' + reason
+      queries.removedFromCandidates(nimToRemove, function(err){
+        if(!err){
+          // add notif
+          queries.addNotif(nim, notifLength, msg, function(err){
+            if(!err){
               req.flash('success', 'User rejected')
               res.redirect(baseurl+'/candidates')
-            }
-          )
+              }
+            })
+          }
         })
-      } else {
-        console.log('error when removing nim from candidates')
-      }
+      })
     }
-  )
+  })
 }
 
 exports.acceptCandidate = function(req, res){
@@ -239,7 +237,6 @@ exports.acceptCandidate = function(req, res){
   String.prototype.startsWith = function(str){
     return (this.indexOf(str) === 0)
   }
-
   switch(true){
     case nimStr.startsWith('102'): console.log('sarjana'), weight = 1
     break;
@@ -256,55 +253,31 @@ exports.acceptCandidate = function(req, res){
     default: console.log('tidak terdeteksi')
     break;
   }
-
-  Lect.findOne({username:lecturer}, function(err, we){
+  lect_query.getLecturerByUsername(lecturer, function(err, we){
     let init_we = we.std_weight
     // check if std_weight is less than or equal 12
     let final_we  = init_we + weight
     if(final_we <= 12){
-      // add nim to 'students' field
-  Lect.update({username:lecturer}, {$set: {
-        std_weight: final_we
-      },
-        $push : {
-        students: nimToAccept
-      },
-    }, function(err){
-      if(!err){
+    lect_query.acceptStudent(lecturer, final_we, nimToAccept, function(err){
         // remove nim from 'candidates' field
-        Lect.update({username:lecturer}, {$pull: {
-          candidates: nimToAccept
-        },
-      }, function(err){
-        if(!err){
+        let nimToRemove = nimToAccept
+        let username    = lecturer
+        lect_query.removeCandidate(username, nimToRemove, function(err){
           // change status is_accepted to true
-          nimToAccept = Number(nimToAccept)
-          Student.update({nim:nimToAccept}, {$set : {
-            is_accepted: true,
-            notif_seen:false
-          },
-        }, function(err){
-          if(!err){
-            Student.findOne({nim:nimToAccept}, function(e, f){
-              let n = f.notifs.length
-              Student.findOne({nim:nimToAccept}, function(e, f){
-                let n       = f.notifs.length
-                let nMiles  = f.milestones.length
-                
-                Student.update({nim:nimToAccept}, {$push : {
-                  notifs: {
-                    "id":n+1,
-                    "date": new Date(),
-                    "notif": "You are ACCEPTED by : " + lecturer,
-                    "has_seen": false
-                  },
-                  milestones:{
-                    "id":nMiles+1,
-                    "date":new Date(),
-                    "category":"accepted"
-                  }
-                },
-              }, function(e, s){
+          nimToAccept = Number(nimToRemove)
+          queries.acceptedByLecturer(nimToAccept, function(err){
+            let nim = nimToAccept
+            queries.getStudentByNIM(nim, function(e, f){
+              let n       = f.notifs.length,
+              nMiles      = f.milestones.length,
+              notifLength = n+1,
+              msg         = 'You are accepted by ' + lecturer
+              // add notif
+              queries.addNotif(nim, notifLength, msg, function(err){
+                  // add milestone
+                  let category = 'accepted',
+                  milesLength  = nMiles+1
+                    queries.addMilestone(nim, category, milesLength, function(err){  
                     let supervisor = f.supervisor
                     // create initial report
                     var rep         = new report()
@@ -313,62 +286,51 @@ exports.acceptCandidate = function(req, res){
                     rep.is_create   = false
                     rep.is_approved = false
                     rep.save(function(err){
-                      if(!err){
-                        // create initial message between lecturer and student
-                        var m               = new msg()
-                        m.nim               = nimToAccept
-                        m.members           = [lecturer,nimToAccept.toString()]
-                        m.has_seen_std      = true
-                        m.has_seen_lecturer = true
-                        m.save(function(err){
-                          if(err){
-                            console.log('Error! ', err)
-                          } else {
-                              // BROADCAST MESSAGE
-                              Lect.findOne({username:lec}, function(err, lect){
-                                // check if document exist
-                                msg.findOne({lecturer:lec}, function(err, exist){
-                                  if(exist){
-                                    console.log('bc exist!')
-                                    // update
-                                    msg.update({lecturer:lec}, {$push:{
-                                      members: nimToAccept.toString()
-                                    },}, function(err, bc){
-                                      console.log('BC updated')
-                                      res.redirect(baseurl+'/candidates')
-                                    })
-                                  } else {
-                                    // create new document
-                                    let members = lect.students
-                                    var b           = new msg()
-                                    b.lecturer      = lec
-                                    b.members       = members
-                                    b.save(function(err){
-                                        if(!err){
-                                            console.log('init broadcast success!')
-                                            res.redirect(baseurl+'/candidates')
-                                        }
-                                    })
-                                  }
-                              })
-                            }) 
-                          }
-                        })
+                      // create initial message between lecturer and student
+                      var m               = new Msg()
+                      m.nim               = nimToAccept
+                      m.members           = [lecturer,nimToAccept.toString()]
+                      m.has_seen_std      = true
+                      m.has_seen_lecturer = true
+                      m.save(function(err){
+                        if(err){
+                          console.log('Error! ', err)
+                        } else {
+                            // BROADCAST MESSAGE
+                            lect_query.getLecturerByUsername(username, function(err, lect){
+                              // check if document exist
+                              lect_query.getBroadcastByLecturer(lecturer, function(err, exist){
+                                let nimToAdd = nimToAccept.toString()
+                                if(exist){
+                                  console.log('bc exist!')
+                                  // update
+                                  lect_query.updateBroadcast(lecturer, nimToAdd, function(err, bc){
+                                  res.redirect(baseurl+'/candidates')
+                                })
+                            } else {
+                              // create new document
+                              let members = lect.students
+                              var b           = new Msg()
+                              b.lecturer      = lec
+                              b.members       = members
+                              b.save(function(err){
+                                if(!err){
+                                    console.log('init broadcast success!')
+                                    res.redirect(baseurl+'/candidates')
+                                }
+                             })
+                            }
+                          })
+                        }) 
                       }
                     })
-                  }
-                )
+                  })  
+                })
               })
-            })
-                  }
-                }
-              )
-            }
-          }
-        )
-      }
-    }
-  )
+            })            
+          })
+        })
+      })
     } else {
       // can't accept candidates any more
       req.flash('error', 'You has no space left for student!')
@@ -377,23 +339,36 @@ exports.acceptCandidate = function(req, res){
   })
 }
 
-exports.getErrorAccept = function(req, res){
-  res.render('lecturer/error-accept', {title:"Error accept student", baseurl})
-}
-
 exports.getFixStudents = function(req, res){
-  let lecturer = req.session.lecturer
-  Lect.findOne({username:lecturer}, function(err, f){
-    if(f){
-      let stds    = []
-      let std     = f.students
-      let intStds = std.map(Number)
-     
-      // get fullname and nickname
-      Student.find({nim:{$in: intStds}}, function(err, found){   
-      
-        for(var j=0; j<found.length; j++){
-          if(found[j].report_status == true){
+  let lecturer = req.session.lecturer,
+      username = lecturer
+  lect_query.getLecturerByUsername(username, function(err, f){
+    let stds    = []
+    let std     = f.students
+    let intStds = std.map(Number)
+    // get fullname and nickname
+    queries.getStudentProfile(intStds, function(err, found){   
+      for(var j=0; j<found.length; j++){
+        if(found[j].report_status == true){
+            stds.push({
+              nim:found[j].nim,
+              fullname:found[j].profile.fullname,
+              nickname:found[j].profile.nickname,
+              ipk:found[j].ipk,
+              report_status:'NOTHING NEW',
+              notif:'default'
+            })
+        } else {
+            if(found[j].milestones.length >= 3 && found[j].report_status == false){
+              stds.push({
+                nim:found[j].nim,
+                fullname:found[j].profile.fullname,
+                nickname:found[j].profile.nickname,
+                ipk:found[j].ipk,
+                report_status:'NEW REPORT!',
+                notif: 'important'
+              })
+          } else {
               stds.push({
                 nim:found[j].nim,
                 fullname:found[j].profile.fullname,
@@ -402,44 +377,20 @@ exports.getFixStudents = function(req, res){
                 report_status:'NOTHING NEW',
                 notif:'default'
               })
-          } else {
-              // check if nMiles = 3 && report_status == false
-              // if it's TRUE, NEW REPORT
-              // else NOTHING NEW
-              if(found[j].milestones.length >= 3 && found[j].report_status == false){
-                stds.push({
-                  nim:found[j].nim,
-                  fullname:found[j].profile.fullname,
-                  nickname:found[j].profile.nickname,
-                  ipk:found[j].ipk,
-                  report_status:'NEW REPORT!',
-                  notif: 'important'
-                })
-            } else {
-                stds.push({
-                  nim:found[j].nim,
-                  fullname:found[j].profile.fullname,
-                  nickname:found[j].profile.nickname,
-                  ipk:found[j].ipk,
-                  report_status:'NOTHING NEW',
-                  notif:'default'
-                })
             }
           }
         }
-          res.render('lecturer/students', {title:"Fix students", baseurl, stds, f})
-      })
-    }
+      res.render('lecturer/students', {title:"Fix students", baseurl, stds, f})
+    })
   })
 }
 
 exports.postLogin = function(req, res){
-
-  let user  = req.body.username
-  let pass  = req.body.password
-  Lect.findOne({username:user}, function(e, found){
+  let user    = req.body.username
+  let pass    = req.body.password,
+      username= user
+  lect_query.getLecturerByUsername(username, function(e, found){
     if(!found){
-      
       res.redirect('#')
     } else {
       if(found.newpass !== ""){
@@ -448,7 +399,6 @@ exports.postLogin = function(req, res){
           req.session.lecturer = user
           res.redirect(baseurl+'/home')
         } else {
-          
           res.redirect('#')
         }
       } else {
@@ -456,7 +406,6 @@ exports.postLogin = function(req, res){
           req.session.lecturer = user
           res.redirect(baseurl+'/home')
         } else {
-          
           res.redirect('#')
         }
       }
@@ -465,58 +414,17 @@ exports.postLogin = function(req, res){
 }
 
 exports.postLogout = function(req, res){
-  let lecturer = req.session.lecturer
+  let lecturer  = req.session.lecturer,
+      username  = lecturer
   req.session.destroy(function(err){
     if(err){
         console.log(err);
     } else {
-        Lect.update({username:lecturer},{$set:{
-          last_login: new Date()
-            },
-          }, function(e, u){
-              
-              res.format({
-              json: function(){
-                res.send({
-                  status:true,
-                  message: "Logged out"
-                })
-              },
-              html: function(){
-                res.redirect('./login')
-              }
-            })
-          }
-        )
-      }
-  });
-}
-
-exports.changeInitPass = function(req, res){
-  // get username from session
-  let user     = req.body.username,
-      oldpass  = req.body.oldpass,
-      newp     = req.body.newpass,
-   enc_newpass = funcs.encryptTo(newp),
-   resetlink   = funcs.maxRandom('as82h323h')
-
-  // check if oldpass true
-  Lect.update({username: user}, {$set: {
-        newpass: enc_newpass,
-        passwordreset_link: resetlink
-      },
-    }, function(e, success){
-      if(success){
-        
-        res.json({
-          status: true,
-          message: 'change initial pass success'
+        lect_query.updateLastLogin(username, function(e, u){
+            res.redirect('./login')
         })
-      } else {
-        console.log('error')
       }
-    }
-  )
+  })
 }
 
 exports.getDetailStudent = function(req, res){
@@ -646,8 +554,7 @@ exports.getDetailStudent = function(req, res){
           return Object.keys(obj).sort().map(function(key) { 
             return obj[key];
           });
-        });
-        
+        })
 
         res.render('lecturer/student-detail', {title:"Student detail", baseurl, last_seen, profile,
           objReports, showAccept, showTA1, showTA2, showTA1status, ta1Msg, showTA2status, ta2Msg,

@@ -7,7 +7,7 @@ const   Std    = require('../models/student'),
         Adm    = require('../models/admin')
 
 module.exports = {
-    /* STUDENTS */
+    /* == ACCOUNT STARTS == */
     // get all students
     getAllStudents: function(cb){
         Std.find({}, cb)
@@ -99,10 +99,26 @@ module.exports = {
     },
 
     // add notif
-    addNotif: function(nim, msg, notifLength, cb){
+    addNotif: function(nim, notifLength, msg, cb){
         Std.update({nim:nim},{$set:{notif_seen:false},$push:{notifs:{"id":notifLength, "notif":msg, "date":new Date()}},},function(err,updated){
             if(err) return cb(err)
             cb(null)
+        })
+    },
+
+    // update notif seen
+    updateSeenNotif: function(nim, cb){
+        Std.update({nim:nim}, {$set:{notif_seen:true},},function(err, updated){
+            if(err) return cb(err)
+            cb(null, updated)
+        })
+    },
+
+    // remove all notifs
+    removeAllNotifs: function(nim, cb){
+        Std.update({nim:nim},{$set:{notifs:[]},},function(err, updated){
+            if(err) return cb(err)
+            cb(null, updated)
         })
     },
 
@@ -114,8 +130,34 @@ module.exports = {
         })
     },
 
-    // get all message by student's nim
-    getAllMessages: function(nim, cb){
+    // removed from candidate by lecturer
+    removedFromCandidates: function(nimToRemove, cb){
+        Std.update({nim:nimToRemove},{$set:{supervisor:"",is_choose:false, is_accepted:false},},function(err, removed){
+            if(err) return cb(err)
+            cb(null, removed)
+        })
+    },
+
+    // accepted by lecturer
+    acceptedByLecturer: function(nimToAccept, cb){
+        Std.update({nim:nimToAccept},{$set:{is_accepted:true},},function(err, accepted){
+            if(err) return cb(err)
+            cb(null, accepted)
+        })
+    },
+
+    // get full name
+    getStudentProfile: function(intStds, cb){
+        Std.find({nim:{$in:intStds}},function(err, profile){
+            if(err) return cb(err)
+            cb(null, profile)
+        })
+    },
+    /* == ACCOUNT ENDS == */
+
+    /* == MESSAGE STARTS == */
+    // get message by NIM
+    getMessageByNIM: function(nim, cb){
         Msg.findOne({nim:nim},function(err, msgs){
             if(err) return cb(err)
             cb(null, msgs)
@@ -123,7 +165,7 @@ module.exports = {
     },
 
     // get message by supervisor (broadcast)
-    getMsgBySupervisor: function(supervisor, cb){
+    getMessageBySupervisor: function(supervisor, cb){
         Msg.findOne({lecturer:supervisor}, function(err, msg){
             if(err) return cb(err)
             cb(null, msg)
@@ -138,24 +180,24 @@ module.exports = {
         })
     },
 
-    // aggregate all inbox
-    aggregateInbox: function(nim, username, cb){
+    // get inbox by nim
+    getInboxByNIM: function(nim, username, cb){
         Msg.aggregate({$match:{"nim":nim}},{$unwind:"$messages"},{$match:{"messages.author":username}},function(err,inb){
             if(err) return cb(err)
             cb(null, inb)
         })
     },
 
-    // aggregate all outboux
-    aggregateOutbox: function(nim, nimStr, cb){
+    // get outbox by nim
+    getOutboxByNIM: function(nim, nimStr, cb){
         Msg.aggregate({$match:{"nim":nim}},{$unwind:"$messages"},{$match:{"messages.author":nimStr}},function(err,out){
             if(err) return cb(err)
             cb(null, out)
         })
     },
 
-    // get all broadcast
-    getAllBroadcast: function(username, cb){
+    // get broadcast by supervisor
+    getBroadcastBySupervisor: function(username, cb){
         Msg.findOne({lecturer:username},function(err, bc){
             if(err) return cb(err)
             cb(null, bc)
@@ -178,19 +220,70 @@ module.exports = {
         })
     },
 
-    // get al announcements
-    getAllAnnouncements: function(cb){
-        Adm.aggregate({$match:{"role":"operator"}},{$unwind:"$announcements"},{$match:{$or:[{"announcements.to":"students"},{"announcements.to":"all"}]}},function(err, anns){
-            if(err) return cb(err)
-            cb(null, anns)
-        })
-    },
-
     // add user to has_seen_by
     seenBy: function(username, bc_id, nimstr, cb){
         Msg.update({lecturer:username, "messages.id":Number(bc_id)},{"$push":{"messages.$.has_seen_by":nimstr}},function(err, seen){
             if(err) return cb(err)
             cb(null, seen)
+        })
+    },
+    /* == MESSAGE ENDS == */
+
+    /* == REPORT STARTS == */
+    // get report by nim
+    getReportbyNIM: function(nim, cb){
+        Rep.findOne({nim:nim}, function(err, reps){
+            if(err) return cb(err)
+            cb(null, reps)
+        })
+    },
+
+    // add report
+    addReport: function(nim, reportID, reportTitle, reportBody, cb){
+        Rep.update({nim:nim},{$set:{is_create:true, is_approved:false}, $push:{reports:{id:reportID,title:reportTitle,body:reportBody,last_edit:new Date(),approved:"",file_name:"No file, yet",file_location:"#"}},},function(err, updated){
+            if(err) return cb(err)
+            cb(null, updated)
+        })
+    },
+
+    setReportFalse: function(nim, cb){
+        Std.update({nim:nim},{$set:{report_status:false},},function(err, updated){
+            if(err) return cb(err)
+            cb(null, updated)
+        })
+    },
+
+    // get single report (to edit)
+    getSingleReport: function(nim, reportID, cb){
+        Rep.findOne({nim:nim}, {"reports":{"$elemMatch":{"id":reportID}}}, function(err, found){
+            if(err) return cb(err)
+            cb(null, found)
+        })    
+    },
+
+    // update report
+    updateReport: function(nim, reportID, reportTitle, reportBody, cb){
+        Rep.update({nim:nim, "reports.id":reportID},{"$set":{"reports.$.title":reportTitle, "reports.$.body":reportBody, "reports.$.last_edit":new Date()},},function(err, updated){
+            if(err) return cb(err)
+            cb(null, updated)
+        })
+    },
+
+    // remove all reports
+    removeAllReports: function(nim, cb){
+        Rep.update({nim:nim},{$set:{reports:[]},},function(err, removed){
+            if(err) return cb(err)
+            cb(null, removed)
+        })
+    },
+    /* == REPORT ENDS == */
+
+    /* == ADMIN STARTS == */
+    // get al announcements
+    getAllAnnouncements: function(cb){
+        Adm.aggregate({$match:{"role":"operator"}},{$unwind:"$announcements"},{$match:{$or:[{"announcements.to":"students"},{"announcements.to":"all"}]}},function(err, anns){
+            if(err) return cb(err)
+            cb(null, anns)
         })
     },
 
@@ -200,13 +293,6 @@ module.exports = {
             if(err) return cb(err)
             cb(null, read)
         })
-    },
-
-    // get all reports
-    getAllReports: function(nim, cb){
-        Rep.findOne({nim:nim}, function(err, reps){
-            if(err) return cb(err)
-            cb(null, reps)
-        })
     }
+    /* == ADMIN ENDS == */
 }

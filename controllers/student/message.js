@@ -29,7 +29,7 @@ exports.getAll = function(req, res){
         let last_seen  = funcs.friendlyDate(full.last_login)
         let nimStr     = nim.toString()
         nimStr         = JSON.parse("[" + nimStr + "]")
-        queries.getAllMessages(nim, function(err, strs){
+        queries.getMessageByNIM(nim, function(err, strs){
           let msgs     = strs.messages
           let _id      = strs._id
             
@@ -47,7 +47,7 @@ exports.getAll = function(req, res){
 
             // get all inbox
             var inboxMsg = []
-            queries.aggregateInbox(nim, username, function(err, agg){
+            queries.getInboxByNIM(nim, username, function(err, agg){
                 if(agg){
                 // convert to array
                   let inboxs   = agg
@@ -70,7 +70,7 @@ exports.getAll = function(req, res){
                   // get all outbox
                   let nimStr = nim.toString()
                   var outboxMsg = []
-                  queries.aggregateOutbox(nim, nimStr,function(err, out){
+                  queries.getOutboxByNIM(nim, nimStr,function(err, out){
                     if(out){
                       let outboxs   = out
                       let outboxLen = out.length
@@ -93,7 +93,7 @@ exports.getAll = function(req, res){
                         if(cb){
 
                           // get all broadcast
-                          queries.getAllBroadcast(username, function(err, bc){
+                          queries.getBroadcastBySupervisor(username, function(err, bc){
                             let bcMsg = []
                             let newBC = 'hide'
                             
@@ -162,7 +162,7 @@ exports.getDetailBroadcast = function(req, res){
     lect.getLecturerByUsername(username, function(err, found){
       let last_seen   = funcs.friendlyDate(found.last_login)
       let supervFull  = found.name
-    queries.getAllBroadcast(username, function(err, bc){
+    queries.getBroadcastBySupervisor(username, function(err, bc){
       var bcDetail
       let other   = bc.members
       let index   = other.indexOf(nimstr)
@@ -197,7 +197,7 @@ exports.sendMessage = function(req, res){
   let nim         = req.session.student
   let msgBody     = req.body.msg
   let supervisor  = req.body.supervisor
-  queries.getAllMessages(nim, function(e, m){
+  queries.getMessageByNIM(nim, function(e, m){
     let msgLength = m.messages.length
       if(msgLength > 0){
         msgLength = msgLength+1

@@ -34,7 +34,7 @@ module.exports = {
       }
 
       let year = ''
-      console.log(year + 'and year diff : ' + diffY)
+      
       if(diffY == 0 ){
         year = year
       } else {

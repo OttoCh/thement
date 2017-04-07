@@ -14,7 +14,6 @@ router.get('/logout', lecturer.postLogout)
 router.get('/account/forget_pass', lecturer.getForgetPassPage)
 
 router.post('/login', lecturer.postLogin)
-router.post('/changepass', lecturer.changeInitPass)
 
 router.use(session)
 
@@ -41,7 +40,6 @@ router.get('/student/ta2/accept/:nim', lecturer.getTa2)
 router.get('/notifications', notif.getNotifs)
 router.get('/notifications/delete_all', notif.removeAllNotifs)
 router.get('/notification/:id', notif.getSingleNotif)
-router.get('/notification/delete/:id', notif.removeSingleNotif)
 
 router.get('/message/initial_broadcast', msg.initBroadcast)
 router.get('/message/all?', msg.getAll)

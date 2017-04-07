@@ -285,7 +285,7 @@ exports.getHome = function(req, res){
 
       // MESSAGE CHECKING
       let allMsgs
-      queries.getAllMessages(nim, function(e, msg){
+      queries.getMessageByNIM(nim, function(e, msg){
         if(msg){
           allMsgs = msg.messages
           allMsgs.sort(function(a,b){
@@ -362,7 +362,7 @@ exports.getHome = function(req, res){
       }
 
       // REPORT CHECKING
-      queries.getAllReports(nim, function(err, rep){
+      queries.getReportbyNIM(nim, function(err, rep){
         var coloredStatus = '', statusStyle = ''
         if(rep){
           if(rep){
@@ -388,7 +388,7 @@ exports.getHome = function(req, res){
             
           }
             // check for any new broadcast message
-            queries.getMsgBySupervisor(superv_username, function(err, bc){
+            queries.getMessageBySupervisor(superv_username, function(err, bc){
                 if(bc){
                   var bcs       = bc.messages
                   var bcLength  = bcs.length

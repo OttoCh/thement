@@ -1,16 +1,24 @@
+/*
+  REFACTOR :
+  1. model distinguish  [-]
+  2. async              []
+*/
+
 "use strict"
 
 // load lecturers
-var student   = require('../../models/student'),
-    lecturer  = require('../../models/lecturer'),
-    funcs     = require('../../middlewares/funcs')
+var student     = require('../../models/student'),
+    lecturer    = require('../../models/lecturer'),
+    funcs       = require('../../middlewares/funcs'),
+    lect_query  = require('../../models/query.lecturer'),
+    std_query   = require('../../models/query.student')
 
 var baseurl       = require('../../config/baseurl'),
     baseurl       = baseurl.root + 'lecturer'
 
 exports.getNotifs = function(req, res){
   let lect        = req.session.lecturer
-  lecturer.findOne({username:lect}, function(err, lec){
+  lect_query.getLecturerByUsername(lect, function(err, lec){
     let objNotifs = [],
         data      = lec.notifs
     
@@ -35,20 +43,16 @@ exports.getNotifs = function(req, res){
       showDeleteButton = ''
       showMsg = 'hide'
     }
-    lecturer.update({username:lect},{$set: {
-      notif_seen: true
-        },
-      }, function(e, seen){
+    lect_query.seenNotif(lect, function(e, seen){
         res.render('lecturer/notif/notifs', {title:"All Notifications", objNotifs, lect, lec, showDeleteButton, showMsg})
-      }
-    )
+    })
   })
 }
 
 exports.getSingleNotif = function(req, res){
   let idToFind   = req.params.id
   let lect       = req.session.lecturer
-  lecturer.findOne({username:lecturer}, function(err, lec){
+  lect_query.getLecturerByUsername(lect, function(err, lec){
     let notifs = lec.notifs
     var found = notifs.filter(function(item){
       return item.id == idToFind
@@ -61,23 +65,7 @@ exports.getSingleNotif = function(req, res){
 
 exports.removeAllNotifs = function(req, res){
   let lect = req.session.lecturer
-  lecturer.update({username:lect},{$set: {
-    notifs: []
-  },}, function(err, removed){
-    
+  lect_query.removeAllNotifs(lect, function(err, removed){
     res.redirect(baseurl+'/notifications')
   })
-}
-
-exports.removeSingleNotif = function(req, res){
-  let id     = req.params.id
-  let lect   = req.session.lecturer
-  
-  lecturer.update({username:lect},{$pull : {"notifs.id": id
-      },
-    }, function(err, removed){
-      onsole.log('removed')
-      res.send('removed')
-    }
-  )
 }

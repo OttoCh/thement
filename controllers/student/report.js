@@ -1,6 +1,6 @@
 /*
   REFACTOR :
-  1. model distinguish  []
+  1. model distinguish  [-]
   2. async              []
 */
 
@@ -11,6 +11,8 @@ var student       = require('../../models/student'),
     lecturer      = require('../../models/lecturer'),
     report        = require('../../models/report'),
     funcs         = require('../../middlewares/funcs'),
+    queries       = require('../../models/query.student'),
+    lect_query    = require('../../models/query.lecturer'),
     util          = require('util'),
     multer        = require('multer')
 
@@ -52,9 +54,9 @@ var upload  = multer({storage:storage}).single('report')
 
 exports.getCreateReport = function(req, res){
   let nim = req.session.student
-  student.findOne({nim:nim}, function(e, s){
+  queries.getStudentByNIM(nim, function(e, s){
     // check if initial report has been set
-    report.findOne({nim:nim}, function(err, exist){
+    queries.getReportbyNIM(nim, function(err, exist){
       if(exist){
         let nReport   = exist.reports.length
         let idReport  = nReport+1
@@ -93,69 +95,35 @@ exports.createReport = function(req, res){
   let reportTitle    = req.body.reportTitle
   let reportBody     = req.body.reportBody
 
-  report.update({nim:nim}, {$set: {
-      is_create: true,
-      is_approved: false
-    },
-      $push: {
-        reports: {
-          "id": reportID,
-          "title": reportTitle,
-          "body": reportBody,
-          "last_edit": new Date(),
-          "approved":"",
-          "file_name":"There is not file, yet!",
-          "file_location":"#"
-        }
-      },
-    }, function(err, created){
+  queries.addReport(nim, reportID, reportTitle, reportBody, function(err, created){
       if(!err){
-        student.findOne({nim:nim}, function(e, std){
-          student.update({nim:nim}, {$set: {
-            report_status: false
-          },}, function(err, report_updated){
+        queries.getStudentByNIM(nim, function(e, std){
+          queries.setReportFalse(nim, function(err, report_updated){
             let superv = std.supervisor
             let nMiles = std.milestones.length
-            lecturer.findOne({username:superv}, function(e, found){
-              let nNotif = found.notifs.length
-              lecturer.update({username:superv},{$set:{
-                notif_seen: false
-              },
-                $push:{
-                  notifs:{
-                    "id":nNotif+1,
-                    "notif":nim + " created a report",
-                    "date":new Date()
-                  }
-                },
-              }, function(e, notified){
-                let id_report = nNotif+1
+            lect_query.getLecturerByUsername(superv, function(e, found){
+              let nNotif  = found.notifs.length,
+                  nLength = nNotif+1,
+                  msgLec  = nim + ' created a progress report'
+              lect_query.addNotif(superv, nLength, msgLec, function(e, notified){
+                let id_report = nLength
                 if(nMiles >= 3){
                   res.redirect(baseurl+'/report/create/file?from=create')
                 } else {
-                  student.update({nim:nim},
-                  {$push:{
-                  milestones:{
-                    "id":nMiles+1,
-                    "date":new Date(),
-                    "category":"report"
-                  }
-                },}, function(err){ 
+                  let milesLength = nMiles+1,
+                      category    = 'report'
+                  queries.addMilestone(nim, category, milesLength, function(err){ 
                     res.redirect(baseurl+'/report/create/file?from=create')
-                    }
-                  )
-                }
-              }
-            )
-            })
-          })
+                    })
+                  }
+                })
+              })
+           })
         })
       } else {
         console.log('error creating report')
       }
-
-    }
-  )
+    })
 }
 
 exports.getAddFile = function(req, res){
@@ -194,7 +162,7 @@ exports.addFile = function(req, res, next){
 
 exports.getAllReports = function(req, res){
   let nim = req.session.student
-  report.findOne({nim:nim}, function(err, reports){
+  queries.getReportbyNIM(nim, function(err, reports){
     if(reports){
       let status = reports.is_approved
       let statusColored, colored, showCreateReport = 'hide', showEditReport = 'hide'
@@ -256,7 +224,7 @@ exports.getAllReports = function(req, res){
 exports.getSingleReport = function(req, res){
   let idTo  = req.params.id
   let nim   = req.session.student
-  report.findOne({nim:nim}, function(err, std){
+  queries.getReportbyNIM(nim, function(err, std){
     let reports = std.reports
     var found = reports.filter(function(item){
       return item.id == idTo
@@ -269,9 +237,9 @@ exports.getSingleReport = function(req, res){
 
 exports.getUpdateReport = function(req, res){
   let nim = req.session.student
-  report.findOne({nim:nim}, function(err, update){
+  queries.getReportbyNIM(nim, function(err, update){
     let reportID = update.reports.length.toString()
-    report.findOne({nim:nim}, {"reports":{"$elemMatch":{"id":reportID}}}, function(e, found){
+    queries.getSingleReport(nim, reportID, function(e, found){
       let reps = found.reports[0]
       res.render('student/report/edit', {title:"Edit latest report", baseurl, nim, reps})
     })
@@ -279,24 +247,19 @@ exports.getUpdateReport = function(req, res){
 }
 
 exports.updateReport = function(req, res){
-  let nim = req.session.student
-  report.update({nim:nim, "reports.id":req.body.reportID}, {
-    "$set": {
-      "reports.$.title":req.body.reportTitle,
-      "reports.$.body":req.body.reportBody,
-      "reports.$.last_edit": new Date()
-      },
-    }, function(e, updated){
-        res.redirect(baseurl+'/report/create/file?from=update')
+  let nim         = req.session.student,
+      reportID    = req.body.reportID,
+      reportTitle = req.body.reportTitle,
+      reportBody  = req.body.reportBody
+  queries.updateReport(nim, reportID, reportTitle, reportBody, function(e, updated){
+      res.redirect(baseurl+'/report/create/file?from=update')
     }
   )
 }
 
 exports.removeAll = function(req, res){
   let nim = req.session.student
-  report.update({nim:nim},{$set:{
-    reports: []
-  },}, function(err, removed){
+  queries.removeAllReports(nim, function(err, removed){
     res.redirect(baseurl+'/reports/all')
   })
 }

@@ -126,7 +126,7 @@ exports.postChooseLecturer = function(req, res){
       })
     },
     function(callback){
-      queries.addNotif(nim, msg, notifLength, function(err){
+      queries.addNotif(nim, notifLength, msg, function(err){
         callback(null)
       })
     },
@@ -137,7 +137,7 @@ exports.postChooseLecturer = function(req, res){
     },
     function(callback){
       lect.getLecturerByUsername(username, function(err, lec){
-        nLength = lec.notifs.length
+        nLength = lec.notifs.length+1
         msgLec = 'You are chosen by '+ nim
         callback(lec[0])
       })
@@ -154,5 +154,6 @@ exports.postChooseLecturer = function(req, res){
     }
   ], function(err, results){
     if(!err) res.redirect(baseurl+'/lecturers')
+    else console.log('An error occured : ', err)
   })
 }
