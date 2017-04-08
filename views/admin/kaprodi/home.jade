@@ -1,0 +1,187 @@
+doctype html
+html.no-js
+  head
+    title Dashboard - #{admin}
+    // Bootstrap
+    link(href='/static/vendors/bootstrap/css/bootstrap.min.css', rel='stylesheet', media='screen')
+    link(href='/static/vendors/bootstrap/css/bootstrap-responsive.min.css', rel='stylesheet', media='screen')
+    link(href='/static/vendors/vendors/easypiechart/jquery.easy-pie-chart.css', rel='stylesheet', media='screen')
+    link(href='/static/vendors/assets/styles.css', rel='stylesheet', media='screen')
+    // HTML5 shim, for IE6-8 support of HTML5 elements
+    //if lt IE 9
+      script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
+    script(src='/static/vendors/vendors/modernizr-2.6.2-respond-1.1.0.min.js')
+    style.
+      .KW_progressContainer {
+        left:0;
+        width: 100%;
+        height: 0.4em;
+        margin-bottom: 0px;
+        position: fixed;
+        bottom: 0px;
+        overflow: hidden;
+        background-color: white;
+        content: "";
+        display: table;
+        table-layout: fixed;
+      }
+
+      .KW_progressBar {
+        width: 0%;
+        float: left;
+        height: 100%;
+        z-index:99;
+        max-width: 100%;
+        background-color:orange;
+        -webkit-transition: width .6s ease;
+        -o-transition: width .6s ease;
+        transition: width .6s ease;
+      }
+  body
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container-fluid
+          a.btn.btn-navbar(data-toggle='collapse', data-target='.nav-collapse')
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.brand(href='#') Lecturer dashboard
+          .nav-collapse.collapse
+            ul.nav.pull-right
+              li.dropdown
+                a.dropdown-toggle(href='#', role='button', data-toggle='dropdown')
+                  i.icon-user 
+                  strong  #{a.role}
+                  | 
+                  i.caret
+                ul.dropdown-menu
+                  li
+                    a(tabindex='-1', href='profile') Profile
+                  li
+                    a(tabindex='-1', href='settings') Settings
+                  li.divider
+                  li
+                    a(tabindex='-1', href='logout') Logout
+            ul.nav
+              li.active
+                a(href='#') Dashboard
+          // /.nav-collapse
+    .container-fluid
+      .row-fluid
+        #sidebar.span3
+          //- kaprodi
+          ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
+            li.active
+              a(href='#')
+                
+                i.icon-home
+                |  Dashboard
+            li
+              a(href='profile')
+                
+                i.icon-user
+                |  Profile
+            li
+              a(href='students')
+                
+                i.icon-list
+                |  Students
+            li
+              a(href='lecturers')
+                
+                i.icon-user
+                |  Lecturers
+            li
+              a(href='notifications')
+                div(class='')
+                  span.badge.badge-info.pull-right
+                i.icon-volume-up
+                |  Notifications
+            li
+              a(href='message/all')
+                span.badge.badge-info.pull-right
+                i.icon-envelope
+                |  Messages
+            li(class='#{show}')
+              a(href='announcements/all')
+                span.badge.badge-info.pull-right
+                i.icon-inbox
+                |  Announcement
+
+        // /span
+        #content.span9
+          .row-fluid
+            .navbar
+              .navbar-inner
+                ul.breadcrumb
+                  i.icon-chevron-left.hide-sidebar
+                    a(href='#', title='Hide Sidebar', rel='tooltip')  
+                  i.icon-chevron-right.show-sidebar(style='display:none;')
+                    a(href='#', title='Show Sidebar', rel='tooltip')  
+                  li
+                    a.active(href='#') Dashboard
+          .row-fluid
+            // block
+            .block
+              .navbar.navbar-inner.block-header
+                .muted.pull-left General information
+              .block-content.collapse.in
+                .span3
+                  h4 Stats students
+                  p 
+                    .chart(data-percent='#{precenAccept}') #{precenAccept}%
+                    .chart-bottom-heading
+                      span.label.label-info #{nAccepted}/#{nStd} students accepted
+                      br
+                
+                .span3
+                  h4 Stats Lecturers
+                  p 
+                    .chart(data-percent='#{lectHasStd}') #{lectHasStd}%
+                    .chart-bottom-heading
+                      span.label.label-success #{std}/#{nLects} lecturers have student
+                      br
+                      
+                .span3
+                  h4 Active lecturers
+                  p
+                  span.label.label-success #{nLects}
+                  hr
+                  a(href='lecturers?from=home')
+                      button.btn.btn-primary
+                        i.icon-search.icon-white
+                        strong  See all
+                .span3
+                  h4 Active students
+                  p
+                  span.label.label-primary #{nStd}
+                  hr
+                  a(href='students?from=home')
+                      button.btn.btn-info
+                        i.icon-eye-open.icon-white
+                        strong  See all
+          div(class='KW_progressContainer')
+            div(class='KW_progressBar')
+
+            // /block
+      hr
+    // /.fluid-container
+    script(src='/static/vendors/vendors/jquery-1.9.1.min.js')
+    script(src='/static/vendors/bootstrap/js/bootstrap.min.js')
+    script(src='/static/vendors/vendors/easypiechart/jquery.easy-pie-chart.js')
+    script(src='/static/vendors/assets/scripts.js')
+    script.
+      $(function() {
+      // Easy pie charts
+      $('.chart').easyPieChart({animate: 1000});
+      });
+    script.
+      $(window).load(function(){
+        $(window).scroll(function() {
+          var wintop = $(window).scrollTop(), docheight = $('article').height(), winheight = $(window).height();
+          console.log(wintop);
+          var totalScroll = (wintop/(docheight-winheight))*100;
+          console.log("total scroll" + totalScroll);
+          $(".KW_progressBar").css("width",totalScroll+"%");
+        });
+      });

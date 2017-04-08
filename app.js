@@ -74,6 +74,9 @@ app.use('/', index);
 app.use('/student', student);
 app.use('/lecturer', lecturer);
 app.use('/admin', admin);
+app.use('/operator', operator);
+app.use('/kaprodi', kaprodi);
+app.use('/super', superAdmin);
 
 app.use('/api/v1/student', student_apis);
 app.use('/api/v1/admin', admin);

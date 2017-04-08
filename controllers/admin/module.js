@@ -10,6 +10,7 @@ var express       = require('express'),
     app           = express()
 
 var baseurl       = require('../../config/baseurl'),
+    root_url      = baseurl.root,
     baseurl       = baseurl.root + 'admin'
 const roles       = ['super','operator','kaprodi']
 
@@ -35,9 +36,25 @@ exports.postLogin = function(req, res){
       // check if initial pass is correct
       let init_pass = found.role + '123'
       if(pass == init_pass){
-        // correct, redirect to change pass with the secure one
         req.session.admin = user
-        res.redirect(baseurl+'/home')
+
+        // switch admin
+        switch(user){
+          case 'operator':
+            res.redirect(root_url+'operator/home')
+          break;
+
+          case 'kaprodi':
+            res.redirect(root_url+'kaprodi/home')
+          break;
+
+          case 'super':
+            res.redirect(root_url+'super/home')
+          break;
+
+          default: 
+          break;
+        }
       } else {
         res.status(400).send('wrong password')
       }

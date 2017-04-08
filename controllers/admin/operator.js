@@ -35,7 +35,7 @@ exports.getHome = function(req, res){
                 let nAccepted = count
                 let precenAccept = (nAccepted/nStd) * 100
                 precenAccept     = precenAccept.toFixed(2)
-                res.render('admin/super/home', {title:"Dashboard", admin, a, nStd, nAccepted, precenAccept, nLects, std, 
+                res.render('admin/operator/home', {title:"Dashboard", admin, a, nStd, nAccepted, precenAccept, nLects, std, 
                 lectHasStd})
               })
             })

@@ -1,8 +1,12 @@
 'use strict'
 
-var express   = require('express'),
-    router    = express.Router()
+var express     = require('express'),
+    isKaprodi   = require('../../middlewares/kaprodi-privilege'),
+    kapControl  = require('../../controllers/admin/kaprodi'),
+    router      = express.Router()
 
-router.get('/', function(req, res){
-    res.send('operator')
-})
+router.use(isKaprodi)
+router.get('/home', kapControl.getHome)
+router.get('/logout', kapControl.postLogout)
+
+module.exports = router
