@@ -100,6 +100,14 @@ module.exports = {
         })
     },
 
+    // remove all announcements
+    removeAllAnnouncements: function(admin, cb){
+        Adm.update({role:admin},{$set:{announcements:[]},},function(err, removed){
+            if(err) return cb(err)
+            cb(null, removed)
+        })
+    },
+
     // verify TA 1
     verifyTA1: function(nim, superv, cb){
         Std.update({nim:nim},{$set:{ta1:{"status":"verified","date": new Date(),"supervisor":superv}},}, function(err, verified){

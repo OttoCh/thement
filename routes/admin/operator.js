@@ -17,6 +17,7 @@ router.get('/lecturers', opsControl.getLecturers)
 router.get('/lecturer/:username', opsControl.getDetailLecturer)
 
 router.get('/announcements/all', opsControl.getAnnouncements)
+router.get('/announcements/remove', opsControl.removeAllAnnouncements)
 router.post('/announcement/send', opsControl.sendNewAnnouncement)
 
 router.get('/student/accept/ta1/:nim', opsControl.verifyTa1)

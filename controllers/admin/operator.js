@@ -301,6 +301,13 @@ exports.sendNewAnnouncement = function(req, res){
     })
 }
 
+exports.removeAllAnnouncements = function(req, res){
+  let admin = req.session.admin
+  adm_query.removeAllAnnouncements(admin, function(err, removed){
+    res.redirect(baseurl+'/announcements/all')
+  })
+}
+
 // ta1 & ta2 confirmation
 exports.verifyTa1 = function(req, res){
   let nim = req.params.nim

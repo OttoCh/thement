@@ -57,3 +57,17 @@ exports.postLogout = function(req, res){
     }
   });
 }
+
+exports.getLecturers = function(req, res){
+  adm_query.getAllLecturers(function(err, lect){
+    let lects = lect
+    res.render('admin/super/lecturers', {title:"All lecturers", lects})
+  })
+}
+
+exports.getStudents = function(req, res){
+  adm_query.getAllStudents(function(err, std){
+    let stds = std
+    res.render('admin/super/students', {title:"All students", stds})
+  })
+}

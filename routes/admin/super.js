@@ -10,4 +10,8 @@ router.use(isSuper)
 router.get('/home', superControl.getHome)
 router.get('/logout', superControl.postLogout)
 
+router.get('/students', superControl.getStudents)
+
+router.get('/lecturers', superControl.getLecturers)
+
 module.exports = router
