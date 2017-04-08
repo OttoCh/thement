@@ -8,7 +8,6 @@
 
 var Lect        = require('../../models/lecturer'),
     Student     = require('../../models/student'),
-    Std         = require('../../models/student.model'),
     Adm         = require('../../models/admin'),
     Msg         = require('../../models/message'),
     funcs       = require('../../middlewares/funcs'),
