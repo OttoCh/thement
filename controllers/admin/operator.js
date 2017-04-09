@@ -3,9 +3,6 @@
 var express       = require('express'),
     funcs         = require('../../middlewares/funcs'),
     adm_query     = require('../../models/query.admin'),
-    Std           = require('../../models/student'),
-    Lect          = require('../../models/lecturer'),
-    Admin         = require('../../models/admin'),
     app           = express()
 
 var baseurl       = require('../../config/baseurl'),

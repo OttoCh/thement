@@ -1,0 +1,155 @@
+doctype html
+html.no-js
+  head
+    title Dashboard - 
+    // Bootstrap
+    link(href='/static/vendors/bootstrap/css/bootstrap.min.css', rel='stylesheet', media='screen')
+    link(href='/static/vendors/bootstrap/css/bootstrap-responsive.min.css', rel='stylesheet', media='screen')
+    link(href='/static/vendors/vendors/easypiechart/jquery.easy-pie-chart.css', rel='stylesheet', media='screen')
+    link(href='/static/vendors/assets/styles.css', rel='stylesheet', media='screen')
+    // HTML5 shim, for IE6-8 support of HTML5 elements
+    //if lt IE 9
+      script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
+    script(src='/static/vendors/vendors/modernizr-2.6.2-respond-1.1.0.min.js')
+    //- google piechart
+    <script type="text/javascript" src="/static/js/loader.js"></script>
+    script.
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+          ['Collection', 'Size'],
+          ['Admins',     11],
+          ['Lecturers',      2],
+          ['Students',  2],
+          ['Messages', 2],
+          ['Reports',    7],
+          ['Sessions', 5]
+        ]);
+
+        var options = {
+          title: 'Database stats'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chart.draw(data, options);
+      }
+  body
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container-fluid
+          a.btn.btn-navbar(data-toggle='collapse', data-target='.nav-collapse')
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.brand(href='#') Admin dashboard
+          .nav-collapse.collapse
+            ul.nav.pull-right
+              li.dropdown
+                a.dropdown-toggle(href='#', role='button', data-toggle='dropdown')
+                  i.icon-user
+                  strong  
+                  i.caret
+                ul.dropdown-menu
+                  li
+                    a(tabindex='-1', href='#') Profile
+                  li
+                    a(tabindex='-1', href='settings') Settings
+                  li.divider
+                  li
+                    a(tabindex='-1', href='logout') Logout
+             
+            ul.nav
+              li.active
+                a(href='#') Database Statistics
+          // /.nav-collapse
+    .container-fluid
+      .row-fluid
+        #sidebar.span3
+          //- super
+          ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
+            li
+              a(href=baseurl+'/home')    
+                i.icon-home
+                |  Dashboard
+            li
+              a(href=baseurl+'/profile')
+                i.icon-user
+                |  Profile
+            li
+              a(href=baseurl+'/students')
+                span.badge.badge-info.pull-right
+                i.icon-wrench
+                |  Student's Account
+            li
+              a(href=baseurl+'/lecturers')
+                span.badge.badge-info.pull-right
+                i.icon-briefcase
+                |  Lecturer's Account
+          ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
+            li.active
+              a(href='#')
+                span.badge.badge-info.pull-right
+                i.icon-hdd
+                |  Database
+            li
+              a(href=baseurl+'/logs')
+                span.badge.badge-info.pull-right
+                i.icon-tasks
+                |  Logs
+            li
+              a(href=baseurl+'/server')
+                span.badge.badge-info.pull-right
+                i.icon-print
+                |  Server
+            li
+              a(href=baseurl+'/feedback')
+                span.badge.badge-info.pull-right
+                i.icon-repeat
+                |  Feedback
+        // /span
+        #content.span9
+          .row-fluid
+            .navbar
+              .navbar-inner
+                ul.breadcrumb
+                  i.icon-chevron-left.hide-sidebar
+                    a(href='#', title='Hide Sidebar', rel='tooltip')  
+                  i.icon-chevron-right.show-sidebar(style='display:none;')
+                    a(href='#', title='Show Sidebar', rel='tooltip')  
+                  li 
+                    a(href='home') Dashboard
+                    span.divider /
+                  li Database
+          .row-fluid
+            // block
+            .block
+              .navbar.navbar-inner.block-header
+                .muted.pull-left Database stats
+              .block-content.collapse.in
+                .row-fluid.section
+                  div(id="piechart" style="width: 900px; height: 500px;")
+                  // /block
+
+                
+                
+                  //- .chart(data-percent='13') 13%
+                  //- .chart-bottom-heading
+                  //-   span.label.label-info Orders
+            // /block
+      hr
+    // /.fluid-container
+    script(src='/static/vendors/vendors/jquery-1.9.1.min.js')
+    script(src='/static/vendors/bootstrap/js/bootstrap.min.js')
+    script(src='/static/vendors/vendors/easypiechart/jquery.easy-pie-chart.js')
+    script(src='/static/vendors/assets/scripts.js')
+    script.
+      $(function() {
+      // Easy pie charts
+      $('.chart').easyPieChart({animate: 1000});
+      });
+    script.
+      

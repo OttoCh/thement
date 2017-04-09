@@ -15,4 +15,9 @@ router.get('/students', superControl.getStudents)
 
 router.get('/lecturers', superControl.getLecturers)
 
+router.get('/database', superControl.getDB)
+router.get('/logs', superControl.getLogs)
+router.get('/server', superControl.getServer)
+router.get('/feedback', superControl.getFeedback)
+
 module.exports = router

@@ -1,9 +1,6 @@
 "use strict"
 
 var express       = require('express'),
-    Admin         = require('../../models/admin'),
-    Std           = require('../../models/student'),
-    Lect          = require('../../models/lecturer'),
     funcs         = require('../../middlewares/funcs'),
     adm_query     = require('../../models/query.admin'),
     winston       = require('winston'),

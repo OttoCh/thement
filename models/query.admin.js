@@ -127,5 +127,8 @@ module.exports = {
     /* KAPRODI */
 
     /* SUPER */
-    
+    // get collection's size
+    getCollectionSize: function(cb){
+        
+    }
 }

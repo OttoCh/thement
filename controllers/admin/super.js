@@ -3,8 +3,6 @@
 var express       = require('express'),
     funcs         = require('../../middlewares/funcs'),
     adm_query     = require('../../models/query.admin'),
-    Std           = require('../../models/student'),
-    Lect          = require('../../models/lecturer'),
     app           = express()
 
 var baseurl       = require('../../config/baseurl'),
@@ -14,24 +12,18 @@ exports.getHome = function(req, res){
     let admin = req.session.admin
   if(admin){
     adm_query.getAdminByRole(admin, function(e, a){
-
       // count all lecturers
-          Lect.count({}, function(e, lecturers){
+          adm_query.countLecturers(function(e, lecturers){
             let nLects = lecturers
-
             // get all lecturers that have student
-            Lect.count({"students":{$exists: true, $ne: []},},
-              function(err, std){
-                
-                // count all lecturers that has std
+            adm_query.countLecturerHasStd(function(err, std){
                 let lectHasStd = (std/nLects) * 100
                 lectHasStd     = lectHasStd.toFixed(2)
-
               // count all students
-              Std.count({}, function(e, all){
+              adm_query.countStudents(function(e, all){
                 let nStd = all
                 // count student where is_accepted is true
-              Std.count({"is_accepted":true}, function(e, count){
+              adm_query.countStudentHasLecturer(function(e, count){
                 let nAccepted = count
                 let precenAccept = (nAccepted/nStd) * 100
                 precenAccept     = precenAccept.toFixed(2)
@@ -74,4 +66,20 @@ exports.getStudents = function(req, res){
 
 exports.getProfile = function(req,res){
   res.render('admin/super/profile', {title:"Profile", baseurl})
+}
+
+exports.getDB = function(req, res){
+  res.render('admin/super/database', {title:"Database", baseurl})
+}
+
+exports.getLogs = function(req,res){
+  res.render('admin/super/logs', {title:"Logs", baseurl})
+}
+
+exports.getServer = function(req, res){
+  res.render('admin/super/server', {title:"Server", baseurl})
+}
+
+exports.getFeedback = function(req, res){
+  res.render('admin/super/feedback', {title:"Feedback", baseurl})
 }
