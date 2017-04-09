@@ -111,28 +111,6 @@ html
                     .btn-group.pull-right
                     
                     br
-                  //- KAPRODI
-                  div(class='#{kaprodiShow}')
-                    table(id='example2' class='table table-striped table-bordered #{kaprodiShow}' cellpadding='0', cellspacing='0', border='0')
-                      thead
-                        tr
-                          th NIM
-                          th Fullname
-                          th Nickname
-                          th GPA
-                          th Email
-                          th Last seen
-                          
-                      tbody
-                        each std in stds
-                          tr
-                            td
-                              a(href='student/#{std.nim}')=std.nim
-                            td=std.fullname
-                            td=std.nickname
-                            td=std.ipk
-                            td=std.email
-                            td=std.last_seen
                           
                   //- OPERATOR      
                   div(class='#{operatorShow}')  

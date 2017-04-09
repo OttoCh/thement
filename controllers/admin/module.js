@@ -148,22 +148,7 @@ exports.getSettings = function(req, res){
 exports.getStudents = function(req, res){
   let admin = req.session.admin
   let kaprodiShow = 'hide', operatorShow = 'hide', superShow = 'hide'
-  switch(admin){
-      case 'kaprodi': 
-        console.log('role : ', admin)
-        kaprodiShow = ''
-      break;
-
-      case 'operator': 
-        console.log('role : ', admin)
-        operatorShow = ''
-      break;
-
-      case 'super': 
-        console.log('role : ', admin)
-        superShow = ''
-      break;
-    }
+ 
   Std.find({}, function(err, students){
     let allStds = students
     let stds = []
@@ -258,23 +243,6 @@ exports.getStudents = function(req, res){
 exports.getDetailStudent = function(req, res){
   let nim = req.params.nim
   let admin = req.session.admin
-  let kaprodiShow = 'hide', operatorShow = 'hide', superShow = 'hide'
-  switch(admin){
-      case 'kaprodi': 
-        console.log('role : ', admin)
-        kaprodiShow = ''
-      break;
-
-      case 'operator': 
-        console.log('role : ', admin)
-        operatorShow = ''
-      break;
-
-      case 'super': 
-        console.log('role : ', admin)
-        superShow = ''
-      break;
-    }
   Std.findOne({nim:nim},function(err, found){
     let ta1Button = 'hide', ta1Message = '', ta2Button = 'hide', ta2Message = ''
     let profile = found
@@ -308,8 +276,7 @@ exports.getDetailStudent = function(req, res){
     } else {  
       ta1Message = 'not yet'
     }
-    res.render('admin/student-detail', {title:"Student detail", baseurl, profile, kaprodiShow, 
-    operatorShow, superShow, ta1Button, ta1Message, ta2Button, ta2Message})
+    res.render('admin/student-detail', {title:"Student detail", baseurl, profile, ta1Button, ta1Message, ta2Button, ta2Message})
   })
 }
 
