@@ -16,10 +16,10 @@ var express         = require('express'),
 
 mongoose.connect(config.local, function(err){
     if(!err){
-        console.log('CONNECTED to DB')
+        console.log('CONNECTED to DB');
     } else {
         // send telegram bot
-        console.log('Cant connect to mongodb server')
+        console.log('Cant connect to mongodb server');
     }
 });
 
