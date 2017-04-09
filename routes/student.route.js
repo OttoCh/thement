@@ -6,6 +6,7 @@ var express   = require('express'),
     notif     = require('../controllers/student/notif'),
     report    = require('../controllers/student/report'),
     msg       = require('../controllers/student/message'),
+    course    = require('../controllers/student/courses'),
     auth      = require('../controllers/student/auth'),
     loggedin  = require('../middlewares/loggedin')
 
@@ -35,7 +36,7 @@ router.use(loggedin)
 router.get('/home', student.getHome)
 router.get('/profile', student.getProfile)
 
-router.get('/courses', student.getCourses)
+router.get('/courses', course.getCourses)
 
 router.get('/notifications', notif.getNotifs)
 router.get('/notifications/delete_all', notif.removeAllNotifs)

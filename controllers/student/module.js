@@ -119,9 +119,6 @@ exports.getRegisterPage = function(req, res){
   res.render('student/register', {title:"Register yourself", caption, baseurl, registerCode, hiding})
 }
 
-exports.getCourses = function(req, res){
-  res.render('student/courses/overview', {title:"Courses overview", baseurl})
-}
 /* STATIC ROUTE HANDLER */
 
 /* DYNAMIC ROUTES */

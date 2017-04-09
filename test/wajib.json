@@ -1,0 +1,92 @@
+[
+    {
+        "no":1,
+        "code":"FI2101",
+        "name":"Fisika Matematik IA"
+    },
+    {
+        "no":2,
+        "code":"FI2102",
+        "name":"Mekanika"
+    },
+    {
+        "no":3,
+        "code":"FI2103",
+        "name":"Elektronika"
+    },
+    {
+        "no":4,
+        "code":"FI2201",
+        "name":"Fisika Matematik IIA"
+    },
+    {
+        "no":5,
+        "code":"FI2202",
+        "name":"Listrik Magnet"
+    },
+    {
+        "no":6,
+        "code":"FI2204",
+        "name":"Fisika Modern"
+    },
+    {
+        "no":7,
+        "code":"FI2203",
+        "name":"Metode Pengukuran dan Pengolahan Data"
+    },
+    {
+        "no":8,
+        "code":"FI3101",
+        "name":"Gelombang"
+    },
+    {
+        "no":9,
+        "code":"FI3102",
+        "name":"Fisika Termal"
+    },
+    {
+        "no":10,
+        "code":"FI3103",
+        "name":"Fisika Kuantum"
+    },
+    {
+        "no":11,
+        "code":"FI3104",
+        "name":"Eksperimen Fisika I"
+    },
+    {
+        "no":12,
+        "code":"FI3201",
+        "name":"Eksperimen Fisika II"
+    },
+    {
+        "no":13,
+        "code":"FI3202",
+        "name":"Fisika Komputasi"
+    },
+    {
+        "no":14,
+        "code":"FI4091",
+        "name":"Tugas Akhir I"
+    },
+    {
+        "no":15,
+        "code":"FI4101",
+        "name":"Fisika Inti"
+    },
+    {
+        "no":16,
+        "code":"FI4201",
+        "name":"Fisika Zat Padat"
+    },
+    {
+        "no":17,
+        "code":"FI4092",
+        "name":"Tugas Akhir II"
+    },
+    {
+        "no":18,
+        "code":"FI4093",
+        "name":"Seminar dan Sidang Tugas Akhir"
+    }
+]

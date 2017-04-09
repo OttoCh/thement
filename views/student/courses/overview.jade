@@ -111,44 +111,49 @@ html
                 .span12
                   .table-toolbar
                     //
-                      <div class="btn-group">
-                      <a href="#"><button class="btn btn-success">Add New <i class="icon-plus icon-white"></i></button></a>
-                      </div>
-                    legend ALL COURSES
-                    h4(class='#{showMsg}') There is no notification, yet
-
-                    a(href='#myModal' data-toggle='modal' class='btn btn-danger #{showDeleteButton}') 
-                      i.icon-remove.icon-white
-                      strong  DELETE ALL
-                    div(id='myModal' class='modal hide')
-                      div(class='modal-header')
-                        button(data-dismiss='modal' class='close' type='button')&times;
-                        h4 DELETE ALL NOTIFS
-                      div(class='modal-body')
-                        .span12
-                          p.lead Are you sure want to delete all of your notifications?
-                          a(href='notifications/delete_all' class='btn btn-primary') Yes
-                          &nbsp;
-                          a(data-dismiss='modal' href='#' class='btn') No
-                    
-                    br
-                //-   table.table.table-striped.table-bordered(cellpadding='0', cellspacing='0', border='0')
-                //-     thead
-                //-       tr
-                //-         th ID
-                //-         th Notification
-                //-         th Date
-                //-         th Detail
+                  
+                    legend Physics Study Program Curriculum
+                    img(src='/static/img/curriculum.jpg')
+                
+          .row-fluid
+            .block
+              .navbar.navbar-inner.block-header
+                .muted.pull-left SKS Wajib Fisika & Pilihan Terarah
+              .block-content.collapse.in
+                .span6
+                  h4 Wajib Fisika
+                  table.table.table-striped.table-bordered(cellpadding='0', cellspacing='0', border='0')
+                    thead
+                      tr
+                        th No.
+                        th Kode Matakuliah
+                        th Nama Matakuliah
                         
-                //-     tbody
-                //-       each val in objNotifs
-                //-         tr
-                //-           td=val.index
-                //-           td=val.notif
-                //-           td=val.date
-                //-           td
-                //-             a(href='notification/#{val.index}?from=notifications') See detail
-                          
+                    tbody
+                      each wajib in wajibs
+                        tr
+                          td=wajib.no
+                          td=wajib.code
+                          td=wajib.name
+                    
+                .span6
+                  h4 Pilihan Terarah
+                  table.table.table-striped.table-bordered(cellpadding='0', cellspacing='0', border='0')
+                    thead
+                      tr
+                        th No.
+                        th Kode Matakuliah
+                        th Nama Matakuliah
+                        
+                    tbody
+                      tr
+                        td 1
+                        td FI2201
+                        td Fisika Modern
+                
+                //- p
+                //-   a(href='' class='btn btn-primary') Go to my courses
+
       // footer
       center
         include ../../static/footer           
