@@ -8,6 +8,7 @@ var express     = require('express'),
 router.use(isOperator)
 router.get('/home', opsControl.getHome)
 router.get('/logout', opsControl.postLogout)
+router.get('/profile', opsControl.getProfile)
 
 router.get('/students', opsControl.getStudents)
 router.get('/student/:nim', opsControl.getDetailStudent)

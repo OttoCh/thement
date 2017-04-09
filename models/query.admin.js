@@ -84,6 +84,14 @@ module.exports = {
         })
     },
 
+    // get announcements sent to lecturers
+    getAnnouncementToLecturers: function(admin, cb){
+        Adm.aggregate({$match:{"role":admin}},{$unwind:"$announcements"},{$match:{"announcements.to":"lecturers"}},function(err, std){
+            if(err) return cb(err)
+            cb(null, std)
+        })
+    },
+
     // send announcement
     sendAnnouncement: function(admin, annLength, result, body, cb){
         Adm.update({role:admin}, {$push:{"announcements":{"id":annLength,"to":result,"body":body,"date": new Date(),"seen_by":[]}},},function(err, sent){

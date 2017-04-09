@@ -54,6 +54,10 @@ exports.postLogout = function(req, res){
   });
 }
 
+exports.getProfile = function(req,res){
+  res.render('admin/operator/profile', {title:"Profile", baseurl})
+}
+
 exports.getStudents = function(req, res){
   let admin = req.session.admin
   adm_query.getAllStudents(function(err, students){
