@@ -1,0 +1,98 @@
+[
+    {
+        "no":1,
+        "code":"FI2071",
+        "name":"Sistem Instrumentasi",
+        "note":"WAJIB KK INSTRUMENTASI"
+    },
+    {
+        "no":2,
+        "code":"FI2083",
+        "name":"Pemrograman dan Simulasi Fisika",
+        "note":""
+    },
+    {
+        "no":3,
+        "code":"FI2112",
+        "name":"Pengantar Teori Relativitas Einstein",
+        "note":"WAJIB KK TEORI"
+    },
+    {
+        "no":4,
+        "code":"FI2161",
+        "name":"Fisika Bumi dan Sistem Kompleks",
+        "note":"WAJIB KK FISIKA BUMI & SISTEM KOMPLEKS"
+    },
+    {
+        "no":5,
+        "code":"FI2251",
+        "name":"Fisika Radiologi",
+        "note":"WAJIB KK BIOFISIKA"
+    },
+    {
+        "no":6,
+        "code":"FI3094",
+        "name":"Kerja Praktik",
+        "note":""
+    },
+    {
+        "no":7,
+        "code":"FI3095",
+        "name":"Studi Mandiri Terpantau",
+        "note":""
+    },
+    {
+        "no":8,
+        "code":"FI3173",
+        "name":"Elektronika Lanjut",
+        "note":""
+    },
+    {
+        "no":9,
+        "code":"FI3182",
+        "name":"Komunikasi Ilmiah",
+        "note":""
+    },
+    {
+        "no":10,
+        "code":"FI3211",
+        "name":"Fisika Kuantum Lanjut",
+        "note":""
+    },
+    {
+        "no":11,
+        "code":"FI3221",
+        "name":"Interaksi Elektromagnetik dalam Materi",
+        "note":"WAJIB KK FISIKA MAGNETIK & FOTONIK"
+    },
+    {
+        "no":12,
+        "code":"FI3231",
+        "name":"Fisika Fluida",
+        "note":"WAJIB KK FISIKA MATERIAL ELEKTRONIK"
+    },
+    {
+        "no":13,
+        "code":"FI3241",
+        "name":"Fisika Reaktor",
+        "note":"WAJIB KK FISIKA NUKLIR"
+    },
+    {
+        "no":14,
+        "code":"FI3281",
+        "name":"Fisika Statistik",
+        "note":""
+    },
+    {
+        "no":15,
+        "code":"FI4096",
+        "name":"Studi Mandiri Terpantau",
+        "note":""
+    },
+    {
+        "no":16,
+        "code":"FI4184",
+        "name":"Komputasi Sistem Fisis",
+        "note":""
+    }
+]

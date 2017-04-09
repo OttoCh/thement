@@ -110,9 +110,10 @@ html
               .block-content.collapse.in
                 .span12
                   .table-toolbar
-                    //
-                  
                     legend Physics Study Program Curriculum
+                    .muted.pull-right 
+                      a(href=baseurl+'/course/'+nim class='btn btn-primary') Go to my courses &nbsp;
+                        i.icon-arrow-right.icon-white
                     img(src='/static/img/curriculum.jpg')
                 
           .row-fluid
@@ -120,7 +121,7 @@ html
               .navbar.navbar-inner.block-header
                 .muted.pull-left SKS Wajib Fisika & Pilihan Terarah
               .block-content.collapse.in
-                .span6
+                .span5
                   h4 Wajib Fisika
                   table.table.table-striped.table-bordered(cellpadding='0', cellspacing='0', border='0')
                     thead
@@ -136,7 +137,7 @@ html
                           td=wajib.code
                           td=wajib.name
                     
-                .span6
+                .span7
                   h4 Pilihan Terarah
                   table.table.table-striped.table-bordered(cellpadding='0', cellspacing='0', border='0')
                     thead
@@ -144,12 +145,17 @@ html
                         th No.
                         th Kode Matakuliah
                         th Nama Matakuliah
+                        th Notes
                         
                     tbody
-                      tr
-                        td 1
-                        td FI2201
-                        td Fisika Modern
+                      each pt in pts
+                        tr
+                          td=pt.no
+                          td=pt.code
+                          td=pt.name
+                          td=pt.note
+                        
+                        
                 
                 //- p
                 //-   a(href='' class='btn btn-primary') Go to my courses
