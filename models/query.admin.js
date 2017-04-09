@@ -73,9 +73,40 @@ module.exports = {
             if(err) return cb(err)
             cb(null, found)
         })
-    }
+    },
 
     /* OPERATOR */
+    // get announcements sent to students
+    getAnnouncementToStudents: function(admin, cb){
+        Adm.aggregate({$match:{"role":admin}},{$unwind:"$announcements"},{$match:{"announcements.to":"students"}},function(err, std){
+            if(err) return cb(err)
+            cb(null, std)
+        })
+    },
+
+    // send announcement
+    sendAnnouncement: function(admin, annLength, result, body, cb){
+        Adm.update({role:admin}, {$push:{"announcements":{"id":annLength,"to":result,"body":body,"date": new Date(),"seen_by":[]}},},function(err, sent){
+            if(err) return cb(err)
+            cb(null, sent)
+        })
+    },
+
+    // verify TA 1
+    verifyTA1: function(nim, superv, cb){
+        Std.update({nim:nim},{$set:{ta1:{"status":"verified","date": new Date(),"supervisor":superv}},}, function(err, verified){
+            if(err) return cb(err)
+            cb(null, verified)
+        })
+    },
+
+    // verify TA 2
+    verifyTA2: function(nim, superv, cb){
+        Std.update({nim:nim},{$set:{ta2:{"status":"verified","date": new Date(),"supervisor":superv}},}, function(err, verified){
+            if(err) return cb(err)
+            cb(null, verified)
+        })
+    },
 
     /* KAPRODI */
 
