@@ -147,7 +147,7 @@ exports.getStudents = function(req, res){
         })
       } 
     }
-    res.render('admin/operator/students', {title:"All students", allStds, stds, admin})
+    res.render('admin/operator/students', {title:"All students", allStds, stds, admin, baseurl})
   })
 }
 

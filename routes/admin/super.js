@@ -9,6 +9,7 @@ var express     = require('express'),
 router.use(isSuper)
 router.get('/home', superControl.getHome)
 router.get('/logout', superControl.postLogout)
+router.get('/profile', superControl.getProfile)
 
 router.get('/students', superControl.getStudents)
 

@@ -8,7 +8,7 @@ var express       = require('express'),
     app           = express()
 
 var baseurl       = require('../../config/baseurl'),
-    baseurl       = baseurl.root + 'admin'
+    baseurl       = baseurl.root + 'super'
 
 exports.getHome = function(req, res){
     let admin = req.session.admin
@@ -36,7 +36,7 @@ exports.getHome = function(req, res){
                 let precenAccept = (nAccepted/nStd) * 100
                 precenAccept     = precenAccept.toFixed(2)
                 res.render('admin/super/home', {title:"Dashboard", admin, a, nStd, nAccepted, precenAccept, nLects, std, 
-                lectHasStd})
+                lectHasStd, baseurl})
               })
             })
           })
@@ -61,13 +61,17 @@ exports.postLogout = function(req, res){
 exports.getLecturers = function(req, res){
   adm_query.getAllLecturers(function(err, lect){
     let lects = lect
-    res.render('admin/super/lecturers', {title:"All lecturers", lects})
+    res.render('admin/super/lecturers', {title:"All lecturers", lects, baseurl})
   })
 }
 
 exports.getStudents = function(req, res){
   adm_query.getAllStudents(function(err, std){
     let stds = std
-    res.render('admin/super/students', {title:"All students", stds})
+    res.render('admin/super/students', {title:"All students", stds, baseurl})
   })
+}
+
+exports.getProfile = function(req,res){
+  res.render('admin/super/profile', {title:"Profile", baseurl})
 }

@@ -44,32 +44,47 @@ html
     .container-fluid
       .row-fluid
         #sidebar.span3
+          //- super
           ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
             li
-              a(href='home')
-                
+              a(href=baseurl+'/home')    
                 i.icon-home
                 |  Dashboard
             li
-              a(href='profile')
-                
+              a(href=baseurl+'/profile')
                 i.icon-user
                 |  Profile
             li.active
-              a(href='students')
-                
-                i.icon-list
-                |  Students
-            li
-              a(href='lecturers')
-                
-                i.icon-user
-                |  Lecturers
-            li
-              a(href='announcements/all')
+              a(href='#')
                 span.badge.badge-info.pull-right
-                i.icon-inbox
-                |  Announcement
+                i.icon-wrench
+                |  Student's Account
+            li
+              a(href=baseurl+'/lecturers')
+                span.badge.badge-info.pull-right
+                i.icon-briefcase
+                |  Lecturer's Account
+          ul.nav.nav-list.bs-docs-sidenav.nav-collapse.collapse
+            li
+              a(href=baseurl+'/database')
+                span.badge.badge-info.pull-right
+                i.icon-hdd
+                |  Database
+            li
+              a(href=baseurl+'/logs')
+                span.badge.badge-info.pull-right
+                i.icon-tasks
+                |  Logs
+            li
+              a(href=baseurl+'/server')
+                span.badge.badge-info.pull-right
+                i.icon-print
+                |  Server
+            li
+              a(href=baseurl+'/feedback')
+                span.badge.badge-info.pull-right
+                i.icon-repeat
+                |  Feedback
         // /span
         #content.span9
           .row-fluid
